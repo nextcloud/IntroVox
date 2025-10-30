@@ -1,0 +1,53 @@
+#introvox-personal-settings {
+    max-width: 900px;
+}
+
+#introvox-personal-settings h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--color-main-text);
+}
+
+#introvox-personal-settings .settings-hint {
+    color: var(--color-text-maxcontrast);
+    margin-bottom: 20px;
+}
+
+#introvox-personal-settings .wizard-controls {
+    margin-top: 20px;
+}
+
+#introvox-personal-settings .wizard-controls button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: var(--border-radius-large);
+    background: var(--color-primary-element);
+    color: var(--color-primary-element-text);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#introvox-personal-settings .wizard-controls button:hover {
+    background: var(--color-primary-element-hover);
+}
+
+#introvox-personal-settings .wizard-status {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+#introvox-personal-settings .wizard-status span {
+    font-weight: 500;
+}
+
+#introvox-personal-settings .wizard-info {
+    margin-top: 12px;
+    color: var(--color-text-maxcontrast);
+}
+
+#introvox-personal-settings .wizard-controls button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

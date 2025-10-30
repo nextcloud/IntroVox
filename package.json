@@ -1,0 +1,30 @@
+{
+  "name": "nextcloud-introvox",
+  "version": "1.0.0",
+  "description": "Interactive onboarding tour for new Nextcloud users",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nextcloud/introvox.git"
+  },
+  "author": "Shalution",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "deploy": "npm run build && ./deploy.sh"
+  },
+  "dependencies": {
+    "@nextcloud/axios": "^2.4.0",
+    "@nextcloud/router": "^3.0.0",
+    "@vue/compiler-sfc": "^3.5.22",
+    "shepherd.js": "^11.2.0",
+    "vue": "^3.5.22",
+    "vue-loader": "^17.4.2"
+  },
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

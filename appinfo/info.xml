@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>introvox</id>
+    <name>IntroVox</name>
+    <summary>Interactive onboarding tour for new Nextcloud users</summary>
+    <description>IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Features include customizable tour steps, PWA installation guidance, and admin configuration.</description>
+    <version>1.0.0</version>
+    <licence>agpl</licence>
+    <author>Shalution</author>
+    <namespace>IntroVox</namespace>
+    <category>tools</category>
+    <website>https://github.com/nextcloud/introvox</website>
+    <bugs>https://github.com/nextcloud/introvox/issues</bugs>
+    <repository type="git">https://github.com/nextcloud/introvox.git</repository>
+    <dependencies>
+        <nextcloud min-version="30" max-version="32"/>
+    </dependencies>
+    <settings>
+        <admin>OCA\IntroVox\Settings\AdminSettings</admin>
+        <personal>OCA\IntroVox\Settings\PersonalSettings</personal>
+        <personal-section>OCA\IntroVox\Settings\HelpSection</personal-section>
+    </settings>
+</info>

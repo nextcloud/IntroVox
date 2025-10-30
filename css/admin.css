@@ -1,0 +1,60 @@
+/* Admin styles for First Use Wizard */
+#introvox-admin {
+  padding: 20px 0;
+}
+
+#introvox-admin h2 {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+#introvox-admin .settings-hint {
+  color: var(--color-text-lighter);
+  margin-bottom: 30px;
+}
+
+#introvox-admin-app {
+  margin-top: 20px;
+}
+
+/* Global settings section */
+.introvox-admin .global-settings {
+  background: var(--color-background-dark);
+  padding: 20px;
+  border-radius: var(--border-radius-large);
+  margin-bottom: 30px;
+}
+
+.introvox-admin .global-settings h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--color-main-text);
+}
+
+.introvox-admin .setting-item {
+  margin-bottom: 16px;
+}
+
+.introvox-admin .toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.introvox-admin .toggle-label input[type="checkbox"] {
+  margin-right: 12px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.introvox-admin .setting-hint {
+  margin-top: 8px;
+  margin-left: 30px;
+  font-size: 13px;
+  color: var(--color-text-maxcontrast);
+}
