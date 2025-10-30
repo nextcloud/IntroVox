@@ -8,8 +8,6 @@
 
 IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, PWA installation guidance, and comprehensive admin configuration.
 
-![IntroVox Demo](docs/screenshots/wizard-demo.gif)
-
 ## ✨ Features
 
 - 🎯 **Interactive Guided Tour** - Step-by-step introduction to Nextcloud features
@@ -23,15 +21,15 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 ## 📸 Screenshots
 
 ### User Tour Experience
-![Welcome Step](docs/screenshots/welcome-step.png)
+![Welcome Step](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
 *The wizard welcomes users with a friendly introduction*
 
 ### Admin Interface
-![Admin Configuration](docs/screenshots/admin-interface.png)
+![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png)
 *Administrators can easily manage and customize tour steps*
 
 ### Personal Settings
-![Personal Settings](docs/screenshots/personal-settings.png)
+![Personal Settings](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/personal-settings.png)
 *Users can restart the tour anytime from their personal settings*
 
 ## 📦 Installation
