@@ -4,12 +4,33 @@
     <id>introvox</id>
     <name>IntroVox</name>
     <summary>Interactive onboarding tour for new Nextcloud users</summary>
-    <description>IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Features include customizable tour steps, PWA installation guidance, and admin configuration.</description>
+    <description><![CDATA[IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud.
+
+**Features:**
+* Interactive step-by-step tour through Nextcloud's main features
+* PWA installation guide with device-specific instructions
+* Full admin interface for customizing tour steps
+* Global enable/disable control for administrators
+* Personal settings for users to restart the tour
+* Automatically adapts to your Nextcloud theme
+* Privacy-focused: all data stored locally
+
+**Perfect for:**
+* Nextcloud administrators who want to improve user onboarding
+* Organizations deploying Nextcloud to new users
+* Anyone who wants to help users discover Nextcloud features
+
+Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
+    ]]></description>
     <version>1.0.0</version>
     <licence>agpl</licence>
-    <author>Shalution</author>
+    <author mail="info@shalution.com" homepage="https://shalution.com">Shalution</author>
     <namespace>IntroVox</namespace>
     <category>tools</category>
+    <category>integration</category>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/wizard-demo.gif</screenshot>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png</screenshot>
     <website>https://github.com/nextcloud/IntroVox</website>
     <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
     <repository type="git">https://github.com/nextcloud/IntroVox.git</repository>
