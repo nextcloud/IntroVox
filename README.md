@@ -28,8 +28,8 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 ### From Source
 
 ```bash
-git clone https://github.com/nextcloud/introvox.git
-cd introvox
+git clone https://github.com/nextcloud/IntroVox.git
+cd IntroVox
 npm install
 npm run build
 ```

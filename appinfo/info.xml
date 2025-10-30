@@ -10,9 +10,9 @@
     <author>Shalution</author>
     <namespace>IntroVox</namespace>
     <category>tools</category>
-    <website>https://github.com/nextcloud/introvox</website>
-    <bugs>https://github.com/nextcloud/introvox/issues</bugs>
-    <repository type="git">https://github.com/nextcloud/introvox.git</repository>
+    <website>https://github.com/nextcloud/IntroVox</website>
+    <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
+    <repository type="git">https://github.com/nextcloud/IntroVox.git</repository>
     <dependencies>
         <nextcloud min-version="30" max-version="32"/>
     </dependencies>
