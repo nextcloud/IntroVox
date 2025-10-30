@@ -5,6 +5,10 @@ package-lock.json
 # Build outputs
 js/
 *.tar.gz
+*.sig
+introvox.key
+introvox.crt
+introvox.csr
 
 # IDE
 .vscode/
