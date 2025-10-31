@@ -39,6 +39,7 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     </dependencies>
     <settings>
         <admin>OCA\IntroVox\Settings\AdminSettings</admin>
+        <admin-section>OCA\IntroVox\Settings\AdminSection</admin-section>
         <personal>OCA\IntroVox\Settings\PersonalSettings</personal>
         <personal-section>OCA\IntroVox\Settings\HelpSection</personal-section>
     </settings>
