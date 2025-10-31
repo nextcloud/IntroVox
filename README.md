@@ -88,4 +88,4 @@ AGPL-3.0 - see [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by [Shalution](https://shalution.com)
+Made with ❤️ for the Nextcloud community

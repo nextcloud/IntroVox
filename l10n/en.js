@@ -74,6 +74,7 @@ OC.L10N.register(
     "Next" : "Next",
     "Back" : "Back",
     "Skip" : "Skip",
+    "Start tour" : "Start tour",
     "Done" : "Done",
     "Drag to reorder" : "Drag to reorder",
     "step_welcome_title" : "👋 Welcome to Nextcloud",

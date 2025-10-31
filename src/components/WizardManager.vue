@@ -8,6 +8,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
 import 'shepherd.js/dist/css/shepherd.css'
+import { translate as t } from '@nextcloud/l10n'
 import { wizardSteps, loadCustomSteps } from './wizardSteps'
 
 export default {
@@ -93,12 +94,12 @@ export default {
           // First step: Skip button + Next/Start button
           buttons = [
             {
-              text: step.buttons?.[0]?.text || 'Sla over',
+              text: step.buttons?.[0]?.text || t('introvox', 'Skip'),
               action: step.buttons?.[0]?.action === 'markCompleted' ? 'markCompleted' : tour.cancel,
               secondary: true
             },
             {
-              text: step.buttons?.[1]?.text || 'Start tour',
+              text: step.buttons?.[1]?.text || t('introvox', 'Start tour'),
               action: tour.next
             }
           ]
@@ -106,12 +107,12 @@ export default {
           // Last step: Back button + Complete button
           buttons = [
             {
-              text: 'Vorige',
+              text: t('introvox', 'Back'),
               action: tour.back,
               secondary: true
             },
             {
-              text: step.buttons?.[1]?.text || 'Afronden',
+              text: step.buttons?.[1]?.text || t('introvox', 'Done'),
               action: 'markCompleted'
             }
           ]
@@ -119,12 +120,12 @@ export default {
           // Middle steps: Back button + Next button
           buttons = [
             {
-              text: 'Vorige',
+              text: t('introvox', 'Back'),
               action: tour.back,
               secondary: true
             },
             {
-              text: 'Volgende',
+              text: t('introvox', 'Next'),
               action: tour.next
             }
           ]
