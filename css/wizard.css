@@ -214,11 +214,14 @@
   box-shadow: -2px -2px 8px rgba(0,0,0,0.1);
 }
 
-/* Smooth entrance animation */
+/* Prevent flickering on initial render - hide until positioned */
 .shepherd-element {
-  animation: wizardFadeIn 0.3s ease-out;
+  opacity: 0;
+  animation: wizardFadeIn 0.3s ease-out forwards;
+  animation-delay: 0.05s; /* Small delay to ensure positioning is complete */
 }
 
+/* Smooth entrance animation */
 @keyframes wizardFadeIn {
   from {
     opacity: 0;

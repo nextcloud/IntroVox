@@ -184,7 +184,7 @@ const baseWizardSteps = [
     title: '🎉 Klaar!',
     text: `
       <p>Je bent helemaal klaar om te beginnen!</p>
-      <p>Als je deze tour nog een keer wilt zien, kun je die vinden in de help sectie.</p>
+      <p>Als je deze tour nog een keer wilt zien, kun je die opnieuw starten via <strong>Instellingen → IntroVox</strong>.</p>
       <p>Veel plezier met Nextcloud!</p>
     `,
     buttons: [

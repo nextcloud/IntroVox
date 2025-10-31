@@ -126,12 +126,8 @@ export default {
       })
 
       tour.on('cancel', () => {
-        console.log('Wizard cancelled')
-        if (confirm('Wil je deze tour later nog een keer zien?')) {
-          // Laat wizard niet als completed markeren
-        } else {
-          markCompleted()
-        }
+        console.log('Wizard cancelled - not marking as completed (user can restart from settings)')
+        // Don't mark as completed - user can restart from personal settings if needed
       })
     }
 
