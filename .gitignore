@@ -28,4 +28,5 @@ npm-debug.log*
 # Local config
 deploy.sh
 deploy.sh.local
+push-all.sh
 .env
