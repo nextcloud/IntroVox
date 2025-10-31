@@ -126,8 +126,8 @@ export default {
       })
 
       tour.on('cancel', () => {
-        console.log('Wizard cancelled - not marking as completed (user can restart from settings)')
-        // Don't mark as completed - user can restart from personal settings if needed
+        console.log('Wizard cancelled - marking as completed')
+        markCompleted()
       })
     }
 
