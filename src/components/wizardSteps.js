@@ -1,4 +1,5 @@
 import { getPWAInstructions, isPWAInstallable } from '../utils/deviceDetection.js'
+import { translate as t } from '@nextcloud/l10n'
 
 // Base wizard steps (without PWA step)
 const baseWizardSteps = [

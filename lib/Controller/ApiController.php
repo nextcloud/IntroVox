@@ -30,8 +30,9 @@ class ApiController extends Controller {
         $stepsJson = $this->config->getAppValue($this->appName, 'wizard_steps', '');
         $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
 
+        // If no steps are configured, return empty and let frontend use defaults
+        // The admin panel will save steps when they are first loaded/modified
         if (empty($stepsJson)) {
-            // Return empty, frontend will use default steps
             return new JSONResponse([
                 'success' => true,
                 'steps' => [],
@@ -42,6 +43,7 @@ class ApiController extends Controller {
 
         $steps = json_decode($stepsJson, true);
 
+        // Return the saved steps (which could be reordered defaults or custom steps)
         return new JSONResponse([
             'success' => true,
             'steps' => $steps,

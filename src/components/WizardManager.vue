@@ -55,7 +55,7 @@ export default {
       console.log(`🎨 Initializing wizard with ${stepsToUse.length} steps${customSteps ? ' (custom)' : ' (default)'}`)
 
       // Add all steps
-      stepsToUse.forEach(step => {
+      stepsToUse.forEach((step, index) => {
         // Normalize attachTo for custom steps (might be string instead of object)
         let attachTo = null
         if (step.attachTo) {
@@ -83,18 +83,57 @@ export default {
           console.log(`✅ Wizard: Adding centered step "${step.id}"`)
         }
 
-        // Add navigation buttons if not provided
-        const buttons = step.buttons || [
-          {
-            text: 'Vorige',
-            action: tour.back,
-            secondary: true
-          },
-          {
-            text: 'Volgende',
-            action: tour.next
-          }
-        ]
+        // Generate buttons dynamically based on position
+        const isFirstStep = index === 0
+        const isLastStep = index === stepsToUse.length - 1
+
+        let buttons = []
+
+        if (isFirstStep) {
+          // First step: Skip button + Next/Start button
+          buttons = [
+            {
+              text: step.buttons?.[0]?.text || 'Sla over',
+              action: step.buttons?.[0]?.action === 'markCompleted' ? 'markCompleted' : tour.cancel,
+              secondary: true
+            },
+            {
+              text: step.buttons?.[1]?.text || 'Start tour',
+              action: tour.next
+            }
+          ]
+        } else if (isLastStep) {
+          // Last step: Back button + Complete button
+          buttons = [
+            {
+              text: 'Vorige',
+              action: tour.back,
+              secondary: true
+            },
+            {
+              text: step.buttons?.[1]?.text || 'Afronden',
+              action: 'markCompleted'
+            }
+          ]
+        } else {
+          // Middle steps: Back button + Next button
+          buttons = [
+            {
+              text: 'Vorige',
+              action: tour.back,
+              secondary: true
+            },
+            {
+              text: 'Volgende',
+              action: tour.next
+            }
+          ]
+        }
+
+        // Use custom buttons if explicitly provided (unless it's position-dependent)
+        if (step.buttons && !isFirstStep && !isLastStep) {
+          buttons = step.buttons
+        }
 
         // Determine if step should be centered (no attachTo)
         const stepClasses = attachTo

@@ -1,35 +1,35 @@
 <template>
   <div class="introvox-admin">
     <div class="global-settings">
-      <h3>🌍 Globale instellingen</h3>
+      <h3>🌍 {{ t('Global settings') }}</h3>
       <div class="setting-item">
         <label class="toggle-label">
           <input type="checkbox" v-model="wizardEnabled" @change="saveGlobalSettings" />
-          <span>Wizard ingeschakeld voor alle gebruikers</span>
+          <span>{{ t('Wizard enabled for all users') }}</span>
         </label>
         <p class="setting-hint">
-          Wanneer uitgeschakeld, wordt de wizard niet automatisch gestart voor nieuwe gebruikers.
+          {{ t('When disabled, the wizard will not automatically start for new users.') }}
         </p>
       </div>
     </div>
 
     <div class="admin-actions">
       <button @click="addStep" class="primary">
-        ➕ Nieuwe stap toevoegen
+        ➕ {{ t('Add new step') }}
       </button>
       <button @click="resetToDefault" class="warning">
-        🔄 Reset naar standaard
+        🔄 {{ t('Reset to default') }}
       </button>
       <button @click="saveSteps" class="success" :disabled="!hasChanges">
-        💾 Opslaan
+        💾 {{ t('Save') }}
       </button>
     </div>
 
     <div v-if="loading" class="loading">
-      Laden...
+      {{ t('Loading...') }}
     </div>
 
-    <div v-else class="steps-list">
+    <div v-else ref="stepsListRef" class="steps-list">
       <div
         v-for="(step, index) in steps"
         :key="step.id"
@@ -37,73 +37,76 @@
         :class="{ editing: editingStep === step.id }"
       >
         <div class="step-header">
+          <div class="drag-handle" :title="t('Drag to reorder')">
+            ⋮⋮
+          </div>
           <h3>
-            <span class="step-number">Stap {{ index + 1 }}</span>
+            <span class="step-number">{{ t('Step') }} {{ index + 1 }}</span>
             <span class="step-title">{{ step.title }}</span>
             <span class="step-id">ID: {{ step.id }}</span>
           </h3>
           <div class="step-actions">
             <button @click="editStep(step)" class="icon-button">
-              ✏️ Bewerken
+              ✏️ {{ t('Edit') }}
             </button>
             <button @click="deleteStep(step.id)" class="icon-button delete">
-              🗑️ Verwijderen
+              🗑️ {{ t('Delete') }}
             </button>
           </div>
         </div>
 
         <div v-if="editingStep === step.id" class="step-editor">
           <div class="form-group">
-            <label>ID (niet aanpasbaar)</label>
+            <label>{{ t('ID (not editable)') }}</label>
             <input type="text" :value="step.id" disabled class="disabled-input" />
           </div>
 
           <div class="form-group">
-            <label>Titel *</label>
+            <label>{{ t('Title') }} *</label>
             <input
               v-model="editingData.title"
               type="text"
-              placeholder="Bijvoorbeeld: 👋 Welkom bij Nextcloud"
+              :placeholder="t('For example: %s', {example: '👋 ' + t('Welcome to Nextcloud')})"
               required
             />
           </div>
 
           <div class="form-group">
-            <label>Tekst (HTML) *</label>
+            <label>{{ t('Text (HTML)') }} *</label>
             <textarea
               v-model="editingData.text"
               rows="6"
-              placeholder="<p>HTML content hier...</p>"
+              placeholder="<p>HTML content...</p>"
               required
             ></textarea>
           </div>
 
           <div class="form-group">
-            <label>Koppel aan element (CSS selector)</label>
+            <label>{{ t('Attach to element (CSS selector)') }}</label>
             <input
               v-model="editingData.attachTo"
               type="text"
-              placeholder="Bijvoorbeeld: #header, .button, [data-id='files']"
+              :placeholder="t('For example: %s', {example: '#header, .button, [data-id=files]'})"
             />
-            <small class="hint">Laat leeg voor een gecentreerde stap</small>
+            <small class="hint">{{ t('Leave empty for a centered step') }}</small>
           </div>
 
           <div class="form-group" v-if="editingData.attachTo">
-            <label>Positie</label>
+            <label>{{ t('Position') }}</label>
             <select v-model="editingData.position">
-              <option value="right">Rechts</option>
-              <option value="left">Links</option>
-              <option value="top">Boven</option>
-              <option value="bottom">Onder</option>
+              <option value="right">{{ t('Right') }}</option>
+              <option value="left">{{ t('Left') }}</option>
+              <option value="top">{{ t('Top') }}</option>
+              <option value="bottom">{{ t('Bottom') }}</option>
             </select>
           </div>
 
           <div class="editor-actions">
             <button @click="saveEdit" class="primary">
-              ✓ Opslaan
+              ✓ {{ t('Save') }}
             </button>
             <button @click="cancelEdit" class="secondary">
-              ✗ Annuleren
+              ✗ {{ t('Cancel') }}
             </button>
           </div>
         </div>
@@ -112,18 +115,18 @@
           <div class="preview-text" v-html="step.text"></div>
           <div v-if="step.attachTo" class="preview-meta">
             <span>📍 Element: <code>{{ step.attachTo }}</code></span>
-            <span>📐 Positie: {{ step.position || 'right' }}</span>
+            <span>📐 {{ t('Position') }}: {{ step.position || 'right' }}</span>
           </div>
           <div v-else class="preview-meta">
-            <span>📍 Gecentreerde stap</span>
+            <span>📍 {{ t('Centered step') }}</span>
           </div>
         </div>
       </div>
 
       <div v-if="steps.length === 0" class="empty-state">
-        <p>Nog geen stappen gedefinieerd.</p>
+        <p>{{ t('No steps defined yet.') }}</p>
         <button @click="addStep" class="primary">
-          Eerste stap toevoegen
+          {{ t('Add first step') }}
         </button>
       </div>
     </div>
@@ -135,9 +138,11 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import { translate as t } from '@nextcloud/l10n'
+import Sortable from 'sortablejs'
 
 export default {
   name: 'AdminApp',
@@ -150,6 +155,7 @@ export default {
     const hasChanges = ref(false)
     const originalSteps = ref([])
     const wizardEnabled = ref(true)
+    const stepsListRef = ref(null)
 
     const loadSteps = async () => {
       try {
@@ -159,10 +165,45 @@ export default {
         originalSteps.value = JSON.parse(JSON.stringify(response.data.steps))
         hasChanges.value = false
       } catch (error) {
-        showMessage('Fout bij laden van stappen: ' + error.message, 'error')
+        showMessage(t('introvox', 'Error loading steps: %s', {error: error.message}), 'error')
       } finally {
         loading.value = false
       }
+    }
+
+    const initSortable = () => {
+      if (!stepsListRef.value) {
+        console.warn('stepsListRef not available yet')
+        return
+      }
+
+      if (stepsListRef.value._sortable) {
+        console.log('Sortable already initialized')
+        return
+      }
+
+      console.log('Initializing Sortable on:', stepsListRef.value)
+
+      stepsListRef.value._sortable = Sortable.create(stepsListRef.value, {
+        animation: 150,
+        handle: '.drag-handle',
+        ghostClass: 'step-item-ghost',
+        dragClass: 'step-item-drag',
+        forceFallback: false,
+        onStart: (evt) => {
+          console.log('Drag started:', evt.oldIndex)
+        },
+        onEnd: (evt) => {
+          console.log('Drag ended. Old:', evt.oldIndex, 'New:', evt.newIndex)
+          // Reorder the steps array
+          const movedItem = steps.value.splice(evt.oldIndex, 1)[0]
+          steps.value.splice(evt.newIndex, 0, movedItem)
+          hasChanges.value = true
+          console.log('Steps reordered, hasChanges:', hasChanges.value)
+        }
+      })
+
+      console.log('Sortable initialized successfully')
     }
 
     const loadGlobalSettings = async () => {
@@ -179,17 +220,17 @@ export default {
         await axios.post(generateUrl('/apps/introvox/admin/settings'), {
           enabled: wizardEnabled.value
         })
-        showMessage('Globale instellingen opgeslagen', 'success')
+        showMessage(t('introvox', 'Global settings saved'), 'success')
       } catch (error) {
-        showMessage('Fout bij opslaan van globale instellingen: ' + error.message, 'error')
+        showMessage(t('introvox', 'Error saving global settings: %s', {error: error.message}), 'error')
       }
     }
 
     const addStep = () => {
       const newStep = {
         id: 'new_' + Date.now(),
-        title: 'Nieuwe stap',
-        text: '<p>Beschrijving van deze stap...</p>',
+        title: t('introvox', 'New step'),
+        text: '<p>' + t('introvox', 'Description of this step...') + '</p>',
         attachTo: '',
         position: 'right'
       }
@@ -223,7 +264,7 @@ export default {
     }
 
     const deleteStep = (id) => {
-      if (confirm('Weet je zeker dat je deze stap wilt verwijderen?')) {
+      if (confirm(t('introvox', 'Are you sure you want to delete this step?'))) {
         steps.value = steps.value.filter(s => s.id !== id)
         hasChanges.value = true
       }
@@ -235,25 +276,25 @@ export default {
         await axios.post(generateUrl('/apps/introvox/admin/steps'), {
           steps: steps.value
         })
-        showMessage('Stappen succesvol opgeslagen!', 'success')
+        showMessage(t('introvox', 'Steps saved successfully!'), 'success')
         hasChanges.value = false
         originalSteps.value = JSON.parse(JSON.stringify(steps.value))
       } catch (error) {
-        showMessage('Fout bij opslaan: ' + error.message, 'error')
+        showMessage(t('introvox', 'Error saving: %s', {error: error.message}), 'error')
       } finally {
         loading.value = false
       }
     }
 
     const resetToDefault = async () => {
-      if (confirm('Weet je zeker dat je wilt resetten naar de standaard stappen? Alle aangepaste stappen worden verwijderd.')) {
+      if (confirm(t('introvox', 'Are you sure you want to reset to default steps? All custom steps will be removed.'))) {
         try {
           loading.value = true
           await axios.post(generateUrl('/apps/introvox/admin/reset'))
           await loadSteps()
-          showMessage('Reset naar standaard stappen succesvol!', 'success')
+          showMessage(t('introvox', 'Reset to default steps successful!'), 'success')
         } catch (error) {
-          showMessage('Fout bij resetten: ' + error.message, 'error')
+          showMessage(t('introvox', 'Error resetting: %s', {error: error.message}), 'error')
         } finally {
           loading.value = false
         }
@@ -267,6 +308,31 @@ export default {
       }, 5000)
     }
 
+    // Translation helper
+    const trans = (key, vars = {}) => {
+      return t('introvox', key, vars)
+    }
+
+    // Watch for stepsListRef to become available and initialize Sortable
+    watch(stepsListRef, (newVal) => {
+      if (newVal && !loading.value) {
+        console.log('stepsListRef is now available, initializing Sortable')
+        nextTick(() => {
+          initSortable()
+        })
+      }
+    })
+
+    // Watch for loading to become false and initialize Sortable
+    watch(loading, (newVal) => {
+      if (!newVal && stepsListRef.value) {
+        console.log('Loading finished, initializing Sortable')
+        nextTick(() => {
+          initSortable()
+        })
+      }
+    })
+
     // Load steps and settings on mount
     loadSteps()
     loadGlobalSettings()
@@ -279,6 +345,7 @@ export default {
       message,
       hasChanges,
       wizardEnabled,
+      stepsListRef,
       saveGlobalSettings,
       addStep,
       editStep,
@@ -286,7 +353,8 @@ export default {
       cancelEdit,
       deleteStep,
       saveSteps,
-      resetToDefault
+      resetToDefault,
+      t: trans
     }
   }
 }
@@ -294,8 +362,9 @@ export default {
 
 <style scoped>
 .introvox-admin {
-  max-width: 1200px;
-  margin: 20px 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .admin-actions {
@@ -306,11 +375,11 @@ export default {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 6px 12px;
   border: none;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: normal;
   transition: opacity 0.2s;
 }
 
@@ -362,14 +431,14 @@ button.warning {
 .steps-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .step-item {
   background: var(--color-main-background);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  padding: 15px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 16px;
   transition: border-color 0.2s;
 }
 
@@ -382,27 +451,50 @@ button.warning {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  gap: 12px;
+}
+
+.drag-handle {
+  cursor: grab;
+  user-select: none;
+  font-size: 20px;
+  color: var(--color-text-maxcontrast);
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.drag-handle:hover {
+  color: var(--color-main-text);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
 }
 
 .step-header h3 {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .step-number {
   background: var(--color-primary-element);
   color: var(--color-primary-element-text);
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: var(--border-radius);
+  font-size: 11px;
   font-weight: bold;
 }
 
 .step-title {
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .step-id {
@@ -429,8 +521,8 @@ button.warning {
 
 .form-group label {
   display: block;
-  font-weight: 500;
-  margin-bottom: 5px;
+  font-weight: bold;
+  margin-bottom: 4px;
   color: var(--color-main-text);
 }
 
@@ -438,9 +530,9 @@ button.warning {
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: 1px solid var(--color-border);
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   background: var(--color-main-background);
   color: var(--color-main-text);
   font-family: inherit;
@@ -475,10 +567,10 @@ button.warning {
 }
 
 .preview-text {
-  padding: 10px;
+  padding: 8px;
   background: var(--color-background-dark);
-  border-radius: 3px;
-  margin-bottom: 10px;
+  border-radius: var(--border-radius);
+  margin-bottom: 8px;
 }
 
 .preview-text p:first-child {
@@ -498,8 +590,8 @@ button.warning {
 
 .preview-meta code {
   background: var(--color-background-dark);
-  padding: 2px 6px;
-  border-radius: 3px;
+  padding: 2px 4px;
+  border-radius: var(--border-radius);
   font-family: monospace;
 }
 
@@ -518,8 +610,8 @@ button.warning {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 15px 20px;
-  border-radius: 3px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius);
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   z-index: 10000;
   animation: slideIn 0.3s ease;
@@ -549,5 +641,22 @@ button.warning {
 .message.info {
   background: var(--color-primary-element);
   color: var(--color-primary-element-text);
+}
+
+/* Drag and drop styles */
+.step-item-ghost {
+  opacity: 0.4;
+  background: var(--color-background-dark);
+}
+
+.step-item-drag {
+  opacity: 1;
+  cursor: grabbing;
+  transform: rotate(2deg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sortable-chosen .drag-handle {
+  cursor: grabbing;
 }
 </style>
