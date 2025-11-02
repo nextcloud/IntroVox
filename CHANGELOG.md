@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Simplified interface, removed redundant status messages
   - Cleaner restart button with emoji icon
   - Streamlined JavaScript for better performance
+  - Now shows disabled state when admin disables wizard globally
+  - Clear messaging to contact administrator when tour is disabled
 
 ### Fixed
 - Dark theme title visibility issues (white text in dark mode)

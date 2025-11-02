@@ -71,6 +71,8 @@ OC.L10N.register(
     "Start the guided tour again to learn about Nextcloud features." : "Start de rondleiding opnieuw om meer te weten te komen over Nextcloud functies.",
     "Restart tour" : "Herstart tour",
     "The tour will be restarted. Refresh the page to start." : "De tour wordt opnieuw gestart. Ververs de pagina om te starten.",
+    "The introduction tour is currently disabled by your administrator." : "De introductietour is momenteel uitgeschakeld door uw beheerder.",
+    "Contact your administrator if you would like to see the guided tour." : "Neem contact op met uw beheerder als u de rondleiding wilt zien.",
     "Next" : "Volgende",
     "Back" : "Terug",
     "Skip" : "Overslaan",

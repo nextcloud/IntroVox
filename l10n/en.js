@@ -71,6 +71,8 @@ OC.L10N.register(
     "Start the guided tour again to learn about Nextcloud features." : "Start the guided tour again to learn about Nextcloud features.",
     "Restart tour" : "Restart tour",
     "The tour will be restarted. Refresh the page to start." : "The tour will be restarted. Refresh the page to start.",
+    "The introduction tour is currently disabled by your administrator." : "The introduction tour is currently disabled by your administrator.",
+    "Contact your administrator if you would like to see the guided tour." : "Contact your administrator if you would like to see the guided tour.",
     "Next" : "Next",
     "Back" : "Back",
     "Skip" : "Skip",

@@ -2,14 +2,25 @@
 namespace OCA\IntroVox\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IConfig;
 use OCP\Settings\ISettings;
 
 class PersonalSettings implements ISettings {
+    private $config;
+
+    public function __construct(IConfig $config) {
+        $this->config = $config;
+    }
+
     /**
      * @return TemplateResponse
      */
     public function getForm() {
-        return new TemplateResponse('introvox', 'personal', [], '');
+        $wizardEnabled = $this->config->getAppValue('introvox', 'wizard_enabled', 'true') === 'true';
+
+        return new TemplateResponse('introvox', 'personal', [
+            'wizardEnabled' => $wizardEnabled
+        ], '');
     }
 
     /**

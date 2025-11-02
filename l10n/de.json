@@ -69,6 +69,8 @@
         "Start the guided tour again to learn about Nextcloud features.": "Starten Sie die geführte Tour erneut, um mehr über Nextcloud-Funktionen zu erfahren.",
         "Restart tour": "Tour neu starten",
         "The tour will be restarted. Refresh the page to start.": "Die Tour wird neu gestartet. Aktualisieren Sie die Seite zum Starten.",
+        "The introduction tour is currently disabled by your administrator.": "Die Einführungstour ist derzeit von Ihrem Administrator deaktiviert.",
+        "Contact your administrator if you would like to see the guided tour.": "Kontaktieren Sie Ihren Administrator, wenn Sie die geführte Tour sehen möchten.",
         "Next": "Weiter",
         "Back": "Zurück",
         "Skip": "Überspringen",

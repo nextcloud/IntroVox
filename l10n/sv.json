@@ -69,6 +69,8 @@
         "Start the guided tour again to learn about Nextcloud features.": "Starta den guidade turen igen för att lära dig om Nextcloud-funktioner.",
         "Restart tour": "Starta om tur",
         "The tour will be restarted. Refresh the page to start.": "Turen kommer att startas om. Uppdatera sidan för att starta.",
+        "The introduction tour is currently disabled by your administrator.": "Introduktionsturen är för närvarande inaktiverad av din administratör.",
+        "Contact your administrator if you would like to see the guided tour.": "Kontakta din administratör om du vill se den guidade turen.",
         "Next": "Nästa",
         "Back": "Tillbaka",
         "Skip": "Hoppa över",
