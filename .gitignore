@@ -6,9 +6,12 @@ package-lock.json
 js/
 *.tar.gz
 *.sig
-introvox.key
-introvox.crt
-introvox.csr
+*.key
+*.key.*
+*.crt
+*.crt.*
+*.csr
+*.csr.*
 
 # IDE
 .vscode/

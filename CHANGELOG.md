@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Extended multi-language support**
+  - Added German (de), French (fr), Danish (da), and Swedish (sv) translations
+  - Total of 6 supported languages: English, Dutch, German, French, Danish, Swedish
+  - All UI elements, wizard steps, and admin interface fully translated
+
+### Improved
+- **Wizard UI enhancements**
+  - Fixed header layout with flexbox for better title spacing
+  - Titles now wrap properly without overlapping close button
+  - Close button styled to match secondary button design (white background)
+  - Disabled word hyphenation for cleaner title display
+  - Enhanced dark theme support with explicit color overrides
+  - Links now follow Nextcloud theme with proper styling and accessibility
+- **Admin settings page**
+  - Improved margins and padding to match Nextcloud standards
+  - Consistent spacing with personal settings page
+  - Removed excessive left margin
+- **Personal settings page**
+  - Simplified interface, removed redundant status messages
+  - Cleaner restart button with emoji icon
+  - Streamlined JavaScript for better performance
+
+### Fixed
+- Dark theme title visibility issues (white text in dark mode)
+- Close button styling inconsistency with other buttons
+- Admin page margin not matching personal settings page
+- Word breaking in wizard step titles
+
 ## [1.1.0] - 2025-10-31
 
 ### Added
