@@ -37,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Close button styling inconsistency with other buttons
 - Admin page margin not matching personal settings page
 - Word breaking in wizard step titles
+- Wizard steps now properly translate when switching languages
+- Fixed broken JSON syntax in Dutch (nl) translation file
+- Default wizard steps now use translation keys instead of hardcoded text
 
 ## [1.1.0] - 2025-10-31
 

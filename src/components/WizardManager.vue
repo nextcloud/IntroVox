@@ -9,7 +9,7 @@ import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
 import 'shepherd.js/dist/css/shepherd.css'
 import { translate as t } from '@nextcloud/l10n'
-import { wizardSteps, loadCustomSteps } from './wizardSteps'
+import { getWizardSteps, loadCustomSteps } from './wizardSteps'
 
 export default {
   name: 'WizardManager',
@@ -40,7 +40,7 @@ export default {
       }
 
       const customSteps = response ? response.steps : null
-      const stepsToUse = customSteps || wizardSteps
+      const stepsToUse = customSteps || getWizardSteps()
 
       tour = new Shepherd.Tour({
         useModalOverlay: true,

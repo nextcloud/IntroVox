@@ -85,7 +85,3 @@ AGPL-3.0 - see [LICENSE](LICENSE) file
 - [Vue 3](https://vuejs.org/)
 - [Shepherd.js](https://shepherdjs.dev/)
 - [Nextcloud](https://nextcloud.com/)
-
----
-
-Made with ❤️ for the Nextcloud community
