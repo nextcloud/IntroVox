@@ -1,19 +1,26 @@
-# Screenshots
+# Screenshots & Demo
 
-Please add screenshots of:
+Please add screenshots and demo video of:
 
-1. **wizard-demo.gif** - An animated GIF showing the wizard in action
-2. **welcome-step.png** - The wizard's first step welcoming the user
-3. **admin-interface.png** - The admin configuration page showing tour step management
-4. **personal-settings.png** - The user settings page with restart button
+1. **IntroVox demo.mp4** - Video demonstration showing the full wizard experience
+2. **admin-interface.png** - The admin configuration page showing tour step management
+3. **personal-settings.png** - The user settings page with restart button
 
-## Screenshot Guidelines
+## Media Guidelines
 
-- Use high-quality PNG images (or GIF for animations)
+### For Screenshots
+- Use high-quality PNG images
 - Recommended size: 1920x1080 or similar aspect ratio
 - Show the app in action on a clean Nextcloud instance
 - Use light theme for consistency
 - Remove any sensitive/personal information
+
+### For Demo Video
+- Use MP4 format for best compatibility
+- Recommended resolution: 1920x1080 (Full HD)
+- Keep video duration between 30-60 seconds
+- Show the complete user journey through the wizard
+- Ensure smooth playback and good video quality
 
 ## How to Take Screenshots
 

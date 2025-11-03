@@ -18,11 +18,12 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 - 🎨 **Nextcloud Theming** - Automatically adapts to your Nextcloud theme
 - 🔒 **Privacy-Focused** - All data stored locally, no external dependencies
 
-## 📸 Screenshots
+## 📸 Demo
 
 ### User Tour Experience
-![Welcome Step](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
-*The wizard welcomes users with a friendly introduction*
+https://github.com/user-attachments/assets/IntroVox%20demo.mp4
+
+*Watch the full interactive tour experience in action*
 
 ### Admin Interface
 ![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png)
