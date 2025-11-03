@@ -178,56 +178,56 @@
 
 /* Secondary button - WCAG compliant & Theme aware */
 .nextcloud-wizard-step button.shepherd-button-secondary {
-  background: var(--color-main-background);
-  color: var(--color-main-text);
-  border: 2px solid var(--color-border-dark, rgba(0,0,0,0.2));
+  background: var(--color-main-background) !important;
+  color: var(--color-main-text) !important;
+  border: 2px solid var(--color-border-dark, rgba(0,0,0,0.2)) !important;
 }
 
 .nextcloud-wizard-step button.shepherd-button-secondary:hover {
-  color: var(--color-main-text);
-  background: var(--color-background-hover, rgba(0,0,0,0.05));
-  border-color: var(--color-border-dark, rgba(0,0,0,0.3));
+  color: var(--color-main-text) !important;
+  background: var(--color-background-hover, rgba(0,0,0,0.05)) !important;
+  border-color: var(--color-border-dark, rgba(0,0,0,0.3)) !important;
 }
 
 /* Modern close button - Secondary button style matching other buttons */
 .nextcloud-wizard-step .shepherd-cancel-icon {
-  color: var(--color-main-text);
-  opacity: 1;
-  width: 44px;
-  height: 44px;
-  min-width: 44px; /* Prevent shrinking */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-size: 20px;
-  font-weight: 400;
-  background: var(--color-main-background);
-  border: 2px solid var(--color-border-dark, rgba(0,0,0,0.2));
-  text-shadow: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  flex-shrink: 0; /* Don't shrink in flex layout */
+  color: var(--color-main-text) !important;
+  opacity: 1 !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important; /* Prevent shrinking */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  background: var(--color-main-background) !important;
+  border: 2px solid var(--color-border-dark, rgba(0,0,0,0.2)) !important;
+  text-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important; /* Don't shrink in flex layout */
 }
 
 /* Accessibility: Focus indicator */
 .nextcloud-wizard-step .shepherd-cancel-icon:focus {
-  outline: 3px solid #0078d4;
-  outline-offset: 2px;
-  background: var(--color-background-hover, rgba(0,0,0,0.05));
+  outline: 3px solid #0078d4 !important;
+  outline-offset: 2px !important;
+  background: var(--color-background-hover, rgba(0,0,0,0.05)) !important;
 }
 
 .nextcloud-wizard-step .shepherd-cancel-icon:hover {
-  background: var(--color-background-hover, rgba(0,0,0,0.05));
-  border-color: var(--color-border-dark, rgba(0,0,0,0.3));
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: var(--color-background-hover, rgba(0,0,0,0.05)) !important;
+  border-color: var(--color-border-dark, rgba(0,0,0,0.3)) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
 }
 
 .nextcloud-wizard-step .shepherd-cancel-icon:active {
-  transform: scale(0.95);
+  transform: scale(0.95) !important;
 }
 
 /* Add aria-label support via pseudo-element tooltip */
@@ -366,6 +366,7 @@
 
   .nextcloud-wizard-step .shepherd-header {
     color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
   }
 }
 
@@ -386,6 +387,7 @@ body[data-theme="dark"] .nextcloud-wizard-step .shepherd-text {
 [data-theme-dark] .nextcloud-wizard-step .shepherd-header,
 body[data-theme="dark"] .nextcloud-wizard-step .shepherd-header {
   color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Responsive adjustments */

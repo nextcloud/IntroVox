@@ -12,14 +12,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added German (de), French (fr), Danish (da), and Swedish (sv) translations
   - Total of 6 supported languages: English, Dutch, German, French, Danish, Swedish
   - All UI elements, wizard steps, and admin interface fully translated
+- **Demo media**
+  - Added animated GIF demonstration of wizard experience for better documentation
 
 ### Improved
 - **Wizard UI enhancements**
   - Fixed header layout with flexbox for better title spacing
   - Titles now wrap properly without overlapping close button
-  - Close button styled to match secondary button design (white background)
+  - Close button resized to 36x36px (smaller, more compact design)
+  - Close button now uses same styling as secondary buttons (white background with border)
+  - Used `!important` declarations to ensure consistent styling across themes
   - Disabled word hyphenation for cleaner title display
   - Enhanced dark theme support with explicit color overrides
+  - **Dark mode improvements**: Header background now has subtle light overlay for better contrast
   - Links now follow Nextcloud theme with proper styling and accessibility
 - **Admin settings page**
   - Improved margins and padding to match Nextcloud standards
@@ -33,8 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Clear messaging to contact administrator when tour is disabled
 
 ### Fixed
-- Dark theme title visibility issues (white text in dark mode)
+- **Dark theme title visibility** - Added background color to header for better text contrast
 - Close button styling inconsistency with other buttons
+- Close button size reduced from 44px to 36px for better visual balance
+- Shepherd.js CSS overrides now properly handled with `!important` flags
 - Admin page margin not matching personal settings page
 - Word breaking in wizard step titles
 - Wizard steps now properly translate when switching languages
