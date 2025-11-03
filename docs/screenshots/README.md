@@ -1,11 +1,10 @@
 # Screenshots & Demo
 
-Please add screenshots and demo video of:
+Media files for IntroVox documentation:
 
-1. **introvox-demo.mp4** - Video demonstration showing the full wizard experience
-2. **introvox-demo-preview.png** - Preview screenshot from the demo video for README
-3. **admin-interface.png** - The admin configuration page showing tour step management
-4. **personal-settings.png** - The user settings page with restart button
+1. **introvox-demo.gif** - Animated GIF demonstration showing the full wizard experience
+2. **admin-interface.png** - The admin configuration page showing tour step management
+3. **personal-settings.png** - The user settings page with restart button
 
 ## Media Guidelines
 
@@ -16,12 +15,12 @@ Please add screenshots and demo video of:
 - Use light theme for consistency
 - Remove any sensitive/personal information
 
-### For Demo Video
-- Use MP4 format for best compatibility
-- Recommended resolution: 1920x1080 (Full HD)
-- Keep video duration between 30-60 seconds
+### For Demo Animation
+- Use animated GIF format for best GitHub compatibility
+- Recommended resolution: 1920x1080 (Full HD) or similar
+- Keep file size reasonable (under 50MB if possible)
 - Show the complete user journey through the wizard
-- Ensure smooth playback and good video quality
+- Ensure smooth animation and good visual quality
 
 ## How to Take Screenshots
 
