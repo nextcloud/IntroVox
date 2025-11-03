@@ -167,12 +167,12 @@
 }
 
 /* Primary button - Theme aware */
-.nextcloud-wizard-step button:not(.shepherd-button-secondary) {
+.nextcloud-wizard-step button:not(.shepherd-button-secondary,.shepherd-cancel-icon) {
   background: var(--color-primary-element, #0082c9);
   color: var(--color-primary-element-text, white);
 }
 
-.nextcloud-wizard-step button:not(.shepherd-button-secondary):hover {
+.nextcloud-wizard-step button:not(.shepherd-button-secondary,.shepherd-cancel-icon):hover {
   background: var(--color-primary-element-hover, #0092e0);
 }
 
@@ -193,9 +193,9 @@
 .nextcloud-wizard-step .shepherd-cancel-icon {
   color: var(--color-main-text);
   opacity: 1;
-  width: 44px;
-  height: 44px;
-  min-width: 44px; /* Prevent shrinking */
+  width: 35px;
+  height: 30px;
+  min-width: 35px; /* Prevent shrinking */
   display: flex;
   align-items: center;
   justify-content: center;
