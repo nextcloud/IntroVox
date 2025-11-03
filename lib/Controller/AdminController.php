@@ -26,14 +26,14 @@ class AdminController extends Controller {
 
     private function getDefaultSteps(): array {
         return [
-            ['id' => 'welcome', 'title' => $this->l10n->t('step_welcome_title'), 'text' => $this->l10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right'],
-            ['id' => 'files', 'title' => $this->l10n->t('step_files_title'), 'text' => $this->l10n->t('step_files_text'), 'attachTo' => 'a[href*="/apps/files/"]', 'position' => 'right'],
-            ['id' => 'calendar', 'title' => $this->l10n->t('step_calendar_title'), 'text' => $this->l10n->t('step_calendar_text'), 'attachTo' => 'a[href*="/apps/calendar/"]', 'position' => 'right'],
-            ['id' => 'search', 'title' => $this->l10n->t('step_search_title'), 'text' => $this->l10n->t('step_search_text'), 'attachTo' => 'button[aria-label="Unified search"]', 'position' => 'bottom'],
-            ['id' => 'intro', 'title' => $this->l10n->t('step_intro_title'), 'text' => $this->l10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right'],
-            ['id' => 'features', 'title' => $this->l10n->t('step_features_title'), 'text' => $this->l10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right'],
-            ['id' => 'tips', 'title' => $this->l10n->t('step_tips_title'), 'text' => $this->l10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right'],
-            ['id' => 'complete', 'title' => $this->l10n->t('step_complete_title'), 'text' => $this->l10n->t('step_complete_text'), 'attachTo' => '', 'position' => 'right']
+            ['id' => 'welcome', 'title' => $this->l10n->t('step_welcome_title'), 'text' => $this->l10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'files', 'title' => $this->l10n->t('step_files_title'), 'text' => $this->l10n->t('step_files_text'), 'attachTo' => 'a[href*="/apps/files/"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'calendar', 'title' => $this->l10n->t('step_calendar_title'), 'text' => $this->l10n->t('step_calendar_text'), 'attachTo' => 'a[href*="/apps/calendar/"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'search', 'title' => $this->l10n->t('step_search_title'), 'text' => $this->l10n->t('step_search_text'), 'attachTo' => 'button[aria-label="Unified search"]', 'position' => 'bottom', 'enabled' => true],
+            ['id' => 'intro', 'title' => $this->l10n->t('step_intro_title'), 'text' => $this->l10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'features', 'title' => $this->l10n->t('step_features_title'), 'text' => $this->l10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'tips', 'title' => $this->l10n->t('step_tips_title'), 'text' => $this->l10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'complete', 'title' => $this->l10n->t('step_complete_title'), 'text' => $this->l10n->t('step_complete_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true]
         ];
     }
 
@@ -50,6 +50,19 @@ class AdminController extends Controller {
             $this->config->setAppValue($this->appName, 'wizard_steps', json_encode($steps));
         } else {
             $steps = json_decode($stepsJson, true);
+
+            // Migration: Add 'enabled' field to existing steps if not present
+            $needsUpdate = false;
+            foreach ($steps as $key => $step) {
+                if (!isset($step['enabled'])) {
+                    $steps[$key]['enabled'] = true;
+                    $needsUpdate = true;
+                }
+            }
+
+            if ($needsUpdate) {
+                $this->config->setAppValue($this->appName, 'wizard_steps', json_encode($steps));
+            }
         }
 
         return new JSONResponse([

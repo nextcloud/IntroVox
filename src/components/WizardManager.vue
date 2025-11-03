@@ -40,7 +40,11 @@ export default {
       }
 
       const customSteps = response ? response.steps : null
-      const stepsToUse = customSteps || getWizardSteps()
+      let stepsToUse = customSteps || getWizardSteps()
+
+      // Filter out disabled steps
+      stepsToUse = stepsToUse.filter(step => step.enabled !== false)
+      console.log(`✅ Using ${stepsToUse.length} enabled wizard steps`)
 
       tour = new Shepherd.Tour({
         useModalOverlay: true,

@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - All UI elements, wizard steps, and admin interface fully translated
 - **Demo media**
   - Added animated GIF demonstration of wizard experience for better documentation
+- **Per-step enable/disable control**
+  - Administrators can now enable or disable individual wizard steps
+  - Toggle checkbox in admin interface for each step
+  - Disabled steps are visually indicated with strikethrough and reduced opacity
+  - Only enabled steps are shown to users during the wizard tour
+  - Automatic migration for existing installations (all steps enabled by default)
 
 ### Improved
 - **Wizard UI enhancements**
@@ -30,6 +36,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Improved margins and padding to match Nextcloud standards
   - Consistent spacing with personal settings page
   - Removed excessive left margin
+  - Added enable/disable toggle for each wizard step
+  - Visual feedback for disabled steps (strikethrough, reduced opacity)
+  - Hover effects on toggle controls
 - **Personal settings page**
   - Simplified interface, removed redundant status messages
   - Cleaner restart button with emoji icon
@@ -47,6 +56,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Wizard steps now properly translate when switching languages
 - Fixed broken JSON syntax in Dutch (nl) translation file
 - Default wizard steps now use translation keys instead of hardcoded text
+
+### Technical
+- Added `enabled` boolean field to wizard step data structure
+- Implemented automatic migration for existing steps
+- Filter logic in WizardManager to exclude disabled steps
+- Updated all 6 language files with enable/disable translations
 
 ## [1.1.0] - 2025-10-31
 

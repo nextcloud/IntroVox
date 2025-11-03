@@ -14,6 +14,8 @@ OC.L10N.register(
         "Step": "Steg",
         "Edit": "Redigera",
         "Delete": "Ta bort",
+        "Enabled": "Aktiverad",
+        "Disabled": "Inaktiverad",
         "ID (not editable)": "ID (ej redigerbar)",
         "Title": "Titel",
         "Text (HTML)": "Text (HTML)",

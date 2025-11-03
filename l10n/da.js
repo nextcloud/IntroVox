@@ -14,6 +14,8 @@ OC.L10N.register(
         "Step": "Trin",
         "Edit": "Rediger",
         "Delete": "Slet",
+        "Enabled": "Aktiveret",
+        "Disabled": "Deaktiveret",
         "ID (not editable)": "ID (ikke redigerbar)",
         "Title": "Titel",
         "Text (HTML)": "Tekst (HTML)",

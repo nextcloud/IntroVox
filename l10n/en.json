@@ -12,6 +12,8 @@
         "Step": "Step",
         "Edit": "Edit",
         "Delete": "Delete",
+        "Enabled": "Enabled",
+        "Disabled": "Disabled",
         "ID (not editable)": "ID (not editable)",
         "Title": "Title",
         "Text (HTML)": "Text (HTML)",

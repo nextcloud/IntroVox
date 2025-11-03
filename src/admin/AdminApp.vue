@@ -42,10 +42,14 @@
           </div>
           <h3>
             <span class="step-number">{{ t('Step') }} {{ index + 1 }}</span>
-            <span class="step-title">{{ step.title }}</span>
+            <span class="step-title" :class="{ 'step-disabled': !step.enabled }">{{ step.title }}</span>
             <span class="step-id">ID: {{ step.id }}</span>
           </h3>
           <div class="step-actions">
+            <label class="toggle-checkbox" :title="step.enabled ? t('Enabled') : t('Disabled')">
+              <input type="checkbox" v-model="step.enabled" @change="markChanged" />
+              <span class="toggle-label">{{ step.enabled ? '✓' : '✗' }}</span>
+            </label>
             <button @click="editStep(step)" class="icon-button">
               ✏️ {{ t('Edit') }}
             </button>
@@ -232,10 +236,15 @@ export default {
         title: t('introvox', 'New step'),
         text: '<p>' + t('introvox', 'Description of this step...') + '</p>',
         attachTo: '',
-        position: 'right'
+        position: 'right',
+        enabled: true
       }
       steps.value.push(newStep)
       editStep(newStep)
+      hasChanges.value = true
+    }
+
+    const markChanged = () => {
       hasChanges.value = true
     }
 
@@ -354,6 +363,7 @@ export default {
       deleteStep,
       saveSteps,
       resetToDefault,
+      markChanged,
       t: trans
     }
   }
@@ -507,6 +517,39 @@ button.warning {
 .step-actions {
   display: flex;
   gap: 5px;
+  align-items: center;
+}
+
+.toggle-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.toggle-checkbox:hover {
+  background-color: var(--color-background-hover);
+}
+
+.toggle-checkbox input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.toggle-label {
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
+}
+
+.step-disabled {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 
 .step-editor {
