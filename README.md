@@ -21,9 +21,10 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 ## 📸 Demo
 
 ### User Tour Experience
-https://github.com/user-attachments/assets/IntroVox%20demo.mp4
 
-*Watch the full interactive tour experience in action*
+[![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo-preview.png)](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo.mp4)
+
+*Click the image above to watch the full interactive tour experience* ([Direct video link](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo.mp4))
 
 ### Admin Interface
 ![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png)

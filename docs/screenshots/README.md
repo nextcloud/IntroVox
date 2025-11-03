@@ -2,9 +2,10 @@
 
 Please add screenshots and demo video of:
 
-1. **IntroVox demo.mp4** - Video demonstration showing the full wizard experience
-2. **admin-interface.png** - The admin configuration page showing tour step management
-3. **personal-settings.png** - The user settings page with restart button
+1. **introvox-demo.mp4** - Video demonstration showing the full wizard experience
+2. **introvox-demo-preview.png** - Preview screenshot from the demo video for README
+3. **admin-interface.png** - The admin configuration page showing tour step management
+4. **personal-settings.png** - The user settings page with restart button
 
 ## Media Guidelines
 
