@@ -33,3 +33,6 @@ deploy.sh
 deploy.sh.local
 push-all.sh
 .env
+
+# Private documentation
+docs/APP_STORE_SUBMISSION.md
