@@ -3,12 +3,49 @@
     <div class="global-settings">
       <h3>🌍 {{ t('Global settings') }}</h3>
       <div class="setting-item">
-        <label class="toggle-label">
+        <label class="setting-item-label">
           <input type="checkbox" v-model="wizardEnabled" @change="saveGlobalSettings" />
           <span>{{ t('Wizard enabled for all users') }}</span>
         </label>
         <p class="setting-hint">
           {{ t('When disabled, the wizard will not automatically start for new users.') }}
+        </p>
+      </div>
+
+      <div class="setting-item">
+        <label>{{ t('Available languages') }}:</label>
+        <div class="language-checkboxes">
+          <label class="checkbox-label" v-for="lang in allLanguages" :key="lang.code">
+            <input
+              type="checkbox"
+              :value="lang.code"
+              v-model="enabledLanguages"
+              @change="saveGlobalSettings"
+            />
+            <span>{{ lang.flag }} {{ lang.name }}</span>
+          </label>
+        </div>
+        <p class="setting-hint">
+          {{ t('Select which languages are available for the wizard') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="language-selector">
+      <h3>🌐 {{ t('Language settings') }}</h3>
+      <div class="setting-item">
+        <label>{{ t('Select language to edit') }}:</label>
+        <select v-model="selectedLanguage" @change="loadStepsForLanguage" class="language-select">
+          <option
+            v-for="lang in availableLanguages"
+            :key="lang.code"
+            :value="lang.code"
+          >
+            {{ lang.flag }} {{ lang.name }}
+          </option>
+        </select>
+        <p class="setting-hint">
+          {{ t('Changes will only affect the selected language') }}
         </p>
       </div>
     </div>
@@ -160,11 +197,24 @@ export default {
     const originalSteps = ref([])
     const wizardEnabled = ref(true)
     const stepsListRef = ref(null)
+    const selectedLanguage = ref('en')
+    const enabledLanguages = ref(['en'])
+
+    const allLanguages = [
+      { code: 'en', name: 'English', flag: '🇬🇧' },
+      { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+      { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+      { code: 'fr', name: 'Français', flag: '🇫🇷' },
+      { code: 'da', name: 'Dansk', flag: '🇩🇰' },
+      { code: 'sv', name: 'Svenska', flag: '🇸🇪' }
+    ]
 
     const loadSteps = async () => {
       try {
         loading.value = true
-        const response = await axios.get(generateUrl('/apps/introvox/admin/steps'))
+        const response = await axios.get(generateUrl('/apps/introvox/admin/steps'), {
+          params: { lang: selectedLanguage.value }
+        })
         steps.value = response.data.steps
         originalSteps.value = JSON.parse(JSON.stringify(response.data.steps))
         hasChanges.value = false
@@ -173,6 +223,15 @@ export default {
       } finally {
         loading.value = false
       }
+    }
+
+    const loadStepsForLanguage = async () => {
+      if (hasChanges.value) {
+        if (!confirm(t('introvox', 'You have unsaved changes. Do you want to discard them?'))) {
+          return
+        }
+      }
+      await loadSteps()
     }
 
     const initSortable = () => {
@@ -214,6 +273,9 @@ export default {
       try {
         const response = await axios.get(generateUrl('/apps/introvox/admin/settings'))
         wizardEnabled.value = response.data.enabled !== false
+        if (response.data.enabledLanguages) {
+          enabledLanguages.value = response.data.enabledLanguages
+        }
       } catch (error) {
         console.error('Fout bij laden van globale instellingen:', error)
       }
@@ -222,7 +284,8 @@ export default {
     const saveGlobalSettings = async () => {
       try {
         await axios.post(generateUrl('/apps/introvox/admin/settings'), {
-          enabled: wizardEnabled.value
+          enabled: wizardEnabled.value,
+          enabledLanguages: enabledLanguages.value
         })
         showMessage(t('introvox', 'Global settings saved'), 'success')
       } catch (error) {
@@ -283,7 +346,8 @@ export default {
       try {
         loading.value = true
         await axios.post(generateUrl('/apps/introvox/admin/steps'), {
-          steps: steps.value
+          steps: steps.value,
+          lang: selectedLanguage.value
         })
         showMessage(t('introvox', 'Steps saved successfully!'), 'success')
         hasChanges.value = false
@@ -296,10 +360,12 @@ export default {
     }
 
     const resetToDefault = async () => {
-      if (confirm(t('introvox', 'Are you sure you want to reset to default steps? All custom steps will be removed.'))) {
+      if (confirm(t('introvox', 'Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.'))) {
         try {
           loading.value = true
-          await axios.post(generateUrl('/apps/introvox/admin/reset'))
+          await axios.post(generateUrl('/apps/introvox/admin/reset'), {
+            lang: selectedLanguage.value
+          })
           await loadSteps()
           showMessage(t('introvox', 'Reset to default steps successful!'), 'success')
         } catch (error) {
@@ -321,6 +387,11 @@ export default {
     const trans = (key, vars = {}) => {
       return t('introvox', key, vars)
     }
+
+    // Computed property for available languages based on enabled languages
+    const availableLanguages = computed(() => {
+      return allLanguages.filter(lang => enabledLanguages.value.includes(lang.code))
+    })
 
     // Watch for stepsListRef to become available and initialize Sortable
     watch(stepsListRef, (newVal) => {
@@ -355,7 +426,12 @@ export default {
       hasChanges,
       wizardEnabled,
       stepsListRef,
+      selectedLanguage,
+      enabledLanguages,
+      allLanguages,
+      availableLanguages,
       saveGlobalSettings,
+      loadStepsForLanguage,
       addStep,
       editStep,
       saveEdit,
@@ -701,5 +777,155 @@ button.warning {
 
 .sortable-chosen .drag-handle {
   cursor: grabbing;
+}
+
+/* Language selector styles */
+.language-selector {
+  background: var(--color-main-background);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.language-selector h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.language-select {
+  width: 100%;
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background: var(--color-main-background);
+  color: var(--color-main-text);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.language-select:hover {
+  border-color: var(--color-primary-element);
+}
+
+.language-select:focus {
+  outline: 2px solid var(--color-primary-element);
+  outline-offset: 2px;
+}
+
+/* Global settings styles */
+.global-settings {
+  background: var(--color-main-background);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.global-settings h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.setting-item {
+  margin-bottom: 15px;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--color-main-text);
+}
+
+.setting-item-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.setting-item-label input[type="checkbox"] {
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.setting-item-label span {
+  font-weight: normal;
+  line-height: 18px;
+}
+
+.setting-hint {
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--color-text-lighter);
+  font-style: italic;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.toggle-label span {
+  font-weight: normal;
+  line-height: 18px;
+}
+
+/* Language checkboxes styles */
+.language-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.checkbox-label:hover {
+  background: var(--color-background-hover);
+  border-color: var(--color-primary-element);
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.checkbox-label span {
+  font-weight: normal;
+  font-size: 14px;
 }
 </style>

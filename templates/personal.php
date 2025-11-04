@@ -14,12 +14,19 @@ style('introvox', 'personal');
         <button id="restart-wizard-btn" class="button primary">
             🔄 <?php p($l->t('Restart tour')); ?>
         </button>
-    <?php else: ?>
+    <?php elseif (!$_['wizardGloballyEnabled']): ?>
         <p class="settings-hint">
             <?php p($l->t('The introduction tour is currently disabled by your administrator.')); ?>
         </p>
         <p class="settings-hint">
             <?php p($l->t('Contact your administrator if you would like to see the guided tour.')); ?>
+        </p>
+    <?php elseif (!$_['userLanguageEnabled']): ?>
+        <p class="settings-hint">
+            <?php p($l->t('The introduction tour is not available in your language.')); ?>
+        </p>
+        <p class="settings-hint">
+            <?php p($l->t('Contact your administrator if you would like to have the tour available in your language.')); ?>
         </p>
     <?php endif; ?>
 </div>

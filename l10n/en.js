@@ -14,6 +14,15 @@ OC.L10N.register(
     "Step" : "Step",
     "Edit" : "Edit",
     "Delete" : "Delete",
+    "Enabled" : "Enabled",
+    "Disabled" : "Disabled",
+    "Available languages" : "Available languages",
+    "Select which languages are available for the wizard" : "Select which languages are available for the wizard",
+    "Language settings" : "Language settings",
+    "Select language to edit" : "Select language to edit",
+    "Changes will only affect the selected language" : "Changes will only affect the selected language",
+    "You have unsaved changes. Do you want to discard them?" : "You have unsaved changes. Do you want to discard them?",
+    "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed." : "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.",
     "ID (not editable)" : "ID (not editable)",
     "Title" : "Title",
     "Text (HTML)" : "Text (HTML)",
@@ -73,6 +82,8 @@ OC.L10N.register(
     "The tour will be restarted. Refresh the page to start." : "The tour will be restarted. Refresh the page to start.",
     "The introduction tour is currently disabled by your administrator." : "The introduction tour is currently disabled by your administrator.",
     "Contact your administrator if you would like to see the guided tour." : "Contact your administrator if you would like to see the guided tour.",
+    "The introduction tour is not available in your language." : "The introduction tour is not available in your language.",
+    "Contact your administrator if you would like to have the tour available in your language." : "Contact your administrator if you would like to have the tour available in your language.",
     "Next" : "Next",
     "Back" : "Back",
     "Skip" : "Skip",
@@ -94,6 +105,6 @@ OC.L10N.register(
     "step_tips_title" : "💡 Useful tips",
     "step_tips_text" : "<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>",
     "step_complete_title" : "🎉 Done!",
-    "step_complete_text" : "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in the help section.</p><p>Have fun with Nextcloud!</p>"
+    "step_complete_text" : "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>"
 },
 "nplurals=2; plural=(n != 1);");

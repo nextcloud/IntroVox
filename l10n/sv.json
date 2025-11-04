@@ -14,6 +14,13 @@
         "Delete": "Ta bort",
         "Enabled": "Aktiverad",
         "Disabled": "Inaktiverad",
+        "Available languages": "Tillgängliga språk",
+        "Select which languages are available for the wizard": "Välj vilka språk som är tillgängliga för guiden",
+    "Language settings": "Språkinställningar",
+    "Select language to edit": "Välj språk att redigera",
+    "Changes will only affect the selected language": "Ändringar påverkar endast det valda språket",
+    "You have unsaved changes. Do you want to discard them?": "Du har osparade ändringar. Vill du förkasta dem?",
+    "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.": "Är du säker på att du vill återställa till standardsteg för det valda språket? Alla anpassade steg kommer att tas bort.",
         "ID (not editable)": "ID (ej redigerbar)",
         "Title": "Titel",
         "Text (HTML)": "Text (HTML)",
@@ -73,6 +80,8 @@
         "The tour will be restarted. Refresh the page to start.": "Turen kommer att startas om. Uppdatera sidan för att starta.",
         "The introduction tour is currently disabled by your administrator.": "Introduktionsturen är för närvarande inaktiverad av din administratör.",
         "Contact your administrator if you would like to see the guided tour.": "Kontakta din administratör om du vill se den guidade turen.",
+        "The introduction tour is not available in your language.": "Introduktionsturen är inte tillgänglig på ditt språk.",
+        "Contact your administrator if you would like to have the tour available in your language.": "Kontakta din administratör om du vill ha turen tillgänglig på ditt språk.",
         "Next": "Nästa",
         "Back": "Tillbaka",
         "Skip": "Hoppa över",
@@ -94,6 +103,6 @@
         "step_tips_title": "💡 Användbara tips",
         "step_tips_text": "<p><strong>Visste du:</strong></p><ul><li>Du kan ladda upp filer genom att dra dem till din webbläsare</li><li>Du kan dela filer direkt med en länk</li><li>Du kan också använda Nextcloud som en app på din telefon</li><li>All din data lagras privat och säkert</li></ul>",
         "step_complete_title": "🎉 Klart!",
-        "step_complete_text": "<p>Du är redo att komma igång!</p><p>Om du vill se denna tur igen hittar du den i hjälpavsnittet.</p><p>Ha kul med Nextcloud!</p>"
+        "step_complete_text": "<p>Du är redo att komma igång!</p><p>Om du vill se denna tur igen hittar du den i dina personliga inställningar.</p><p>Ha kul med Nextcloud!</p>"
     }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -14,6 +14,13 @@
     "Delete": "Verwijderen",
     "Enabled": "Ingeschakeld",
     "Disabled": "Uitgeschakeld",
+    "Available languages": "Beschikbare talen",
+    "Select which languages are available for the wizard": "Selecteer welke talen beschikbaar zijn voor de wizard",
+    "Language settings": "Taalinstellingen",
+    "Select language to edit": "Selecteer taal om te bewerken",
+    "Changes will only affect the selected language": "Wijzigingen zijn alleen van toepassing op de geselecteerde taal",
+    "You have unsaved changes. Do you want to discard them?": "Je hebt niet-opgeslagen wijzigingen. Wil je deze verwijderen?",
+    "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.": "Weet je zeker dat je wilt resetten naar de standaard stappen voor de geselecteerde taal? Alle aangepaste stappen worden verwijderd.",
     "ID (not editable)": "ID (niet aanpasbaar)",
     "Title": "Titel",
     "Text (HTML)": "Tekst (HTML)",
@@ -73,6 +80,8 @@
     "The tour will be restarted. Refresh the page to start.": "De tour wordt opnieuw gestart. Ververs de pagina om te starten.",
     "The introduction tour is currently disabled by your administrator.": "De introductietour is momenteel uitgeschakeld door uw beheerder.",
     "Contact your administrator if you would like to see the guided tour.": "Neem contact op met uw beheerder als u de rondleiding wilt zien.",
+    "The introduction tour is not available in your language.": "De introductietour is niet beschikbaar in uw taal.",
+    "Contact your administrator if you would like to have the tour available in your language.": "Neem contact op met uw beheerder als u de tour beschikbaar wilt hebben in uw taal.",
     "Next": "Volgende",
     "Back": "Terug",
     "Skip": "Overslaan",
@@ -94,6 +103,6 @@
     "step_tips_title": "💡 Handige tips",
     "step_tips_text": "<p><strong>Wist je dat:</strong></p><ul><li>Je bestanden kunt uploaden door ze naar je browser te slepen</li><li>Je bestanden direct kunt delen met een link</li><li>Je Nextcloud ook als app op je telefoon kunt gebruiken</li><li>Al je data privé en veilig is opgeslagen</li></ul>",
     "step_complete_title": "🎉 Klaar!",
-    "step_complete_text": "<p>Je bent helemaal klaar om te beginnen!</p><p>Als je deze tour nog een keer wilt zien, kun je die vinden in de help sectie.</p><p>Veel plezier met Nextcloud!</p>"
+    "step_complete_text": "<p>Je bent helemaal klaar om te beginnen!</p><p>Als je deze tour nog een keer wilt zien, kun je die vinden in je persoonlijke instellingen.</p><p>Veel plezier met Nextcloud!</p>"
 }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }

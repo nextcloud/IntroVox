@@ -38,16 +38,46 @@ class AdminController extends Controller {
     }
 
     /**
-     * Get all wizard steps
-     * @NoCSRFRequired
+     * Get default steps for a specific language by loading translations for that language
+     * @param string $lang Language code
      */
-    public function getSteps(): JSONResponse {
-        $stepsJson = $this->config->getAppValue($this->appName, 'wizard_steps', '');
+    private function getDefaultStepsForLanguage(string $lang): array {
+        // Create a new L10N instance for the specified language
+        $l10nFactory = \OC::$server->getL10NFactory();
+        $langL10n = $l10nFactory->get($this->appName, $lang);
+
+        return [
+            ['id' => 'welcome', 'title' => $langL10n->t('step_welcome_title'), 'text' => $langL10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'files', 'title' => $langL10n->t('step_files_title'), 'text' => $langL10n->t('step_files_text'), 'attachTo' => 'a[href*="/apps/files/"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'calendar', 'title' => $langL10n->t('step_calendar_title'), 'text' => $langL10n->t('step_calendar_text'), 'attachTo' => 'a[href*="/apps/calendar/"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'search', 'title' => $langL10n->t('step_search_title'), 'text' => $langL10n->t('step_search_text'), 'attachTo' => 'button[aria-label="Unified search"]', 'position' => 'bottom', 'enabled' => true],
+            ['id' => 'intro', 'title' => $langL10n->t('step_intro_title'), 'text' => $langL10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'features', 'title' => $langL10n->t('step_features_title'), 'text' => $langL10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'tips', 'title' => $langL10n->t('step_tips_title'), 'text' => $langL10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
+            ['id' => 'complete', 'title' => $langL10n->t('step_complete_title'), 'text' => $langL10n->t('step_complete_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true]
+        ];
+    }
+
+    /**
+     * Get all wizard steps for a specific language
+     * @NoCSRFRequired
+     * @param string $lang Language code (en, nl, de, fr, da, sv)
+     */
+    public function getSteps(string $lang = 'en'): JSONResponse {
+        // Validate language code
+        $supportedLanguages = ['en', 'nl', 'de', 'fr', 'da', 'sv'];
+        if (!in_array($lang, $supportedLanguages)) {
+            $lang = 'en'; // Fallback to English
+        }
+
+        $configKey = 'wizard_steps_' . $lang;
+        $stepsJson = $this->config->getAppValue($this->appName, $configKey, '');
 
         if (empty($stepsJson)) {
-            $steps = $this->getDefaultSteps();
+            // Get default steps in the requested language
+            $steps = $this->getDefaultStepsForLanguage($lang);
             // Save default steps to database so they can be reordered
-            $this->config->setAppValue($this->appName, 'wizard_steps', json_encode($steps));
+            $this->config->setAppValue($this->appName, $configKey, json_encode($steps));
         } else {
             $steps = json_decode($stepsJson, true);
 
@@ -61,23 +91,34 @@ class AdminController extends Controller {
             }
 
             if ($needsUpdate) {
-                $this->config->setAppValue($this->appName, 'wizard_steps', json_encode($steps));
+                $this->config->setAppValue($this->appName, $configKey, json_encode($steps));
             }
         }
 
         return new JSONResponse([
             'success' => true,
-            'steps' => $steps
+            'steps' => $steps,
+            'language' => $lang
         ]);
     }
 
     /**
-     * Save wizard steps
+     * Save wizard steps for a specific language
      * @param array $steps
+     * @param string $lang Language code
      * @NoCSRFRequired
      */
-    public function saveSteps(array $steps): JSONResponse {
+    public function saveSteps(array $steps, string $lang = 'en'): JSONResponse {
         try {
+            // Validate language code
+            $supportedLanguages = ['en', 'nl', 'de', 'fr', 'da', 'sv'];
+            if (!in_array($lang, $supportedLanguages)) {
+                return new JSONResponse([
+                    'success' => false,
+                    'error' => 'Invalid language code'
+                ], 400);
+            }
+
             // Validate steps
             foreach ($steps as $step) {
                 if (!isset($step['id']) || !isset($step['title'])) {
@@ -88,12 +129,14 @@ class AdminController extends Controller {
                 }
             }
 
+            $configKey = 'wizard_steps_' . $lang;
             $stepsJson = json_encode($steps);
-            $this->config->setAppValue($this->appName, 'wizard_steps', $stepsJson);
+            $this->config->setAppValue($this->appName, $configKey, $stepsJson);
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Steps saved successfully'
+                'message' => 'Steps saved successfully',
+                'language' => $lang
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([
@@ -207,16 +250,28 @@ class AdminController extends Controller {
     }
 
     /**
-     * Reset to default steps
+     * Reset to default steps for a specific language
+     * @param string $lang Language code
      * @NoCSRFRequired
      */
-    public function resetToDefault(): JSONResponse {
+    public function resetToDefault(string $lang = 'en'): JSONResponse {
         try {
-            $this->config->deleteAppValue($this->appName, 'wizard_steps');
+            // Validate language code
+            $supportedLanguages = ['en', 'nl', 'de', 'fr', 'da', 'sv'];
+            if (!in_array($lang, $supportedLanguages)) {
+                return new JSONResponse([
+                    'success' => false,
+                    'error' => 'Invalid language code'
+                ], 400);
+            }
+
+            $configKey = 'wizard_steps_' . $lang;
+            $this->config->deleteAppValue($this->appName, $configKey);
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Steps reset to default'
+                'message' => 'Steps reset to default for language: ' . $lang,
+                'language' => $lang
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([
@@ -233,10 +288,19 @@ class AdminController extends Controller {
     public function getSettings(): JSONResponse {
         try {
             $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
+            $enabledLanguagesJson = $this->config->getAppValue($this->appName, 'enabled_languages', '');
+
+            // Default to only English enabled on first install
+            if (empty($enabledLanguagesJson)) {
+                $enabledLanguages = ['en'];
+            } else {
+                $enabledLanguages = json_decode($enabledLanguagesJson, true);
+            }
 
             return new JSONResponse([
                 'success' => true,
-                'enabled' => $enabled === 'true'
+                'enabled' => $enabled === 'true',
+                'enabledLanguages' => $enabledLanguages
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([
@@ -262,6 +326,19 @@ class AdminController extends Controller {
             }
 
             $this->config->setAppValue($this->appName, 'wizard_enabled', $enabled ? 'true' : 'false');
+
+            // Save enabled languages if provided
+            if (isset($data['enabledLanguages']) && is_array($data['enabledLanguages'])) {
+                $supportedLanguages = ['en', 'nl', 'de', 'fr', 'da', 'sv'];
+                $enabledLanguages = array_values(array_intersect($data['enabledLanguages'], $supportedLanguages));
+
+                // Ensure at least one language is enabled
+                if (empty($enabledLanguages)) {
+                    $enabledLanguages = ['en'];
+                }
+
+                $this->config->setAppValue($this->appName, 'enabled_languages', json_encode($enabledLanguages));
+            }
 
             return new JSONResponse([
                 'success' => true,

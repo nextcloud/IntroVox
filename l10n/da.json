@@ -14,6 +14,13 @@
         "Delete": "Slet",
         "Enabled": "Aktiveret",
         "Disabled": "Deaktiveret",
+        "Available languages": "Tilgængelige sprog",
+        "Select which languages are available for the wizard": "Vælg hvilke sprog der er tilgængelige for guiden",
+    "Language settings": "Sprogindstillinger",
+    "Select language to edit": "Vælg sprog at redigere",
+    "Changes will only affect the selected language": "Ændringer vil kun påvirke det valgte sprog",
+    "You have unsaved changes. Do you want to discard them?": "Du har ugemte ændringer. Vil du kassere dem?",
+    "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.": "Er du sikker på, at du vil nulstille til standardtrin for det valgte sprog? Alle tilpassede trin vil blive fjernet.",
         "ID (not editable)": "ID (ikke redigerbar)",
         "Title": "Titel",
         "Text (HTML)": "Tekst (HTML)",
@@ -73,6 +80,8 @@
         "The tour will be restarted. Refresh the page to start.": "Turen vil blive genstartet. Opdater siden for at starte.",
         "The introduction tour is currently disabled by your administrator.": "Introduktionsturen er i øjeblikket deaktiveret af din administrator.",
         "Contact your administrator if you would like to see the guided tour.": "Kontakt din administrator, hvis du gerne vil se den guidede tur.",
+        "The introduction tour is not available in your language.": "Introduktionsturen er ikke tilgængelig på dit sprog.",
+        "Contact your administrator if you would like to have the tour available in your language.": "Kontakt din administrator, hvis du gerne vil have turen tilgængelig på dit sprog.",
         "Next": "Næste",
         "Back": "Tilbage",
         "Skip": "Spring over",
@@ -94,6 +103,6 @@
         "step_tips_title": "💡 Nyttige tips",
         "step_tips_text": "<p><strong>Vidste du:</strong></p><ul><li>Du kan uploade filer ved at trække dem til din browser</li><li>Du kan dele filer direkte med et link</li><li>Du kan også bruge Nextcloud som en app på din telefon</li><li>Alle dine data lagres privat og sikkert</li></ul>",
         "step_complete_title": "🎉 Færdig!",
-        "step_complete_text": "<p>Du er klar til at komme i gang!</p><p>Hvis du vil se denne tur igen, finder du den i hjælpeafsnittet.</p><p>Hav det sjovt med Nextcloud!</p>"
+        "step_complete_text": "<p>Du er klar til at komme i gang!</p><p>Hvis du vil se denne tur igen, finder du den i dine personlige indstillinger.</p><p>Hav det sjovt med Nextcloud!</p>"
     }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }

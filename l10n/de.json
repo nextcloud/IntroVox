@@ -14,6 +14,13 @@
         "Delete": "Löschen",
         "Enabled": "Aktiviert",
         "Disabled": "Deaktiviert",
+        "Available languages": "Verfügbare Sprachen",
+        "Select which languages are available for the wizard": "Wählen Sie aus, welche Sprachen für den Assistenten verfügbar sind",
+    "Language settings": "Spracheinstellungen",
+    "Select language to edit": "Sprache zum Bearbeiten auswählen",
+    "Changes will only affect the selected language": "Änderungen wirken sich nur auf die ausgewählte Sprache aus",
+    "You have unsaved changes. Do you want to discard them?": "Sie haben nicht gespeicherte Änderungen. Möchten Sie diese verwerfen?",
+    "Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.": "Sind Sie sicher, dass Sie die Standardschritte für die ausgewählte Sprache wiederherstellen möchten? Alle benutzerdefinierten Schritte werden entfernt.",
         "ID (not editable)": "ID (nicht bearbeitbar)",
         "Title": "Titel",
         "Text (HTML)": "Text (HTML)",
@@ -73,6 +80,8 @@
         "The tour will be restarted. Refresh the page to start.": "Die Tour wird neu gestartet. Aktualisieren Sie die Seite zum Starten.",
         "The introduction tour is currently disabled by your administrator.": "Die Einführungstour ist derzeit von Ihrem Administrator deaktiviert.",
         "Contact your administrator if you would like to see the guided tour.": "Kontaktieren Sie Ihren Administrator, wenn Sie die geführte Tour sehen möchten.",
+        "The introduction tour is not available in your language.": "Die Einführungstour ist in Ihrer Sprache nicht verfügbar.",
+        "Contact your administrator if you would like to have the tour available in your language.": "Kontaktieren Sie Ihren Administrator, wenn Sie die Tour in Ihrer Sprache verfügbar haben möchten.",
         "Next": "Weiter",
         "Back": "Zurück",
         "Skip": "Überspringen",
@@ -94,6 +103,6 @@
         "step_tips_title": "💡 Nützliche Tipps",
         "step_tips_text": "<p><strong>Wussten Sie schon:</strong></p><ul><li>Sie können Dateien hochladen, indem Sie sie in Ihren Browser ziehen</li><li>Sie können Dateien direkt mit einem Link teilen</li><li>Sie können Nextcloud auch als App auf Ihrem Telefon verwenden</li><li>Alle Ihre Daten werden privat und sicher gespeichert</li></ul>",
         "step_complete_title": "🎉 Fertig!",
-        "step_complete_text": "<p>Sie sind bereit loszulegen!</p><p>Wenn Sie diese Tour erneut sehen möchten, finden Sie sie im Hilfebereich.</p><p>Viel Spaß mit Nextcloud!</p>"
+        "step_complete_text": "<p>Sie sind bereit loszulegen!</p><p>Wenn Sie diese Tour erneut sehen möchten, finden Sie sie in Ihren persönlichen Einstellungen.</p><p>Viel Spaß mit Nextcloud!</p>"
     }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }
