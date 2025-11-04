@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-11-04
+
+### Changed
+- **Nextcloud version requirement** - Updated minimum required version to Nextcloud 32 for official Vue 3 support
+- App now requires Nextcloud 32 (min-version="32" max-version="32")
+
+### Fixed
+- **Admin interface bug** - Fixed issue where enabling/disabling steps after drag-and-drop would affect the wrong step
+- Changed checkbox binding from `v-model` to `:checked` with explicit `toggleStepEnabled()` method
+- Step enabled/disabled status now correctly tracks by step ID instead of array index
+
+### Added
+- **SURF acknowledgment** - Added credits to SURF in README for their role as initial idea provider and feedback contributor
+
 ## [1.0.2] - 2025-11-04
 
 ### Changed

@@ -96,6 +96,9 @@ AGPL-3.0 - see [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
+The initial idea for IntroVox came from [SURF](https://www.surf.nl/), who identified the need for better onboarding experiences for their thousands of users in the Dutch education and research community. Throughout the development process, SURF provided valuable feedback that helped shape IntroVox into a practical and effective solution.
+
+**Built with:**
 - [Vue 3](https://vuejs.org/)
 - [Shepherd.js](https://shepherdjs.dev/)
 - [Nextcloud](https://nextcloud.com/)

@@ -84,7 +84,7 @@
           </h3>
           <div class="step-actions">
             <label class="toggle-checkbox" :title="step.enabled ? t('Enabled') : t('Disabled')">
-              <input type="checkbox" v-model="step.enabled" @change="markChanged" />
+              <input type="checkbox" :checked="step.enabled" @change="toggleStepEnabled(step.id)" />
               <span class="toggle-label">{{ step.enabled ? '✓' : '✗' }}</span>
             </label>
             <button @click="editStep(step)" class="icon-button">
@@ -252,17 +252,25 @@ export default {
         handle: '.drag-handle',
         ghostClass: 'step-item-ghost',
         dragClass: 'step-item-drag',
-        forceFallback: false,
+        forceFallback: true,
         onStart: (evt) => {
           console.log('Drag started:', evt.oldIndex)
         },
         onEnd: (evt) => {
           console.log('Drag ended. Old:', evt.oldIndex, 'New:', evt.newIndex)
+
+          // Don't do anything if position hasn't changed
+          if (evt.oldIndex === evt.newIndex) {
+            return
+          }
+
           // Reorder the steps array
           const movedItem = steps.value.splice(evt.oldIndex, 1)[0]
           steps.value.splice(evt.newIndex, 0, movedItem)
           hasChanges.value = true
+
           console.log('Steps reordered, hasChanges:', hasChanges.value)
+          console.log('New order:', steps.value.map(s => s.id))
         }
       })
 
@@ -309,6 +317,15 @@ export default {
 
     const markChanged = () => {
       hasChanges.value = true
+    }
+
+    const toggleStepEnabled = (stepId) => {
+      const step = steps.value.find(s => s.id === stepId)
+      if (step) {
+        step.enabled = !step.enabled
+        hasChanges.value = true
+        console.log(`Step ${stepId} enabled:`, step.enabled)
+      }
     }
 
     const editStep = (step) => {
@@ -440,6 +457,7 @@ export default {
       saveSteps,
       resetToDefault,
       markChanged,
+      toggleStepEnabled,
       t: trans
     }
   }
