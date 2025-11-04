@@ -8,7 +8,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
 import 'shepherd.js/dist/css/shepherd.css'
-import { translate as t } from '@nextcloud/l10n'
+import { translate as t, getLanguage } from '@nextcloud/l10n'
 import { getWizardSteps, loadCustomSteps } from './wizardSteps'
 
 export default {
@@ -42,9 +42,13 @@ export default {
       const customSteps = response ? response.steps : null
       let stepsToUse = customSteps || getWizardSteps()
 
-      // Filter out disabled steps
-      stepsToUse = stepsToUse.filter(step => step.enabled !== false)
-      console.log(`✅ Using ${stepsToUse.length} enabled wizard steps`)
+      // Filter out disabled steps (handle both boolean false and string "false")
+      stepsToUse = stepsToUse.filter(step => {
+        const isEnabled = step.enabled !== false && step.enabled !== 'false' && step.enabled !== 0
+        console.log(`Step ${step.id}: enabled=${step.enabled}, isEnabled=${isEnabled}`)
+        return isEnabled
+      })
+      console.log(`✅ Using ${stepsToUse.length} enabled wizard steps out of ${customSteps?.length || getWizardSteps().length} total`)
 
       tour = new Shepherd.Tour({
         useModalOverlay: true,
@@ -242,10 +246,31 @@ export default {
 
       // Auto-start wizard for new users, but wait for Nextcloud to be ready
       if (!isCompleted()) {
-        waitForNextcloudReady().then(async () => {
-          setTimeout(async () => {
-            await startTour()
-          }, 1000)
+        // Check if user's language is enabled in admin settings
+        const userLanguage = getLanguage()
+        const baseLang = userLanguage.substring(0, 2) // Extract base language (e.g., 'en_US' -> 'en')
+        console.log('🌍 User language detected:', userLanguage, '(base:', baseLang + ')')
+
+        // Check with backend if wizard is enabled for this language
+        loadCustomSteps().then(response => {
+          if (!response || response.enabled === false) {
+            console.log('⚠️ Wizard is globally disabled by administrator')
+            return
+          }
+
+          if (response.languageDisabled) {
+            console.log('⚠️ Wizard skipped: User language (' + baseLang + ') is not enabled in admin settings')
+            console.log('ℹ️ Administrator needs to enable this language in Admin Settings → IntroVox')
+            return
+          }
+
+          console.log('✅ Wizard enabled for user language:', baseLang)
+
+          waitForNextcloudReady().then(async () => {
+            setTimeout(async () => {
+              await startTour()
+            }, 1000)
+          })
         })
       }
     })

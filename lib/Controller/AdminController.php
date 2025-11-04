@@ -27,9 +27,9 @@ class AdminController extends Controller {
     private function getDefaultSteps(): array {
         return [
             ['id' => 'welcome', 'title' => $this->l10n->t('step_welcome_title'), 'text' => $this->l10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'files', 'title' => $this->l10n->t('step_files_title'), 'text' => $this->l10n->t('step_files_text'), 'attachTo' => 'a[href*="/apps/files/"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'calendar', 'title' => $this->l10n->t('step_calendar_title'), 'text' => $this->l10n->t('step_calendar_text'), 'attachTo' => 'a[href*="/apps/calendar/"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'search', 'title' => $this->l10n->t('step_search_title'), 'text' => $this->l10n->t('step_search_text'), 'attachTo' => 'button[aria-label="Unified search"]', 'position' => 'bottom', 'enabled' => true],
+            ['id' => 'files', 'title' => $this->l10n->t('step_files_title'), 'text' => $this->l10n->t('step_files_text'), 'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'calendar', 'title' => $this->l10n->t('step_calendar_title'), 'text' => $this->l10n->t('step_calendar_text'), 'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'search', 'title' => $this->l10n->t('step_search_title'), 'text' => $this->l10n->t('step_search_text'), 'attachTo' => 'button[data-v-ce3a06f2][aria-describedby="aiext"][aria-label="Unified search"][type="button"], button[aria-label="Unified search"], .header-menu__trigger, [data-v-ce3a06f2].button-vue__wrapper button, .unified-search__trigger', 'position' => 'bottom', 'enabled' => true],
             ['id' => 'intro', 'title' => $this->l10n->t('step_intro_title'), 'text' => $this->l10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
             ['id' => 'features', 'title' => $this->l10n->t('step_features_title'), 'text' => $this->l10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
             ['id' => 'tips', 'title' => $this->l10n->t('step_tips_title'), 'text' => $this->l10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
@@ -48,9 +48,9 @@ class AdminController extends Controller {
 
         return [
             ['id' => 'welcome', 'title' => $langL10n->t('step_welcome_title'), 'text' => $langL10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'files', 'title' => $langL10n->t('step_files_title'), 'text' => $langL10n->t('step_files_text'), 'attachTo' => 'a[href*="/apps/files/"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'calendar', 'title' => $langL10n->t('step_calendar_title'), 'text' => $langL10n->t('step_calendar_text'), 'attachTo' => 'a[href*="/apps/calendar/"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'search', 'title' => $langL10n->t('step_search_title'), 'text' => $langL10n->t('step_search_text'), 'attachTo' => 'button[aria-label="Unified search"]', 'position' => 'bottom', 'enabled' => true],
+            ['id' => 'files', 'title' => $langL10n->t('step_files_title'), 'text' => $langL10n->t('step_files_text'), 'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'calendar', 'title' => $langL10n->t('step_calendar_title'), 'text' => $langL10n->t('step_calendar_text'), 'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]', 'position' => 'right', 'enabled' => true],
+            ['id' => 'search', 'title' => $langL10n->t('step_search_title'), 'text' => $langL10n->t('step_search_text'), 'attachTo' => 'button[data-v-ce3a06f2][aria-describedby="aiext"][aria-label="Unified search"][type="button"], button[aria-label="Unified search"], .header-menu__trigger, [data-v-ce3a06f2].button-vue__wrapper button, .unified-search__trigger', 'position' => 'bottom', 'enabled' => true],
             ['id' => 'intro', 'title' => $langL10n->t('step_intro_title'), 'text' => $langL10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
             ['id' => 'features', 'title' => $langL10n->t('step_features_title'), 'text' => $langL10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
             ['id' => 'tips', 'title' => $langL10n->t('step_tips_title'), 'text' => $langL10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
@@ -287,7 +287,8 @@ class AdminController extends Controller {
      */
     public function getSettings(): JSONResponse {
         try {
-            $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
+            // Default to disabled on first install - admins must explicitly enable
+            $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'false');
             $enabledLanguagesJson = $this->config->getAppValue($this->appName, 'enabled_languages', '');
 
             // Default to only English enabled on first install

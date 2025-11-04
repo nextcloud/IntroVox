@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2025-11-04
+
+### Changed
+- **App icon** - Updated to compass design with black color for better visibility in light theme
+- Sidebar settings icons now use dark variant for proper contrast
+
+### Added
+- **Documentation link** - Added link to Administrator Guide in app info.xml for easy access from App Store
+
+### Fixed
+- **Multi-language wizard support** - Wizard now starts for users with any enabled language (not just English)
+- **Admin language selection** - Admin panel now automatically selects first available language if English is disabled
+- **Step visibility bug** - Fixed issue where enabled steps were incorrectly hidden after reordering
+  - Changed from index-based to ID-based checkbox binding using `v-model`
+  - Improved Sortable.js reactivity by creating new array instead of direct mutation
+- **CSS selector improvements** - Updated default step selectors to match multiple UI element variations
+  - Search step: Added fallback selectors for unified search button
+  - Files/Calendar: Added data-id attribute selectors for better element detection
+  - Prevents steps from being skipped due to element not found errors
+
+### Improved
+- **Language detection** - Backend now checks if user's language is enabled in admin settings
+- **Debug logging** - Added console logging for step filtering to help troubleshoot visibility issues
+- **Admin panel initialization** - Global settings now load before steps to ensure correct language selection
+
+## [1.0.5] - 2025-11-04
+
+### Changed
+- **Language detection** - Wizard now only auto-starts for users with English language settings
+- Users with other languages can manually start the wizard from Personal Settings → IntroVox
+- **Default disabled** - Wizard is now disabled by default on installation
+- Administrators must explicitly enable the wizard in Admin Settings → IntroVox
+
+### Fixed
+- **Multi-language support** - Prevents showing English wizard steps to non-English users on first login
+- Better onboarding experience for international deployments
+
 ## [1.0.4] - 2025-11-04
 
 ### Changed

@@ -22,7 +22,7 @@
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <licence>agpl</licence>
     <author mail="rik@shalution.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>
@@ -34,6 +34,9 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     <website>https://github.com/nextcloud/IntroVox</website>
     <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
     <repository type="git">https://github.com/nextcloud/IntroVox.git</repository>
+    <documentation>
+        <admin>https://github.com/nextcloud/IntroVox/blob/main/docs/ADMINISTRATOR_GUIDE.md</admin>
+    </documentation>
     <dependencies>
         <nextcloud min-version="32" max-version="32"/>
     </dependencies>

@@ -15,18 +15,20 @@
       <div class="setting-item">
         <label>{{ t('Available languages') }}:</label>
         <div class="language-checkboxes">
-          <label class="checkbox-label" v-for="lang in allLanguages" :key="lang.code">
+          <label class="checkbox-label" v-for="lang in allLanguages" :key="lang.code" :class="{ 'disabled-language': isLastLanguage(lang.code) }">
             <input
               type="checkbox"
               :value="lang.code"
               v-model="enabledLanguages"
-              @change="saveGlobalSettings"
+              @change="handleLanguageChange"
+              :disabled="isLastLanguage(lang.code)"
             />
             <span>{{ lang.flag }} {{ lang.name }}</span>
+            <span v-if="isLastLanguage(lang.code)" class="last-language-badge">{{ t('Last') }}</span>
           </label>
         </div>
         <p class="setting-hint">
-          {{ t('Select which languages are available for the wizard') }}
+          {{ t('Select which languages are available for the wizard') }} ({{ t('At least one language must be selected') }})
         </p>
       </div>
     </div>
@@ -84,7 +86,7 @@
           </h3>
           <div class="step-actions">
             <label class="toggle-checkbox" :title="step.enabled ? t('Enabled') : t('Disabled')">
-              <input type="checkbox" :checked="step.enabled" @change="toggleStepEnabled(step.id)" />
+              <input type="checkbox" v-model="step.enabled" @change="markChanged" />
               <span class="toggle-label">{{ step.enabled ? '✓' : '✗' }}</span>
             </label>
             <button @click="editStep(step)" class="icon-button">
@@ -264,9 +266,13 @@ export default {
             return
           }
 
-          // Reorder the steps array
-          const movedItem = steps.value.splice(evt.oldIndex, 1)[0]
-          steps.value.splice(evt.newIndex, 0, movedItem)
+          // Create a new array with reordered items to trigger Vue reactivity
+          const newSteps = [...steps.value]
+          const movedItem = newSteps.splice(evt.oldIndex, 1)[0]
+          newSteps.splice(evt.newIndex, 0, movedItem)
+
+          // Replace the entire array to ensure Vue detects the change
+          steps.value = newSteps
           hasChanges.value = true
 
           console.log('Steps reordered, hasChanges:', hasChanges.value)
@@ -283,10 +289,31 @@ export default {
         wizardEnabled.value = response.data.enabled !== false
         if (response.data.enabledLanguages) {
           enabledLanguages.value = response.data.enabledLanguages
+
+          // Set selectedLanguage to first available language if current selection is not enabled
+          if (!enabledLanguages.value.includes(selectedLanguage.value)) {
+            selectedLanguage.value = enabledLanguages.value[0] || 'en'
+            console.log('Selected language not available, switching to:', selectedLanguage.value)
+            // Load steps for the new language
+            await loadSteps()
+          }
         }
       } catch (error) {
         console.error('Fout bij laden van globale instellingen:', error)
       }
+    }
+
+    const isLastLanguage = (langCode) => {
+      return enabledLanguages.value.length === 1 && enabledLanguages.value.includes(langCode)
+    }
+
+    const handleLanguageChange = async () => {
+      // If only one language is enabled, automatically select it
+      if (enabledLanguages.value.length === 1) {
+        selectedLanguage.value = enabledLanguages.value[0]
+        await loadSteps()
+      }
+      await saveGlobalSettings()
     }
 
     const saveGlobalSettings = async () => {
@@ -317,15 +344,6 @@ export default {
 
     const markChanged = () => {
       hasChanges.value = true
-    }
-
-    const toggleStepEnabled = (stepId) => {
-      const step = steps.value.find(s => s.id === stepId)
-      if (step) {
-        step.enabled = !step.enabled
-        hasChanges.value = true
-        console.log(`Step ${stepId} enabled:`, step.enabled)
-      }
     }
 
     const editStep = (step) => {
@@ -430,9 +448,15 @@ export default {
       }
     })
 
-    // Load steps and settings on mount
-    loadSteps()
-    loadGlobalSettings()
+    // Load global settings first, then steps (loadGlobalSettings will call loadSteps if needed)
+    const initializeAdmin = async () => {
+      await loadGlobalSettings()
+      // Only load steps if selectedLanguage is still enabled after loading global settings
+      if (enabledLanguages.value.includes(selectedLanguage.value)) {
+        await loadSteps()
+      }
+    }
+    initializeAdmin()
 
     return {
       steps,
@@ -447,6 +471,8 @@ export default {
       enabledLanguages,
       allLanguages,
       availableLanguages,
+      isLastLanguage,
+      handleLanguageChange,
       saveGlobalSettings,
       loadStepsForLanguage,
       addStep,
@@ -457,7 +483,6 @@ export default {
       saveSteps,
       resetToDefault,
       markChanged,
-      toggleStepEnabled,
       t: trans
     }
   }
@@ -945,5 +970,33 @@ button.warning {
 .checkbox-label span {
   font-weight: normal;
   font-size: 14px;
+}
+
+/* Disabled language (English) */
+.checkbox-label.disabled-language {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.checkbox-label.disabled-language:hover {
+  background: transparent;
+  border-color: var(--color-border);
+}
+
+.checkbox-label.disabled-language input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+/* Last language badge */
+.last-language-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: #d32f2f;
+  color: white;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 </style>
