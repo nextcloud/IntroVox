@@ -22,12 +22,13 @@
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <licence>agpl</licence>
     <author mail="rik@shalution.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>
     <category>tools</category>
     <category>integration</category>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/personal-settings.png</screenshot>
     <website>https://github.com/nextcloud/IntroVox</website>
