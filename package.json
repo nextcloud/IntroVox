@@ -1,6 +1,6 @@
 {
   "name": "nextcloud-introvox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Interactive onboarding tour for new Nextcloud users",
   "repository": {
     "type": "git",
