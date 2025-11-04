@@ -70,6 +70,9 @@ After logging in, IntroVox will automatically guide you through Nextcloud's main
 - Enable/disable globally
 - Save your changes
 
+**📚 Complete Administrator Documentation:**
+- [Administrator Guide](docs/ADMINISTRATOR_GUIDE.md) - Comprehensive guide covering all features, FAQ, and best practices
+
 ## 🛠️ Development
 
 ```bash
