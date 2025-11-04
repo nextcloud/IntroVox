@@ -11,7 +11,6 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 ## ✨ Features
 
 - 🎯 **Interactive Guided Tour** - Step-by-step introduction to Nextcloud features
-- 📱 **PWA Installation Guide** - Device-specific instructions for installing Nextcloud as a Progressive Web App
 - ⚙️ **Admin Configuration** - Full CRUD interface for managing tour steps
 - 🌍 **Global Enable/Disable** - Administrators can enable or disable the tour for all users
 - 👤 **Personal Control** - Users can restart the tour anytime from their settings
