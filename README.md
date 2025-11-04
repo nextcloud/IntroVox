@@ -36,9 +36,18 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 
 ## 📦 Installation
 
+### From Nextcloud App Store (Recommended)
+
+1. Log in to your Nextcloud instance as an administrator
+2. Go to **Apps** in the top-right menu
+3. Search for **"IntroVox"**
+4. Click **Download and enable**
+
+Or install directly from the [Nextcloud App Store](https://apps.nextcloud.com/apps/introvox)
+
 ### Manual Installation
 
-1. Download the latest release
+1. Download the latest release from [GitHub Releases](https://github.com/nextcloud/IntroVox/releases)
 2. Extract to your Nextcloud `apps/` directory
 3. Enable the app:
    ```bash
