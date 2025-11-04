@@ -8,7 +8,6 @@
 
 **Features:**
 * Interactive step-by-step tour through Nextcloud's main features
-* PWA installation guide with device-specific instructions
 * Full admin interface for customizing tour steps
 * Global enable/disable control for administrators
 * Personal settings for users to restart the tour
