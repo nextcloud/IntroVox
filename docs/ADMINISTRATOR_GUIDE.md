@@ -160,11 +160,14 @@ After selecting a language, you see a list of all wizard steps for that language
 
 **CSS Selector Examples:**
 ```css
-/* Link to Files app */
-a[href*="/apps/files/"]
+/* Link to Files app - multiple fallbacks for better detection */
+[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
 
-/* Search bar */
-.unified-search
+/* Search bar - unified search with fallbacks */
+button[aria-label="Unified search"], .header-menu__trigger, .unified-search__trigger
+
+/* Calendar app */
+[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]
 
 /* User menu */
 #user-menu
@@ -175,6 +178,8 @@ button.primary
 /* Centered step (leave empty) */
 
 ```
+
+**Note:** Since version 1.0.6, default steps use multiple CSS selectors with fallbacks to ensure steps are shown even if one selector doesn't match. This prevents steps from being skipped due to "element not found" errors.
 
 3. Click **💾 Save** to save the step
 4. Click **❌ Cancel** to stop without saving
@@ -213,8 +218,9 @@ button.primary
 2. Drag the step to the desired position
 3. Release to place the step
 4. The order is automatically updated
+5. Click **💾 Save** to permanently save the new order
 
-**Tip:** You don't need to save after reordering - this is saved automatically.
+**Important:** Since version 1.0.6, you must click the Save button to persist the new order. The order is tracked by step ID, not by position, ensuring that enabling/disabling steps after reordering works correctly.
 
 ---
 
@@ -287,6 +293,12 @@ If the wizard is enabled and the user's language is enabled:
 - New users see the wizard automatically on first login
 - The wizard starts on the dashboard page
 - Users can close the wizard anytime with "✕" or "Skip"
+
+**Language Support (since v1.0.6):**
+- The wizard now automatically starts for users with **any enabled language** (not just English)
+- The wizard detects the user's browser/Nextcloud language setting
+- If that language is enabled in admin settings, the wizard starts automatically
+- Users see wizard steps in their own language
 
 ### Manual Start
 
@@ -457,14 +469,17 @@ Each language has its **own independent set of steps**.
 ### What happens if a step refers to an element that doesn't exist?
 
 **Answer:**
-- If the element is not found, the wizard shows the step as a **centered step**
+- Since version 1.0.6, if an element is not found, that step is **automatically skipped**
+- The wizard continues with the next step
 - The wizard does **not** crash
 - This can happen if:
   - The CSS selector is incorrect
   - The Nextcloud app is not installed
   - The user doesn't have rights to see the element
 
-**Tip:** Always test your CSS selectors on different Nextcloud installations and user roles.
+**Improved in v1.0.6:** Default steps now use multiple CSS selectors with fallbacks (e.g., `[data-id="files"], a[href*="/apps/files"]`), which significantly reduces the chance of steps being skipped.
+
+**Tip:** Always test your CSS selectors on different Nextcloud installations and user roles. Use multiple selectors separated by commas for better reliability.
 
 ### How do I temporarily disable the wizard for maintenance?
 
@@ -475,6 +490,31 @@ Each language has its **own independent set of steps**.
 4. After maintenance: check the checkbox again
 
 **Benefit:** All your configurations are preserved, you're only temporarily disabling the wizard.
+
+### What's new in version 1.0.6?
+
+**Answer:** Version 1.0.6 includes several important improvements:
+
+**Bug Fixes:**
+- **Multi-language support**: Wizard now automatically starts for users with any enabled language (not just English)
+- **Step reordering bug**: Fixed issue where enabled steps were incorrectly hidden after reordering
+  - Changed to ID-based checkbox binding for better reliability
+  - Improved drag-and-drop reactivity
+- **Missing steps**: Enhanced CSS selectors with fallback options to prevent steps from being skipped
+
+**Improvements:**
+- **Better element detection**: Default steps now use multiple CSS selectors with fallbacks
+  - Example: `[data-id="files"], a[href*="/apps/files"]`
+  - Significantly reduces "element not found" errors
+- **Admin language selection**: Admin panel now automatically selects first available language if current selection is disabled
+- **Debug logging**: Added console logging to help troubleshoot step visibility issues
+
+**Visual Changes:**
+- **App icon**: Updated to compass design with black color for better visibility in light theme
+- Sidebar settings icons now use dark variant for proper contrast
+
+**Documentation:**
+- Added link to Administrator Guide in app metadata for easy access from App Store
 
 ---
 
@@ -501,11 +541,22 @@ Each language has its **own independent set of steps**.
 - This improves performance
 - Less confusion for users
 
-### 6. Back Up Custom Configurations
+### 6. Use Multiple CSS Selectors for Reliability (v1.0.6+)
+- Use comma-separated selectors as fallbacks
+- Example: `[data-id="files"], a[href*="/apps/files"]`
+- This prevents steps from being skipped if one selector doesn't match
+- Check default steps for examples of good fallback patterns
+
+### 7. Save After Reordering Steps (v1.0.6+)
+- Always click the **💾 Save** button after reordering steps
+- This ensures the new order is persisted correctly
+- The improved reactivity in v1.0.6 ensures enable/disable works correctly after reordering
+
+### 8. Back Up Custom Configurations
 - If you make many customizations, note your CSS selectors
 - Export option may come in a future version
 
-### 7. Communicate with Users
+### 9. Communicate with Users
 - Inform users about wizard availability
 - Refer to the guide in your onboarding documentation
 
@@ -532,9 +583,9 @@ Help us translate IntroVox to more languages via Transifex:
 
 ## Version Information
 
-**Current Version:** 1.0.0
+**Current Version:** 1.0.6
 **Last Guide Update:** November 2025
-**Nextcloud Compatibility:** 30+
+**Nextcloud Compatibility:** 32
 
 ---
 
