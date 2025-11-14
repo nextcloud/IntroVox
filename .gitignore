@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+js/
+*.tar.gz
+*.sig
+*.key
+*.key.*
+*.crt
+*.crt.*
+*.csr
+*.csr.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local config
+deploy.sh
+deploy.sh.local
+push-all.sh
+.env
+
+# Private documentation
+docs/APP_STORE_SUBMISSION.md

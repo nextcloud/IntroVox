@@ -1,0 +1,55 @@
+/* Admin styles for IntroVox - matches Nextcloud standard layout */
+#introvox-admin h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+#introvox-admin .settings-hint {
+  color: var(--color-text-maxcontrast);
+  margin-bottom: 20px;
+}
+
+#introvox-admin-app {
+  margin-top: 0;
+}
+
+/* Global settings section */
+.introvox-admin .global-settings {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  margin-bottom: 20px;
+  box-shadow: none;
+}
+
+.introvox-admin .global-settings h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  margin-top: 0;
+  color: var(--color-main-text);
+}
+
+.introvox-admin .setting-item {
+  margin-bottom: 12px;
+}
+
+.introvox-admin .toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.introvox-admin .toggle-label input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.introvox-admin .setting-hint {
+  margin-top: 4px;
+  margin-left: 28px;
+  color: var(--color-text-maxcontrast);
+}
