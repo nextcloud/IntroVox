@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return; // Button not found on this page
     }
 
-    // Restart wizard - reset localStorage and redirect to dashboard
+    // Restart wizard - reset localStorage and redirect to root domain
     restartBtn.addEventListener('click', function() {
         // Reset the completion status
         localStorage.removeItem(storageKey);
@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
         restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour...');
         restartBtn.disabled = true;
 
-        // Redirect to dashboard after a short delay
+        // Redirect to root domain after a short delay
         setTimeout(function() {
-            window.location.href = OC.generateUrl('/apps/dashboard/');
+            window.location.href = OC.generateUrl('/');
         }, 1000);
     });
 });
