@@ -6,7 +6,7 @@
 
 **Interactive onboarding tour for new Nextcloud users**
 
-IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, multi-language support, PWA installation guidance, and comprehensive admin configuration with import/export capabilities.
+IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, multi-language support, and comprehensive admin configuration with import/export capabilities.
 
 ## ✨ Features
 
