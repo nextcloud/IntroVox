@@ -148,7 +148,7 @@
             <textarea
               v-model="editingData.text"
               rows="6"
-              placeholder="<p>HTML content...</p>"
+              :placeholder="t('HTML content placeholder')"
               required
             ></textarea>
           </div>

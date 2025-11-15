@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2025-11-15
+
+### Added
+- **Complete translation coverage** - All admin interface text now fully translatable
+  - Added "Skip and don't show again" button translation for all 6 languages
+  - Added HTML content placeholder translation for textarea in admin step editor
+  - English: "Skip and don't show again" / "<p>HTML content...</p>"
+  - Dutch: "Overslaan en niet meer tonen" / "<p>HTML inhoud...</p>"
+  - German: "Überspringen und nicht mehr anzeigen" / "<p>HTML-Inhalt...</p>"
+  - Danish: "Spring over og vis ikke igen" / "<p>HTML-indhold...</p>"
+  - French: "Passer et ne plus afficher" / "<p>Contenu HTML...</p>"
+  - Swedish: "Hoppa över och visa inte igen" / "<p>HTML-innehåll...</p>"
+
+### Fixed
+- **Hardcoded placeholder** - Replaced hardcoded HTML placeholder in admin textarea with translatable version
+
 ## [1.0.8] - 2025-11-14
 
 ### Fixed
