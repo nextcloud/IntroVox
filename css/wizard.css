@@ -46,16 +46,23 @@
 /* Text styling - WCAG 2.1 AA compliant & Theme aware */
 .nextcloud-wizard-step .shepherd-text {
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-main-text);
+  letter-spacing: 0.01em;
 }
 
 .nextcloud-wizard-step .shepherd-text p {
-  margin: 0 0 12px 0;
+  margin: 0 0 14px 0;
 }
 
 .nextcloud-wizard-step .shepherd-text p:last-child {
   margin-bottom: 0;
+}
+
+.nextcloud-wizard-step .shepherd-text p:first-child {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 /* Link styling - Nextcloud theme compliant */
@@ -109,22 +116,23 @@
 
 /* Title styling - Nextcloud h2 style */
 .nextcloud-wizard-step .shepherd-title {
-  font-size: 20px !important;
-  font-weight: bold !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
   margin: 0 !important;
-  color: var(--color-main-text) !important;
-  line-height: 1.5 !important;
+  color: var(--color-primary-element) !important;
+  line-height: 1.4 !important;
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
   hyphens: none !important;
   flex: 1 !important;
   min-width: 0 !important;
   padding-right: 0 !important;
+  letter-spacing: -0.01em !important;
 }
 
 /* Content styling */
 .nextcloud-wizard-step .shepherd-content {
-  padding: 16px;
+  padding: 20px;
   background: var(--color-main-background);
 }
 
@@ -375,7 +383,7 @@
   }
 
   .nextcloud-wizard-step .shepherd-title {
-    color: var(--color-main-text) !important;
+    color: var(--color-primary-element) !important;
   }
 
   .shepherd-modal-overlay-container {
@@ -421,7 +429,7 @@ body[data-theme="dark"] .nextcloud-wizard-step .shepherd-header {
 [data-themes*="dark"] .nextcloud-wizard-step .shepherd-title,
 [data-theme-dark] .nextcloud-wizard-step .shepherd-title,
 body[data-theme="dark"] .nextcloud-wizard-step .shepherd-title {
-  color: var(--color-main-text) !important;
+  color: var(--color-primary-element) !important;
 }
 
 [data-themes*="dark"] .shepherd-modal-overlay-container,
