@@ -47,7 +47,20 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 
 ### User Tour Experience
 
+<table>
+<tr>
+<td width="50%">
+
+![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/demo.gif)
+
+</td>
+<td width="50%">
+
 ![IntroVox Welcome](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
+
+</td>
+</tr>
+</table>
 
 *Interactive step-by-step tour through Nextcloud's main features*
 
