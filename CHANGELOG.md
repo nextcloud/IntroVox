@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-11-15
+
+### Improved
+- **Enhanced wizard visual design** - Improved readability and visual hierarchy
+  - Header now more prominent with increased padding (16px 20px) and min-height (56px)
+  - Added 2px border-bottom in primary-element color for visual accent
+  - Enhanced box-shadow for better depth (stronger in dark mode)
+  - Title styling improved: 22px font-size, primary-element color, font-weight 600, letter-spacing -0.01em
+  - Increased content padding (20px) for better breathing room
+  - Simplified body text styling - uniform 15px font-size and 1.7 line-height
+  - Removed special first-paragraph styling for consistency
+  - Allows admins to use inline HTML/CSS for custom formatting per step
+  - All improvements work seamlessly across light, dark, and high contrast themes
+
 ## [1.1.0] - 2025-11-15
 
 ### Major Features
