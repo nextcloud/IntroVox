@@ -45,28 +45,17 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 
 ## 📸 Demo
 
-### Welcome Step
-
-<table>
-  <tr>
-    <td width="50%">
-      <img src="https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png" alt="IntroVox Welcome - Light Theme">
-      <p align="center"><em>Light theme</em></p>
-    </td>
-    <td width="50%">
-      <img src="https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/dark-theme.png" alt="IntroVox Welcome - Dark Theme">
-      <p align="center"><em>Dark theme</em></p>
-    </td>
-  </tr>
-</table>
-
-*IntroVox automatically adapts to your Nextcloud theme*
-
 ### User Tour Experience
 
-![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo.gif)
+![IntroVox Welcome](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
 
-*Watch the full interactive tour experience in action*
+*Interactive step-by-step tour through Nextcloud's main features*
+
+### Dark Mode Support
+
+![IntroVox Dark Theme](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/dark-theme.png)
+
+*Automatically adapts to your Nextcloud theme (light, dark, and high contrast modes)*
 
 ### Admin Interface
 ![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png)
