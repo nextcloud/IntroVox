@@ -1,6 +1,6 @@
 # IntroVox
 
-[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)](https://gitea.rikdekker.nl/rik/IntroVox/releases/tag/v1.1.0)
+[![GitHub release](https://img.shields.io/github/release/nextcloud/IntroVox.svg)](https://github.com/nextcloud/IntroVox/releases)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Nextcloud](https://img.shields.io/badge/Nextcloud-32-blue)](https://nextcloud.com)
 
