@@ -51,7 +51,7 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 <tr>
 <td width="50%">
 
-![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/demo.gif)
+![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo.gif)
 
 </td>
 <td width="50%">
