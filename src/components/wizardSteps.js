@@ -72,7 +72,7 @@ function getBaseWizardSteps() {
       title: t('introvox', 'step_search_title'),
       text: t('introvox', 'step_search_text'),
       attachTo: {
-        element: 'button[data-v-ce3a06f2][aria-describedby="aiext"][aria-label="Unified search"][type="button"], button[aria-label="Unified search"], .header-menu__trigger, [data-v-ce3a06f2].button-vue__wrapper button, .unified-search__trigger',
+        element: '.unified-search__trigger, .header-menu__trigger',
         on: 'bottom'
       },
       buttons: [
@@ -219,21 +219,13 @@ export async function loadCustomSteps() {
   try {
     // Use absolute URL with window.location.origin
     const apiUrl = `${window.location.origin}/apps/introvox/api/steps`
-    console.log('📡 Fetching custom steps from:', apiUrl)
 
     const response = await fetch(apiUrl)
     const data = await response.json()
 
-    console.log('📡 API response:', data)
-
     if (data.success) {
       // Return the full response including enabled status
       const hasCustomSteps = !data.useDefault && data.steps && data.steps.length > 0
-      if (hasCustomSteps) {
-        console.log(`📋 Loaded ${data.steps.length} custom wizard steps from admin settings`)
-      } else {
-        console.log('📋 Using default wizard steps (no custom steps configured)')
-      }
 
       return {
         steps: hasCustomSteps ? data.steps : null,
@@ -242,7 +234,7 @@ export async function loadCustomSteps() {
       }
     }
   } catch (error) {
-    console.warn('⚠️ Failed to load custom steps, using defaults:', error)
+    // Failed to load custom steps, will use defaults
   }
 
   return { steps: null, enabled: true }

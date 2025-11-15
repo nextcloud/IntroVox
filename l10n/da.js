@@ -133,6 +133,13 @@ OC.L10N.register(
     "Export" : "Eksporter",
     "Import" : "Importer",
     "Reset" : "Nulstil",
-    "Save changes" : "Gem ændringer"
+    "Save changes" : "Gem ændringer",
+    "Steps exported successfully!" : "Trin eksporteret med succes!",
+    "Error exporting steps: %s" : "Fejl ved eksport af trin: %s",
+    "Error exporting steps" : "Fejl ved eksport af trin",
+    "Successfully imported %s steps for language %s" : "Succesfuldt importeret %s trin for sprog %s",
+    "Error importing steps: %s" : "Fejl ved import af trin: %s",
+    "Error importing steps" : "Fejl ved import af trin",
+    "Saving..." : "Gemmer..."
 },
 "nplurals=2; plural=(n != 1);");

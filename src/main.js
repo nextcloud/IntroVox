@@ -16,6 +16,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create and mount the Vue app
   const app = createApp(WizardManager)
   app.mount('#nextcloud-wizard-mount')
-
-  console.log('🎨 Nextcloud First Use Wizard (Vue 3) initialized')
 })

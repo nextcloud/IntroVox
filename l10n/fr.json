@@ -131,6 +131,13 @@
         "Export": "Exporter",
         "Import": "Importer",
         "Reset": "Réinitialiser",
-        "Save changes": "Enregistrer les modifications"
+        "Save changes": "Enregistrer les modifications",
+        "Steps exported successfully!": "Étapes exportées avec succès !",
+        "Error exporting steps: %s": "Erreur lors de l'exportation des étapes : %s",
+        "Error exporting steps": "Erreur lors de l'exportation des étapes",
+        "Successfully imported %s steps for language %s": "Importation réussie de %s étapes pour la langue %s",
+        "Error importing steps: %s": "Erreur lors de l'importation des étapes : %s",
+        "Error importing steps": "Erreur lors de l'importation des étapes",
+        "Saving...": "Enregistrement..."
     }, "pluralForm" :"nplurals=2; plural=(n > 1);"
 }

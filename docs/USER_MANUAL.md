@@ -1,6 +1,6 @@
 # IntroVox - User Manual
 
-**Version 1.0.8** | Interactive Onboarding Tour for Nextcloud
+**Version 1.1.0** | Interactive Onboarding Tour for Nextcloud
 
 ---
 
@@ -56,8 +56,9 @@ When you log in to Nextcloud for the first time, IntroVox will automatically sta
 
 The tour might not show automatically if:
 - Your administrator has disabled it globally
-- Your language is not supported in this Nextcloud instance
-- You previously disabled it in your settings
+- Your language is not enabled by your administrator (IntroVox supports 6 languages: EN, NL, DE, DA, FR, SV)
+- You previously disabled it permanently in your settings
+- You already completed the tour (it only shows once unless you restart it)
 
 **Don't worry!** You can always start it manually from your personal settings (see [Restarting the Tour](#restarting-the-tour)).
 
@@ -149,8 +150,10 @@ You might see one of these messages:
 - Contact your administrator if you'd like to see it
 
 **"The introduction tour is not available in your language"**
-- The tour hasn't been configured for your language yet
-- Contact your administrator to request support for your language
+- Your language is not enabled by your administrator
+- IntroVox supports English, Dutch, German, Danish, French, and Swedish
+- Contact your administrator to enable your language in Admin Settings → IntroVox
+- Administrators can also add new languages via Transifex translations
 
 ---
 
@@ -444,7 +447,7 @@ Your Nextcloud administrator can:
 **Developed by:** Rik Dekker (rik@shalution.nl)
 **Initial idea and feedback:** SURF
 **License:** GNU AGPL v3
-**Version:** 1.0.8
+**Version:** 1.1.0
 
 IntroVox is designed to make your first Nextcloud experience smooth and educational. We hope it helps you feel at home in your new cloud workspace!
 
@@ -473,6 +476,6 @@ IntroVox is designed to make your first Nextcloud experience smooth and educatio
 
 ---
 
-*Last updated: November 14, 2025*
+*Last updated: November 15, 2025 (v1.1.0)*
 
 **Enjoy your Nextcloud experience! 🚀**

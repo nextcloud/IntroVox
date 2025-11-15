@@ -285,16 +285,19 @@ export default {
 
     const loadStepsForLanguage = async () => {
       if (hasChanges.value) {
-        if (!await OC.dialogs.confirm(
+        OC.dialogs.confirm(
           trans('You have unsaved changes. Do you want to discard them?'),
           trans('Unsaved changes'),
-          (result) => result,
+          async (confirmed) => {
+            if (confirmed) {
+              await loadSteps()
+            }
+          },
           true
-        )) {
-          return
-        }
+        )
+      } else {
+        await loadSteps()
       }
-      await loadSteps()
     }
 
     const initSortable = () => {
@@ -442,28 +445,30 @@ export default {
 
     const showToAllUsers = async () => {
       // Show Nextcloud confirmation dialog
-      if (!await OC.dialogs.confirm(
+      OC.dialogs.confirm(
         trans('This will show the wizard again to all users who have already seen it. Continue?'),
         trans('Show wizard to all users'),
-        (result) => result,
-        true
-      )) {
-        return
-      }
+        async (confirmed) => {
+          if (!confirmed) {
+            return
+          }
 
-      try {
-        const response = await axios.post(generateUrl('/apps/introvox/admin/settings'), {
-          enabled: wizardEnabled.value,
-          enabledLanguages: enabledLanguages.value,
-          showToAll: true
-        })
-        console.log('Wizard version incremented:', response.data)
-        OCP.Toast.success(trans('Wizard will be shown to all users on their next login'))
-      } catch (error) {
-        console.error('Error triggering show to all:', error)
-        const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        OCP.Toast.error(trans('Error triggering show to all') + ': ' + errorMsg)
-      }
+          try {
+            const response = await axios.post(generateUrl('/apps/introvox/admin/settings'), {
+              enabled: wizardEnabled.value,
+              enabledLanguages: enabledLanguages.value,
+              showToAll: true
+            })
+            console.log('Wizard version incremented:', response.data)
+            OCP.Toast.success(trans('Wizard will be shown to all users on their next login'))
+          } catch (error) {
+            console.error('Error triggering show to all:', error)
+            const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+            OCP.Toast.error(trans('Error triggering show to all') + ': ' + errorMsg)
+          }
+        },
+        true
+      )
     }
 
     const addStep = () => {
@@ -509,15 +514,17 @@ export default {
     }
 
     const deleteStep = async (id) => {
-      if (await OC.dialogs.confirm(
+      OC.dialogs.confirm(
         trans('Are you sure you want to delete this step?'),
         trans('Delete step'),
-        (result) => result,
+        (confirmed) => {
+          if (confirmed) {
+            steps.value = steps.value.filter(s => s.id !== id)
+            hasChanges.value = true
+          }
+        },
         true
-      )) {
-        steps.value = steps.value.filter(s => s.id !== id)
-        hasChanges.value = true
-      }
+      )
     }
 
     const saveSteps = async () => {
@@ -538,30 +545,32 @@ export default {
     }
 
     const resetToDefault = async () => {
-      if (await OC.dialogs.confirm(
+      OC.dialogs.confirm(
         trans('Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.'),
         trans('Reset to default'),
-        (result) => result,
+        async (confirmed) => {
+          if (confirmed) {
+            try {
+              loading.value = true
+              console.log('Resetting to default for language:', selectedLanguage.value)
+              const response = await axios.post(generateUrl('/apps/introvox/admin/reset'), {
+                lang: selectedLanguage.value
+              })
+              console.log('Reset response:', response.data)
+              await loadSteps()
+              console.log('Steps reloaded after reset')
+              OCP.Toast.success(trans('Reset to default steps successful!'))
+            } catch (error) {
+              console.error('Error resetting to default:', error)
+              const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+              OCP.Toast.error(trans('Error resetting') + ': ' + errorMsg)
+            } finally {
+              loading.value = false
+            }
+          }
+        },
         true
-      )) {
-        try {
-          loading.value = true
-          console.log('Resetting to default for language:', selectedLanguage.value)
-          const response = await axios.post(generateUrl('/apps/introvox/admin/reset'), {
-            lang: selectedLanguage.value
-          })
-          console.log('Reset response:', response.data)
-          await loadSteps()
-          console.log('Steps reloaded after reset')
-          OCP.Toast.success(trans('Reset to default steps successful!'))
-        } catch (error) {
-          console.error('Error resetting to default:', error)
-          const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-          OCP.Toast.error(trans('Error resetting') + ': ' + errorMsg)
-        } finally {
-          loading.value = false
-        }
-      }
+      )
     }
 
     const exportSteps = async () => {
@@ -874,13 +883,39 @@ export default {
 .language-badge {
   padding: 2px 8px;
   background: var(--color-warning);
-  color: white;
+  color: var(--color-primary-element-text, var(--color-main-background));
   border-radius: 12px;
   font-size: 10px;
   font-weight: 700;
   white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid var(--color-warning);
+}
+
+/* Dark theme support for language badge */
+@media (prefers-color-scheme: dark) {
+  .language-badge {
+    background: var(--color-warning);
+    color: var(--color-main-background);
+    border-color: var(--color-warning);
+  }
+}
+
+[data-themes*="dark"] .language-badge,
+[data-theme-dark] .language-badge,
+body[data-theme="dark"] .language-badge {
+  background: var(--color-warning);
+  color: var(--color-main-background);
+  border-color: var(--color-warning);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .language-badge {
+    border: 2px solid var(--color-main-text);
+    font-weight: 800;
+  }
 }
 
 .show-to-all-section {

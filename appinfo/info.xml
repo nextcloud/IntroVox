@@ -8,20 +8,25 @@
 
 **Features:**
 * Interactive step-by-step tour through Nextcloud's main features
-* Full admin interface for customizing tour steps
+* Full admin interface for customizing tour steps per language
+* Multi-language support (6 languages: EN, NL, DE, DA, FR, SV)
+* Import/export functionality for easy tour configuration sharing
 * Global enable/disable control for administrators
-* Personal settings for users to restart the tour
-* Automatically adapts to your Nextcloud theme
-* Privacy-focused: all data stored locally
+* Language-specific tour availability management
+* Personal settings for users to restart or permanently disable the tour
+* Automatically adapts to your Nextcloud theme (light, dark, high contrast)
+* Progressive Web App (PWA) installation guidance
+* Privacy-focused: tour completion status stored locally
 
 **Perfect for:**
 * Nextcloud administrators who want to improve user onboarding
 * Organizations deploying Nextcloud to new users
+* Multi-language organizations with diverse user bases
 * Anyone who wants to help users discover Nextcloud features
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.0.8</version>
+    <version>1.1.0</version>
     <licence>agpl</licence>
     <author mail="rik@shalution.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>

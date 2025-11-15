@@ -133,6 +133,13 @@ OC.L10N.register(
     "Export" : "Exportera",
     "Import" : "Importera",
     "Reset" : "Återställ",
-    "Save changes" : "Spara ändringar"
+    "Save changes" : "Spara ändringar",
+    "Steps exported successfully!" : "Steg exporterade framgångsrikt!",
+    "Error exporting steps: %s" : "Fel vid export av steg: %s",
+    "Error exporting steps" : "Fel vid export av steg",
+    "Successfully imported %s steps for language %s" : "Framgångsrikt importerat %s steg för språk %s",
+    "Error importing steps: %s" : "Fel vid import av steg: %s",
+    "Error importing steps" : "Fel vid import av steg",
+    "Saving..." : "Sparar..."
 },
 "nplurals=2; plural=(n != 1);");

@@ -8,6 +8,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (adminRoot) {
     const app = createApp(AdminApp)
     app.mount('#introvox-admin-app')
-    console.log('🎨 First Use Wizard Admin loaded')
   }
 })

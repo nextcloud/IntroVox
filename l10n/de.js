@@ -134,6 +134,12 @@ OC.L10N.register(
     "Import" : "Importieren",
     "Reset" : "Zurücksetzen",
     "Save changes" : "Änderungen speichern",
-    "Verfügbare Sprachen" : "Verfügbare Sprachen"
+    "Steps exported successfully!" : "Schritte erfolgreich exportiert!",
+    "Error exporting steps: %s" : "Fehler beim Exportieren der Schritte: %s",
+    "Error exporting steps" : "Fehler beim Exportieren der Schritte",
+    "Successfully imported %s steps for language %s" : "Erfolgreich %s Schritte für Sprache %s importiert",
+    "Error importing steps: %s" : "Fehler beim Importieren der Schritte: %s",
+    "Error importing steps" : "Fehler beim Importieren der Schritte",
+    "Saving..." : "Speichern..."
 },
 "nplurals=2; plural=(n != 1);");

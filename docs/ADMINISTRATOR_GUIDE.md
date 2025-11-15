@@ -1,5 +1,7 @@
 # IntroVox - Administrator Guide
 
+**Version 1.1.0** | Complete administrative guide for IntroVox
+
 This guide describes all administrative functions of the IntroVox app for Nextcloud.
 
 ## Table of Contents
@@ -9,8 +11,10 @@ This guide describes all administrative functions of the IntroVox app for Nextcl
 3. [Global Settings](#global-settings)
 4. [Language Settings](#language-settings)
 5. [Managing Wizard Steps](#managing-wizard-steps)
-6. [End User Experience](#end-user-experience)
-7. [Frequently Asked Questions](#frequently-asked-questions)
+6. [Import/Export Functionality](#importexport-functionality)
+7. [User Control Features](#user-control-features)
+8. [End User Experience](#end-user-experience)
+9. [Frequently Asked Questions](#frequently-asked-questions)
 
 ---
 
@@ -18,14 +22,35 @@ This guide describes all administrative functions of the IntroVox app for Nextcl
 
 IntroVox is an interactive onboarding wizard that helps new Nextcloud users get started quickly. The app provides a step-by-step tour through Nextcloud's key features.
 
-### Key Features:
+### Key Features for Version 1.1.0:
+
+**User Experience:**
+- ✅ Users can permanently disable the wizard
+- ⏭️ "Skip and don't show again" button on first step
+- 👤 Personal settings for full user control
+- 🔄 Restart tour anytime
+
+**Multi-Language Support:**
+- 🌍 6 languages included (EN, NL, DE, DA, FR, SV)
+- 🔧 Dynamic language detection via translation files
+- 📝 Per-language wizard configuration
+- 🌐 Transifex-ready for community translations
+- 👥 Selective language enable/disable
+
+**Admin Configuration:**
 - ✅ Fully customizable wizard steps
-- 🌍 Multi-language support (English, Dutch, German, French, Danish, Swedish)
+- 📦 Import/Export wizard configurations
 - 🎯 Target specific page elements for highlighting
 - 📝 HTML support for rich text formatting
 - 🔄 Drag-and-drop to reorder steps
-- ⚙️ Configure steps per language
-- 👥 Selectively enable/disable languages
+- ⚙️ Configure steps independently per language
+- 🔀 "Show wizard to all users" override
+
+**Technical:**
+- 🎨 Nextcloud design system integration
+- 📱 Mobile responsive
+- 🌓 Dark mode support
+- ♿ Accessibility features
 
 ---
 
@@ -163,8 +188,8 @@ After selecting a language, you see a list of all wizard steps for that language
 /* Link to Files app - multiple fallbacks for better detection */
 [data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
 
-/* Search bar - unified search with fallbacks */
-button[aria-label="Unified search"], .header-menu__trigger, .unified-search__trigger
+/* Search bar - language-independent selectors (recommended) */
+.unified-search__trigger, .header-menu__trigger
 
 /* Calendar app */
 [data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]
@@ -179,12 +204,14 @@ button.primary
 
 ```
 
-**Note:** Since version 1.0.6, default steps use multiple CSS selectors with fallbacks to ensure steps are shown even if one selector doesn't match. This prevents steps from being skipped due to "element not found" errors.
+**Important Notes:**
+- **Language-independent selectors:** Avoid using `aria-label` or other language-specific attributes (e.g., `button[aria-label="Unified search"]`), as these will only work in one language. Instead, use CSS classes like `.unified-search__trigger` or `.header-menu__trigger` that work across all languages.
+- **Multiple fallbacks:** Since version 1.0.6, default steps use multiple CSS selectors with fallbacks to ensure steps are shown even if one selector doesn't match. This prevents steps from being skipped due to "element not found" errors.
 
 3. Click **💾 Save** to save the step
 4. Click **❌ Cancel** to stop without saving
 
-**Note:** Don't forget to click the green "💾 Save" button at the bottom of the page to save all changes permanently!
+**Note:** Don't forget to click the green **💾 Save changes** button at the top of the steps list to save all changes permanently!
 
 ---
 
@@ -220,7 +247,7 @@ button.primary
 4. The order is automatically updated
 5. Click **💾 Save** to permanently save the new order
 
-**Important:** Since version 1.0.6, you must click the Save button to persist the new order. The order is tracked by step ID, not by position, ensuring that enabling/disabling steps after reordering works correctly.
+**Important:** Since version 1.0.6, you must click the **💾 Save changes** button at the top of the steps list to persist the new order. The order is tracked by step ID, not by position, ensuring that enabling/disabling steps after reordering works correctly.
 
 ---
 
@@ -268,13 +295,13 @@ The default steps contain an introduction to Nextcloud covering:
 
 ### 💾 Save Changes
 
-**Button:** "💾 Save" (green, at bottom of page)
+**Button:** "💾 Save changes" (green, at top of steps list)
 
 **Function:** Save all changes to wizard steps permanently.
 
 **Usage:**
 1. Make your desired changes to the steps
-2. Click the green "💾 Save" button at the bottom of the page
+2. Click the green **💾 Save changes** button at the top of the steps list
 3. You'll see a success message: "Steps saved successfully!"
 4. The changes are now active for users
 
@@ -282,6 +309,221 @@ The default steps contain an introduction to Nextcloud covering:
 - The button is only active (not gray) when there are changes
 - If you switch between languages without saving, your changes are discarded
 - You'll get a warning if you try to switch with unsaved changes
+
+---
+
+## Import/Export Functionality
+
+**New in version 1.1.0**
+
+The Import/Export feature enables collaboration with content creators, sharing configurations between instances, and version control integration.
+
+### 📤 Exporting Wizard Steps
+
+**Purpose:** Download wizard steps as JSON file for:
+- Sharing configurations with other Nextcloud instances
+- Allowing content creators to work offline
+- Version control (commit JSON to git)
+- Backup before making changes
+- Collaboration with translators
+
+**How to Export:**
+1. Select the language you want to export from the language dropdown
+2. Click the **Export** button (top of steps list)
+3. A JSON file downloads automatically
+4. File name format: `introvox-steps-{language}-{timestamp}.json`
+
+**Example:** Exporting English steps on Jan 15, 2025 creates: `introvox-steps-en-2025-01-15-143022.json`
+
+**What's Exported:**
+- All wizard steps for the selected language
+- Step IDs, titles, text content
+- Element selectors and positions
+- Enabled/disabled status
+- Step order
+
+**Use Cases:**
+- **Content Creation**: Send JSON to marketing team, they edit offline, send back
+- **Translation**: Give JSON to translation agency familiar with JSON format
+- **Development**: Test wizard changes locally before deploying to production
+- **Sharing**: Share best-practice configurations with community
+- **Backup**: Keep a copy before making major changes
+
+### 📥 Importing Wizard Steps
+
+**Purpose:** Upload wizard steps from JSON file created via export or by content creators.
+
+**How to Import:**
+1. Select the target language from the language dropdown
+2. Click the **Import** button (top of steps list)
+3. Select a JSON file from your computer
+4. Click **Open**
+5. You'll see a success message showing number of imported steps
+
+**Example:** "Successfully imported 8 steps for language en"
+
+**Important Notes:**
+- ⚠️ **Import replaces all existing steps** for that language
+- ✅ Only affects the selected language (safe for multi-language setups)
+- ✅ Validates JSON format before importing
+- ✅ Shows clear error messages if file is invalid
+- 💾 **Auto-saves** - Changes are immediately active after successful import
+
+**Validation:**
+The import function validates:
+- JSON syntax is correct
+- Required fields are present (id, title, text)
+- Data types are correct
+- No duplicate step IDs
+
+**Error Handling:**
+If import fails, you'll see a specific error message:
+- "Error importing steps: Invalid JSON format"
+- "Error importing steps: Missing required field 'id' in step 3"
+- "Error importing steps: {specific error}"
+
+**Workflow Example - Content Creator Collaboration:**
+
+1. **Administrator:**
+   - Exports current English steps
+   - Sends `introvox-steps-en-2025-01-15.json` to content writer
+
+2. **Content Writer:**
+   - Opens JSON in text editor
+   - Edits step titles and descriptions
+   - Saves file as `introvox-steps-en-updated.json`
+
+3. **Administrator:**
+   - Imports `introvox-steps-en-updated.json`
+   - Reviews changes in preview
+   - Tests wizard with new content
+   - Exports again for version control
+
+**JSON File Structure:**
+```json
+[
+  {
+    "id": "welcome",
+    "title": "👋 Welcome to Nextcloud",
+    "text": "<p>Nice to have you here!</p>",
+    "attachTo": "",
+    "position": "right",
+    "enabled": true
+  },
+  {
+    "id": "files",
+    "title": "📁 Files",
+    "text": "<p>Manage your files here.</p>",
+    "attachTo": "[data-id=\"files\"]",
+    "position": "right",
+    "enabled": true
+  }
+]
+```
+
+---
+
+## User Control Features
+
+**New in version 1.1.0**
+
+Users now have full control over their wizard experience with options to permanently disable it.
+
+### 👤 User Personal Settings
+
+Users can manage wizard preferences in **Personal Settings → IntroVox**:
+
+**Available Options:**
+1. **Restart tour now** - Button to manually restart the wizard
+2. **Permanently disable the introduction tour** - Checkbox to never see wizard again
+
+### ⏭️ "Skip and don't show again" Button
+
+**Location:** First step of the wizard (Welcome screen)
+
+**Function:**
+- Allows users to immediately opt-out on first encounter
+- Permanently disables wizard for that user
+- Sets the same preference as "Permanently disable" in personal settings
+
+**Behavior:**
+- Wizard closes immediately
+- User preference saved to database
+- Wizard won't auto-start on future logins
+- User can still manually restart via personal settings
+
+**Translation:** Available in all 6 supported languages
+
+### 🔄 Admin Override - "Show wizard to all users"
+
+**Purpose:** Force the wizard to appear for all users, even those who disabled it.
+
+**Use Cases:**
+- Major Nextcloud update with new features
+- Important company announcement via wizard
+- Reset after updating wizard content significantly
+- Troubleshooting user issues
+
+**How to Use:**
+1. Go to Admin Settings → IntroVox
+2. Click **Show wizard to all users** button
+3. Confirm the action in the dialog
+4. All user preferences are cleared
+5. Wizard appears for everyone on next login
+
+**⚠️ Important Warning:**
+This action affects **ALL users**, including those who specifically disabled the wizard. Their "permanently disable" preference will be cleared.
+
+**Confirmation Dialog:**
+"This will reset the wizard for ALL users, including those who have permanently disabled it in their personal settings. Their 'disable wizard' preference will be cleared, and the wizard will be shown again on their next login."
+
+### Smart Completion Behavior
+
+**Closing with ✕ button:**
+- Marks wizard as "seen" in localStorage
+- Does NOT set permanent disable preference
+- Wizard may appear again (e.g., after version update)
+
+**Completing with "Done" button:**
+- Marks wizard as completed in localStorage
+- Sets permanent disable preference in database
+- Wizard won't auto-start again unless admin forces it
+
+**"Skip and don't show again" button:**
+- Immediately sets permanent disable preference
+- Marks as completed
+- Same effect as completing normally
+
+### User States
+
+Users can be in one of these states:
+
+1. **New User (Never seen wizard)**
+   - Wizard auto-starts on first login (if language enabled)
+   - Sees "Start tour" and "Skip and don't show again" buttons
+
+2. **Wizard Closed (Not completed)**
+   - Closed with ✕ button
+   - Wizard auto-starts on next login
+   - Can manually restart anytime
+
+3. **Wizard Completed**
+   - Finished all steps and clicked "Done"
+   - Permanently disabled
+   - Won't auto-start again
+   - Can manually restart via personal settings
+
+4. **Permanently Disabled**
+   - User checked "Permanently disable" in personal settings
+   - OR clicked "Skip and don't show again"
+   - OR completed the wizard
+   - Won't auto-start again
+   - Can manually restart via personal settings
+
+5. **Admin Force-Shown**
+   - Admin used "Show wizard to all users"
+   - All preferences cleared
+   - Back to state 1 (New User)
 
 ---
 
@@ -516,6 +758,133 @@ Each language has its **own independent set of steps**.
 **Documentation:**
 - Added link to Administrator Guide in app metadata for easy access from App Store
 
+### How do I use Import/Export for collaboration?
+
+**Answer:** Import/Export enables easy collaboration with content creators, translators, and other administrators.
+
+**Workflow for Content Creators:**
+1. Export current steps: Admin Settings → IntroVox → Export
+2. Send JSON file to content creator (e.g., marketing team)
+3. Content creator edits JSON in text editor
+4. Content creator sends updated JSON back
+5. Import updated JSON: Admin Settings → IntroVox → Import
+6. Test the changes
+7. Export again for backup/version control
+
+**Workflow for Translators:**
+1. Export English steps
+2. Duplicate file, rename to target language code (e.g., `steps-es.json`)
+3. Send to translator
+4. Translator edits text fields in JSON
+5. Import into target language
+6. Enable language in admin settings
+
+**Workflow for Multi-Instance Deployment:**
+1. Configure wizard on development instance
+2. Export all languages
+3. Import on production instance
+4. Consistent experience across all instances
+
+**Version Control:**
+- Commit exported JSON files to git repository
+- Track changes over time
+- Roll back if needed
+- Share configurations in GitHub
+
+### Can users disable the wizard themselves?
+
+**Answer:** Yes! Since version 1.1.0, users have full control.
+
+**User Options:**
+1. **"Skip and don't show again" button** - On first wizard step, permanently opts out
+2. **Personal Settings** - Users can check "Permanently disable the introduction tour"
+3. **Completing the wizard** - Clicking "Done" on last step also disables auto-start
+
+**Admin Override:**
+Use "Show wizard to all users" button to force-show wizard to everyone, including users who disabled it.
+
+**Use Cases for Override:**
+- Major Nextcloud update with new features
+- Important announcement
+- Significantly updated wizard content
+- Reset after troubleshooting
+
+### How do I add a new language via Transifex?
+
+**Answer:** IntroVox dynamically detects language files - no code changes needed!
+
+**Steps:**
+1. Visit [IntroVox on Transifex](https://www.transifex.com/nextcloud/nextcloud/)
+2. Select your language or request a new one
+3. Translate all 141 strings
+4. Download completed .json file
+5. Place in `l10n/` folder of IntroVox
+6. Language automatically appears in admin interface!
+
+**Admin Enables Language:**
+1. New language shows in "Available languages" checkboxes
+2. Check the box to enable it
+3. Select language from dropdown to customize wizard steps
+4. Or use default steps (automatically translated)
+
+**No restart required** - Language is immediately available.
+
+### What's the difference between closing (✕) and completing the wizard?
+
+**Answer:** Important distinction in user behavior:
+
+**Closing with ✕ Button:**
+- Marks wizard as "seen" in browser (localStorage)
+- Does NOT set permanent disable preference
+- Wizard may show again (e.g., after version update or admin force-show)
+- Good for "I'll do this later"
+
+**Completing with "Done" Button:**
+- Marks wizard as completed in browser (localStorage)
+- Sets permanent disable preference in database
+- Wizard won't auto-start again (unless admin forces it)
+- Can still manually restart from personal settings
+
+**"Skip and don't show again" Button:**
+- Immediately sets permanent disable preference
+- Same effect as completing normally
+- Good for "I don't want this"
+
+### What's new in version 1.1.0?
+
+**Answer:** Version 1.1.0 is a major release with three main feature areas:
+
+**1. User Control**
+- Users can permanently disable the wizard
+- "Skip and don't show again" button on first step
+- Personal settings checkbox for permanent disable
+- Smart completion behavior (✕ vs Done button)
+- Admin "Show wizard to all users" override
+
+**2. Dynamic Language System**
+- Automatic detection of translation files
+- No code changes needed to add languages
+- Transifex-ready for community contributions
+- Per-language wizard configuration
+- Language availability management
+
+**3. Import/Export**
+- Export wizard steps to JSON
+- Import configurations from JSON
+- Collaborate with content creators offline
+- Share configurations between instances
+- Version control friendly
+- Backup before making changes
+
+**Additional Improvements:**
+- Nextcloud design system integration
+- Dark mode improvements
+- Mobile responsive enhancements
+- Code cleanup (removed debug logging)
+- Button alignment improvements
+- Search button selector fixes
+- Confirmation dialog fixes
+
 ---
 
 ## Best Practices
@@ -548,13 +917,15 @@ Each language has its **own independent set of steps**.
 - Check default steps for examples of good fallback patterns
 
 ### 7. Save After Reordering Steps (v1.0.6+)
-- Always click the **💾 Save** button after reordering steps
+- Always click the **💾 Save changes** button (at top of steps list) after reordering steps
 - This ensures the new order is persisted correctly
 - The improved reactivity in v1.0.6 ensures enable/disable works correctly after reordering
 
-### 8. Back Up Custom Configurations
-- If you make many customizations, note your CSS selectors
-- Export option may come in a future version
+### 8. Back Up Custom Configurations (v1.1.0+)
+- **Use Export feature** to download wizard steps as JSON
+- Commit JSON files to version control (git)
+- Export before making major changes
+- Keep backups of working configurations
 
 ### 9. Communicate with Users
 - Inform users about wizard availability
@@ -583,10 +954,20 @@ Help us translate IntroVox to more languages via Transifex:
 
 ## Version Information
 
-**Current Version:** 1.0.6
-**Last Guide Update:** November 2025
+**Current Version:** 1.1.0
+**Release Date:** November 15, 2025
+**Last Guide Update:** November 15, 2025
 **Nextcloud Compatibility:** 32
+
+**Major Changes in 1.1.0:**
+- User control: Permanently disable wizard
+- Import/Export functionality
+- Dynamic language detection
+- Transifex-ready translations
+- Design system improvements
 
 ---
 
 **Good luck configuring IntroVox! 🎉**
+
+*For user documentation, see [User Manual](USER_MANUAL.md)*

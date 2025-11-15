@@ -5,21 +5,115 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.9] - 2025-11-15
+## [1.1.0] - 2025-11-15
+
+### Major Features
+
+#### 🎯 User Control: Permanently Disable Wizard
+Users can now take full control of their wizard experience:
+- **Personal settings option** to permanently disable the wizard
+  - Located in Personal Settings → IntroVox
+  - "Permanently disable the introduction tour" checkbox
+  - Once disabled, wizard will never auto-start again (even after app updates)
+  - Clear warning about the permanent nature of this setting
+- **"Skip and don't show again" button** on first wizard step
+  - Allows users to immediately opt-out during their first encounter
+  - Automatically disables wizard for that user permanently
+  - Translated in all 6 supported languages
+- **Administrator override capability**
+  - Admins can reset disabled preferences via "Show wizard to all users" button
+  - Forces wizard to appear for all users on next login (clears all user preferences)
+  - Useful for major updates or important announcements
+- **Smart completion behavior**
+  - Completing wizard via "Done" button automatically disables future auto-starts
+  - Closing wizard via X button only marks as completed (doesn't disable permanently)
+  - Users retain control over when they want to see the wizard again
+
+#### 🌍 Dynamic Language System via Transifex
+The app now dynamically detects available languages, making it easy for anyone to add translations:
+- **Automatic language detection**
+  - Admin interface automatically discovers all .json translation files in l10n/ folder
+  - No code changes needed to add new languages - just add the translation file
+  - Language selector dynamically updates based on available translations
+- **Transifex-ready workflow**
+  - Translators can contribute via Transifex platform
+  - New language files automatically appear in admin interface
+  - Supports community-driven translation expansion beyond the 6 included languages
+- **Language availability management**
+  - Admins can enable/disable specific languages for their organization
+  - Only enabled languages appear in language selector
+  - Users with disabled languages see clear messaging to contact administrator
+  - Default: English enabled, others can be enabled as needed
+- **Per-language wizard configuration**
+  - Each language has independent wizard step configuration
+  - Customize steps, text, and order for each language separately
+  - Respects cultural and linguistic differences in onboarding approaches
+
+#### 📦 Import/Export for Collaborative Content Management
+Enable non-technical content creators to contribute wizard content:
+- **Export wizard steps to JSON**
+  - One-click export button in admin interface
+  - Downloads language-specific JSON file with all wizard steps
+  - File naming: `introvox-steps-{language}-{timestamp}.json`
+  - Clean, readable JSON format perfect for content creators
+- **Import wizard steps from JSON**
+  - Upload JSON files created by content creators, translators, or other admins
+  - File picker with validation and error handling
+  - Imports steps for specific language only (safe multi-language workflow)
+  - Success confirmation shows number of steps imported
+- **Collaborative workflow benefits**
+  - Content writers can work in their preferred text editor
+  - Marketing teams can draft wizard content offline
+  - Translators can work with familiar JSON format
+  - Easy sharing of wizard configurations between Nextcloud instances
+  - Version control friendly (can commit JSON files to git)
+- **Use cases**
+  - Share best-practice wizard configurations with community
+  - Maintain wizard content in version control
+  - Test wizard changes in development before deploying to production
+  - Collaborate with translation agencies who work with JSON files
+  - Create wizard templates for different industries or use cases
 
 ### Added
 - **Complete translation coverage** - All admin interface text now fully translatable
-  - Added "Skip and don't show again" button translation for all 6 languages
-  - Added HTML content placeholder translation for textarea in admin step editor
-  - English: "Skip and don't show again" / "<p>HTML content...</p>"
-  - Dutch: "Overslaan en niet meer tonen" / "<p>HTML inhoud...</p>"
-  - German: "Überspringen und nicht mehr anzeigen" / "<p>HTML-Inhalt...</p>"
-  - Danish: "Spring over og vis ikke igen" / "<p>HTML-indhold...</p>"
-  - French: "Passer et ne plus afficher" / "<p>Contenu HTML...</p>"
-  - Swedish: "Hoppa över och visa inte igen" / "<p>HTML-innehåll...</p>"
+  - All 141 translation strings available in all 6 languages (EN, NL, DE, DA, FR, SV)
+  - HTML content placeholder properly translatable in step editor
+  - Export/import functionality fully translated
+  - "Saving..." feedback message for better user experience
 
 ### Fixed
-- **Hardcoded placeholder** - Replaced hardcoded HTML placeholder in admin textarea with translatable version
+- **Smart app redirect** - Wizard restart now redirects to first available app instead of hardcoded dashboard
+  - Priority: dashboard → files → first available app
+  - Prevents errors when dashboard app is not installed
+  - Uses OC.appswebroots to detect available apps
+- **Search button selector** - Fixed language-dependent search button detection
+  - Changed from language-specific aria-label to language-independent CSS classes
+  - New selector: `.unified-search__trigger, .header-menu__trigger`
+  - Works correctly across all languages and Nextcloud versions
+- **Confirmation dialogs** - Fixed all OC.dialogs.confirm callbacks in admin interface
+  - Reset to default now properly executes after confirmation
+  - Language switch, delete, and show-to-all confirmations now work correctly
+  - All dialogs use proper Nextcloud callback pattern (not async/await)
+- **Wizard title visibility** - Fixed wizard step title readability in dark mode
+  - Added !important flags to ensure title color is always readable
+  - Explicit dark mode rules for all Nextcloud themes
+  - Works in light, dark, and high contrast modes
+- **Wizard footer button alignment** - Changed footer buttons to justified layout
+  - Left button (Back/Skip) now left-aligned
+  - Right button (Next/Done) now right-aligned
+  - Better visual balance and follows common wizard UI patterns
+
+### Improved
+- **Code cleanup** - Removed unnecessary console logging throughout the application
+  - Cleaned up debugging statements in all JavaScript files
+  - Reduced bundle size (main.js: 211 KB → 209 KB, personal.js: 75.5 KB → 75.1 KB)
+  - Production-ready code with only essential error handling
+- **Wizard design system** - Complete redesign to match Nextcloud design standards
+  - Aligned with NcButton component styling (pill-shaped buttons)
+  - Matched modal and card design patterns
+  - Uses Nextcloud CSS variables throughout
+  - Primary buttons use --color-primary-element
+  - Improved mobile responsive design with touch-friendly controls
 
 ## [1.0.8] - 2025-11-14
 

@@ -28,13 +28,11 @@ export default {
       // (admin can only override by resetting the user preference via "Show to all users" button,
       //  which deletes the wizard_disabled setting from the database)
       if (userDisabledWizard) {
-        console.log('⏭️ Wizard permanently disabled by user preference')
         return true // Don't show wizard
       }
 
       // If server version is newer, wizard should be shown again (for users who didn't disable it)
       if (serverVersion && localVersion && serverVersion !== localVersion) {
-        console.log(`🔄 Wizard version changed from ${localVersion} to ${serverVersion} - showing wizard again`)
         return false
       }
 
@@ -53,9 +51,8 @@ export default {
           await axios.post(generateUrl('/apps/introvox/personal/settings'), {
             wizardDisabled: true
           })
-          console.log('✅ Wizard automatically disabled after completion')
         } catch (error) {
-          console.warn('⚠️ Failed to auto-disable wizard:', error)
+          // Failed to auto-disable wizard
         }
       }
     }
@@ -63,7 +60,6 @@ export default {
     const skipWizard = async (serverVersion) => {
       // Mark as completed and permanently disable wizard
       await markCompleted(serverVersion, true)
-      console.log('⏭️ Wizard skipped and permanently disabled')
     }
 
     const reset = () => {
@@ -77,7 +73,6 @@ export default {
 
       // Check if wizard is globally disabled
       if (response && response.enabled === false) {
-        console.log('⚠️ Wizard is globally disabled by administrator')
         return false
       }
 
@@ -88,10 +83,8 @@ export default {
       // Filter out disabled steps (handle both boolean false and string "false")
       stepsToUse = stepsToUse.filter(step => {
         const isEnabled = step.enabled !== false && step.enabled !== 'false' && step.enabled !== 0
-        console.log(`Step ${step.id}: enabled=${step.enabled}, isEnabled=${isEnabled}`)
         return isEnabled
       })
-      console.log(`✅ Using ${stepsToUse.length} enabled wizard steps out of ${customSteps?.length || getWizardSteps().length} total`)
 
       tour = new Shepherd.Tour({
         useModalOverlay: true,
@@ -106,8 +99,6 @@ export default {
           modalOverlayOpeningRadius: 16
         }
       })
-
-      console.log(`🎨 Initializing wizard with ${stepsToUse.length} steps${customSteps ? ' (custom)' : ' (default)'}`)
 
       // Add all steps
       stepsToUse.forEach((step, index) => {
@@ -130,12 +121,8 @@ export default {
         if (attachTo) {
           const element = document.querySelector(attachTo.element)
           if (!element) {
-            console.log(`⚠️ Wizard: Skipping step "${step.id}" - element not found:`, attachTo.element)
             return // Skip this step if element doesn't exist
           }
-          console.log(`✅ Wizard: Adding step "${step.id}" - element found`)
-        } else {
-          console.log(`✅ Wizard: Adding centered step "${step.id}"`)
         }
 
         // Generate buttons dynamically based on position
@@ -216,16 +203,12 @@ export default {
         })
       })
 
-      console.log(`✅ Wizard initialized with ${tour.steps.length} active steps`)
-
       // Setup event listeners
       tour.on('complete', () => {
-        console.log('Wizard completed')
         // Don't auto-disable here, it's handled by the specific button actions
       })
 
       tour.on('cancel', () => {
-        console.log('Wizard cancelled via X button - closing without disabling')
         // Just mark as completed in localStorage without disabling the wizard
         localStorage.setItem(storageKey, 'true')
         if (serverVersion) {
@@ -256,7 +239,6 @@ export default {
                                    document.querySelector('[id*="first-run"]')
 
           if (introVox) {
-            console.log('⏳ Nextcloud first-run wizard detected, waiting...')
             return false
           }
           return true
@@ -270,7 +252,6 @@ export default {
                                 document.querySelector('[role="banner"]')
 
           if (!navigationBar || navigationBar.offsetHeight === 0) {
-            console.log('⏳ Navigation bar not visible yet, waiting...')
             return false
           }
           return true
@@ -279,7 +260,6 @@ export default {
         // Poll for readiness
         const checkReadiness = () => {
           if (checkNextcloudWizard() && checkNavigationBar()) {
-            console.log('✅ Nextcloud ready, navigation bar visible')
             resolve()
           } else {
             setTimeout(checkReadiness, 500)
@@ -292,8 +272,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log('🎨 First Use Wizard (Vue) loaded')
-
       // Expose to window for manual control
       window.introVox = {
         start: startTour,
@@ -314,28 +292,20 @@ export default {
           // Check if user's language is enabled in admin settings
           const userLanguage = getLanguage()
           const baseLang = userLanguage.substring(0, 2) // Extract base language (e.g., 'en_US' -> 'en')
-          console.log('🌍 User language detected:', userLanguage, '(base:', baseLang + ')')
 
           if (!stepsResponse || stepsResponse.enabled === false) {
-            console.log('⚠️ Wizard is globally disabled by administrator')
             return
           }
 
           if (stepsResponse.languageDisabled) {
-            console.log('⚠️ Wizard skipped: User language (' + baseLang + ') is not enabled in admin settings')
-            console.log('ℹ️ Administrator needs to enable this language in Admin Settings → IntroVox')
             return
           }
-
-          console.log('✅ Wizard enabled for user language:', baseLang)
 
           waitForNextcloudReady().then(async () => {
             setTimeout(async () => {
               await startTour()
             }, 1000)
           })
-        } else {
-          console.log('✅ Wizard already completed for current version or disabled by user')
         }
       })
     })

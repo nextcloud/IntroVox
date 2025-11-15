@@ -131,6 +131,13 @@
     "Export": "Exporteren",
     "Import": "Importeren",
     "Reset": "Resetten",
-    "Save changes": "Wijzigingen opslaan"
+    "Save changes": "Wijzigingen opslaan",
+    "Steps exported successfully!": "Stappen succesvol geëxporteerd!",
+    "Error exporting steps: %s": "Fout bij exporteren van stappen: %s",
+    "Error exporting steps": "Fout bij exporteren van stappen",
+    "Successfully imported %s steps for language %s": "Succesvol %s stappen geïmporteerd voor taal %s",
+    "Error importing steps: %s": "Fout bij importeren van stappen: %s",
+    "Error importing steps": "Fout bij importeren van stappen",
+    "Saving...": "Opslaan..."
 }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }

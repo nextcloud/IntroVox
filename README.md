@@ -2,20 +2,46 @@
 
 [![GitHub release](https://img.shields.io/github/release/nextcloud/IntroVox.svg)](https://github.com/nextcloud/IntroVox/releases)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Nextcloud](https://img.shields.io/badge/Nextcloud-30--32-blue)](https://nextcloud.com)
+[![Nextcloud](https://img.shields.io/badge/Nextcloud-32-blue)](https://nextcloud.com)
 
 **Interactive onboarding tour for new Nextcloud users**
 
-IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, PWA installation guidance, and comprehensive admin configuration.
+IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, multi-language support, PWA installation guidance, and comprehensive admin configuration with import/export capabilities.
 
 ## ✨ Features
 
-- 🎯 **Interactive Guided Tour** - Step-by-step introduction to Nextcloud features
-- ⚙️ **Admin Configuration** - Full CRUD interface for managing tour steps
-- 🌍 **Global Enable/Disable** - Administrators can enable or disable the tour for all users
-- 👤 **Personal Control** - Users can restart the tour anytime from their settings
-- 🎨 **Nextcloud Theming** - Automatically adapts to your Nextcloud theme
-- 🔒 **Privacy-Focused** - All data stored locally, no external dependencies
+### 🎯 User Experience
+- **Interactive Guided Tour** - Step-by-step introduction to Nextcloud features
+- **User Control** - Users can permanently disable the wizard or restart it anytime
+- **"Skip and don't show again"** - Quick opt-out on first encounter
+- **Smart Behavior** - Closing with X only marks completed; "Done" button disables auto-start
+- **Personal Settings** - Full control over wizard preferences in Personal Settings → IntroVox
+
+### 🌍 Multi-Language Support
+- **6 Languages Included** - English, Dutch, German, Danish, French, Swedish
+- **Transifex-Ready** - Dynamically detects new language files - no code changes needed
+- **Per-Language Configuration** - Customize tour steps independently for each language
+- **Language Availability Control** - Admins can enable/disable specific languages
+- **Community Contributions** - Easy for translators to add new languages via Transifex
+
+### ⚙️ Admin Configuration
+- **Full CRUD Interface** - Add, edit, delete, and reorder tour steps
+- **Import/Export** - Share configurations, collaborate with content creators
+- **Language Management** - Enable/disable languages, manage per-language steps
+- **Global Controls** - Enable/disable wizard, force show to all users
+- **Visual Feedback** - Enable/disable individual steps, drag-and-drop reordering
+
+### 🎨 Design & Theming
+- **Nextcloud Design System** - Matches Nextcloud UI patterns and components
+- **Full Theme Support** - Adapts to light, dark, and high contrast modes
+- **Mobile Responsive** - Optimized for all screen sizes
+- **Accessibility** - Reduced motion support, keyboard navigation
+
+### 🔒 Privacy & Performance
+- **Privacy-Focused** - Tour completion status stored locally
+- **No External Dependencies** - All resources bundled
+- **Lightweight** - Optimized bundle size (~210 KB main.js)
+- **Production-Ready** - Clean code without debug logging
 
 ## 📸 Demo
 
@@ -65,21 +91,32 @@ npm run build
 ## 🚀 Quick Start
 
 ### For Users
-After logging in, IntroVox will automatically guide you through Nextcloud's main features.
+After logging in, IntroVox will automatically guide you through Nextcloud's main features (if your language is enabled).
 
-**To restart the tour:**
-- Go to **Settings** → **IntroVox** → Click **"Wizard opnieuw starten"**
+**User Options:**
+- **Skip and don't show again** - On first step to permanently opt-out
+- **Restart tour** - Go to **Personal Settings** → **IntroVox** → Click **"Restart tour now"**
+- **Permanently disable** - Check **"Permanently disable the introduction tour"** in Personal Settings → IntroVox
 
 ### For Administrators
 
-**Configure tour steps:**
-- Go to **Settings** → **Administration** → **IntroVox**
-- Add, edit, or delete tour steps
-- Enable/disable globally
-- Save your changes
+**Quick Setup:**
+1. Go to **Admin Settings** → **IntroVox**
+2. Enable languages you want to support
+3. Customize wizard steps per language (or use defaults)
+4. Enable wizard globally
+5. Optionally use **"Show wizard to all users"** to force restart for everyone
 
-**📚 Complete Administrator Documentation:**
+**Key Admin Features:**
+- **Language Management** - Select which languages are available
+- **Import/Export** - Share configurations or work with content creators
+- **Per-Language Steps** - Customize wizard content for each language
+- **Global Controls** - Enable/disable wizard, force show to all users
+
+**📚 Complete Documentation:**
 - [Administrator Guide](docs/ADMINISTRATOR_GUIDE.md) - Comprehensive guide covering all features, FAQ, and best practices
+- [User Manual](docs/USER_MANUAL.md) - End-user guide for using the wizard
+- [Deployment Guide](docs/ADMINISTRATOR_GUIDE.md#deployment-scenarios) - Best practices for organizations
 
 ## 🛠️ Development
 

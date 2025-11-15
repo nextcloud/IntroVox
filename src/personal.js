@@ -14,13 +14,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const statusResponse = await axios.get(generateUrl('/apps/introvox/api/steps'));
         wizardEnabled = statusResponse.data.enabled === true;
         languageDisabled = statusResponse.data.languageDisabled === true;
-        console.log('Wizard status from server:', {
-            enabled: wizardEnabled,
-            languageDisabled: languageDisabled,
-            fullResponse: statusResponse.data
-        });
     } catch (error) {
-        console.error('Failed to check wizard status:', error);
         wizardEnabled = false;
     }
 
@@ -44,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             `;
         }
         settingsContainer.innerHTML = message;
-        console.log('Wizard is disabled - showing read-only message');
         return;
     }
 
@@ -64,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             disableCheckbox.checked = response.data.wizardDisabledByUser;
         }
     } catch (error) {
-        console.error('Failed to load personal settings:', error);
+        // Failed to load settings
     }
 
     // Save settings button
@@ -86,7 +79,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     saveBtn.textContent = '💾 ' + t('introvox', 'Save settings');
                 }
             } catch (error) {
-                console.error('Error saving settings:', error);
                 OCP.Toast.error(t('introvox', 'Error saving settings'));
                 saveBtn.textContent = '💾 ' + t('introvox', 'Save settings');
             } finally {
@@ -95,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // Restart wizard - reset localStorage and redirect to dashboard
+    // Restart wizard - reset localStorage and redirect to first available app
     restartBtn.addEventListener('click', async function() {
         try {
             // Reset the completion status and version
@@ -116,12 +108,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour...');
             restartBtn.disabled = true;
 
-            // Redirect to dashboard after a short delay
+            // Find the first available app to redirect to
+            // Priority: dashboard, files, or first available app
+            let targetApp = 'dashboard'; // Default fallback
+
+            if (typeof OC !== 'undefined' && OC.appswebroots) {
+                // Preferred apps in order
+                const preferredApps = ['dashboard', 'files'];
+
+                // Check if any preferred app is available
+                for (const app of preferredApps) {
+                    if (OC.appswebroots[app]) {
+                        targetApp = app;
+                        break;
+                    }
+                }
+
+                // If no preferred app found, use first available app
+                if (!OC.appswebroots[targetApp]) {
+                    const availableApps = Object.keys(OC.appswebroots);
+                    if (availableApps.length > 0) {
+                        targetApp = availableApps[0];
+                    }
+                }
+            }
+
+            // Redirect to selected app after a short delay
             setTimeout(function() {
-                window.location.href = OC.generateUrl('/apps/dashboard/');
+                window.location.href = OC.generateUrl('/apps/' + targetApp + '/');
             }, 1000);
         } catch (error) {
-            console.error('Error resetting wizard preference:', error);
             OCP.Toast.error(t('introvox', 'Error restarting tour'));
             restartBtn.textContent = '🔄 ' + t('introvox', 'Restart tour now');
             restartBtn.disabled = false;
