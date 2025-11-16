@@ -1,0 +1,44 @@
+# IntroVox v1.1.1 - Nextcloud App Store Upload Instructions
+
+## Release Details
+Version: 1.1.1
+Date: 2025-11-15
+GitHub Release: https://github.com/nextcloud/IntroVox/releases/tag/v1.1.1
+
+## Upload to Nextcloud App Store
+
+### Method 1: Web Interface (Recommended)
+
+1. Go to: https://apps.nextcloud.com/account/apps
+2. Click on "IntroVox"
+3. Go to "Releases" tab
+4. Click "Upload release"
+5. Fill in the form:
+
+**Download URL:**
+https://github.com/nextcloud/IntroVox/releases/download/v1.1.1/introvox-v1.1.1.tar.gz
+
+**Signature (base64-encoded SHA512):**
+GPLqvf6KovfxUFHTpdSboGXfdAg9xQDpdyXF68EsTFk98rEBBwAN0vTYORyt4tlRKsz1AlyI9oH+tVZBpDEHSOqK0pslOTJF26pEsJpvyEwr+VQcuaSNw/vmUSqh5kmXEtU2AHHttCAarnxHHMsBTddUbVqbMG+mP2VcqJYpij6NbuBrYlBLx52wrepIE+P9HpvpkzsvyMhOXNtDwYYvhySDlaoXMUxV8FJzT/xx9q27ZRbVnA6WUuIRUVwfLTWlfwlbzbH0dWv6I59auqN3iDW0myX/kpDR0weWJFSbZqQluczk3OGyhi/Xfao6sePUafeumSI3xw1lvvSRfMIopbzksb7kkXp20II86KIfKWwWofPYf8ZNdgC7+mmCR+Y2/VXp3bQpq1mTKkTizsGYsUYcMaBov+bhMuJRbU1mbBWlojBt3+rucnWrb5ywaRzNzn07d7gCbh8sKjwEqse4ZEKd1FeOmi9j5j8hIj7rjrKjvxGLSpqFbYPXpLTu42ou8vNLMDNNblaHhXR6Zu+IvADEo5r1KRkOnnYtRb6LLU16B1K+p1DTDTCu4CmtsrRmhxZgXibIvLmT7DYe4GAH2DsAk2VMYjfR5+3nqNxkJ1Ovyuz9Xchm1MElQJBTN0lX1LGlAVZ0qldDxL1Jd6FJ9L0JQ+Tz+hazd8Wxb8ds4QQ=
+
+**Nextcloud min version:** 32
+**Nextcloud max version:** 32
+
+6. Click "Upload"
+
+### Method 2: Using cURL (if you have API token)
+
+curl -X POST https://apps.nextcloud.com/api/v1/apps/introvox/releases \
+  -H "Authorization: Token YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "download": "https://github.com/nextcloud/IntroVox/releases/download/v1.1.1/introvox-v1.1.1.tar.gz",
+    "signature": "BASE64_SIGNATURE_ABOVE",
+    "nightly": false
+  }'
+
+## Verification
+
+After upload, verify at: https://apps.nextcloud.com/apps/introvox
+
+The new version should appear within a few minutes.
