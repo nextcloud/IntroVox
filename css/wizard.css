@@ -323,7 +323,6 @@
 /* Modal overlay aanpassing - darker for better focus */
 .shepherd-modal-overlay-container {
   opacity: 0.7 !important;
-  backdrop-filter: blur(3px);
   background: rgba(0, 0, 0, 0.4) !important;
 }
 
