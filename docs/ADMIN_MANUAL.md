@@ -223,7 +223,7 @@ Disabled steps remain in your configuration but are not shown to users. This is 
 #### Title
 - **Required field**
 - Text shown in the step header
-- Supports emoji: `👋 Welcome to Nextcloud`
+- Supports emoji: `👋 Welcome to Nextcloud` (see [Emojipedia](https://emojipedia.org/) for available emojis)
 - Keep concise (1-5 words recommended)
 
 #### Text (HTML)

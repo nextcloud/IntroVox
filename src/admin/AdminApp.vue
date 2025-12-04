@@ -483,6 +483,15 @@ export default {
       steps.value.push(newStep)
       editStep(newStep)
       hasChanges.value = true
+
+      // Scroll to the new step
+      nextTick(() => {
+        const stepElements = document.querySelectorAll('.step-item')
+        const lastStep = stepElements[stepElements.length - 1]
+        if (lastStep) {
+          lastStep.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      })
     }
 
     const markChanged = () => {
