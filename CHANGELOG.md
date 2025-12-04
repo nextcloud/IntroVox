@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-12-04
+
+### Fixed
+- **Auto-scroll to new steps** - When adding a new step in admin interface, the page now automatically scrolls to show the newly created step
+- **Backdrop filter blur removed** - Fixed text readability issues on small UI elements (buttons) by removing the backdrop blur effect from the wizard overlay (PR #10)
+
+### Documentation
+- **Emoji reference link** - Added link to Emojipedia in admin manual for users wanting to use emojis in step titles
+
 ## [1.1.2] - 2025-11-16
 
 ### Fixed
