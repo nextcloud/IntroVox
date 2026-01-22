@@ -442,10 +442,8 @@ export default {
         const response = await axios.get(generateUrl('/apps/introvox/admin/languages'))
         if (response.data.success && response.data.languages) {
           allLanguages.value = response.data.languages
-          console.log('Loaded available languages:', allLanguages.value)
         }
       } catch (error) {
-        console.error('Error loading available languages:', error)
         // Fallback to English only if loading fails
         allLanguages.value = [{ code: 'en', name: 'English', flag: '🇬🇧' }]
         OCP.Toast.warning(trans('Could not load available languages, using English only'))
@@ -458,10 +456,8 @@ export default {
         const response = await axios.get(generateUrl('/apps/introvox/admin/groups'))
         if (response.data.success && response.data.groups) {
           availableGroups.value = response.data.groups
-          console.log('Loaded available groups:', availableGroups.value)
         }
       } catch (error) {
-        console.error('Error loading available groups:', error)
         availableGroups.value = []
       }
     }
@@ -501,16 +497,12 @@ export default {
 
     const initSortable = () => {
       if (!stepsListRef.value) {
-        console.warn('stepsListRef not available yet')
         return
       }
 
       if (stepsListRef.value._sortable) {
-        console.log('Sortable already initialized')
         return
       }
-
-      console.log('Initializing Sortable on:', stepsListRef.value)
 
       stepsListRef.value._sortable = Sortable.create(stepsListRef.value, {
         animation: 150,
@@ -518,12 +510,7 @@ export default {
         ghostClass: 'step-item-ghost',
         dragClass: 'step-item-drag',
         forceFallback: true,
-        onStart: (evt) => {
-          console.log('Drag started:', evt.oldIndex)
-        },
         onEnd: (evt) => {
-          console.log('Drag ended. Old:', evt.oldIndex, 'New:', evt.newIndex)
-
           // Don't do anything if position hasn't changed
           if (evt.oldIndex === evt.newIndex) {
             return
@@ -537,39 +524,29 @@ export default {
           // Replace the entire array to ensure Vue detects the change
           steps.value = newSteps
           hasChanges.value = true
-
-          console.log('Steps reordered, hasChanges:', hasChanges.value)
-          console.log('New order:', steps.value.map(s => s.id))
         }
       })
-
-      console.log('Sortable initialized successfully')
     }
 
     const loadGlobalSettings = async () => {
       try {
         const response = await axios.get(generateUrl('/apps/introvox/admin/settings'))
-        console.log('Loaded global settings from server:', response.data)
         wizardEnabled.value = response.data.enabled === true
-        console.log('wizardEnabled.value set to:', wizardEnabled.value)
         if (response.data.enabledLanguages) {
           enabledLanguages.value = response.data.enabledLanguages
 
           // Set selectedLanguage to first available language if current selection is not enabled
           if (!enabledLanguages.value.includes(selectedLanguage.value)) {
             selectedLanguage.value = enabledLanguages.value[0] || 'en'
-            console.log('Selected language not available, switching to:', selectedLanguage.value)
             // Load steps for the new language
             await loadSteps()
           }
         }
       } catch (error) {
-        console.error('Error loading global settings:', error)
         // Use defaults on error (e.g., 404 on fresh install before app is fully initialized)
         wizardEnabled.value = true
         enabledLanguages.value = ['en']
         selectedLanguage.value = 'en'
-        console.log('Using default settings: wizard enabled, English only')
         OCP.Toast.info(trans('Using default settings. Save your changes to persist them.'))
       }
     }
@@ -579,23 +556,18 @@ export default {
     }
 
     const toggleLanguage = async (langCode, checked) => {
-      console.log('toggleLanguage called:', { langCode, checked, type: typeof checked })
-
       if (isLastLanguage(langCode) && !checked) {
-        console.log('Prevented disabling last language')
         return // Don't allow disabling the last language
       }
 
       if (checked) {
         if (!enabledLanguages.value.includes(langCode)) {
           enabledLanguages.value.push(langCode)
-          console.log('Added language:', langCode, 'Current languages:', enabledLanguages.value)
         }
       } else {
         const index = enabledLanguages.value.indexOf(langCode)
         if (index > -1) {
           enabledLanguages.value.splice(index, 1)
-          console.log('Removed language:', langCode, 'Current languages:', enabledLanguages.value)
         }
       }
 
@@ -625,18 +597,12 @@ export default {
 
     const saveGlobalSettings = async () => {
       try {
-        console.log('Saving global settings:', {
+        await axios.post(generateUrl('/apps/introvox/admin/settings'), {
           enabled: wizardEnabled.value,
           enabledLanguages: enabledLanguages.value
         })
-        const response = await axios.post(generateUrl('/apps/introvox/admin/settings'), {
-          enabled: wizardEnabled.value,
-          enabledLanguages: enabledLanguages.value
-        })
-        console.log('Global settings saved:', response.data)
         OCP.Toast.success(trans('Global settings saved'))
       } catch (error) {
-        console.error('Error saving global settings:', error)
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
         OCP.Toast.error(trans('Error saving global settings') + ': ' + errorMsg)
       }
@@ -653,15 +619,13 @@ export default {
           }
 
           try {
-            const response = await axios.post(generateUrl('/apps/introvox/admin/settings'), {
+            await axios.post(generateUrl('/apps/introvox/admin/settings'), {
               enabled: wizardEnabled.value,
               enabledLanguages: enabledLanguages.value,
               showToAll: true
             })
-            console.log('Wizard version incremented:', response.data)
             OCP.Toast.success(trans('Wizard will be shown to all users on their next login'))
           } catch (error) {
-            console.error('Error triggering show to all:', error)
             const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
             OCP.Toast.error(trans('Error triggering show to all') + ': ' + errorMsg)
           }
@@ -761,16 +725,12 @@ export default {
           if (confirmed) {
             try {
               loading.value = true
-              console.log('Resetting to default for language:', selectedLanguage.value)
-              const response = await axios.post(generateUrl('/apps/introvox/admin/reset'), {
+              await axios.post(generateUrl('/apps/introvox/admin/reset'), {
                 lang: selectedLanguage.value
               })
-              console.log('Reset response:', response.data)
               await loadSteps()
-              console.log('Steps reloaded after reset')
               OCP.Toast.success(trans('Reset to default steps successful!'))
             } catch (error) {
-              console.error('Error resetting to default:', error)
               const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
               OCP.Toast.error(trans('Error resetting') + ': ' + errorMsg)
             } finally {
@@ -806,7 +766,6 @@ export default {
           OCP.Toast.error(trans('Error exporting steps: %s', { error: response.data.error }))
         }
       } catch (error) {
-        console.error('Error exporting steps:', error)
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
         OCP.Toast.error(trans('Error exporting steps') + ': ' + errorMsg)
       } finally {
@@ -853,7 +812,6 @@ export default {
           OCP.Toast.error(trans('Error importing steps: %s', { error: response.data.error }))
         }
       } catch (error) {
-        console.error('Error importing steps:', error)
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
         OCP.Toast.error(trans('Error importing steps') + ': ' + errorMsg)
       } finally {
@@ -892,7 +850,6 @@ export default {
           }
         }
       } catch (error) {
-        console.error('Error loading statistics:', error)
         OCP.Toast.error(trans('Error loading statistics'))
       } finally {
         statisticsLoading.value = false
@@ -910,7 +867,6 @@ export default {
           OCP.Toast.success(enabled ? trans('Telemetry enabled') : trans('Telemetry disabled'))
         }
       } catch (error) {
-        console.error('Error toggling telemetry:', error)
         // Revert the switch
         telemetryEnabled.value = !enabled
         OCP.Toast.error(trans('Error saving telemetry setting'))
@@ -930,7 +886,6 @@ export default {
           OCP.Toast.error(trans('Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
         }
       } catch (error) {
-        console.error('Error sending telemetry:', error)
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
         OCP.Toast.error(trans('Error sending statistics') + ': ' + errorMsg)
       } finally {
@@ -967,14 +922,12 @@ export default {
 
     // Helper function to set language enabled state
     const setLanguageEnabled = (langCode, enabled) => {
-      console.log('setLanguageEnabled called:', { langCode, enabled })
       toggleLanguage(langCode, enabled)
     }
 
     // Watch for stepsListRef to become available and initialize Sortable
     watch(stepsListRef, (newVal) => {
       if (newVal && !loading.value) {
-        console.log('stepsListRef is now available, initializing Sortable')
         nextTick(() => {
           initSortable()
         })
@@ -984,7 +937,6 @@ export default {
     // Watch for loading to become false and initialize Sortable
     watch(loading, (newVal) => {
       if (!newVal && stepsListRef.value) {
-        console.log('Loading finished, initializing Sortable')
         nextTick(() => {
           initSortable()
         })
@@ -994,7 +946,6 @@ export default {
     // Watch for language changes and reload steps
     watch(selectedLanguage, async (newLang, oldLang) => {
       if (newLang !== oldLang && enabledLanguages.value.includes(newLang)) {
-        console.log(`Language changed from ${oldLang} to ${newLang}, reloading steps...`)
         await loadSteps()
       }
     })
@@ -1008,7 +959,6 @@ export default {
       }
 
       if (newVal !== oldVal) {
-        console.log(`Wizard enabled changed from ${oldVal} to ${newVal}, saving...`)
         await saveGlobalSettings()
       }
     })
