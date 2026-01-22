@@ -45,6 +45,9 @@ export default {
         localStorage.setItem(versionKey, serverVersion)
       }
 
+      // Track wizard completion
+      await trackWizardComplete()
+
       // Optionally disable wizard for this user
       if (disableWizard) {
         try {
@@ -58,13 +61,52 @@ export default {
     }
 
     const skipWizard = async (serverVersion) => {
-      // Mark as completed and permanently disable wizard
-      await markCompleted(serverVersion, true)
+      // Track wizard skip
+      await trackWizardSkip()
+      // Mark as completed and permanently disable wizard (but don't track completion again)
+      localStorage.setItem(storageKey, 'true')
+      if (serverVersion) {
+        localStorage.setItem(versionKey, serverVersion)
+      }
+      try {
+        await axios.post(generateUrl('/apps/introvox/personal/settings'), {
+          wizardDisabled: true
+        })
+      } catch (error) {
+        // Failed to auto-disable wizard
+      }
     }
 
     const reset = () => {
       localStorage.removeItem(storageKey)
       localStorage.removeItem(versionKey)
+    }
+
+    // Track wizard start event
+    const trackWizardStart = async () => {
+      try {
+        await axios.post(generateUrl('/apps/introvox/api/wizard/start'))
+      } catch (error) {
+        console.error('Failed to track wizard start:', error)
+      }
+    }
+
+    // Track wizard complete event
+    const trackWizardComplete = async () => {
+      try {
+        await axios.post(generateUrl('/apps/introvox/api/wizard/complete'))
+      } catch (error) {
+        console.error('Failed to track wizard complete:', error)
+      }
+    }
+
+    // Track wizard skip event
+    const trackWizardSkip = async () => {
+      try {
+        await axios.post(generateUrl('/apps/introvox/api/wizard/skip'))
+      } catch (error) {
+        console.error('Failed to track wizard skip:', error)
+      }
     }
 
     const initTour = async () => {
@@ -224,6 +266,8 @@ export default {
         await initTour()
       }
       if (tour) {
+        // Track wizard start
+        await trackWizardStart()
         tour.start()
       }
     }

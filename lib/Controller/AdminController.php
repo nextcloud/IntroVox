@@ -8,6 +8,7 @@ use OCP\IRequest;
 use OCP\IL10N;
 use OCP\IUserManager;
 use OCP\IGroupManager;
+use OCA\IntroVox\Service\TelemetryService;
 
 class AdminController extends Controller {
     protected $config;
@@ -15,6 +16,7 @@ class AdminController extends Controller {
     protected $l10n;
     protected $userManager;
     protected $groupManager;
+    protected $telemetryService;
 
     public function __construct(
         $appName,
@@ -22,7 +24,8 @@ class AdminController extends Controller {
         IConfig $config,
         IL10N $l10n,
         IUserManager $userManager,
-        IGroupManager $groupManager
+        IGroupManager $groupManager,
+        TelemetryService $telemetryService
     ) {
         parent::__construct($appName, $request);
         $this->config = $config;
@@ -30,6 +33,7 @@ class AdminController extends Controller {
         $this->l10n = $l10n;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
+        $this->telemetryService = $telemetryService;
     }
 
     /**
@@ -610,6 +614,95 @@ class AdminController extends Controller {
                 'success' => true,
                 'groups' => $result
             ]);
+        } catch (\Exception $e) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get statistics for admin panel
+     * @NoCSRFRequired
+     */
+    public function getStatistics(): JSONResponse {
+        try {
+            $statistics = $this->telemetryService->getStatistics();
+            $telemetryStatus = $this->telemetryService->getStatus();
+
+            return new JSONResponse([
+                'success' => true,
+                'statistics' => $statistics,
+                'telemetry' => $telemetryStatus
+            ]);
+        } catch (\Exception $e) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Toggle telemetry enabled/disabled
+     * @NoCSRFRequired
+     */
+    public function toggleTelemetry(): JSONResponse {
+        try {
+            $data = $this->request->getParams();
+            $enabled = isset($data['enabled']) ? $data['enabled'] : false;
+
+            // Convert to boolean if it's a string
+            if (is_string($enabled)) {
+                $enabled = $enabled === 'true' || $enabled === '1';
+            }
+
+            $this->telemetryService->setEnabled($enabled);
+
+            return new JSONResponse([
+                'success' => true,
+                'enabled' => $enabled,
+                'message' => $enabled ? 'Telemetry enabled' : 'Telemetry disabled'
+            ]);
+        } catch (\Exception $e) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Manually trigger telemetry send
+     * @NoCSRFRequired
+     */
+    public function sendTelemetryNow(): JSONResponse {
+        try {
+            // Temporarily enable telemetry for this request if it's disabled
+            $wasEnabled = $this->telemetryService->isEnabled();
+            if (!$wasEnabled) {
+                $this->telemetryService->setEnabled(true);
+            }
+
+            $success = $this->telemetryService->sendReport();
+
+            // Restore original state
+            if (!$wasEnabled) {
+                $this->telemetryService->setEnabled(false);
+            }
+
+            if ($success) {
+                return new JSONResponse([
+                    'success' => true,
+                    'message' => 'Telemetry report sent successfully'
+                ]);
+            } else {
+                return new JSONResponse([
+                    'success' => false,
+                    'error' => 'Failed to send telemetry report'
+                ], 500);
+            }
         } catch (\Exception $e) {
             return new JSONResponse([
                 'success' => false,

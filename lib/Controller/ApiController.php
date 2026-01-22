@@ -8,6 +8,7 @@ use OCP\IRequest;
 use OCP\IL10N;
 use OCP\IGroupManager;
 use OCP\IUserSession;
+use OCA\IntroVox\Service\TelemetryService;
 
 class ApiController extends Controller {
     protected $config;
@@ -15,6 +16,7 @@ class ApiController extends Controller {
     protected $l10n;
     protected $groupManager;
     protected $userSession;
+    protected $telemetryService;
 
     public function __construct(
         $appName,
@@ -22,7 +24,8 @@ class ApiController extends Controller {
         IConfig $config,
         IL10N $l10n,
         IGroupManager $groupManager,
-        IUserSession $userSession
+        IUserSession $userSession,
+        TelemetryService $telemetryService
     ) {
         parent::__construct($appName, $request);
         $this->config = $config;
@@ -30,6 +33,7 @@ class ApiController extends Controller {
         $this->l10n = $l10n;
         $this->groupManager = $groupManager;
         $this->userSession = $userSession;
+        $this->telemetryService = $telemetryService;
     }
 
     /**
@@ -163,6 +167,69 @@ class ApiController extends Controller {
             'enabled' => $enabled === 'true',
             'language' => $baseLang,
             'version' => $wizardVersion
+        ]);
+    }
+
+    /**
+     * Track wizard start event
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function trackWizardStart(): JSONResponse {
+        $user = $this->userSession->getUser();
+        if (!$user) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => 'User not logged in'
+            ], 401);
+        }
+
+        $this->telemetryService->markUserStarted($user->getUID());
+
+        return new JSONResponse([
+            'success' => true
+        ]);
+    }
+
+    /**
+     * Track wizard complete event
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function trackWizardComplete(): JSONResponse {
+        $user = $this->userSession->getUser();
+        if (!$user) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => 'User not logged in'
+            ], 401);
+        }
+
+        $this->telemetryService->markUserCompleted($user->getUID());
+
+        return new JSONResponse([
+            'success' => true
+        ]);
+    }
+
+    /**
+     * Track wizard skip event
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function trackWizardSkip(): JSONResponse {
+        $user = $this->userSession->getUser();
+        if (!$user) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => 'User not logged in'
+            ], 401);
+        }
+
+        $this->telemetryService->markUserSkipped($user->getUID());
+
+        return new JSONResponse([
+            'success' => true
         ]);
     }
 }

@@ -17,6 +17,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Perfect for role-based onboarding (e.g., different steps for admins vs regular users)
 - **Groups API endpoint** - New `/admin/groups` endpoint to fetch available Nextcloud groups
 - **Automatic migration** - Existing steps automatically get `visibleToGroups: []` (visible to all)
+- **Admin statistics dashboard** - New "Statistics" tab in admin interface
+  - Wizard usage metrics: users started, users completed, times skipped, completion rate
+  - Instance information: total users, active users (30d), total steps, enabled languages
+  - Real-time statistics loaded from server
+- **Anonymous telemetry system** - Optional anonymous usage statistics
+  - Opt-in telemetry sharing with developers (disabled by default)
+  - Sends anonymous data to `licenses.voxcloud.nl/api/telemetry/introvox`
+  - Instance identified by SHA-256 hash (never sends actual URL)
+  - Collects: user counts, step counts, wizard usage, NC/PHP versions
+  - Does NOT collect: server URL, usernames, personal data, step content
+  - Manual "Send now" button for immediate sending
+  - Background job runs every 24 hours (with random jitter) when enabled
+- **Wizard tracking** - Track wizard start, completion, and skip events per user
+  - New user preferences: `wizard_started`, `wizard_completed` timestamps
+  - Aggregated statistics visible in admin dashboard
+  - Privacy-friendly: only totals shown, no individual user tracking visible
+
+### Changed
+- **Admin interface restructured with tabs** - Improved organization
+  - Tab 1: "Settings" - Global settings (wizard enabled, languages, show to all)
+  - Tab 2: "Steps" - Step editor (language selector, drag-drop steps, group visibility)
+  - Tab 3: "Statistics" - Usage metrics and telemetry settings
+- **Improved admin UI navigation** - Clean tab-based interface with visual tab indicators
 
 ### Technical
 - Added `IGroupManager` and `IUserSession` dependencies to ApiController and AdminController
@@ -24,6 +47,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Steps without `visibleToGroups` or with empty array are visible to everyone
 - NcSelect component used for group selection with multi-select support
 - Export/import functionality automatically includes group visibility settings
+- New `TelemetryService` class for collecting and sending anonymous statistics
+- New `TelemetryJob` background job (extends `TimedJob`) for scheduled telemetry
+- New API endpoints:
+  - `GET /admin/statistics` - Fetch statistics for admin dashboard
+  - `POST /admin/telemetry` - Enable/disable telemetry
+  - `POST /admin/telemetry/send` - Manual telemetry send
+  - `POST /api/wizard/start` - Track wizard start event
+  - `POST /api/wizard/complete` - Track wizard completion event
+  - `POST /api/wizard/skip` - Track wizard skip event
+- Background job registered in `info.xml` for automatic execution
+- 35+ new translation keys added to all 6 language files (EN, NL, DE, DA, FR, SV)
 
 ## [1.1.3] - 2025-12-04
 

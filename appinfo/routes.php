@@ -15,11 +15,21 @@ return [
         ['name' => 'admin#getAvailableLanguagesWithMetadata', 'url' => '/admin/languages', 'verb' => 'GET'],
         ['name' => 'admin#getGroups', 'url' => '/admin/groups', 'verb' => 'GET'],
 
+        // Admin Statistics/Telemetry API routes
+        ['name' => 'admin#getStatistics', 'url' => '/admin/statistics', 'verb' => 'GET'],
+        ['name' => 'admin#toggleTelemetry', 'url' => '/admin/telemetry', 'verb' => 'POST'],
+        ['name' => 'admin#sendTelemetryNow', 'url' => '/admin/telemetry/send', 'verb' => 'POST'],
+
         // Personal API routes
         ['name' => 'personal#getSettings', 'url' => '/personal/settings', 'verb' => 'GET'],
         ['name' => 'personal#saveSettings', 'url' => '/personal/settings', 'verb' => 'POST'],
 
         // Public API routes
         ['name' => 'api#getWizardSteps', 'url' => '/api/steps', 'verb' => 'GET'],
+
+        // Wizard tracking API routes
+        ['name' => 'api#trackWizardStart', 'url' => '/api/wizard/start', 'verb' => 'POST'],
+        ['name' => 'api#trackWizardComplete', 'url' => '/api/wizard/complete', 'verb' => 'POST'],
+        ['name' => 'api#trackWizardSkip', 'url' => '/api/wizard/skip', 'verb' => 'POST'],
     ]
 ];

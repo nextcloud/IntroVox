@@ -1,6 +1,33 @@
 <template>
   <div class="introvox-admin">
-    <NcSettingsSection :name="t('Global settings')" :description="t('Configure wizard availability and languages')">
+    <!-- Tab Navigation - IntraVox style -->
+    <div class="tab-navigation">
+      <button
+        :class="['tab-button', { active: activeTab === 'settings' }]"
+        @click="activeTab = 'settings'">
+        <Cog :size="16" />
+        {{ t('Settings') }}
+      </button>
+      <button
+        :class="['tab-button', { active: activeTab === 'steps' }]"
+        @click="activeTab = 'steps'">
+        <FormatListNumbered :size="16" />
+        {{ t('Steps') }}
+      </button>
+      <button
+        :class="['tab-button', { active: activeTab === 'statistics' }]"
+        @click="activeTab = 'statistics'">
+        <ChartBox :size="16" />
+        {{ t('Statistics') }}
+      </button>
+    </div>
+
+    <!-- Tab: Instellingen (Settings) -->
+    <NcSettingsSection
+      v-if="activeTab === 'settings'"
+      :name="t('Global settings')"
+      :description="t('Configure wizard availability and languages')"
+    >
       <NcCheckboxRadioSwitch
         v-model="wizardEnabled"
         type="switch"
@@ -49,7 +76,12 @@
       </div>
     </NcSettingsSection>
 
-    <NcSettingsSection :name="t('Edit steps')" :description="t('Manage wizard steps for each language')">
+    <!-- Tab: Stappen (Steps) -->
+    <NcSettingsSection
+      v-if="activeTab === 'steps'"
+      :name="t('Edit steps')"
+      :description="t('Manage wizard steps for each language')"
+    >
       <div class="language-selector-row">
         <NcSelect
           v-model="selectedLanguageObj"
@@ -93,11 +125,11 @@
       </div>
     </NcSettingsSection>
 
-    <div v-if="loading" class="loading">
+    <div v-if="activeTab === 'steps' && loading" class="loading">
       {{ t('Loading...') }}
     </div>
 
-    <div v-else ref="stepsListRef" class="steps-list">
+    <div v-else-if="activeTab === 'steps'" ref="stepsListRef" class="steps-list">
       <div
         v-for="(step, index) in steps"
         :key="step.id"
@@ -221,6 +253,108 @@
       </div>
     </div>
 
+    <!-- Tab: Statistieken (Statistics) -->
+    <NcSettingsSection
+      v-if="activeTab === 'statistics'"
+      :name="t('Statistics')"
+      :description="t('Wizard usage statistics and telemetry settings')"
+    >
+      <div v-if="statisticsLoading" class="loading">
+        {{ t('Loading...') }}
+      </div>
+
+      <div v-else class="statistics-content">
+        <!-- Wizard Statistics -->
+        <h3 class="section-title">📊 {{ t('Wizard usage') }}</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value">{{ statistics.usersStartedWizard || 0 }}</span>
+            <span class="stat-label">{{ t('Users started') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ statistics.usersCompletedWizard || 0 }}</span>
+            <span class="stat-label">{{ t('Users completed') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ statistics.wizardSkippedCount || 0 }}</span>
+            <span class="stat-label">{{ t('Times skipped') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ completionRate }}%</span>
+            <span class="stat-label">{{ t('Completion rate') }}</span>
+          </div>
+        </div>
+
+        <!-- Instance Statistics -->
+        <h3 class="section-title">🖥️ {{ t('Instance information') }}</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value">{{ statistics.totalUsers || 0 }}</span>
+            <span class="stat-label">{{ t('Total users') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ statistics.activeUsers30d || 0 }}</span>
+            <span class="stat-label">{{ t('Active users (30d)') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ totalStepsCount }}</span>
+            <span class="stat-label">{{ t('Total steps') }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ (statistics.enabledLanguages || []).length }}</span>
+            <span class="stat-label">{{ t('Languages enabled') }}</span>
+          </div>
+        </div>
+
+        <!-- Telemetry Settings - IntraVox style -->
+        <h3 class="section-title">{{ t('Anonymous Usage Statistics') }}</h3>
+        <p class="settings-hint">
+          {{ t('Help improve IntroVox by sharing anonymous usage statistics.') }}
+        </p>
+
+        <div class="telemetry-settings">
+          <div class="engagement-option">
+            <NcCheckboxRadioSwitch
+              type="switch"
+              :model-value="telemetryEnabled"
+              @update:model-value="toggleTelemetry"
+            >
+              <div class="option-info">
+                <span class="option-label">{{ t('Share anonymous usage statistics') }}</span>
+                <span class="option-desc">{{ t('We collect: step counts per language, user counts, and version info (IntroVox, Nextcloud, PHP). No personal data or step content is shared.') }}</span>
+              </div>
+            </NcCheckboxRadioSwitch>
+          </div>
+
+          <div v-if="telemetryEnabled" class="telemetry-info">
+            <NcNoteCard type="success">
+              <p>{{ t('Thank you for helping improve IntroVox!') }}</p>
+              <p v-if="statistics.lastTelemetrySent">
+                {{ t('Last report sent:') }} {{ formatDate(statistics.lastTelemetrySent) }}
+              </p>
+            </NcNoteCard>
+          </div>
+
+          <div class="telemetry-details">
+            <h4>{{ t('What we collect:') }}</h4>
+            <ul>
+              <li>{{ t('Step counts per language (e.g., EN: 8, NL: 5)') }}</li>
+              <li>{{ t('Total user count and active users') }}</li>
+              <li>{{ t('IntroVox, Nextcloud, and PHP version numbers') }}</li>
+              <li>{{ t('A unique hash of your instance URL (privacy-friendly identifier)') }}</li>
+            </ul>
+            <h4>{{ t('What we never collect:') }}</h4>
+            <ul class="not-collected">
+              <li>{{ t('Step content or titles') }}</li>
+              <li>{{ t('User names or email addresses') }}</li>
+              <li>{{ t('Your actual server URL') }}</li>
+              <li>{{ t('Any personal or sensitive data') }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </NcSettingsSection>
+
     <div v-if="message" class="message" :class="message.type">
       {{ message.text }}
     </div>
@@ -234,7 +368,12 @@ import { generateUrl } from '@nextcloud/router'
 import { translate } from '@nextcloud/l10n'
 import Sortable from 'sortablejs'
 
-import { NcSettingsSection, NcCheckboxRadioSwitch, NcSelect, NcButton } from '@nextcloud/vue'
+import { NcSettingsSection, NcCheckboxRadioSwitch, NcSelect, NcButton, NcNoteCard } from '@nextcloud/vue'
+
+// Material Design Icons - same as IntraVox
+import Cog from 'vue-material-design-icons/Cog.vue'
+import FormatListNumbered from 'vue-material-design-icons/FormatListNumbered.vue'
+import ChartBox from 'vue-material-design-icons/ChartBox.vue'
 
 export default {
   name: 'AdminApp',
@@ -242,7 +381,11 @@ export default {
     NcSettingsSection,
     NcCheckboxRadioSwitch,
     NcSelect,
-    NcButton
+    NcButton,
+    NcNoteCard,
+    Cog,
+    FormatListNumbered,
+    ChartBox
   },
   setup() {
     const steps = ref([])
@@ -259,6 +402,29 @@ export default {
     const fileInputRef = ref(null)
     const allLanguages = ref([])
     const availableGroups = ref([])
+
+    // Tab navigation
+    const activeTab = ref('settings')
+
+    // Statistics
+    const statistics = ref({})
+    const statisticsLoading = ref(false)
+    const telemetryEnabled = ref(false)
+    const sendingTelemetry = ref(false)
+
+    // Computed completion rate
+    const completionRate = computed(() => {
+      const started = statistics.value.usersStartedWizard || 0
+      const completed = statistics.value.usersCompletedWizard || 0
+      if (started === 0) return 0
+      return Math.round((completed / started) * 100)
+    })
+
+    // Computed total steps count (sum of all languages)
+    const totalStepsCount = computed(() => {
+      if (!statistics.value.totalSteps) return 0
+      return Object.values(statistics.value.totalSteps).reduce((a, b) => a + b, 0)
+    })
 
     // Computed property for NcSelect
     const selectedLanguageObj = computed({
@@ -711,6 +877,74 @@ export default {
       return translate('introvox', key, vars)
     }
 
+    // Load statistics from backend
+    const loadStatistics = async () => {
+      try {
+        statisticsLoading.value = true
+        const response = await axios.get(generateUrl('/apps/introvox/admin/statistics'))
+        if (response.data.success) {
+          statistics.value = response.data.statistics
+          // Telemetry enabled status comes from telemetry object, not statistics
+          telemetryEnabled.value = response.data.telemetry?.enabled || false
+          // Store last sent time in statistics for display
+          if (response.data.telemetry?.lastReport) {
+            statistics.value.lastTelemetrySent = response.data.telemetry.lastReport
+          }
+        }
+      } catch (error) {
+        console.error('Error loading statistics:', error)
+        OCP.Toast.error(trans('Error loading statistics'))
+      } finally {
+        statisticsLoading.value = false
+      }
+    }
+
+    // Toggle telemetry setting
+    const toggleTelemetry = async (enabled) => {
+      try {
+        const response = await axios.post(generateUrl('/apps/introvox/admin/telemetry'), {
+          enabled: enabled
+        })
+        if (response.data.success) {
+          telemetryEnabled.value = enabled
+          OCP.Toast.success(enabled ? trans('Telemetry enabled') : trans('Telemetry disabled'))
+        }
+      } catch (error) {
+        console.error('Error toggling telemetry:', error)
+        // Revert the switch
+        telemetryEnabled.value = !enabled
+        OCP.Toast.error(trans('Error saving telemetry setting'))
+      }
+    }
+
+    // Send telemetry now
+    const sendTelemetryNow = async () => {
+      try {
+        sendingTelemetry.value = true
+        const response = await axios.post(generateUrl('/apps/introvox/admin/telemetry/send'))
+        if (response.data.success) {
+          OCP.Toast.success(trans('Statistics sent successfully'))
+          // Reload statistics to update last sent time
+          await loadStatistics()
+        } else {
+          OCP.Toast.error(trans('Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
+        }
+      } catch (error) {
+        console.error('Error sending telemetry:', error)
+        const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+        OCP.Toast.error(trans('Error sending statistics') + ': ' + errorMsg)
+      } finally {
+        sendingTelemetry.value = false
+      }
+    }
+
+    // Format date helper
+    const formatDate = (timestamp) => {
+      if (!timestamp) return trans('Never')
+      const date = new Date(timestamp * 1000)
+      return date.toLocaleString()
+    }
+
     // Helper function to format group names for display
     const formatGroupNames = (groupIds) => {
       if (!groupIds || groupIds.length === 0) return trans('All users')
@@ -779,6 +1013,13 @@ export default {
       }
     })
 
+    // Watch for tab changes and load statistics when statistics tab is selected
+    watch(activeTab, async (newTab) => {
+      if (newTab === 'statistics' && Object.keys(statistics.value).length === 0) {
+        await loadStatistics()
+      }
+    })
+
     // Load global settings first, then steps (loadGlobalSettings will call loadSteps if needed)
     const initializeAdmin = async () => {
       await loadAvailableLanguages()
@@ -831,6 +1072,19 @@ export default {
       handleImportFile,
       fileInputRef,
       markChanged,
+      // Tab navigation
+      activeTab,
+      // Statistics
+      statistics,
+      statisticsLoading,
+      telemetryEnabled,
+      sendingTelemetry,
+      completionRate,
+      totalStepsCount,
+      loadStatistics,
+      toggleTelemetry,
+      sendTelemetryNow,
+      formatDate,
       t: trans
     }
   }
@@ -1289,4 +1543,193 @@ body[data-theme="dark"] .language-badge {
 }
 
 /* Removed old custom section styles - using NcSettingsSection now */
+
+/* Tab Navigation - IntraVox style */
+.tab-navigation {
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-lighter);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover:not(.active) {
+  background: var(--color-background-hover);
+}
+
+.tab-button.active {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-element-light);
+}
+
+/* Statistics Section */
+.statistics-content {
+  padding: 0;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 24px 0 16px 0;
+  color: var(--color-main-text);
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--color-background-dark);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large, 10px);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-primary-element);
+  line-height: 1.2;
+}
+
+.stat-label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-maxcontrast);
+  margin-top: 8px;
+}
+
+/* Telemetry section - IntraVox style */
+.telemetry-settings {
+  margin-top: 20px;
+}
+
+.engagement-option {
+  margin-bottom: 16px;
+}
+
+.option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.option-label {
+  font-weight: 600;
+}
+
+.option-desc {
+  font-size: 13px;
+  color: var(--color-text-maxcontrast);
+}
+
+.telemetry-info {
+  margin-top: 16px;
+}
+
+.telemetry-info p {
+  margin: 0;
+}
+
+.telemetry-info p + p {
+  margin-top: 8px;
+}
+
+.telemetry-details {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--color-background-hover);
+  border-radius: var(--border-radius-large);
+}
+
+.telemetry-details h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-main-text);
+}
+
+.telemetry-details h4:not(:first-child) {
+  margin-top: 20px;
+}
+
+.telemetry-details ul {
+  margin: 0;
+  padding-left: 24px;
+  color: var(--color-text-maxcontrast);
+}
+
+.telemetry-details ul li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.telemetry-details ul.not-collected {
+  list-style: none;
+  padding-left: 0;
+  color: var(--color-main-text);
+}
+
+.telemetry-details ul.not-collected li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.telemetry-details ul.not-collected li::before {
+  content: '✓';
+  color: var(--color-success-text, #2d7b43);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .telemetry-details {
+    padding: 12px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
 </style>

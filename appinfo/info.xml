@@ -13,7 +13,10 @@
 * Import/export functionality for easy tour configuration sharing
 * Global enable/disable control for administrators
 * Language-specific tour availability management
+* Group-based visibility for individual steps
 * Personal settings for users to restart or permanently disable the tour
+* Admin statistics dashboard with wizard usage metrics
+* Optional anonymous telemetry reporting
 * Automatically adapts to your Nextcloud theme (light, dark, high contrast)
 * Privacy-focused: tour completion status stored locally
 
@@ -25,7 +28,7 @@
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <licence>agpl</licence>
     <author mail="rik@shalution.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>
@@ -43,6 +46,9 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     <dependencies>
         <nextcloud min-version="32" max-version="32"/>
     </dependencies>
+    <background-jobs>
+        <job>OCA\IntroVox\BackgroundJob\TelemetryJob</job>
+    </background-jobs>
     <settings>
         <admin>OCA\IntroVox\Settings\AdminSettings</admin>
         <admin-section>OCA\IntroVox\Settings\AdminSection</admin-section>
