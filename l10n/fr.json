@@ -138,6 +138,11 @@
         "Successfully imported %s steps for language %s": "Importation réussie de %s étapes pour la langue %s",
         "Error importing steps: %s": "Erreur lors de l'importation des étapes : %s",
         "Error importing steps": "Erreur lors de l'importation des étapes",
-        "Saving...": "Enregistrement..."
+        "Saving...": "Enregistrement...",
+        "Visible to groups": "Visible pour les groupes",
+        "All users (no restriction)": "Tous les utilisateurs (sans restriction)",
+        "Leave empty to show to all users, or select groups to restrict visibility": "Laisser vide pour afficher à tous les utilisateurs, ou sélectionner des groupes pour restreindre la visibilité",
+        "Visible to": "Visible pour",
+        "All users": "Tous les utilisateurs"
     }, "pluralForm" :"nplurals=2; plural=(n > 1);"
 }
