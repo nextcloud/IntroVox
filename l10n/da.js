@@ -140,6 +140,11 @@ OC.L10N.register(
     "Successfully imported %s steps for language %s" : "Succesfuldt importeret %s trin for sprog %s",
     "Error importing steps: %s" : "Fejl ved import af trin: %s",
     "Error importing steps" : "Fejl ved import af trin",
-    "Saving..." : "Gemmer..."
+    "Saving..." : "Gemmer...",
+    "Visible to groups" : "Synlig for grupper",
+    "All users (no restriction)" : "Alle brugere (ingen begrænsning)",
+    "Leave empty to show to all users, or select groups to restrict visibility" : "Lad stå tom for at vise til alle brugere, eller vælg grupper for at begrænse synlighed",
+    "Visible to" : "Synlig for",
+    "All users" : "Alle brugere"
 },
 "nplurals=2; plural=(n != 1);");

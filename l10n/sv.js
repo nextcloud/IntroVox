@@ -140,6 +140,11 @@ OC.L10N.register(
     "Successfully imported %s steps for language %s" : "Framgångsrikt importerat %s steg för språk %s",
     "Error importing steps: %s" : "Fel vid import av steg: %s",
     "Error importing steps" : "Fel vid import av steg",
-    "Saving..." : "Sparar..."
+    "Saving..." : "Sparar...",
+    "Visible to groups" : "Synlig för grupper",
+    "All users (no restriction)" : "Alla användare (ingen begränsning)",
+    "Leave empty to show to all users, or select groups to restrict visibility" : "Lämna tom för att visa för alla användare, eller välj grupper för att begränsa synlighet",
+    "Visible to" : "Synlig för",
+    "All users" : "Alla användare"
 },
 "nplurals=2; plural=(n != 1);");

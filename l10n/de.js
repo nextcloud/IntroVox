@@ -140,6 +140,11 @@ OC.L10N.register(
     "Successfully imported %s steps for language %s" : "Erfolgreich %s Schritte für Sprache %s importiert",
     "Error importing steps: %s" : "Fehler beim Importieren der Schritte: %s",
     "Error importing steps" : "Fehler beim Importieren der Schritte",
-    "Saving..." : "Speichern..."
+    "Saving..." : "Speichern...",
+    "Visible to groups" : "Sichtbar für Gruppen",
+    "All users (no restriction)" : "Alle Benutzer (keine Einschränkung)",
+    "Leave empty to show to all users, or select groups to restrict visibility" : "Leer lassen, um allen Benutzern anzuzeigen, oder Gruppen auswählen, um die Sichtbarkeit einzuschränken",
+    "Visible to" : "Sichtbar für",
+    "All users" : "Alle Benutzer"
 },
 "nplurals=2; plural=(n != 1);");
