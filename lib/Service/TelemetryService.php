@@ -105,14 +105,12 @@ class TelemetryService {
                 return true;
             }
 
-            $this->logger->warning('TelemetryService: Report failed', [
-                'statusCode' => $statusCode
-            ]);
+            // Silent fail - server may not be ready yet
+            // TODO v1.3: Add proper error logging once server is stable
             return false;
         } catch (\Exception $e) {
-            $this->logger->warning('TelemetryService: Report failed', [
-                'error' => $e->getMessage()
-            ]);
+            // Silent fail - server may not be available
+            // TODO v1.3: Add proper error logging once server is stable
             return false;
         }
     }
