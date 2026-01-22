@@ -13,6 +13,7 @@ return [
         ['name' => 'admin#getSettings', 'url' => '/admin/settings', 'verb' => 'GET'],
         ['name' => 'admin#saveSettings', 'url' => '/admin/settings', 'verb' => 'POST'],
         ['name' => 'admin#getAvailableLanguagesWithMetadata', 'url' => '/admin/languages', 'verb' => 'GET'],
+        ['name' => 'admin#getGroups', 'url' => '/admin/groups', 'verb' => 'GET'],
 
         // Personal API routes
         ['name' => 'personal#getSettings', 'url' => '/personal/settings', 'verb' => 'GET'],

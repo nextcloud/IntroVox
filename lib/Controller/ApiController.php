@@ -6,22 +6,30 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IL10N;
+use OCP\IGroupManager;
+use OCP\IUserSession;
 
 class ApiController extends Controller {
     protected $config;
     protected $appName;
     protected $l10n;
+    protected $groupManager;
+    protected $userSession;
 
     public function __construct(
         $appName,
         IRequest $request,
         IConfig $config,
-        IL10N $l10n
+        IL10N $l10n,
+        IGroupManager $groupManager,
+        IUserSession $userSession
     ) {
         parent::__construct($appName, $request);
         $this->config = $config;
         $this->appName = $appName;
         $this->l10n = $l10n;
+        $this->groupManager = $groupManager;
+        $this->userSession = $userSession;
     }
 
     /**
@@ -131,6 +139,21 @@ class ApiController extends Controller {
         }
 
         $steps = json_decode($stepsJson, true);
+
+        // Filter steps by group visibility
+        $user = $this->userSession->getUser();
+        if ($user) {
+            $userGroups = $this->groupManager->getUserGroupIds($user);
+            $steps = array_filter($steps, function($step) use ($userGroups) {
+                // If no groups specified or empty array, visible to all
+                if (!isset($step['visibleToGroups']) || empty($step['visibleToGroups'])) {
+                    return true;
+                }
+                // Check if user is in any of the allowed groups
+                return !empty(array_intersect($step['visibleToGroups'], $userGroups));
+            });
+            $steps = array_values($steps); // Re-index array
+        }
 
         // Return the saved steps (which could be reordered defaults or custom steps)
         return new JSONResponse([

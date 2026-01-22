@@ -1,6 +1,6 @@
 # IntroVox - User Manual
 
-**Version 1.1.0** | Interactive Onboarding Tour for Nextcloud
+**Version 1.2.0** | Interactive Onboarding Tour for Nextcloud
 
 ---
 
@@ -289,8 +289,9 @@ IntroVox works great on mobile devices!
 - The Nextcloud app for that step isn't installed
 - Your administrator disabled certain steps
 - Some UI elements might not be visible in your view
+- The step is only visible to certain user groups (your administrator may have configured role-based steps)
 
-**This is normal** - the tour automatically skips steps that aren't relevant to your setup.
+**This is normal** - the tour automatically skips steps that aren't relevant to your setup or your user role.
 
 ### Text Not in My Language
 
@@ -354,7 +355,7 @@ A: Only until you complete it or choose "Skip and don't show again". After that,
 ### Content Questions
 
 **Q: Why don't I see all the features mentioned in the tour?**
-A: Your Nextcloud instance might not have all apps installed. The tour only shows features available to you.
+A: There are several reasons: your Nextcloud instance might not have all apps installed, or your administrator may have configured certain steps to only show to specific user groups (e.g., admin-specific steps for administrators only). The tour automatically shows only the steps relevant to you.
 
 **Q: Can I customize what the tour shows me?**
 A: No, only administrators can customize the tour content. However, you can disable it if it's not relevant to you.
@@ -447,7 +448,7 @@ Your Nextcloud administrator can:
 **Developed by:** Rik Dekker (rik@shalution.nl)
 **Initial idea and feedback:** SURF
 **License:** GNU AGPL v3
-**Version:** 1.1.0
+**Version:** 1.2.0
 
 IntroVox is designed to make your first Nextcloud experience smooth and educational. We hope it helps you feel at home in your new cloud workspace!
 
@@ -476,6 +477,6 @@ IntroVox is designed to make your first Nextcloud experience smooth and educatio
 
 ---
 
-*Last updated: November 15, 2025 (v1.1.0)*
+*Last updated: January 22, 2026 (v1.2.0)*
 
 **Enjoy your Nextcloud experience! 🚀**

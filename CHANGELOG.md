@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-22
+
+### Added
+- **Group-based step visibility** - Control which user groups can see specific wizard steps
+  - New "Visible to groups" multi-select dropdown in step editor
+  - Select one or more Nextcloud groups per step
+  - Empty selection (default) means visible to all users
+  - Steps are filtered on the backend before being sent to users
+  - Users only see steps they have access to based on their group membership
+  - Perfect for role-based onboarding (e.g., different steps for admins vs regular users)
+- **Groups API endpoint** - New `/admin/groups` endpoint to fetch available Nextcloud groups
+- **Automatic migration** - Existing steps automatically get `visibleToGroups: []` (visible to all)
+
+### Technical
+- Added `IGroupManager` and `IUserSession` dependencies to ApiController and AdminController
+- Group filtering happens server-side in `ApiController::getWizardSteps()` for security
+- Steps without `visibleToGroups` or with empty array are visible to everyone
+- NcSelect component used for group selection with multi-select support
+- Export/import functionality automatically includes group visibility settings
+
 ## [1.1.3] - 2025-12-04
 
 ### Fixed

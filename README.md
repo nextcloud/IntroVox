@@ -26,6 +26,7 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 
 ### ⚙️ Admin Configuration
 - **Full CRUD Interface** - Add, edit, delete, and reorder tour steps
+- **Group-Based Visibility** - Show specific steps only to certain user groups (role-based onboarding)
 - **Import/Export** - Share configurations, collaborate with content creators
 - **Language Management** - Enable/disable languages, manage per-language steps
 - **Global Controls** - Enable/disable wizard, force show to all users
@@ -117,6 +118,7 @@ After logging in, IntroVox will automatically guide you through Nextcloud's main
 
 **Key Admin Features:**
 - **Language Management** - Select which languages are available
+- **Group-Based Visibility** - Restrict steps to specific user groups (e.g., admin-only steps)
 - **Import/Export** - Share configurations or work with content creators
 - **Per-Language Steps** - Customize wizard content for each language
 - **Global Controls** - Enable/disable wizard, force show to all users

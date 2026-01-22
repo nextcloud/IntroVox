@@ -1,6 +1,6 @@
 # IntroVox - Administrator Manual
 
-**Version 1.0.8** | Interactive Onboarding Tour for Nextcloud
+**Version 1.2.0** | Interactive Onboarding Tour for Nextcloud
 
 ---
 
@@ -29,6 +29,7 @@ IntroVox is a customizable onboarding wizard for Nextcloud that helps new users 
 - **Language support** - Choose which languages are available for the wizard
 - **Per-language customization** - Configure different wizard steps for each language
 - **Step management** - Enable, disable, reorder, edit, or remove individual steps
+- **Group-based visibility** - Show specific steps only to certain user groups (NEW in v1.2.0)
 - **User preferences** - Let users permanently disable the wizard if desired
 
 ---
@@ -155,6 +156,7 @@ When a user logs in, IntroVox:
    - **Title** - Step heading
    - **Step ID** - Unique identifier
    - **Enable/Disable toggle** (✓/✗)
+   - **Visible to** - Which groups can see this step (or "All users")
    - **Edit button** (✏️)
    - **Delete button** (🗑️)
 
@@ -278,6 +280,19 @@ Disabled steps remain in your configuration but are not shown to users. This is 
 - **Top**: Best for bottom navigation
 - **Bottom**: Best for top navigation (header, search)
 
+#### Visible to Groups (NEW in v1.2.0)
+- **Optional field**
+- Multi-select dropdown showing all Nextcloud groups
+- Leave empty for step to be visible to **all users**
+- Select one or more groups to restrict visibility
+
+**Use cases:**
+- **Administrators group**: Show admin-specific steps only to admins
+- **Training groups**: Different onboarding for different departments
+- **Pilot groups**: Test new steps with a subset of users first
+
+**Important:** Group filtering happens on the server side. Users cannot see hidden steps even via browser developer tools.
+
 ---
 
 ## Import & Export
@@ -293,6 +308,7 @@ Disabled steps remain in your configuration but are not shown to users. This is 
 **What's included:**
 - All steps for the selected language
 - Step configuration (title, text, position, enabled status)
+- Group visibility settings (visibleToGroups)
 - Language code
 
 ### Importing Steps
@@ -321,11 +337,23 @@ Disabled steps remain in your configuration but are not shown to users. This is 
       "text": "<p>Nice to have you here!</p>",
       "attachTo": "",
       "position": "right",
-      "enabled": true
+      "enabled": true,
+      "visibleToGroups": []
+    },
+    {
+      "id": "admin-panel",
+      "title": "⚙️ Admin Settings",
+      "text": "<p>Configure your Nextcloud here.</p>",
+      "attachTo": "[data-id=\"settings\"]",
+      "position": "right",
+      "enabled": true,
+      "visibleToGroups": ["admin", "Administrators"]
     }
   ]
 }
 ```
+
+**Note:** The `visibleToGroups` field is an array of group IDs. Empty array `[]` means visible to all users.
 
 ### Resetting to Defaults
 
@@ -503,7 +531,7 @@ A: Yes, users can check "Permanently disable the introduction tour" in their Per
 A: Yes, IntroVox is fully responsive and works on tablets and smartphones. The layout automatically adapts to smaller screens.
 
 **Q: Can I have different steps for different user groups?**
-A: Currently, IntroVox shows the same steps to all users of a given language. User group customization is not yet supported.
+A: Yes! Since version 1.2.0, you can configure which user groups can see each step. Use the "Visible to groups" dropdown in the step editor to select specific groups. Steps with no groups selected are visible to everyone.
 
 **Q: How do I know which Nextcloud version is supported?**
 A: IntroVox requires Nextcloud 32 or higher. Check the `appinfo/info.xml` file for exact version requirements.
@@ -605,8 +633,8 @@ A: Not built-in, but you could:
 **Developed by:** Rik Dekker (rik@shalution.nl)
 **Initial idea and feedback:** SURF
 **License:** GNU AGPL v3
-**Version:** 1.0.8
+**Version:** 1.2.0
 
 ---
 
-*Last updated: November 14, 2025*
+*Last updated: January 22, 2026*

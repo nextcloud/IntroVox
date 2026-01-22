@@ -173,6 +173,21 @@
             </select>
           </div>
 
+          <div class="form-group">
+            <label>{{ t('Visible to groups') }}</label>
+            <NcSelect
+              v-model="editingData.visibleToGroups"
+              :options="availableGroups"
+              :multiple="true"
+              label="displayName"
+              track-by="id"
+              :reduce="group => group.id"
+              :placeholder="t('All users (no restriction)')"
+              :close-on-select="false"
+            />
+            <small class="hint">{{ t('Leave empty to show to all users, or select groups to restrict visibility') }}</small>
+          </div>
+
           <div class="editor-actions">
             <button @click="saveEdit" class="primary">
               ✓ {{ t('Save') }}
@@ -191,6 +206,9 @@
           </div>
           <div v-else class="preview-meta">
             <span>📍 {{ t('Centered step') }}</span>
+          </div>
+          <div class="preview-meta">
+            <span>👥 {{ t('Visible to') }}: {{ formatGroupNames(step.visibleToGroups) }}</span>
           </div>
         </div>
       </div>
@@ -240,6 +258,7 @@ export default {
     const enabledLanguages = ref(['en'])
     const fileInputRef = ref(null)
     const allLanguages = ref([])
+    const availableGroups = ref([])
 
     // Computed property for NcSelect
     const selectedLanguageObj = computed({
@@ -264,6 +283,20 @@ export default {
         // Fallback to English only if loading fails
         allLanguages.value = [{ code: 'en', name: 'English', flag: '🇬🇧' }]
         OCP.Toast.warning(trans('Could not load available languages, using English only'))
+      }
+    }
+
+    // Load available groups for group visibility selection
+    const loadAvailableGroups = async () => {
+      try {
+        const response = await axios.get(generateUrl('/apps/introvox/admin/groups'))
+        if (response.data.success && response.data.groups) {
+          availableGroups.value = response.data.groups
+          console.log('Loaded available groups:', availableGroups.value)
+        }
+      } catch (error) {
+        console.error('Error loading available groups:', error)
+        availableGroups.value = []
       }
     }
 
@@ -478,7 +511,8 @@ export default {
         text: '<p>' + trans('Description of this step...') + '</p>',
         attachTo: '',
         position: 'right',
-        enabled: true
+        enabled: true,
+        visibleToGroups: []
       }
       steps.value.push(newStep)
       editStep(newStep)
@@ -677,6 +711,16 @@ export default {
       return translate('introvox', key, vars)
     }
 
+    // Helper function to format group names for display
+    const formatGroupNames = (groupIds) => {
+      if (!groupIds || groupIds.length === 0) return trans('All users')
+      const names = groupIds.map(id => {
+        const group = availableGroups.value.find(g => g.id === id)
+        return group ? group.displayName : id
+      })
+      return names.join(', ')
+    }
+
     // Computed property for available languages based on enabled languages
     const availableLanguages = computed(() => {
       return allLanguages.value.filter(lang => enabledLanguages.value.includes(lang.code))
@@ -738,6 +782,7 @@ export default {
     // Load global settings first, then steps (loadGlobalSettings will call loadSteps if needed)
     const initializeAdmin = async () => {
       await loadAvailableLanguages()
+      await loadAvailableGroups()
       await loadGlobalSettings()
       // Only load steps if selectedLanguage is still enabled after loading global settings
       if (enabledLanguages.value.includes(selectedLanguage.value)) {
@@ -762,7 +807,10 @@ export default {
       enabledLanguages,
       allLanguages,
       availableLanguages,
+      availableGroups,
       loadAvailableLanguages,
+      loadAvailableGroups,
+      formatGroupNames,
       isLanguageEnabled,
       setLanguageEnabled,
       isLastLanguage,

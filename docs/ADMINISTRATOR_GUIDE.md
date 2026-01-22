@@ -1,6 +1,6 @@
 # IntroVox - Administrator Guide
 
-**Version 1.1.0** | Complete administrative guide for IntroVox
+**Version 1.2.0** | Complete administrative guide for IntroVox
 
 This guide describes all administrative functions of the IntroVox app for Nextcloud.
 
@@ -22,7 +22,7 @@ This guide describes all administrative functions of the IntroVox app for Nextcl
 
 IntroVox is an interactive onboarding wizard that helps new Nextcloud users get started quickly. The app provides a step-by-step tour through Nextcloud's key features.
 
-### Key Features for Version 1.1.0:
+### Key Features for Version 1.2.0:
 
 **User Experience:**
 - ✅ Users can permanently disable the wizard
@@ -45,6 +45,7 @@ IntroVox is an interactive onboarding wizard that helps new Nextcloud users get 
 - 🔄 Drag-and-drop to reorder steps
 - ⚙️ Configure steps independently per language
 - 🔀 "Show wizard to all users" override
+- 👥 **NEW:** Group-based step visibility (show steps only to specific user groups)
 
 **Technical:**
 - 🎨 Nextcloud design system integration
@@ -164,6 +165,7 @@ After selecting a language, you see a list of all wizard steps for that language
 - **Element**: CSS selector of the highlighted element (if applicable)
 - **Position**: Where the tooltip appears (left, right, top, bottom)
 - **Status**: Whether the step is enabled (✅) or disabled (❌)
+- **Visible to**: Which user groups can see this step (or "All users" if no groups are selected)
 
 ### ➕ Add New Step
 
@@ -182,6 +184,7 @@ After selecting a language, you see a list of all wizard steps for that language
 | **Text (HTML)** | The main text of the step (HTML allowed) | Yes | `<p>This is the <strong>first step</strong>!</p>` |
 | **Element (CSS selector)** | The element to highlight | No | `a[href*="/apps/files/"]` |
 | **Position** | Where the tooltip appears | Yes | `right`, `left`, `top`, `bottom` |
+| **Visible to groups** | User groups that can see this step | No | Select groups or leave empty for all users |
 
 **CSS Selector Examples:**
 ```css
@@ -264,6 +267,48 @@ button.primary
 
 ---
 
+### 👥 Group-Based Step Visibility (NEW in v1.2.0)
+
+**Function:** Control which user groups can see specific wizard steps.
+
+**Location:** In the step editor, below the Position selector
+
+**Usage:**
+1. Click **✏️ Edit** on any step
+2. Find the "Visible to groups" dropdown
+3. Select one or more Nextcloud groups
+4. Click **✓ Save**
+5. Click **💾 Save changes** to persist
+
+**Behavior:**
+- **Empty selection (default)**: Step is visible to **all users**
+- **One or more groups selected**: Step is only visible to users who are members of at least one selected group
+
+**Use Cases:**
+- **Role-based onboarding**: Show admin-specific steps only to administrators
+- **Department-specific tours**: Different steps for HR, IT, Marketing teams
+- **Training levels**: Basic steps for new users, advanced steps for power users
+- **Feature rollouts**: Show new feature steps only to pilot groups
+
+**Example Configuration:**
+| Step | Visible to Groups | Result |
+|------|-------------------|--------|
+| Welcome | (empty) | Visible to all users |
+| Admin Panel | Administrators | Only visible to admins |
+| Files Overview | (empty) | Visible to all users |
+| Advanced Search | Power Users, Administrators | Visible to power users and admins |
+
+**Important Notes:**
+- Group filtering happens on the **server side** for security
+- Users cannot see hidden steps, even via browser developer tools
+- Steps are filtered based on the user's current group membership
+- If a user is added to a group later, they will see the relevant steps on their next wizard view
+- Export/import includes group visibility settings
+
+**Tip:** Start with all steps visible to everyone, then selectively restrict steps as needed. This ensures no user misses important information.
+
+---
+
 ### 🔄 Reset to Default
 
 **Button:** "🔄 Reset to default"
@@ -341,6 +386,7 @@ The Import/Export feature enables collaboration with content creators, sharing c
 - Element selectors and positions
 - Enabled/disabled status
 - Step order
+- Group visibility settings (visibleToGroups)
 
 **Use Cases:**
 - **Content Creation**: Send JSON to marketing team, they edit offline, send back
@@ -408,7 +454,8 @@ If import fails, you'll see a specific error message:
     "text": "<p>Nice to have you here!</p>",
     "attachTo": "",
     "position": "right",
-    "enabled": true
+    "enabled": true,
+    "visibleToGroups": []
   },
   {
     "id": "files",
@@ -416,10 +463,22 @@ If import fails, you'll see a specific error message:
     "text": "<p>Manage your files here.</p>",
     "attachTo": "[data-id=\"files\"]",
     "position": "right",
-    "enabled": true
+    "enabled": true,
+    "visibleToGroups": []
+  },
+  {
+    "id": "admin-panel",
+    "title": "⚙️ Admin Panel",
+    "text": "<p>Configure your Nextcloud instance here.</p>",
+    "attachTo": "[data-id=\"settings\"]",
+    "position": "right",
+    "enabled": true,
+    "visibleToGroups": ["admin", "Administrators"]
   }
 ]
 ```
+
+**Note:** The `visibleToGroups` field contains an array of group IDs. An empty array `[]` means the step is visible to all users.
 
 ---
 
@@ -648,17 +707,20 @@ Each language has its **own independent set of steps**.
 
 ### Can I disable the wizard for specific users?
 
-**Answer:** Not directly per user, but in two ways:
+**Answer:** Yes! Since version 1.2.0, you have multiple options:
 
-**Option 1: Per Language**
+**Option 1: Per User Group (NEW in v1.2.0)**
+- Configure steps to be visible only to specific groups
+- Users not in those groups won't see those steps
+- Perfect for role-based onboarding
+
+**Option 2: Per Language**
 - Disable that user's language in "Available languages"
 - All users with that language can no longer see the wizard
 
-**Option 2: Disable Globally**
+**Option 3: Disable Globally**
 - Uncheck "Wizard enabled for all users"
 - **Nobody** sees the wizard anymore
-
-**Future Functionality:** Per-user or per-group settings may be added in a future version.
 
 ### What does "centered step" mean?
 
@@ -850,9 +912,29 @@ Use "Show wizard to all users" button to force-show wizard to everyone, includin
 - Same effect as completing normally
 - Good for "I don't want this"
 
+### What's new in version 1.2.0?
+
+**Answer:** Version 1.2.0 adds group-based step visibility:
+
+**Group-Based Step Visibility**
+- Control which user groups can see specific wizard steps
+- New "Visible to groups" multi-select dropdown in step editor
+- Empty selection means visible to all users (default)
+- Steps filtered on backend for security
+- Perfect for role-based onboarding (e.g., different steps for admins vs regular users)
+- Automatic migration for existing steps
+
+**Technical Details:**
+- New `/admin/groups` API endpoint
+- Server-side filtering in ApiController
+- Export/import includes group visibility settings
+- NcSelect component for group selection
+
+---
+
 ### What's new in version 1.1.0?
 
-**Answer:** Version 1.1.0 is a major release with three main feature areas:
+**Answer:** Version 1.1.0 was a major release with three main feature areas:
 
 **1. User Control**
 - Users can permanently disable the wizard
@@ -954,10 +1036,15 @@ Help us translate IntroVox to more languages via Transifex:
 
 ## Version Information
 
-**Current Version:** 1.1.0
-**Release Date:** November 15, 2025
-**Last Guide Update:** November 15, 2025
+**Current Version:** 1.2.0
+**Release Date:** January 22, 2026
+**Last Guide Update:** January 22, 2026
 **Nextcloud Compatibility:** 32
+
+**Major Changes in 1.2.0:**
+- Group-based step visibility
+- Role-based onboarding support
+- New groups API endpoint
 
 **Major Changes in 1.1.0:**
 - User control: Permanently disable wizard

@@ -7,25 +7,29 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IL10N;
 use OCP\IUserManager;
+use OCP\IGroupManager;
 
 class AdminController extends Controller {
     protected $config;
     protected $appName;
     protected $l10n;
     protected $userManager;
+    protected $groupManager;
 
     public function __construct(
         $appName,
         IRequest $request,
         IConfig $config,
         IL10N $l10n,
-        IUserManager $userManager
+        IUserManager $userManager,
+        IGroupManager $groupManager
     ) {
         parent::__construct($appName, $request);
         $this->config = $config;
         $this->appName = $appName;
         $this->l10n = $l10n;
         $this->userManager = $userManager;
+        $this->groupManager = $groupManager;
     }
 
     /**
@@ -160,11 +164,15 @@ class AdminController extends Controller {
         } else {
             $steps = json_decode($stepsJson, true);
 
-            // Migration: Add 'enabled' field to existing steps if not present
+            // Migration: Add 'enabled' and 'visibleToGroups' fields to existing steps if not present
             $needsUpdate = false;
             foreach ($steps as $key => $step) {
                 if (!isset($step['enabled'])) {
                     $steps[$key]['enabled'] = true;
+                    $needsUpdate = true;
+                }
+                if (!array_key_exists('visibleToGroups', $step)) {
+                    $steps[$key]['visibleToGroups'] = [];
                     $needsUpdate = true;
                 }
             }
@@ -575,6 +583,32 @@ class AdminController extends Controller {
                 'message' => 'Steps imported successfully',
                 'language' => $lang,
                 'stepsCount' => count($steps)
+            ]);
+        } catch (\Exception $e) {
+            return new JSONResponse([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all available groups for group visibility selection
+     * @NoCSRFRequired
+     */
+    public function getGroups(): JSONResponse {
+        try {
+            $groups = $this->groupManager->search('');
+            $result = [];
+            foreach ($groups as $group) {
+                $result[] = [
+                    'id' => $group->getGID(),
+                    'displayName' => $group->getDisplayName()
+                ];
+            }
+            return new JSONResponse([
+                'success' => true,
+                'groups' => $result
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([

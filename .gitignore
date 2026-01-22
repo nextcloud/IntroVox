@@ -36,3 +36,6 @@ push-all.sh
 
 # Private documentation
 docs/APP_STORE_SUBMISSION.md
+
+# Claude Code configuration
+CLAUDE.md
