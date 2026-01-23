@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - Unreleased
+
+### Changed
+- **Telemetry enabled by default** - Anonymous usage statistics are now opt-out instead of opt-in
+  - Helps developers improve IntroVox with anonymous usage data
+  - Administrators can still disable telemetry in admin panel (Statistics tab)
+  - No personal data is ever collected - only aggregate statistics
+
+### Added
+- **Extended telemetry data** - New privacy-friendly server environment fields
+  - `serverRegion` - Country code from admin-configured `default_phone_region` (ISO 3166-1)
+  - `defaultLanguage` - Server's default language setting
+  - `defaultTimezone` - Server's timezone (e.g., "Europe/Amsterdam")
+  - `databaseType` - Database type (mysql/pgsql/sqlite)
+  - `totalGroups` - Number of Nextcloud groups (count only, no names)
+  - `groupVisibilityUsed` - Whether group-based step visibility is used (boolean)
+  - All new fields are privacy-friendly: admin-configured values only, no personal data
+
 ## [1.2.0] - 2026-01-22
 
 ### Added

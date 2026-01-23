@@ -233,10 +233,11 @@ git commit -m "Release vX.Y.Z - [Description]"
 git push gitea main
 ```
 
-### 3. Create Tag
+### 3. Create Tag & Push to Remotes
 ```bash
 git tag -a vX.Y.Z -m "Release vX.Y.Z - [Description]"
-git push gitea vX.Y.Z
+git push gitea main --tags
+git push github main --tags
 ```
 
 ### 4. Create Tarball
@@ -257,11 +258,39 @@ rm -rf "$TEMP_DIR"
 
 ### 5. Generate Signature (for App Store)
 ```bash
-openssl dgst -sha512 -sign introvox.key introvox-X.Y.Z.tar.gz | openssl base64 -A
+# First decrypt secrets on USB drive (requires GPG passphrase):
+cd /Volumes/WDS && gpg --decrypt secrets.gpg | tar xzf -
+
+# Then generate signature:
+openssl dgst -sha512 -sign /Volumes/WDS/secrets/projects/introvox/introvox.key introvox-X.Y.Z.tar.gz | openssl base64 -A
+
+# After signing, remove decrypted files:
+rm -rf /Volumes/WDS/secrets
 ```
 
-### 6. App Store Upload
-- **URL:** Download URL for tarball (lowercase!)
+### 6. Create GitHub Release
+```bash
+gh release create vX.Y.Z introvox-X.Y.Z.tar.gz \
+  --title "vX.Y.Z - [Description]" \
+  --notes "## What's New in vX.Y.Z
+
+### New Features
+- Feature 1
+- Feature 2
+
+### Improvements
+- Improvement 1
+
+Full changelog: https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md"
+```
+
+**Download URL after release:**
+```
+https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz
+```
+
+### 7. App Store Upload
+- **URL:** GitHub release download URL (lowercase app name!)
 - **Signature:** Output from step 5
 
 **Note:** Regenerate signature after any tarball change!
@@ -274,6 +303,8 @@ openssl dgst -sha512 -sign introvox.key introvox-X.Y.Z.tar.gz | openssl base64 -
 - **Supported languages:** EN, NL, DE, FR, DA, SV
 - **App Store:** https://apps.nextcloud.com
 - **Gitea:** https://gitea.rikdekker.nl/rik/IntroVox
+- **GitHub:** https://github.com/nextcloud/IntroVox
+- **Signing key:** `/Volumes/WDS/secrets/projects/introvox/introvox.key` (USB drive, versleuteld)
 
 ---
 

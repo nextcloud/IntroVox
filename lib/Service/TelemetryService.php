@@ -7,6 +7,7 @@ use OCA\IntroVox\AppInfo\Application;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 
@@ -21,6 +22,7 @@ class TelemetryService {
     private IConfig $config;
     private LoggerInterface $logger;
     private IUserManager $userManager;
+    private IGroupManager $groupManager;
     private IDBConnection $db;
 
     public function __construct(
@@ -28,21 +30,23 @@ class TelemetryService {
         IConfig $config,
         LoggerInterface $logger,
         IUserManager $userManager,
+        IGroupManager $groupManager,
         IDBConnection $db
     ) {
         $this->httpClient = $httpClient;
         $this->config = $config;
         $this->logger = $logger;
         $this->userManager = $userManager;
+        $this->groupManager = $groupManager;
         $this->db = $db;
     }
 
     /**
      * Check if telemetry is enabled
-     * Default is false (opt-in)
+     * Default is true (opt-out)
      */
     public function isEnabled(): bool {
-        return $this->config->getAppValue(Application::APP_ID, 'telemetry_enabled', 'false') === 'true';
+        return $this->config->getAppValue(Application::APP_ID, 'telemetry_enabled', 'true') === 'true';
     }
 
     /**
@@ -134,6 +138,13 @@ class TelemetryService {
             'wizardSkippedCount' => $this->getWizardSkippedCount(),
             'usersStartedWizard' => $this->getUsersStartedCount(),
             'usersCompletedWizard' => $this->getUsersCompletedCount(),
+            // Privacy-friendly server environment info (admin-configured settings only)
+            'serverRegion' => $this->getServerRegion(),
+            'defaultLanguage' => $this->getDefaultLanguage(),
+            'defaultTimezone' => $this->getDefaultTimezone(),
+            'databaseType' => $this->getDatabaseType(),
+            'totalGroups' => $this->getGroupCount(),
+            'groupVisibilityUsed' => $this->isGroupVisibilityUsed(),
         ];
     }
 
@@ -202,6 +213,77 @@ class TelemetryService {
      */
     private function getNextcloudVersion(): string {
         return $this->config->getSystemValue('version', 'unknown');
+    }
+
+    /**
+     * Get the server region (ISO 3166-1 country code)
+     * From admin-configured default_phone_region setting
+     * Privacy-friendly: only country-level, admin-set value
+     */
+    private function getServerRegion(): string {
+        return $this->config->getSystemValue('default_phone_region', '');
+    }
+
+    /**
+     * Get the default language setting
+     * Privacy-friendly: general server configuration
+     */
+    private function getDefaultLanguage(): string {
+        return $this->config->getSystemValue('default_language', 'en');
+    }
+
+    /**
+     * Get the default timezone setting
+     * Privacy-friendly: only timezone identifier (e.g. "Europe/Amsterdam")
+     */
+    private function getDefaultTimezone(): string {
+        return $this->config->getSystemValue('default_timezone', 'UTC');
+    }
+
+    /**
+     * Get the database type
+     * Privacy-friendly: only database type (mysql/pgsql/sqlite)
+     */
+    private function getDatabaseType(): string {
+        return $this->config->getSystemValue('dbtype', 'unknown');
+    }
+
+    /**
+     * Get total number of groups
+     * Privacy-friendly: only count, no group names
+     */
+    private function getGroupCount(): int {
+        try {
+            $groups = $this->groupManager->search('');
+            return count($groups);
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Check if group visibility feature is used in any step
+     * Privacy-friendly: only boolean, no group names
+     */
+    private function isGroupVisibilityUsed(): bool {
+        $enabledLanguages = $this->getEnabledLanguages();
+
+        foreach ($enabledLanguages as $lang) {
+            $configKey = 'wizard_steps_' . $lang;
+            $stepsJson = $this->config->getAppValue(Application::APP_ID, $configKey, '');
+            if (!empty($stepsJson)) {
+                $steps = json_decode($stepsJson, true);
+                if (is_array($steps)) {
+                    foreach ($steps as $step) {
+                        if (!empty($step['visibleToGroups']) && is_array($step['visibleToGroups']) && count($step['visibleToGroups']) > 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
