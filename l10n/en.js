@@ -178,6 +178,12 @@ OC.L10N.register(
     "Telemetry enabled" : "Telemetry enabled",
     "Telemetry disabled" : "Telemetry disabled",
     "Error saving telemetry setting" : "Error saving telemetry setting",
-    "Steps" : "Steps"
+    "Steps" : "Steps",
+    "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared." : "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared.",
+    "Send report now" : "Send report now",
+    "Sending..." : "Sending...",
+    "Basic server configuration (database, OS, web server, language, timezone)" : "Basic server configuration (database, OS, web server, language, timezone)",
+    "Statistics sent successfully" : "Statistics sent successfully",
+    "Error sending statistics" : "Error sending statistics"
 },
 "nplurals=2; plural=(n != 1);");

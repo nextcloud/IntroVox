@@ -176,6 +176,12 @@
     "Telemetry enabled": "Telemetrie ingeschakeld",
     "Telemetry disabled": "Telemetrie uitgeschakeld",
     "Error saving telemetry setting": "Fout bij opslaan van telemetrie instelling",
-    "Steps": "Stappen"
+    "Steps": "Stappen",
+    "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared.": "We verzamelen: aantallen stappen per taal, gebruikersaantallen, versie-informatie (IntroVox, Nextcloud, PHP) en basisconfiguratie van de server. Er worden geen persoonlijke gegevens of stapinhoud gedeeld.",
+    "Send report now": "Rapport nu versturen",
+    "Sending...": "Verzenden...",
+    "Basic server configuration (database, OS, web server, language, timezone)": "Basisconfiguratie van de server (database, OS, webserver, taal, tijdzone)",
+    "Statistics sent successfully": "Statistieken succesvol verzonden",
+    "Error sending statistics": "Fout bij verzenden van statistieken"
 }, "pluralForm" :"nplurals=2; plural=(n != 1);"
 }

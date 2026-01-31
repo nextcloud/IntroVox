@@ -321,7 +321,7 @@
             >
               <div class="option-info">
                 <span class="option-label">{{ t('Share anonymous usage statistics') }}</span>
-                <span class="option-desc">{{ t('We collect: step counts per language, user counts, and version info (IntroVox, Nextcloud, PHP). No personal data or step content is shared.') }}</span>
+                <span class="option-desc">{{ t('We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared.') }}</span>
               </div>
             </NcCheckboxRadioSwitch>
           </div>
@@ -332,6 +332,11 @@
               <p v-if="statistics.lastTelemetrySent">
                 {{ t('Last report sent:') }} {{ formatDate(statistics.lastTelemetrySent) }}
               </p>
+              <NcButton type="secondary"
+                :disabled="sendingTelemetry"
+                @click="sendTelemetryNow">
+                {{ sendingTelemetry ? t('Sending...') : t('Send report now') }}
+              </NcButton>
             </NcNoteCard>
           </div>
 
@@ -342,6 +347,7 @@
               <li>{{ t('Total user count and active users') }}</li>
               <li>{{ t('IntroVox, Nextcloud, and PHP version numbers') }}</li>
               <li>{{ t('A unique hash of your instance URL (privacy-friendly identifier)') }}</li>
+              <li>{{ t('Basic server configuration (database, OS, web server, language, timezone)') }}</li>
             </ul>
             <h4>{{ t('What we never collect:') }}</h4>
             <ul class="not-collected">
@@ -1665,21 +1671,31 @@ body[data-theme="dark"] .language-badge {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .tab-navigation {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tab-button {
+    width: 100%;
+    justify-content: flex-start;
+    border-bottom: none;
+    border-left: 2px solid transparent;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .tab-button.active {
+    border-bottom: none;
+    border-left-color: var(--color-primary);
+  }
+
   .telemetry-details {
     padding: 12px;
   }
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .admin-tabs {
-    flex-wrap: wrap;
-  }
-
-  .tab-button {
-    padding: 10px 16px;
-    font-size: 14px;
   }
 }
 </style>

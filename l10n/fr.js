@@ -178,6 +178,12 @@ OC.L10N.register(
     "Telemetry enabled" : "Télémétrie activée",
     "Telemetry disabled" : "Télémétrie désactivée",
     "Error saving telemetry setting" : "Erreur lors de l'enregistrement du paramètre de télémétrie",
-    "Steps" : "Étapes"
+    "Steps" : "Étapes",
+    "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared." : "Nous collectons : nombre d'étapes par langue, nombre d'utilisateurs, informations de version (IntroVox, Nextcloud, PHP) et configuration de base du serveur. Aucune donnée personnelle ni contenu d'étape n'est partagé.",
+    "Send report now" : "Envoyer le rapport maintenant",
+    "Sending..." : "Envoi...",
+    "Basic server configuration (database, OS, web server, language, timezone)" : "Configuration de base du serveur (base de données, OS, serveur web, langue, fuseau horaire)",
+    "Statistics sent successfully" : "Statistiques envoyées avec succès",
+    "Error sending statistics" : "Erreur lors de l'envoi des statistiques"
 },
 "nplurals=2; plural=(n > 1);");
