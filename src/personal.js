@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // Restart wizard - reset localStorage and redirect to first available app
+    // Restart wizard - reset localStorage and redirect to Nextcloud home
     restartBtn.addEventListener('click', async function() {
         try {
             // Reset the completion status and version
@@ -108,34 +108,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour...');
             restartBtn.disabled = true;
 
-            // Find the first available app to redirect to
-            // Priority: dashboard, files, or first available app
-            let targetApp = 'dashboard'; // Default fallback
-
-            if (typeof OC !== 'undefined' && OC.appswebroots) {
-                // Preferred apps in order
-                const preferredApps = ['dashboard', 'files'];
-
-                // Check if any preferred app is available
-                for (const app of preferredApps) {
-                    if (OC.appswebroots[app]) {
-                        targetApp = app;
-                        break;
-                    }
-                }
-
-                // If no preferred app found, use first available app
-                if (!OC.appswebroots[targetApp]) {
-                    const availableApps = Object.keys(OC.appswebroots);
-                    if (availableApps.length > 0) {
-                        targetApp = availableApps[0];
-                    }
-                }
-            }
-
-            // Redirect to selected app after a short delay
+            // Redirect to Nextcloud home after a short delay
             setTimeout(function() {
-                window.location.href = OC.generateUrl('/apps/' + targetApp + '/');
+                window.location.href = generateUrl('/');
             }, 1000);
         } catch (error) {
             OCP.Toast.error(t('introvox', 'Error restarting tour'));

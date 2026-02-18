@@ -372,6 +372,8 @@ import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { translate } from '@nextcloud/l10n'
+import { showSuccess, showError, showWarning, showInfo, showConfirmation } from '@nextcloud/dialogs'
+import '@nextcloud/dialogs/style.css'
 import Sortable from 'sortablejs'
 
 import { NcSettingsSection, NcCheckboxRadioSwitch, NcSelect, NcButton, NcNoteCard } from '@nextcloud/vue'
@@ -452,7 +454,7 @@ export default {
       } catch (error) {
         // Fallback to English only if loading fails
         allLanguages.value = [{ code: 'en', name: 'English', flag: '🇬🇧' }]
-        OCP.Toast.warning(trans('Could not load available languages, using English only'))
+        showWarning(trans('Could not load available languages, using English only'))
       }
     }
 
@@ -478,7 +480,7 @@ export default {
         originalSteps.value = JSON.parse(JSON.stringify(response.data.steps))
         hasChanges.value = false
       } catch (error) {
-        OCP.Toast.error(trans('Error loading steps: %s', {error: error.message}))
+        showError(trans('Error loading steps: %s', {error: error.message}))
       } finally {
         loading.value = false
       }
@@ -486,16 +488,13 @@ export default {
 
     const loadStepsForLanguage = async () => {
       if (hasChanges.value) {
-        OC.dialogs.confirm(
-          trans('You have unsaved changes. Do you want to discard them?'),
-          trans('Unsaved changes'),
-          async (confirmed) => {
-            if (confirmed) {
-              await loadSteps()
-            }
-          },
-          true
-        )
+        const confirmed = await showConfirmation({
+          name: trans('Unsaved changes'),
+          text: trans('You have unsaved changes. Do you want to discard them?'),
+        })
+        if (confirmed) {
+          await loadSteps()
+        }
       } else {
         await loadSteps()
       }
@@ -553,7 +552,7 @@ export default {
         wizardEnabled.value = true
         enabledLanguages.value = ['en']
         selectedLanguage.value = 'en'
-        OCP.Toast.info(trans('Using default settings. Save your changes to persist them.'))
+        showInfo(trans('Using default settings. Save your changes to persist them.'))
       }
     }
 
@@ -588,12 +587,11 @@ export default {
 
     const onLanguageChange = async (value) => {
       if (hasChanges.value) {
-        if (!await OC.dialogs.confirm(
-          trans('You have unsaved changes. Do you want to discard them?'),
-          trans('Unsaved changes'),
-          (result) => result,
-          true
-        )) {
+        const confirmed = await showConfirmation({
+          name: trans('Unsaved changes'),
+          text: trans('You have unsaved changes. Do you want to discard them?'),
+        })
+        if (!confirmed) {
           return
         }
       }
@@ -607,37 +605,34 @@ export default {
           enabled: wizardEnabled.value,
           enabledLanguages: enabledLanguages.value
         })
-        OCP.Toast.success(trans('Global settings saved'))
+        showSuccess(trans('Global settings saved'))
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        OCP.Toast.error(trans('Error saving global settings') + ': ' + errorMsg)
+        showError(trans('Error saving global settings') + ': ' + errorMsg)
       }
     }
 
     const showToAllUsers = async () => {
       // Show Nextcloud confirmation dialog
-      OC.dialogs.confirm(
-        trans('This will show the wizard again to all users who have already seen it. Continue?'),
-        trans('Show wizard to all users'),
-        async (confirmed) => {
-          if (!confirmed) {
-            return
-          }
+      const confirmed = await showConfirmation({
+        name: trans('Show wizard to all users'),
+        text: trans('This will show the wizard again to all users who have already seen it. Continue?'),
+      })
+      if (!confirmed) {
+        return
+      }
 
-          try {
-            await axios.post(generateUrl('/apps/introvox/admin/settings'), {
-              enabled: wizardEnabled.value,
-              enabledLanguages: enabledLanguages.value,
-              showToAll: true
-            })
-            OCP.Toast.success(trans('Wizard will be shown to all users on their next login'))
-          } catch (error) {
-            const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-            OCP.Toast.error(trans('Error triggering show to all') + ': ' + errorMsg)
-          }
-        },
-        true
-      )
+      try {
+        await axios.post(generateUrl('/apps/introvox/admin/settings'), {
+          enabled: wizardEnabled.value,
+          enabledLanguages: enabledLanguages.value,
+          showToAll: true
+        })
+        showSuccess(trans('Wizard will be shown to all users on their next login'))
+      } catch (error) {
+        const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+        showError(trans('Error triggering show to all') + ': ' + errorMsg)
+      }
     }
 
     const addStep = () => {
@@ -693,17 +688,14 @@ export default {
     }
 
     const deleteStep = async (id) => {
-      OC.dialogs.confirm(
-        trans('Are you sure you want to delete this step?'),
-        trans('Delete step'),
-        (confirmed) => {
-          if (confirmed) {
-            steps.value = steps.value.filter(s => s.id !== id)
-            hasChanges.value = true
-          }
-        },
-        true
-      )
+      const confirmed = await showConfirmation({
+        name: trans('Delete step'),
+        text: trans('Are you sure you want to delete this step?'),
+      })
+      if (confirmed) {
+        steps.value = steps.value.filter(s => s.id !== id)
+        hasChanges.value = true
+      }
     }
 
     const saveSteps = async () => {
@@ -713,39 +705,36 @@ export default {
           steps: steps.value,
           lang: selectedLanguage.value
         })
-        OCP.Toast.success(trans('Steps saved successfully!'))
+        showSuccess(trans('Steps saved successfully!'))
         hasChanges.value = false
         originalSteps.value = JSON.parse(JSON.stringify(steps.value))
       } catch (error) {
-        OCP.Toast.error(trans('Error saving: %s', {error: error.message}))
+        showError(trans('Error saving: %s', {error: error.message}))
       } finally {
         loading.value = false
       }
     }
 
     const resetToDefault = async () => {
-      OC.dialogs.confirm(
-        trans('Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.'),
-        trans('Reset to default'),
-        async (confirmed) => {
-          if (confirmed) {
-            try {
-              loading.value = true
-              await axios.post(generateUrl('/apps/introvox/admin/reset'), {
-                lang: selectedLanguage.value
-              })
-              await loadSteps()
-              OCP.Toast.success(trans('Reset to default steps successful!'))
-            } catch (error) {
-              const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-              OCP.Toast.error(trans('Error resetting') + ': ' + errorMsg)
-            } finally {
-              loading.value = false
-            }
-          }
-        },
-        true
-      )
+      const confirmed = await showConfirmation({
+        name: trans('Reset to default'),
+        text: trans('Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.'),
+      })
+      if (confirmed) {
+        try {
+          loading.value = true
+          await axios.post(generateUrl('/apps/introvox/admin/reset'), {
+            lang: selectedLanguage.value
+          })
+          await loadSteps()
+          showSuccess(trans('Reset to default steps successful!'))
+        } catch (error) {
+          const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+          showError(trans('Error resetting') + ': ' + errorMsg)
+        } finally {
+          loading.value = false
+        }
+      }
     }
 
     const exportSteps = async () => {
@@ -767,13 +756,13 @@ export default {
           document.body.removeChild(link)
           window.URL.revokeObjectURL(url)
 
-          OCP.Toast.success(trans('Steps exported successfully!'))
+          showSuccess(trans('Steps exported successfully!'))
         } else {
-          OCP.Toast.error(trans('Error exporting steps: %s', { error: response.data.error }))
+          showError(trans('Error exporting steps: %s', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        OCP.Toast.error(trans('Error exporting steps') + ': ' + errorMsg)
+        showError(trans('Error exporting steps') + ': ' + errorMsg)
       } finally {
         loading.value = false
       }
@@ -800,7 +789,7 @@ export default {
         })
 
         if (response.data.success) {
-          OCP.Toast.success(
+          showSuccess(
             trans('Successfully imported %s steps for language %s', {
               count: response.data.stepsCount,
               lang: response.data.language
@@ -815,11 +804,11 @@ export default {
           // Reload steps to show imported data
           await loadSteps()
         } else {
-          OCP.Toast.error(trans('Error importing steps: %s', { error: response.data.error }))
+          showError(trans('Error importing steps: %s', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        OCP.Toast.error(trans('Error importing steps') + ': ' + errorMsg)
+        showError(trans('Error importing steps') + ': ' + errorMsg)
       } finally {
         loading.value = false
         // Reset file input
@@ -856,7 +845,7 @@ export default {
           }
         }
       } catch (error) {
-        OCP.Toast.error(trans('Error loading statistics'))
+        showError(trans('Error loading statistics'))
       } finally {
         statisticsLoading.value = false
       }
@@ -870,12 +859,12 @@ export default {
         })
         if (response.data.success) {
           telemetryEnabled.value = enabled
-          OCP.Toast.success(enabled ? trans('Telemetry enabled') : trans('Telemetry disabled'))
+          showSuccess(enabled ? trans('Telemetry enabled') : trans('Telemetry disabled'))
         }
       } catch (error) {
         // Revert the switch
         telemetryEnabled.value = !enabled
-        OCP.Toast.error(trans('Error saving telemetry setting'))
+        showError(trans('Error saving telemetry setting'))
       }
     }
 
@@ -885,15 +874,15 @@ export default {
         sendingTelemetry.value = true
         const response = await axios.post(generateUrl('/apps/introvox/admin/telemetry/send'))
         if (response.data.success) {
-          OCP.Toast.success(trans('Statistics sent successfully'))
+          showSuccess(trans('Statistics sent successfully'))
           // Reload statistics to update last sent time
           await loadStatistics()
         } else {
-          OCP.Toast.error(trans('Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
+          showError(trans('Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        OCP.Toast.error(trans('Error sending statistics') + ': ' + errorMsg)
+        showError(trans('Error sending statistics') + ': ' + errorMsg)
       } finally {
         sendingTelemetry.value = false
       }

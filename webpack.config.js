@@ -31,6 +31,9 @@ module.exports = {
     extensions: ['.js', '.vue'],
     alias: {
       '@': path.resolve(__dirname, 'src')
+    },
+    fallback: {
+      'path': false
     }
   },
   mode: 'production'

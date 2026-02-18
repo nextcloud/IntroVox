@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-02-18
+
+### Added
+- **Nextcloud 33 compatibility** - App now supports Nextcloud 32 and 33
+
+### Changed
+- **Migrated admin UI toast notifications** - Replaced legacy `OCP.Toast` globals with `showSuccess`, `showError`, `showWarning`, `showInfo` from `@nextcloud/dialogs` in admin interface
+- **Migrated admin confirm dialogs** - Replaced legacy `OC.dialogs.confirm()` with promise-based `showConfirmation()` from `@nextcloud/dialogs` in admin interface (5 locations)
+- **Migrated personal settings redirect** - Replaced `OC.generateUrl()` and `OC.appswebroots` with `@nextcloud/router` imports for tour restart redirect
+- **Improved dependency injection** - Replaced direct `\OC::$server->getL10NFactory()` access with proper constructor injection of `IL10NFactory` in AdminController
+
+### Removed
+- **Unused @nextcloud/files dependency** - Removed from package.json (was never imported in source code)
+
+### Technical
+- Added webpack `resolve.fallback` for `path` module (required by `@nextcloud/dialogs` transitive dependency)
+- Admin bundle uses `@nextcloud/dialogs` for all toast and confirmation dialogs
+- Personal settings bundle retains lightweight `OCP.Toast` usage to avoid bundle bloat
+
 ## [1.2.2] - 2026-01-31
 
 ### Added

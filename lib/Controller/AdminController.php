@@ -6,6 +6,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IL10N;
+use OCP\L10N\IFactory as IL10NFactory;
 use OCP\IUserManager;
 use OCP\IGroupManager;
 use OCA\IntroVox\Service\TelemetryService;
@@ -14,6 +15,7 @@ class AdminController extends Controller {
     protected $config;
     protected $appName;
     protected $l10n;
+    protected $l10nFactory;
     protected $userManager;
     protected $groupManager;
     protected $telemetryService;
@@ -23,6 +25,7 @@ class AdminController extends Controller {
         IRequest $request,
         IConfig $config,
         IL10N $l10n,
+        IL10NFactory $l10nFactory,
         IUserManager $userManager,
         IGroupManager $groupManager,
         TelemetryService $telemetryService
@@ -31,6 +34,7 @@ class AdminController extends Controller {
         $this->config = $config;
         $this->appName = $appName;
         $this->l10n = $l10n;
+        $this->l10nFactory = $l10nFactory;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->telemetryService = $telemetryService;
@@ -127,8 +131,7 @@ class AdminController extends Controller {
      */
     private function getDefaultStepsForLanguage(string $lang): array {
         // Create a new L10N instance for the specified language
-        $l10nFactory = \OC::$server->getL10NFactory();
-        $langL10n = $l10nFactory->get($this->appName, $lang);
+        $langL10n = $this->l10nFactory->get($this->appName, $lang);
 
         return [
             ['id' => 'welcome', 'title' => $langL10n->t('step_welcome_title'), 'text' => $langL10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
