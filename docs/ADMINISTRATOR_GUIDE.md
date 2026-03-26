@@ -707,18 +707,24 @@ Each language has its **own independent set of steps**.
 
 ### Can I disable the wizard for specific users?
 
-**Answer:** Yes! Since version 1.2.0, you have multiple options:
+**Answer:** Yes! You have multiple options:
 
-**Option 1: Per User Group (NEW in v1.2.0)**
-- Configure steps to be visible only to specific groups
+**Option 1: Nextcloud "Limit to groups" (Recommended)**
+- Go to Nextcloud Admin → Apps → IntroVox → "Limit to groups"
+- Only users in the selected groups will see the wizard
+- The app (and its scripts) won't load at all for other users
+- Cleanest approach: no errors in logs, no unnecessary resource loading
+
+**Option 2: Per User Group (Step-level, v1.2.0+)**
+- Configure individual steps to be visible only to specific groups
 - Users not in those groups won't see those steps
-- Perfect for role-based onboarding
+- Perfect for role-based onboarding (e.g., different steps for admins vs regular users)
 
-**Option 2: Per Language**
+**Option 3: Per Language**
 - Disable that user's language in "Available languages"
 - All users with that language can no longer see the wizard
 
-**Option 3: Disable Globally**
+**Option 4: Disable Globally**
 - Uncheck "Wizard enabled for all users"
 - **Nobody** sees the wizard anymore
 

@@ -326,7 +326,13 @@ export default {
       // Check with backend to see if wizard should be shown
       Promise.all([
         loadCustomSteps(),
-        axios.get(generateUrl('/apps/introvox/personal/settings')).catch(() => ({ data: { wizardDisabledByUser: false } }))
+        axios.get(generateUrl('/apps/introvox/personal/settings')).catch((error) => {
+          // If the app is not enabled for this user (e.g. group limitation), treat as disabled
+          if (error?.response?.status === 412 || error?.response?.status === 403) {
+            return { data: { wizardDisabledByUser: true } }
+          }
+          return { data: { wizardDisabledByUser: false } }
+        })
       ]).then(([stepsResponse, personalResponse]) => {
         const serverVersion = stepsResponse ? stepsResponse.version : '1'
         const userDisabledWizard = personalResponse?.data?.wizardDisabledByUser || false

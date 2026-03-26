@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-03-26
+
+### Fixed
+- **Group limitation support** - Wizard no longer shown to users outside the app's "Limit to groups" setting ([#12](https://github.com/nextcloud/introvox/issues/12))
+  - `LoadScripts.php` now checks `IAppManager::isEnabledForUser()` before loading scripts
+  - Prevents `AppNotEnabledException` errors in server log for users outside allowed groups
+  - Added defensive error handling in `WizardManager.vue`: HTTP 412/403 responses now correctly disable the wizard instead of falling through to show it
+
 ## [1.3.0] - 2026-02-18
 
 ### Added
