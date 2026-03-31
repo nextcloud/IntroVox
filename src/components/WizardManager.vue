@@ -7,7 +7,6 @@
 <script>
 import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
-import 'shepherd.js/dist/css/shepherd.css'
 import { translate as t, getLanguage } from '@nextcloud/l10n'
 import { getWizardSteps, loadCustomSteps } from './wizardSteps'
 import axios from '@nextcloud/axios'

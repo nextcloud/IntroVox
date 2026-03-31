@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-03-31
+
+### Fixed
+- **Dark mode theme compliance** - Wizard modal now correctly follows the active Nextcloud theme ([#13](https://github.com/nextcloud/IntroVox/issues/13))
+  - Fixed CSS load order: Shepherd.js default styles no longer override custom theme-aware styles
+  - Moved Shepherd.js CSS import to `main.js` (before `wizard.css`) to ensure correct cascade order
+  - Removed duplicate Shepherd.js CSS import from `WizardManager.vue`
+  - Modal background, header, arrow, and all elements now adapt to light, dark, and high contrast themes
+
+### Improved
+- **CSS architecture refactor** - Replaced all `!important` overrides with proper CSS specificity
+  - Reduced `!important` usage from 70 to 5 (only `prefers-reduced-motion` for a11y best practice)
+  - Uses compound selectors (e.g. `.nextcloud-wizard-step.shepherd-element`) to win specificity naturally over Shepherd.js defaults
+  - Added targeted selectors for Shepherd's `.shepherd-has-title` variants to properly override header and cancel icon styling
+  - Overlay selector now targets `.shepherd-modal-is-visible` state for correct specificity
+  - More maintainable and future-proof: easier to override in downstream themes
+- **Removed redundant dark mode CSS** - Eliminated ~60 lines of duplicate dark mode overrides
+  - Header `background`/`color` and title `color` overrides in dark mode blocks were redundant (CSS variables already adapt automatically)
+  - Dark mode blocks now only contain properties that genuinely differ per theme (box-shadow, overlay opacity, glow colors)
+- **Removed empty CSS rulesets** - Cleaned up unused hover/active placeholder rules
+
 ## [1.3.1] - 2026-03-26
 
 ### Fixed

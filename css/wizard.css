@@ -16,6 +16,12 @@
  * Centering:
  * - Steps with attachTo: positioned near target element
  * - Steps without attachTo: centered in viewport using .shepherd-centered class
+ *
+ * Specificity Strategy:
+ * - Shepherd.js uses simple class selectors (0,1,0) for most rules
+ * - Shepherd.js highest selector: .shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover (0,4,0)
+ * - We use compound selectors (.nextcloud-wizard-step.shepherd-*) to win specificity naturally
+ * - No !important needed except for prefers-reduced-motion (a11y best practice)
  */
 
 /* Main wizard container - Aligned with Nextcloud modals and cards */
@@ -26,6 +32,11 @@
   overflow: hidden;
   background: var(--color-main-background);
   border: 1px solid var(--color-border);
+}
+
+/* Override Shepherd.js default white background (0,2,0 > Shepherd's 0,1,0) */
+.nextcloud-wizard-step.shepherd-element {
+  background: var(--color-main-background);
 }
 
 /* Centered steps (no attachTo element) */
@@ -92,35 +103,40 @@
 }
 
 /* Header styling - Aligned with Nextcloud modal headers */
+/* Base: (0,2,0) overrides Shepherd's .shepherd-header (0,1,0) */
 .nextcloud-wizard-step .shepherd-header {
-  padding: 16px 20px !important;
-  background: var(--color-background-dark) !important;
-  color: var(--color-main-text) !important;
-  border-radius: 0 !important;
-  position: relative !important;
-  border-bottom: 2px solid var(--color-primary-element) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  min-height: 56px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  border-bottom: 2px solid var(--color-primary-element);
+  color: var(--color-main-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* Title styling - Nextcloud h2 style */
+/* Override Shepherd's .shepherd-has-title .shepherd-content .shepherd-header (0,3,0) */
+.nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
+  padding: 16px 20px;
+  background: var(--color-background-dark);
+  border-radius: 0;
+}
+
+/* Title styling - Nextcloud h2 style (0,2,0 > Shepherd's 0,1,0) */
 .nextcloud-wizard-step .shepherd-title {
-  font-size: 22px !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
-  color: var(--color-primary-element) !important;
-  line-height: 1.4 !important;
-  word-wrap: break-word !important;
-  overflow-wrap: break-word !important;
-  hyphens: none !important;
-  flex: 1 !important;
-  min-width: 0 !important;
-  padding-right: 0 !important;
-  letter-spacing: -0.01em !important;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-primary-element);
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: none;
+  flex: 1;
+  min-width: 0;
+  padding-right: 0;
+  letter-spacing: -0.01em;
 }
 
 /* Content styling */
@@ -165,14 +181,6 @@
   outline-offset: 2px;
 }
 
-.nextcloud-wizard-step button:not(.shepherd-cancel-icon):hover {
-  /* No transform on hover for Nextcloud consistency */
-}
-
-.nextcloud-wizard-step button:not(.shepherd-cancel-icon):active {
-  /* Active state handled by background color changes */
-}
-
 /* Primary button - Nextcloud primary style */
 .nextcloud-wizard-step button:not(.shepherd-button-secondary):not(.shepherd-cancel-icon) {
   background: var(--color-primary-element);
@@ -203,40 +211,52 @@
 }
 
 /* Close button - Nextcloud close button style */
-.shepherd-cancel-icon {
-  color: var(--color-main-text) !important;
-  opacity: 0.7 !important;
-  width: 44px !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: var(--border-radius-pill, 22px) !important;
-  transition: opacity 0.1s ease-in-out, background-color 0.1s ease-in-out !important;
-  font-size: 20px !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  cursor: pointer !important;
-  flex-shrink: 0 !important;
+/* (0,2,0) overrides Shepherd's .shepherd-cancel-icon (0,1,0) */
+.nextcloud-wizard-step .shepherd-cancel-icon {
+  color: var(--color-main-text);
+  opacity: 0.7;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-pill, 22px);
+  transition: opacity 0.1s ease-in-out, background-color 0.1s ease-in-out;
+  font-size: 20px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* Accessibility: Focus indicator */
-.shepherd-cancel-icon:focus-visible {
-  outline: 2px solid var(--color-primary-element) !important;
-  outline-offset: 2px !important;
-  opacity: 1 !important;
+/* Override Shepherd's .shepherd-has-title .shepherd-content .shepherd-cancel-icon (0,3,0) */
+.nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-cancel-icon {
+  color: var(--color-main-text);
 }
 
-.shepherd-cancel-icon:hover {
-  opacity: 1 !important;
-  background: var(--color-background-hover) !important;
+/* Accessibility: Focus indicator (0,2,1 > Shepherd has no focus-visible rule) */
+.nextcloud-wizard-step .shepherd-cancel-icon:focus-visible {
+  outline: 2px solid var(--color-primary-element);
+  outline-offset: 2px;
+  opacity: 1;
 }
 
-.shepherd-cancel-icon:active {
-  background: var(--color-background-dark) !important;
+/* (0,2,1) overrides Shepherd's .shepherd-cancel-icon:hover (0,2,0) */
+.nextcloud-wizard-step .shepherd-cancel-icon:hover {
+  opacity: 1;
+  background: var(--color-background-hover);
+}
+
+/* Override Shepherd's .shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover (0,4,0) */
+.nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover {
+  color: var(--color-main-text);
+}
+
+.nextcloud-wizard-step .shepherd-cancel-icon:active {
+  background: var(--color-background-dark);
 }
 
 /* Add aria-label support via pseudo-element tooltip */
@@ -263,9 +283,15 @@
 }
 
 /* Arrow styling (connector to elements) */
+/* (0,2,1) overrides Shepherd's .shepherd-arrow:before (0,1,1) */
 .nextcloud-wizard-step .shepherd-arrow:before {
   background: var(--color-main-background);
   box-shadow: -2px -2px 8px rgba(0,0,0,0.1);
+}
+
+/* (0,4,1) overrides Shepherd's .shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before (0,3,1) */
+.nextcloud-wizard-step.shepherd-has-title[data-popper-placement^=bottom] > .shepherd-arrow:before {
+  background-color: var(--color-background-dark);
 }
 
 /* Prevent flickering on initial render - hide until positioned */
@@ -320,16 +346,17 @@
   color: var(--color-primary-element, #006ba3); /* WCAG AA compliant blue */
 }
 
-/* Modal overlay aanpassing - darker for better focus */
-.shepherd-modal-overlay-container {
-  opacity: 0.7 !important;
-  background: rgba(0, 0, 0, 0.4) !important;
+/* Modal overlay - darker for better focus */
+/* (0,2,0) overrides Shepherd's .shepherd-modal-overlay-container.shepherd-modal-is-visible (0,2,0) via load order */
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  opacity: 0.7;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* Highlighted element - much more visible */
 .shepherd-target {
   position: relative;
-  z-index: 9998 !important;
+  z-index: 9998;
 }
 
 .shepherd-target::before {
@@ -362,24 +389,18 @@
   }
 }
 
-/* Dark theme specific overrides */
+/* Dark theme - only properties that differ from base (non-variable values) */
 @media (prefers-color-scheme: dark) {
   .nextcloud-wizard-step {
     box-shadow: 0 0 20px var(--color-box-shadow);
   }
 
-  .nextcloud-wizard-step .shepherd-header {
-    background: var(--color-background-dark) !important;
-    color: var(--color-main-text) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
-  .nextcloud-wizard-step .shepherd-title {
-    color: var(--color-primary-element) !important;
-  }
-
-  .shepherd-modal-overlay-container {
-    background: rgba(0, 0, 0, 0.5) !important;
+  .shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    background: rgba(0, 0, 0, 0.5);
   }
 
   .shepherd-target::before {
@@ -403,31 +424,23 @@
   }
 }
 
-/* Dark theme via Nextcloud theme selector */
+/* Dark theme via Nextcloud theme selector - only non-variable overrides */
 [data-themes*="dark"] .nextcloud-wizard-step,
 [data-theme-dark] .nextcloud-wizard-step,
 body[data-theme="dark"] .nextcloud-wizard-step {
   box-shadow: 0 0 20px var(--color-box-shadow);
 }
 
-[data-themes*="dark"] .nextcloud-wizard-step .shepherd-header,
-[data-theme-dark] .nextcloud-wizard-step .shepherd-header,
-body[data-theme="dark"] .nextcloud-wizard-step .shepherd-header {
-  background: var(--color-background-dark) !important;
-  color: var(--color-main-text) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+[data-themes*="dark"] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header,
+[data-theme-dark] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header,
+body[data-theme="dark"] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-[data-themes*="dark"] .nextcloud-wizard-step .shepherd-title,
-[data-theme-dark] .nextcloud-wizard-step .shepherd-title,
-body[data-theme="dark"] .nextcloud-wizard-step .shepherd-title {
-  color: var(--color-primary-element) !important;
-}
-
-[data-themes*="dark"] .shepherd-modal-overlay-container,
-[data-theme-dark] .shepherd-modal-overlay-container,
-body[data-theme="dark"] .shepherd-modal-overlay-container {
-  background: rgba(0, 0, 0, 0.5) !important;
+[data-themes*="dark"] .shepherd-modal-overlay-container.shepherd-modal-is-visible,
+[data-theme-dark] .shepherd-modal-overlay-container.shepherd-modal-is-visible,
+body[data-theme="dark"] .shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 [data-themes*="dark"] .shepherd-target::before,
@@ -450,19 +463,20 @@ body[data-theme="dark"] .shepherd-target::before {
   }
 
   .nextcloud-wizard-step button:not(.shepherd-cancel-icon) {
-    border: 2px solid currentColor !important;
+    border: 2px solid currentColor;
   }
 
   .shepherd-target::before {
     border-width: 4px;
   }
 
-  .shepherd-modal-overlay-container {
-    background: rgba(0, 0, 0, 0.8) !important;
+  .shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    background: rgba(0, 0, 0, 0.8);
   }
 }
 
 /* Reduced motion support - accessibility */
+/* !important is intentional here: a11y best practice to guarantee animations are disabled */
 @media (prefers-reduced-motion: reduce) {
   .shepherd-element,
   .shepherd-element.shepherd-centered {
@@ -478,16 +492,12 @@ body[data-theme="dark"] .shepherd-target::before {
     animation: none !important;
   }
 
-  .shepherd-cancel-icon:hover {
+  .nextcloud-wizard-step .shepherd-cancel-icon:hover {
     transform: none !important;
   }
 }
 
 /* Nextcloud specific theme class support */
-.theme--light .nextcloud-wizard-step {
-  /* Light theme is default, uses CSS variables */
-}
-
 .theme--dark .nextcloud-wizard-step {
   box-shadow: 0 0 20px var(--color-box-shadow);
 }
@@ -500,14 +510,7 @@ body[data-theme="dark"] .shepherd-target::before {
   border-bottom: 4px solid var(--color-main-text);
 }
 
-/* Custom theme support - uses Nextcloud's color-* variables which adapt automatically */
-.nextcloud-wizard-step {
-  /* All colors use CSS variables that automatically adapt to any theme */
-  /* --color-main-background, --color-main-text, --color-primary-element, etc. */
-}
-
 /* Responsive adjustments */
-/* Mobile responsive - optimized for smaller screens */
 @media (max-width: 600px) {
   .nextcloud-wizard-step {
     max-width: calc(100vw - 16px);
@@ -516,8 +519,11 @@ body[data-theme="dark"] .shepherd-target::before {
   }
 
   .nextcloud-wizard-step .shepherd-header {
-    padding: 12px;
     min-height: 48px;
+  }
+
+  .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
+    padding: 12px;
   }
 
   .nextcloud-wizard-step .shepherd-title {
@@ -543,9 +549,9 @@ body[data-theme="dark"] .shepherd-target::before {
     min-height: 44px;
   }
 
-  .shepherd-cancel-icon {
-    width: 40px !important;
-    height: 40px !important;
-    min-height: 40px !important;
+  .nextcloud-wizard-step .shepherd-cancel-icon {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
   }
 }

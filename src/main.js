@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import WizardManager from './components/WizardManager.vue'
+import 'shepherd.js/dist/css/shepherd.css'
 import '../css/wizard.css'
 
 // Initialize Vue app when DOM is ready
