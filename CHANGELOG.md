@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-04-16
+
+### Fixed
+- **Tour steps skipped when target element not yet rendered** - Steps with a valid `attachTo` selector were silently skipped if the DOM element hadn't been rendered by Vue at tour start time (e.g., Dashboard step on page load)
+  - Steps now fall back to centered display instead of being skipped when their target element is not found
+  - Added app-menu readiness check to `waitForNextcloudReady` — tour now waits for `.app-menu-list .app-menu-entry` elements before starting
+  - Fixes issue where early steps (Dashboard, Activity) were skipped while later steps (Files) worked, due to Vue render timing
+
 ## [1.4.0] - 2026-03-31
 
 ### Fixed

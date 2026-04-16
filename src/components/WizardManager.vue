@@ -162,7 +162,7 @@ export default {
         if (attachTo) {
           const element = document.querySelector(attachTo.element)
           if (!element) {
-            return // Skip this step if element doesn't exist
+            attachTo = null // Fallback: show step centered instead of skipping
           }
         }
 
@@ -300,9 +300,15 @@ export default {
           return true
         }
 
+        // Check if app menu has been rendered by Vue
+        const checkAppMenu = () => {
+          const menuItems = document.querySelectorAll('.app-menu-list .app-menu-entry')
+          return menuItems.length > 0
+        }
+
         // Poll for readiness
         const checkReadiness = () => {
-          if (checkNextcloudWizard() && checkNavigationBar()) {
+          if (checkNextcloudWizard() && checkNavigationBar() && checkAppMenu()) {
             resolve()
           } else {
             setTimeout(checkReadiness, 500)
