@@ -5,12 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-04-16
+
+### Fixed
+- **Tour never starting on some Nextcloud versions** - The app-menu readiness check introduced in v1.4.1 used CSS selectors that didn't match all Nextcloud versions, causing the tour to hang indefinitely
+  - Added multiple fallback selectors for app-menu detection across Nextcloud versions
+  - Added 10-second timeout fallback to prevent tour from never starting if menu selectors don't match
+
 ## [1.4.1] - 2026-04-16
 
 ### Fixed
 - **Tour steps skipped when target element not yet rendered** - Steps with a valid `attachTo` selector were silently skipped if the DOM element hadn't been rendered by Vue at tour start time (e.g., Dashboard step on page load)
   - Steps now fall back to centered display instead of being skipped when their target element is not found
-  - Added app-menu readiness check to `waitForNextcloudReady` — tour now waits for `.app-menu-list .app-menu-entry` elements before starting
+  - Added app-menu readiness check to `waitForNextcloudReady` — tour now waits for the app-menu to be fully rendered before starting
   - Fixes issue where early steps (Dashboard, Activity) were skipped while later steps (Files) worked, due to Vue render timing
 
 ## [1.4.0] - 2026-03-31

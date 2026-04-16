@@ -302,13 +302,18 @@ export default {
 
         // Check if app menu has been rendered by Vue
         const checkAppMenu = () => {
-          const menuItems = document.querySelectorAll('.app-menu-list .app-menu-entry')
-          return menuItems.length > 0
+          const menuItems = document.querySelector('.app-menu-list .app-menu-entry') ||
+                            document.querySelector('nav.app-menu li') ||
+                            document.querySelector('[aria-label="Applications menu"] li')
+          return !!menuItems
         }
 
-        // Poll for readiness
+        // Poll for readiness with timeout fallback
+        let readinessAttempts = 0
+        const maxAttempts = 20 // 10 seconds max (20 * 500ms)
         const checkReadiness = () => {
-          if (checkNextcloudWizard() && checkNavigationBar() && checkAppMenu()) {
+          readinessAttempts++
+          if ((checkNextcloudWizard() && checkNavigationBar() && checkAppMenu()) || readinessAttempts >= maxAttempts) {
             resolve()
           } else {
             setTimeout(checkReadiness, 500)
