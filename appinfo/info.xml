@@ -30,14 +30,14 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
     <version>1.4.2</version>
     <licence>agpl</licence>
-    <author mail="info@voxcloud.nl">Rik Dekker</author>
+    <author mail="info@voxcommons.com">Rik Dekker</author>
     <namespace>IntroVox</namespace>
     <category>tools</category>
     <category>integration</category>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/personal-settings.png</screenshot>
-    <website>https://voxcloud.nl</website>
+    <website>https://voxcommons.com</website>
     <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
     <repository type="git">https://github.com/nextcloud/IntroVox.git</repository>
     <documentation>
