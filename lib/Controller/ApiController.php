@@ -144,6 +144,19 @@ class ApiController extends Controller {
 
         $steps = json_decode($stepsJson, true);
 
+        // Config-blob decodet niet naar een array (corrupt of legacy non-array waarde):
+        // val terug op het 'geen steps geconfigureerd'-pad zodat de frontend defaults gebruikt.
+        if (!is_array($steps)) {
+            return new JSONResponse([
+                'success' => true,
+                'steps' => [],
+                'useDefault' => true,
+                'enabled' => $enabled === 'true',
+                'language' => $baseLang,
+                'version' => $wizardVersion,
+            ]);
+        }
+
         // Filter steps by group visibility
         $user = $this->userSession->getUser();
         if ($user) {

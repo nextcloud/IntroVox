@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-05-05
+
+### Fixed
+- **Wizard endpoint crashed with `array_filter()` null error** - When the `wizard_steps_<lang>` config blob existed but did not decode to a JSON array (corrupt value or legacy non-array data), `GET /apps/introvox/api/steps` returned HTTP 500 for every logged-in user, blocking the onboarding tour
+  - Added `is_array()` guard after `json_decode` in `ApiController::getWizardSteps()`; falls back to the existing `useDefault: true` response so the frontend uses built-in defaults
+  - Mirrors the defensive pattern already used in `TelemetryService`
+
+### Changed
+- **Telemetry user-count uses `callForAllUsers` instead of `callForSeenUsers`** - User count now reflects all provisioned users, not only those who have logged in at least once; minimum returned value is `1` (was `0`) so downstream consumers cannot receive a zero count
+
 ## [1.4.2] - 2026-04-16
 
 ### Fixed
