@@ -237,6 +237,12 @@ The API-token page used to be at `https://apps.nextcloud.com/account/api-token` 
 - The signing key on the USB drive is identical to the local copy in `Keys/`; you don't need the USB mounted to sign.
 - The `is_array($steps)` defensive guard in `ApiController::getWizardSteps()` was the actual bug fix for v1.4.3 — keep mirroring `TelemetryService`'s defensive patterns when reading `wizard_steps_<lang>` config.
 
+#### Lessons learned (v1.5.0, 21 May 2026)
+
+- API token is **still HTTP 403** — was never refreshed after v1.4.3. Web UI upload remains the only working path until the token at `appstore-api-token.txt` is replaced.
+- The `apps.nextcloud.com/api/v1/apps.json` cert-verification endpoint now returns HTTP 302 → `garm2.nextcloud.com`. Use `curl -sL` (follow redirects) in the §0 cert-check command, otherwise the MD5 comparison silently fails on empty input (gives `d41d8cd98f00b204e9800998ecf8427e` — the MD5 of an empty string).
+- The "sensitive content" grep in §8.1 (`grep -iE '(password=|api_key=|...)'`) matches webpack-minified bundle bytes by coincidence (`Math.pow(2,...)` etc. contains the literal characters). Extract the tarball and `grep -r` per text-file extension instead of piping `tar -xzf -O` into one big blob.
+
 ---
 
 ## 9. Post-Release Verification
