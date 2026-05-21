@@ -27,11 +27,42 @@
 /* Main wizard container - Aligned with Nextcloud modals and cards */
 .nextcloud-wizard-step {
   max-width: 450px;
+  /* Cap height to viewport so long steps never escape the screen (issue #14).
+     Content area becomes scrollable; header/footer stay visible. */
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
   border-radius: var(--border-radius-large, 10px);
   box-shadow: 0 0 10px var(--color-box-shadow);
   overflow: hidden;
   background: var(--color-main-background);
   border: 1px solid var(--color-border);
+}
+
+/* Shepherd nests everything inside .shepherd-content; we make it the flex
+   parent so .shepherd-text (the body) can scroll while header + footer
+   stay pinned. */
+.nextcloud-wizard-step .shepherd-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: inherit;
+  overflow: hidden;
+}
+
+/* Header + footer must never shrink or scroll out of view — the cancel
+   icon and primary buttons must always be reachable. */
+.nextcloud-wizard-step .shepherd-header,
+.nextcloud-wizard-step .shepherd-footer {
+  flex-shrink: 0;
+}
+
+/* Body scrolls when content exceeds available height. */
+.nextcloud-wizard-step .shepherd-text {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 /* Override Shepherd.js default white background (0,2,0 > Shepherd's 0,1,0) */
@@ -514,6 +545,11 @@ body[data-theme="dark"] .shepherd-target::before {
 @media (max-width: 600px) {
   .nextcloud-wizard-step {
     max-width: calc(100vw - 16px);
+    /* Use dvh (dynamic viewport height) so the cap accounts for mobile
+       browser UI chrome (address bar collapse). Falls back to vh on older
+       browsers. */
+    max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
     margin: 8px;
     border-radius: var(--border-radius-large, 10px);
   }

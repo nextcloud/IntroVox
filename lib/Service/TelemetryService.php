@@ -148,7 +148,39 @@ class TelemetryService {
             'osFamily' => PHP_OS_FAMILY,
             'webServer' => $this->getWebServer(),
             'isDocker' => $this->isDocker(),
+            // Included for server-side verification of subscription claims (Enterprise)
+            'licenseKey' => $this->getLicenseKey(),
+            'hasExtendedSupport' => $this->hasExtendedSupport(),
         ];
+    }
+
+    /**
+     * Get the configured IntroVox license key (if any).
+     * Same storage location as LicenseService for cross-reference.
+     */
+    private function getLicenseKey(): ?string {
+        $key = $this->config->getAppValue(Application::APP_ID, 'license_key', '');
+        return empty($key) ? null : $key;
+    }
+
+    /**
+     * Detect whether the Nextcloud host has an active Enterprise subscription.
+     * Uses OCP\Util::hasExtendedSupport (Nextcloud's official API since NC 17),
+     * which only returns true when a real ISubscription handler is registered —
+     * preventing instances from spoofing Enterprise status via a config flag.
+     * Returns false on any failure so Community is never reported as Enterprise.
+     */
+    private function hasExtendedSupport(): bool {
+        try {
+            if (class_exists(\OCP\Util::class) && method_exists(\OCP\Util::class, 'hasExtendedSupport')) {
+                return \OCP\Util::hasExtendedSupport();
+            }
+        } catch (\Throwable $e) {
+            $this->logger->debug('TelemetryService: hasExtendedSupport() check failed', [
+                'error' => $e->getMessage()
+            ]);
+        }
+        return false;
     }
 
     /**

@@ -146,10 +146,7 @@ Follow this checklist for every release to the Nextcloud App Store.
   ```bash
   openssl dgst -sha512 -sign introvox.key introvox-x.x.x.tar.gz | openssl base64 -A
   ```
-- [ ] Upload to Nextcloud App Store:
-  - [ ] Download URL (lowercase!)
-  - [ ] Signature (regenerate after any tarball change!)
-  - [ ] Release notes
+- [ ] Upload to Nextcloud App Store (see § 8.2 for the actual upload step)
 
 ### 8.1 Tarball Security Check (CRITICAL!)
 
@@ -172,6 +169,73 @@ tar -xzf introvox-x.x.x.tar.gz -O 2>/dev/null | \
 - `deploy.sh` - Deployment script with server details
 - `Sample_files/` - Test files
 - Any files containing server IPs, credentials, or usernames
+
+### 8.2 App Store Upload — actual procedure
+
+There are two upload routes. **Try the API first; fall back to the web UI if the token is rejected.**
+
+The signing key is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key` (also on USB at `/Volumes/WDS/secrets/projects/introvox/introvox.key`). The API token is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt`.
+
+**Always validate the signing key first:**
+
+```bash
+# These two MD5 hashes must be identical
+openssl rsa -in /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key -pubout 2>/dev/null | openssl md5
+curl -s "https://apps.nextcloud.com/api/v1/apps.json" | \
+  python3 -c "import json,sys; [print(a['certificate']) for a in json.load(sys.stdin) if a['id']=='introvox']" | \
+  openssl x509 -pubkey -noout 2>/dev/null | openssl md5
+```
+
+**Generate the signature once** (regenerate if the tarball changes!):
+
+```bash
+openssl dgst -sha512 -sign /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key \
+  introvox-X.Y.Z.tar.gz | openssl base64 -A > /tmp/introvox-X.Y.Z.sig
+```
+
+#### Route A — API upload (preferred when the token works)
+
+```bash
+TOKEN=$(tr -d '[:space:]' < /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt)
+SIG=$(cat /tmp/introvox-X.Y.Z.sig)
+DOWNLOAD_URL="https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz"
+
+curl -s -w "\nHTTP %{http_code}\n" -X POST \
+  -H "Authorization: Token $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"download\":\"$DOWNLOAD_URL\",\"signature\":\"$SIG\",\"nightly\":false}" \
+  https://apps.nextcloud.com/api/v1/apps/releases
+```
+
+HTTP 200 = success. **HTTP 403 "You do not have permission"** means the token is expired/revoked — go to Route B and refresh the token afterwards.
+
+#### Route B — Web UI upload (fallback, always works)
+
+1. Log in at https://apps.nextcloud.com
+2. Go to your developer dashboard → IntroVox → "New Release"
+   (URL pattern: `https://apps.nextcloud.com/developer/apps/introvox/releases/new` — only reachable when logged in as the app owner)
+3. Paste:
+   - **Download URL**: `https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz`
+   - **Signature**: contents of `/tmp/introvox-X.Y.Z.sig`
+   - **Release notes**: copy the relevant section from `CHANGELOG.md`
+
+#### When the API token is rejected — refreshing it
+
+The API-token page used to be at `https://apps.nextcloud.com/account/api-token` but that URL has 404'd at least once (May 2026). To find a fresh token:
+
+1. Log in at https://apps.nextcloud.com
+2. Click your username top-right → look for "API Token" / "Account" / "Profile" — the exact path moves around
+3. Generate a new token, copy it, and overwrite `appstore-api-token.txt`:
+   ```bash
+   echo -n "<new-token>" > /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt
+   ```
+4. Retry Route A — should now return HTTP 200
+
+#### Lessons learned (v1.4.3, May 2026)
+
+- The `/account/api-token` URL was dead and the existing token (28 March 2026) returned HTTP 403 — token had silently expired. Web UI upload was the only working route that day.
+- The signing key on the USB drive is identical to the local copy in `Keys/`; you don't need the USB mounted to sign.
+- The `is_array($steps)` defensive guard in `ApiController::getWizardSteps()` was the actual bug fix for v1.4.3 — keep mirroring `TelemetryService`'s defensive patterns when reading `wizard_steps_<lang>` config.
 
 ---
 
@@ -290,8 +354,21 @@ https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.ta
 ```
 
 ### 7. App Store Upload
-- **URL:** GitHub release download URL (lowercase app name!)
-- **Signature:** Output from step 5
+
+See § 8.2 for the full procedure (API + web-UI fallback). TL;DR:
+
+```bash
+# Try the API first
+TOKEN=$(tr -d '[:space:]' < /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt)
+SIG=$(cat /tmp/introvox-X.Y.Z.sig)
+curl -s -w "\nHTTP %{http_code}\n" -X POST \
+  -H "Authorization: Token $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"download\":\"https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz\",\"signature\":\"$SIG\",\"nightly\":false}" \
+  https://apps.nextcloud.com/api/v1/apps/releases
+```
+
+If HTTP 403 → token is expired, fall back to web UI at https://apps.nextcloud.com/developer/apps/introvox/releases/new (login required), then refresh the token (see § 8.2).
 
 **Note:** Regenerate signature after any tarball change!
 
@@ -302,9 +379,13 @@ https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.ta
 - **Minimum Nextcloud version:** 32 (check `appinfo/info.xml`)
 - **Supported languages:** EN, NL, DE, FR, DA, SV
 - **App Store:** https://apps.nextcloud.com
+- **App Store dev page:** https://apps.nextcloud.com/developer/apps/introvox
+- **App Store new-release (web UI):** https://apps.nextcloud.com/developer/apps/introvox/releases/new (login required)
 - **Gitea:** https://gitea.rikdekker.nl/rik/IntroVox
 - **GitHub:** https://github.com/nextcloud/IntroVox
-- **Signing key:** `/Volumes/WDS/secrets/projects/introvox/introvox.key` (USB drive, versleuteld)
+- **Signing key (local, primary):** `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key`
+- **Signing key (USB backup, encrypted):** `/Volumes/WDS/secrets/projects/introvox/introvox.key`
+- **API token:** `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt` (40-char DRF token; expires periodically — see § 8.2 for refresh)
 
 ---
 
@@ -316,4 +397,4 @@ https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.ta
 
 ---
 
-*Last updated: January 2026*
+*Last updated: 2026-05-05 (after v1.4.3 release — added § 8.2 with both upload routes after API token returned HTTP 403)*

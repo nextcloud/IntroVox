@@ -20,6 +20,12 @@
         <ChartBox :size="16" />
         {{ t('Statistics') }}
       </button>
+      <button
+        :class="['tab-button', { active: activeTab === 'support' }]"
+        @click="activeTab = 'support'">
+        <Lifebuoy :size="16" />
+        {{ t('Support') }}
+      </button>
     </div>
 
     <!-- Tab: Instellingen (Settings) -->
@@ -361,6 +367,11 @@
       </div>
     </NcSettingsSection>
 
+    <!-- Tab: Support -->
+    <SupportSettings
+      v-if="activeTab === 'support'"
+      @license-changed="reloadLicenseInfo" />
+
     <div v-if="message" class="message" :class="message.type">
       {{ message.text }}
     </div>
@@ -382,6 +393,9 @@ import { NcSettingsSection, NcCheckboxRadioSwitch, NcSelect, NcButton, NcNoteCar
 import Cog from 'vue-material-design-icons/Cog.vue'
 import FormatListNumbered from 'vue-material-design-icons/FormatListNumbered.vue'
 import ChartBox from 'vue-material-design-icons/ChartBox.vue'
+import Lifebuoy from 'vue-material-design-icons/Lifebuoy.vue'
+
+import SupportSettings from '../components/SupportSettings.vue'
 
 export default {
   name: 'AdminApp',
@@ -393,7 +407,9 @@ export default {
     NcNoteCard,
     Cog,
     FormatListNumbered,
-    ChartBox
+    ChartBox,
+    Lifebuoy,
+    SupportSettings
   },
   setup() {
     const steps = ref([])
@@ -1030,6 +1046,8 @@ export default {
       toggleTelemetry,
       sendTelemetryNow,
       formatDate,
+      // License
+      reloadLicenseInfo: loadStatistics,
       t: trans
     }
   }

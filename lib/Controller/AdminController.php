@@ -2,12 +2,14 @@
 namespace OCA\IntroVox\Controller;
 
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IL10N;
 use OCP\L10N\IFactory as IL10NFactory;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\IGroupManager;
 use OCA\IntroVox\Service\TelemetryService;
 
@@ -18,6 +20,7 @@ class AdminController extends Controller {
     protected $l10nFactory;
     protected $userManager;
     protected $groupManager;
+    protected $userSession;
     protected $telemetryService;
 
     public function __construct(
@@ -28,6 +31,7 @@ class AdminController extends Controller {
         IL10NFactory $l10nFactory,
         IUserManager $userManager,
         IGroupManager $groupManager,
+        IUserSession $userSession,
         TelemetryService $telemetryService
     ) {
         parent::__construct($appName, $request);
@@ -37,7 +41,39 @@ class AdminController extends Controller {
         $this->l10nFactory = $l10nFactory;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
+        $this->userSession = $userSession;
         $this->telemetryService = $telemetryService;
+    }
+
+    /**
+     * Defensive admin check — the framework already enforces admin for
+     * non-@NoAdminRequired methods, but we double-check so a missing/broken
+     * annotation cannot leak admin endpoints.
+     */
+    private function requireAdmin(): ?JSONResponse {
+        $user = $this->userSession->getUser();
+        if ($user === null || !$this->groupManager->isAdmin($user->getUID())) {
+            return new JSONResponse(
+                ['success' => false, 'error' => 'Admin privileges required'],
+                Http::STATUS_FORBIDDEN
+            );
+        }
+        return null;
+    }
+
+    /**
+     * Sanitize wizard-step text. Steps are admin-authored and rendered by
+     * Shepherd.js as HTML, so we strip script/event handlers but allow
+     * basic formatting tags admins use in tour copy.
+     */
+    private function sanitizeStep(array $step): array {
+        if (isset($step['text']) && is_string($step['text'])) {
+            $step['text'] = \OCP\Util::sanitizeHTML($step['text']);
+        }
+        if (isset($step['title']) && is_string($step['title'])) {
+            $step['title'] = \OCP\Util::sanitizeHTML($step['title']);
+        }
+        return $step;
     }
 
     /**
@@ -77,6 +113,7 @@ class AdminController extends Controller {
      * @NoCSRFRequired
      */
     public function getAvailableLanguagesWithMetadata(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         $languages = $this->getAvailableLanguages();
 
         // Language metadata (names and flags)
@@ -151,6 +188,7 @@ class AdminController extends Controller {
      * @param string $lang Language code
      */
     public function getSteps(string $lang = 'en'): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         // Get available languages
         $availableLanguages = $this->getAvailableLanguages();
 
@@ -200,9 +238,9 @@ class AdminController extends Controller {
      * Save wizard steps for a specific language
      * @param array $steps
      * @param string $lang Language code
-     * @NoCSRFRequired
      */
     public function saveSteps(array $steps, string $lang = 'en'): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Get available languages
             $availableLanguages = $this->getAvailableLanguages();
@@ -215,7 +253,8 @@ class AdminController extends Controller {
                 ], 400);
             }
 
-            // Validate steps
+            // Validate + sanitize steps
+            $sanitized = [];
             foreach ($steps as $step) {
                 if (!isset($step['id']) || !isset($step['title'])) {
                     return new JSONResponse([
@@ -223,10 +262,11 @@ class AdminController extends Controller {
                         'error' => 'Invalid step data: id and title are required'
                     ], 400);
                 }
+                $sanitized[] = $this->sanitizeStep($step);
             }
 
             $configKey = 'wizard_steps_' . $lang;
-            $stepsJson = json_encode($steps);
+            $stepsJson = json_encode($sanitized);
             $this->config->setAppValue($this->appName, $configKey, $stepsJson);
 
             return new JSONResponse([
@@ -247,12 +287,20 @@ class AdminController extends Controller {
      * @param array $step
      */
     public function addStep(array $step): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
+            if (!isset($step['title'])) {
+                return new JSONResponse([
+                    'success' => false,
+                    'error' => 'Invalid step data: title is required'
+                ], 400);
+            }
             $stepsJson = $this->config->getAppValue($this->appName, 'wizard_steps', '[]');
             $steps = json_decode($stepsJson, true);
 
-            // Generate unique ID
+            // Force-generate ID server-side (client cannot inject)
             $step['id'] = 'custom_' . uniqid();
+            $step = $this->sanitizeStep($step);
 
             $steps[] = $step;
 
@@ -277,6 +325,7 @@ class AdminController extends Controller {
      * @param array $step
      */
     public function updateStep(string $id, array $step): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             $stepsJson = $this->config->getAppValue($this->appName, 'wizard_steps', '[]');
             $steps = json_decode($stepsJson, true);
@@ -284,9 +333,9 @@ class AdminController extends Controller {
             $found = false;
             foreach ($steps as $key => $existingStep) {
                 if ($existingStep['id'] === $id) {
-                    // Keep the original ID
+                    // Keep the original ID and sanitize
                     $step['id'] = $id;
-                    $steps[$key] = $step;
+                    $steps[$key] = $this->sanitizeStep($step);
                     $found = true;
                     break;
                 }
@@ -319,6 +368,7 @@ class AdminController extends Controller {
      * @param string $id
      */
     public function deleteStep(string $id): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             $stepsJson = $this->config->getAppValue($this->appName, 'wizard_steps', '[]');
             $steps = json_decode($stepsJson, true);
@@ -349,9 +399,9 @@ class AdminController extends Controller {
      * Reset to default steps for a specific language
      * If no translation exists for the language, fallback to English
      * @param string $lang Language code
-     * @NoCSRFRequired
      */
     public function resetToDefault(string $lang = 'en'): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Get available languages
             $availableLanguages = $this->getAvailableLanguages();
@@ -391,6 +441,7 @@ class AdminController extends Controller {
      * @NoCSRFRequired
      */
     public function getSettings(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Default to enabled on first install with only English enabled
             $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
@@ -421,9 +472,9 @@ class AdminController extends Controller {
 
     /**
      * Save global settings
-     * @NoCSRFRequired
      */
     public function saveSettings(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Get enabled from request body
             $data = $this->request->getParams();
@@ -480,10 +531,10 @@ class AdminController extends Controller {
 
     /**
      * Export wizard steps for a specific language
-     * @NoCSRFRequired
      * @param string $lang Language code
      */
     public function exportSteps(string $lang = 'en'): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Get available languages
             $availableLanguages = $this->getAvailableLanguages();
@@ -533,10 +584,10 @@ class AdminController extends Controller {
 
     /**
      * Import wizard steps for a specific language
-     * @NoCSRFRequired
      * @param string $fileContent The JSON content of the import file
      */
     public function importSteps(string $fileContent): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Parse JSON content
             $importData = json_decode($fileContent, true);
@@ -581,15 +632,21 @@ class AdminController extends Controller {
                 }
             }
 
+            // Sanitize each step before persisting
+            $sanitized = [];
+            foreach ($steps as $step) {
+                $sanitized[] = $this->sanitizeStep($step);
+            }
+
             // Save imported steps (preserving order from import file)
             $configKey = 'wizard_steps_' . $lang;
-            $this->config->setAppValue($this->appName, $configKey, json_encode($steps));
+            $this->config->setAppValue($this->appName, $configKey, json_encode($sanitized));
 
             return new JSONResponse([
                 'success' => true,
                 'message' => 'Steps imported successfully',
                 'language' => $lang,
-                'stepsCount' => count($steps)
+                'stepsCount' => count($sanitized)
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([
@@ -604,6 +661,7 @@ class AdminController extends Controller {
      * @NoCSRFRequired
      */
     public function getGroups(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             $groups = $this->groupManager->search('');
             $result = [];
@@ -630,6 +688,7 @@ class AdminController extends Controller {
      * @NoCSRFRequired
      */
     public function getStatistics(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             $statistics = $this->telemetryService->getStatistics();
             $telemetryStatus = $this->telemetryService->getStatus();
@@ -649,9 +708,9 @@ class AdminController extends Controller {
 
     /**
      * Toggle telemetry enabled/disabled
-     * @NoCSRFRequired
      */
     public function toggleTelemetry(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             $data = $this->request->getParams();
             $enabled = isset($data['enabled']) ? $data['enabled'] : false;
@@ -678,9 +737,9 @@ class AdminController extends Controller {
 
     /**
      * Manually trigger telemetry send
-     * @NoCSRFRequired
      */
     public function sendTelemetryNow(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
             // Temporarily enable telemetry for this request if it's disabled
             $wasEnabled = $this->telemetryService->isEnabled();

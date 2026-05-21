@@ -20,6 +20,12 @@ return [
         ['name' => 'admin#toggleTelemetry', 'url' => '/admin/telemetry', 'verb' => 'POST'],
         ['name' => 'admin#sendTelemetryNow', 'url' => '/admin/telemetry/send', 'verb' => 'POST'],
 
+        // License API routes
+        ['name' => 'license#getStats', 'url' => '/admin/license/stats', 'verb' => 'GET'],
+        ['name' => 'license#saveSettings', 'url' => '/admin/license/settings', 'verb' => 'POST'],
+        ['name' => 'license#validate', 'url' => '/admin/license/validate', 'verb' => 'POST'],
+        ['name' => 'license#updateUsage', 'url' => '/admin/license/usage', 'verb' => 'POST'],
+
         // Personal API routes
         ['name' => 'personal#getSettings', 'url' => '/personal/settings', 'verb' => 'GET'],
         ['name' => 'personal#saveSettings', 'url' => '/personal/settings', 'verb' => 'POST'],

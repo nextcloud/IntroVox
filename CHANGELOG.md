@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-05-21
+
+### Added
+- **Enterprise subscription support** - IntroVox can now be activated with a subscription key from VoxCloud
+  - New "Support" tab in admin settings with subscription management UI
+  - Per-language step-count progress bars showing free-tier (10 steps per language) vs. licensed limits
+  - Automatic daily license sync via background job (with stable jitter to spread load across installations)
+  - License status and limits sourced from `licenses.voxcloud.nl`; full feature set remains available on free tier — only volume is limited
+- **Nextcloud 34 support** - Declared compatibility for NC 32–34
+- **Explicit PHP 8.1 minimum** declared in `appinfo/info.xml`
+
+### Changed
+- **Telemetry payload includes license key + Enterprise detection** - Reports now include the configured subscription key and `hasExtendedSupport` flag (detected via `OCP\Util::hasExtendedSupport`) so the license server can verify Enterprise claims server-side
+- **27 new translation strings** for the Support tab across all 6 languages (EN/NL/DE/FR/DA/SV)
+
+### Fixed
+- **Long wizard steps trapped users on mobile** ([#14](https://github.com/nextcloud/IntroVox/issues/14)) - When step content exceeded the screen height on mobile, the modal overlay blocked page scroll while the step itself did not scroll either, leaving the cancel (×) button and primary action buttons unreachable. Users had to disable the offending step in the admin panel to escape the tour.
+  - Added `max-height: calc(100vh - 32px)` (or `100dvh - 16px` on mobile, accounting for browser chrome) to the step container
+  - Header and footer are now pinned via `flex-shrink: 0` so the close icon and action buttons remain visible
+  - The body text area scrolls internally (`overflow-y: auto` with `overscroll-behavior: contain`)
+  - Verified at 375×667 (iPhone 6/7/8) and 320×568 (iPhone SE)
+
+### Security
+- **CSRF protection restored on state-changing admin endpoints** - Removed `@NoCSRFRequired` from 7 POST endpoints (`saveSteps`, `resetToDefault`, `saveSettings`, `exportSteps`, `importSteps`, `toggleTelemetry`, `sendTelemetryNow`) that were previously vulnerable to cross-site request forgery
+- **Defensive admin checks added to all admin controller endpoints** - All 13 admin endpoints now double-check admin privileges via `IGroupManager::isAdmin()` in addition to the framework's annotation-based check, preventing accidental exposure if annotations are misconfigured
+- **HTML sanitization on step content** - Step `title` and `text` fields are now sanitized via `OCP\Util::sanitizeHTML` on save/update/import to prevent stored XSS
+- **HTTP response validation on license-server calls** - LicenseService now checks status codes and JSON shape before trusting responses, preventing false-positive license validations on transient server errors
+
 ## [1.4.3] - 2026-05-05
 
 ### Fixed
