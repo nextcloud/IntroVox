@@ -1,0 +1,10 @@
+node_modules/
+js/
+tests/
+docs/
+vendor/
+vendor-bin/
+releases/
+Sample_files/
+certificates/
+*.tar.gz
