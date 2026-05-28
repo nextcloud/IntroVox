@@ -18,7 +18,7 @@ Currently available:
 
 IntroVox uses **Transifex** for community translations. To contribute:
 
-1. Visit the Nextcloud Transifex project: https://www.transifex.com/nextcloud/nextcloud/
+1. Visit the Nextcloud Transifex project: https://explore.transifex.com/nextcloud/nextcloud/
 2. Find the `introvox` resource
 3. Select your language and start translating
 
