@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-05-29
+
+### Fixed
+- **Previously-shown wizard steps stayed visible behind the current step** — Since v1.4.0, `.nextcloud-wizard-step { display: flex }` overrode the browser-default `[hidden] { display: none }`, leaving every step that Shepherd marked as hidden still rendered on top of the active one. Added `.nextcloud-wizard-step[hidden] { display: none }` rule.
+
 ## [1.6.0] - 2026-05-29
 
 ### Added

@@ -39,6 +39,14 @@
   border: 1px solid var(--color-border);
 }
 
+/* Shepherd sets `hidden=true` on inactive steps to remove them from view.
+   Our `display: flex` above would otherwise override the browser default
+   `[hidden] { display: none }`, leaving previously-shown steps stacked on
+   top of the current one. Restore the expected hide behavior. */
+.nextcloud-wizard-step[hidden] {
+  display: none;
+}
+
 /* Shepherd nests everything inside .shepherd-content; we make it the flex
    parent so .shepherd-text (the body) can scroll while header + footer
    stay pinned. */
