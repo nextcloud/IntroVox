@@ -33,7 +33,6 @@
 					:key="lang"
 					class="language-stat-row">
 					<div class="language-info">
-						<span class="language-flag">{{ getLanguageFlag(lang) }}</span>
 						<span class="language-name">{{ getLanguageName(lang) }}</span>
 						<span class="language-code">({{ lang }})</span>
 					</div>
@@ -212,11 +211,6 @@ export default {
 			}
 		},
 
-		getLanguageFlag(lang) {
-			const flags = { nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪', da: '🇩🇰', fr: '🇫🇷', sv: '🇸🇪' }
-			return flags[lang] || '🌐'
-		},
-
 		getLanguageName(lang) {
 			const names = {
 				nl: this.t('introvox', 'Dutch'),
@@ -311,10 +305,6 @@ export default {
 	align-items: center;
 	gap: 8px;
 	min-width: 160px;
-}
-
-.language-flag {
-	font-size: 1.3em;
 }
 
 .language-name {

@@ -1,14 +1,12 @@
 import { getPWAInstructions } from '../utils/deviceDetection.js'
 import { translate as t } from '@nextcloud/l10n'
 
-// Function to get base wizard steps (without PWA step) with translations
 function getBaseWizardSteps() {
   return [
-    // Welkom stap
     {
       id: 'welcome',
-      title: t('introvox', 'step_welcome_title'),
-      text: t('introvox', 'step_welcome_text'),
+      title: t('introvox', '👋 Welcome to Nextcloud'),
+      text: t('introvox', '<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>'),
       buttons: [
         {
           text: t('introvox', 'Skip'),
@@ -21,12 +19,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Files app
     {
       id: 'files',
-      title: t('introvox', 'step_files_title'),
-      text: t('introvox', 'step_files_text'),
+      title: t('introvox', '📁 Files'),
+      text: t('introvox', '<p>This is your main menu. Click here to view and manage all your files.</p><p>You can upload files, create folders and share with others.</p>'),
       attachTo: {
         element: '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]',
         on: 'right'
@@ -43,12 +39,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Calendar app
     {
       id: 'calendar',
-      title: t('introvox', 'step_calendar_title'),
-      text: t('introvox', 'step_calendar_text'),
+      title: t('introvox', '📅 Calendar'),
+      text: t('introvox', '<p>Here you\'ll find your personal calendar.</p><p>Schedule appointments, set reminders and share your calendar with others.</p>'),
       attachTo: {
         element: '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]',
         on: 'right'
@@ -65,12 +59,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Search
     {
       id: 'search',
-      title: t('introvox', 'step_search_title'),
-      text: t('introvox', 'step_search_text'),
+      title: t('introvox', '🔍 Search'),
+      text: t('introvox', '<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
       attachTo: {
         element: '.unified-search__trigger, .header-menu__trigger',
         on: 'bottom'
@@ -87,12 +79,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Introductie
     {
       id: 'intro',
-      title: t('introvox', 'step_intro_title'),
-      text: t('introvox', 'step_intro_text'),
+      title: t('introvox', '🎯 Getting started'),
+      text: t('introvox', '<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>'),
       buttons: [
         {
           text: t('introvox', 'Back'),
@@ -105,12 +95,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Features
     {
       id: 'features',
-      title: t('introvox', 'step_features_title'),
-      text: t('introvox', 'step_features_text'),
+      title: t('introvox', '✨ Important features'),
+      text: t('introvox', '<p><strong>Navigation:</strong></p><ul><li>Use the <strong>main menu</strong> (left) to switch between apps</li><li>Click on your <strong>username</strong> (top right) for settings</li><li>Use the <strong>search bar</strong> to quickly find files</li></ul>'),
       buttons: [
         {
           text: t('introvox', 'Back'),
@@ -123,12 +111,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Tips
     {
       id: 'tips',
-      title: t('introvox', 'step_tips_title'),
-      text: t('introvox', 'step_tips_text'),
+      title: t('introvox', '💡 Useful tips'),
+      text: t('introvox', '<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>'),
       buttons: [
         {
           text: t('introvox', 'Back'),
@@ -141,12 +127,10 @@ function getBaseWizardSteps() {
         }
       ]
     },
-
-    // Complete
     {
       id: 'complete',
-      title: t('introvox', 'step_complete_title'),
-      text: t('introvox', 'step_complete_text'),
+      title: t('introvox', '🎉 Done!'),
+      text: t('introvox', '<p>You\'re all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>'),
       buttons: [
         {
           text: t('introvox', 'Back'),
@@ -162,7 +146,6 @@ function getBaseWizardSteps() {
   ]
 }
 
-// Function to get wizard steps with PWA step
 export function getWizardSteps() {
   const steps = getBaseWizardSteps()
 
@@ -170,29 +153,27 @@ export function getWizardSteps() {
   if (!window.matchMedia('(display-mode: standalone)').matches) {
     const instructions = getPWAInstructions()
 
-    // Build the steps HTML
     const stepsHtml = instructions.steps
       .map((step) => `<li>${step}</li>`)
       .join('')
 
-    // Create PWA step
     const pwaStep = {
       id: 'pwa',
       title: `${instructions.icon} ${instructions.title}`,
       text: `
-        <p><strong>Gebruik Nextcloud als een echte app!</strong></p>
-        <p>Je kunt Nextcloud installeren als app op je apparaat. Dan werkt het net als elke andere app:</p>
+        <p><strong>${t('introvox', 'Use Nextcloud as a real app!')}</strong></p>
+        <p>${t('introvox', 'You can install Nextcloud as an app on your device. It then works just like any other app:')}</p>
         <ul>
-          <li>✨ Eigen app-icoon op je startscherm/dock</li>
-          <li>⚡ Sneller openen (geen browser nodig)</li>
-          <li>🎯 Volledige focus zonder browser-tabbladen</li>
-          <li>📱 Werkt ook offline voor sommige functies</li>
+          <li>${t('introvox', '✨ Own app icon on your home screen/dock')}</li>
+          <li>${t('introvox', '⚡ Faster to open (no browser needed)')}</li>
+          <li>${t('introvox', '🎯 Full focus without browser tabs')}</li>
+          <li>${t('introvox', '📱 Also works offline for some features')}</li>
         </ul>
-        <p><strong>Zo installeer je de app:</strong></p>
+        <p><strong>${t('introvox', 'How to install the app:')}</strong></p>
         <ol>
           ${stepsHtml}
         </ol>
-        <p><small>💡 Je kunt deze stap ook overslaan en later installeren wanneer je wilt.</small></p>
+        <p><small>${t('introvox', '💡 You can also skip this step and install later whenever you want.')}</small></p>
       `,
       buttons: [
         {
@@ -201,7 +182,7 @@ export function getWizardSteps() {
           secondary: true
         },
         {
-          text: 'Begrepen',
+          text: t('introvox', 'Got it'),
           action: function() { this.next() }
         }
       ]
@@ -214,17 +195,14 @@ export function getWizardSteps() {
   return steps
 }
 
-// Function to load custom steps from API
 export async function loadCustomSteps() {
   try {
-    // Use absolute URL with window.location.origin
     const apiUrl = `${window.location.origin}/apps/introvox/api/steps`
 
     const response = await fetch(apiUrl)
     const data = await response.json()
 
     if (data.success) {
-      // Return the full response including enabled status
       const hasCustomSteps = !data.useDefault && data.steps && data.steps.length > 0
 
       return {

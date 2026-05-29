@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-05-29
+
+### Added
+- **Transifex translation infrastructure** ([#16](https://github.com/nextcloud/IntroVox/issues/16)) — IntroVox is now structured to participate in Nextcloud's central Transifex translation pool. Required setup files (`.tx/config` in PO format, `l10n/.gitkeep`, `.l10nignore`) are in place; community translators can start contributing once the sync bot picks up the new resource.
+- **Auto-discovery of language display names** — Language picker labels (e.g. "Nederlands", "Português") are now sourced from `OCP\L10N\IFactory::getLanguages()`. Any new language synced from Transifex appears in the admin dropdown with its correct localized name, no code change needed.
+- **~50 new translatable strings** for the PWA install instructions, covering all 9 OS/browser combinations the wizard supports.
+
+### Changed
+- **Wizard default steps now use English source strings as Transifex msgids** — Previously the 16 step titles/texts went through opaque keys like `step_welcome_title`, which surfaced unusable msgids to translators. Default content lives at the same place but is wrapped in `t('introvox', '<English source>')`. Existing customised step content (stored in `oc_appconfig.wizard_steps_<lang>`) is untouched.
+- **Language picker shows native names without emoji flags** — Matches the Nextcloud Settings convention. Frees the app from maintaining a per-language flag map.
+
+### Removed
+- Unused `lib/Service/DefaultStepsService.php` (contained hardcoded Dutch defaults; never instantiated).
+
+### Fixed
+- **PWA install step displayed Dutch literals to non-Dutch users** — All ~40 PWA install instruction strings in `src/utils/deviceDetection.js` and `src/components/wizardSteps.js` are now wrapped in `t()`. Existing Dutch translations are preserved; other languages fall back to English until Transifex syncs translations.
+- **"Begrepen" button on the PWA step was hardcoded Dutch** — Now uses `t('introvox', 'Got it')`.
+
 ## [1.5.0] - 2026-05-21
 
 ### Added

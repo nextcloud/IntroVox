@@ -64,7 +64,7 @@
               class="checkbox"
             />
             <span class="language-label-text">
-              {{ lang.flag }} {{ lang.name }}
+              {{ lang.name }}
               <span v-if="isLastLanguage(lang.code)" class="language-badge">{{ t('Required') }}</span>
             </span>
           </label>
@@ -96,11 +96,11 @@
           @input="onLanguageChange"
           :clearable="false"
         >
-          <template #selected-option="{ flag, name }">
-            {{ flag }} {{ name }}
+          <template #selected-option="{ name }">
+            {{ name }}
           </template>
-          <template #option="{ flag, name }">
-            {{ flag }} {{ name }}
+          <template #option="{ name }">
+            {{ name }}
           </template>
         </NcSelect>
       </div>
@@ -469,7 +469,7 @@ export default {
         }
       } catch (error) {
         // Fallback to English only if loading fails
-        allLanguages.value = [{ code: 'en', name: 'English', flag: '🇬🇧' }]
+        allLanguages.value = [{ code: 'en', name: 'English' }]
         showWarning(trans('Could not load available languages, using English only'))
       }
     }

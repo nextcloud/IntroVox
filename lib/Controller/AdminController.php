@@ -114,32 +114,22 @@ class AdminController extends Controller {
      */
     public function getAvailableLanguagesWithMetadata(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
-        $languages = $this->getAvailableLanguages();
 
-        // Language metadata (names and flags)
-        $languageMetadata = [
-            'en' => ['name' => 'English', 'flag' => '🇬🇧'],
-            'nl' => ['name' => 'Nederlands', 'flag' => '🇳🇱'],
-            'de' => ['name' => 'Deutsch', 'flag' => '🇩🇪'],
-            'fr' => ['name' => 'Français', 'flag' => '🇫🇷'],
-            'da' => ['name' => 'Dansk', 'flag' => '🇩🇰'],
-            'sv' => ['name' => 'Svenska', 'flag' => '🇸🇪'],
-            'es' => ['name' => 'Español', 'flag' => '🇪🇸'],
-            'it' => ['name' => 'Italiano', 'flag' => '🇮🇹'],
-            'pt' => ['name' => 'Português', 'flag' => '🇵🇹'],
-            'pl' => ['name' => 'Polski', 'flag' => '🇵🇱'],
-            'ru' => ['name' => 'Русский', 'flag' => '🇷🇺'],
-            'ja' => ['name' => '日本語', 'flag' => '🇯🇵'],
-            'zh' => ['name' => '中文', 'flag' => '🇨🇳'],
-            'ko' => ['name' => '한국어', 'flag' => '🇰🇷'],
-        ];
+        $available = $this->getAvailableLanguages();
+
+        // Pull display names from Nextcloud's IFactory — auto-localized to the
+        // admin's UI locale and includes every language NC knows about.
+        $ncLanguages = $this->l10nFactory->getLanguages();
+        $nameByCode = [];
+        foreach (array_merge($ncLanguages['commonLanguages'], $ncLanguages['otherLanguages']) as $entry) {
+            $nameByCode[$entry['code']] = $entry['name'];
+        }
 
         $result = [];
-        foreach ($languages as $lang) {
+        foreach ($available as $lang) {
             $result[] = [
                 'code' => $lang,
-                'name' => $languageMetadata[$lang]['name'] ?? ucfirst($lang),
-                'flag' => $languageMetadata[$lang]['flag'] ?? '🌐'
+                'name' => $nameByCode[$lang] ?? ucfirst($lang),
             ];
         }
 
@@ -150,16 +140,7 @@ class AdminController extends Controller {
     }
 
     private function getDefaultSteps(): array {
-        return [
-            ['id' => 'welcome', 'title' => $this->l10n->t('step_welcome_title'), 'text' => $this->l10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'files', 'title' => $this->l10n->t('step_files_title'), 'text' => $this->l10n->t('step_files_text'), 'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'calendar', 'title' => $this->l10n->t('step_calendar_title'), 'text' => $this->l10n->t('step_calendar_text'), 'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'search', 'title' => $this->l10n->t('step_search_title'), 'text' => $this->l10n->t('step_search_text'), 'attachTo' => '.unified-search__trigger, .header-menu__trigger', 'position' => 'bottom', 'enabled' => true],
-            ['id' => 'intro', 'title' => $this->l10n->t('step_intro_title'), 'text' => $this->l10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'features', 'title' => $this->l10n->t('step_features_title'), 'text' => $this->l10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'tips', 'title' => $this->l10n->t('step_tips_title'), 'text' => $this->l10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'complete', 'title' => $this->l10n->t('step_complete_title'), 'text' => $this->l10n->t('step_complete_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true]
-        ];
+        return $this->buildDefaultSteps($this->l10n);
     }
 
     /**
@@ -167,18 +148,75 @@ class AdminController extends Controller {
      * @param string $lang Language code
      */
     private function getDefaultStepsForLanguage(string $lang): array {
-        // Create a new L10N instance for the specified language
-        $langL10n = $this->l10nFactory->get($this->appName, $lang);
+        return $this->buildDefaultSteps($this->l10nFactory->get($this->appName, $lang));
+    }
 
+    private function buildDefaultSteps(IL10N $l): array {
         return [
-            ['id' => 'welcome', 'title' => $langL10n->t('step_welcome_title'), 'text' => $langL10n->t('step_welcome_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'files', 'title' => $langL10n->t('step_files_title'), 'text' => $langL10n->t('step_files_text'), 'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'calendar', 'title' => $langL10n->t('step_calendar_title'), 'text' => $langL10n->t('step_calendar_text'), 'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]', 'position' => 'right', 'enabled' => true],
-            ['id' => 'search', 'title' => $langL10n->t('step_search_title'), 'text' => $langL10n->t('step_search_text'), 'attachTo' => '.unified-search__trigger, .header-menu__trigger', 'position' => 'bottom', 'enabled' => true],
-            ['id' => 'intro', 'title' => $langL10n->t('step_intro_title'), 'text' => $langL10n->t('step_intro_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'features', 'title' => $langL10n->t('step_features_title'), 'text' => $langL10n->t('step_features_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'tips', 'title' => $langL10n->t('step_tips_title'), 'text' => $langL10n->t('step_tips_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true],
-            ['id' => 'complete', 'title' => $langL10n->t('step_complete_title'), 'text' => $langL10n->t('step_complete_text'), 'attachTo' => '', 'position' => 'right', 'enabled' => true]
+            [
+                'id' => 'welcome',
+                'title' => $l->t('👋 Welcome to Nextcloud'),
+                'text' => $l->t('<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>'),
+                'attachTo' => '',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'files',
+                'title' => $l->t('📁 Files'),
+                'text' => $l->t('<p>This is your main menu. Click here to view and manage all your files.</p><p>You can upload files, create folders and share with others.</p>'),
+                'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'calendar',
+                'title' => $l->t('📅 Calendar'),
+                'text' => $l->t('<p>Here you\'ll find your personal calendar.</p><p>Schedule appointments, set reminders and share your calendar with others.</p>'),
+                'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'search',
+                'title' => $l->t('🔍 Search'),
+                'text' => $l->t('<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
+                'attachTo' => '.unified-search__trigger, .header-menu__trigger',
+                'position' => 'bottom',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'intro',
+                'title' => $l->t('🎯 Getting started'),
+                'text' => $l->t('<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>'),
+                'attachTo' => '',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'features',
+                'title' => $l->t('✨ Important features'),
+                'text' => $l->t('<p><strong>Navigation:</strong></p><ul><li>Use the <strong>main menu</strong> (left) to switch between apps</li><li>Click on your <strong>username</strong> (top right) for settings</li><li>Use the <strong>search bar</strong> to quickly find files</li></ul>'),
+                'attachTo' => '',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'tips',
+                'title' => $l->t('💡 Useful tips'),
+                'text' => $l->t('<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>'),
+                'attachTo' => '',
+                'position' => 'right',
+                'enabled' => true,
+            ],
+            [
+                'id' => 'complete',
+                'title' => $l->t('🎉 Done!'),
+                'text' => $l->t('<p>You\'re all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>'),
+                'attachTo' => '',
+                'position' => 'right',
+                'enabled' => true,
+            ],
         ];
     }
 
