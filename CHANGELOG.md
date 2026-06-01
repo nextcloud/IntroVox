@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **Documentation restructured to match IntraVox/MetaVox layout** — Replaced the four flat doc files (`ADMINISTRATOR_GUIDE.md`, `ADMIN_MANUAL.md`, `USER_MANUAL.md`, `APP_STORE_SUBMISSION.md`) with a nested structure: `docs/index.md` hub, `docs/getting-started.md`, plus `admin/`, `user/`, `features/`, `architecture/`, and `deployment/` subdirectories. The two admin monoliths (which largely duplicated each other) were deduplicated into nine topic-scoped files. README and `appinfo/info.xml` `<documentation>` block updated to point at the new paths.
+
 ## [1.6.1] - 2026-05-29
 
 ### Fixed
