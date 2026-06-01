@@ -1,6 +1,6 @@
 # Release Process
 
-The release process for IntroVox covers version management, build, GitHub release, and App Store upload. For the authoritative per-release checklist see [RELEASE_CHECKLIST.md](../../RELEASE_CHECKLIST.md) in the repository root.
+The release process for IntroVox covers version management, build, GitHub release, and App Store upload. For the authoritative per-release checklist see [RELEASE_CHECKLIST.md](https://github.com/nextcloud/IntroVox/blob/main/RELEASE_CHECKLIST.md) in the repository root.
 
 ## Versioning
 
@@ -190,6 +190,6 @@ npm audit
 
 ## See Also
 
-- [RELEASE_CHECKLIST.md](../../RELEASE_CHECKLIST.md) — authoritative per-release checklist
+- [RELEASE_CHECKLIST.md](https://github.com/nextcloud/IntroVox/blob/main/RELEASE_CHECKLIST.md) — authoritative per-release checklist
 - [App Store Submission](app-store-submission.md) — submission details
 - [Installation](installation.md) — installing IntroVox

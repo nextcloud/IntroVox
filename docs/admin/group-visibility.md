@@ -11,7 +11,7 @@ Each step has a **Visible to groups** field (multi-select dropdown of all Nextcl
 - **Empty selection (default)** — step is visible to **all users**
 - **One or more groups selected** — step is only visible to users who are members of **at least one** of those groups
 
-Filtering happens **server-side** in [ApiController::getWizardSteps()](../../lib/Controller/ApiController.php), so users cannot see hidden steps even via browser developer tools.
+Filtering happens **server-side** in [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php), so users cannot see hidden steps even via browser developer tools.
 
 ## Configuring Group Visibility
 

@@ -2,7 +2,7 @@
 
 Welcome to the IntroVox documentation. IntroVox is a Nextcloud app that provides an interactive onboarding tour for new users — built with Vue 3 and Shepherd.js, with multi-language support, group-based step visibility, and a full admin configuration interface.
 
-![IntroVox welcome step](../docs/screenshots/welcome-step.png)
+![IntroVox welcome step](screenshots/welcome-step.png)
 
 *A step-by-step guided tour through Nextcloud's main features, fully customizable per language.*
 

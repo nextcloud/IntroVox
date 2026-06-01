@@ -54,7 +54,7 @@ Public-facing endpoints, all annotated `@NoAdminRequired` (and `@NoCSRFRequired`
 - **`getWizardSteps`** — language-aware, group-filtered step list. Includes defensive `is_array()` guard (v1.4.3+) for corrupt config blobs.
 - **`trackWizardStart`** / **`trackWizardComplete`** / **`trackWizardSkip`** — fire telemetry events via `TelemetryService`
 
-See [ApiController.php](../../lib/Controller/ApiController.php) and [API Reference](api-reference.md).
+See [ApiController.php](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) and [API Reference](api-reference.md).
 
 ### `LicenseController` (v1.4.x+)
 

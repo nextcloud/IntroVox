@@ -18,7 +18,7 @@ Each step has a **Visible to groups** field — a multi-select of Nextcloud grou
 - **Empty selection** (default) — step is visible to **all users**
 - **One or more groups** — step is only visible to users in **at least one** of those groups
 
-Filtering happens in [ApiController::getWizardSteps()](../../lib/Controller/ApiController.php):
+Filtering happens in [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php):
 
 ```php
 $userGroups = $this->groupManager->getUserGroupIds($user);

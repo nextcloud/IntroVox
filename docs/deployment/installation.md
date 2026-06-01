@@ -7,7 +7,7 @@ This guide describes how to install IntroVox on a Nextcloud instance.
 - **Nextcloud 32 or later** (32–34 explicitly supported as of v1.5.0)
 - **PHP 8.1 or later**
 
-Verify the authoritative requirements in [appinfo/info.xml](../../appinfo/info.xml).
+Verify the authoritative requirements in [appinfo/info.xml](https://github.com/nextcloud/IntroVox/blob/main/appinfo/info.xml).
 
 ## Installation Methods
 

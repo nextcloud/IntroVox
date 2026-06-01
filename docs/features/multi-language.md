@@ -11,7 +11,7 @@ IntroVox supports separate wizard configurations per language, automatic detecti
 - 🇩🇰 Dansk (`da`)
 - 🇸🇪 Svenska (`sv`)
 
-Additional languages can be added without code changes — see [Adding New Languages via Transifex](#adding-new-languages-via-transifex).
+Additional languages can be added without code changes — see [Transifex Integration](#transifex-integration-v160) below.
 
 ## Automatic Language Detection
 
@@ -20,7 +20,7 @@ When a user logs in, IntroVox uses Nextcloud's `IL10N::getLanguageCode()` to det
 - Loads `wizard_steps_<lang>` from appconfig (if the language is enabled), or
 - Returns `languageDisabled: true` so the personal settings page can show the "not available in your language" message
 
-See [ApiController::getWizardSteps()](../../lib/Controller/ApiController.php) for the implementation.
+See [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) for the implementation.
 
 ## Per-Language Configuration
 

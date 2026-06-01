@@ -1,6 +1,6 @@
 # API Reference
 
-REST endpoints exposed by IntroVox. All routes are defined in [appinfo/routes.php](../../appinfo/routes.php).
+REST endpoints exposed by IntroVox. All routes are defined in [appinfo/routes.php](https://github.com/nextcloud/IntroVox/blob/main/appinfo/routes.php).
 
 ## Public API
 
@@ -41,7 +41,7 @@ Returns the wizard steps for the current user, filtered by language and group vi
 - `languageDisabled: true` — user's language is not in `enabled_languages`; tour does not start
 - `enabled: false` — global wizard toggle is off
 
-**Implementation:** [ApiController::getWizardSteps()](../../lib/Controller/ApiController.php#L77)
+**Implementation:** [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php#L77)
 
 ### `POST /apps/introvox/api/wizard/start`
 

@@ -42,7 +42,7 @@ When a user logs in, IntroVox:
 5. Loads `wizard_steps_<lang>` from appconfig, falling back to defaults if not configured
 6. Falls back to English if the user's language is not available
 
-See [ApiController::getWizardSteps()](../../lib/Controller/ApiController.php) for the implementation.
+See [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) for the implementation.
 
 ## Per-Language Step Configuration
 

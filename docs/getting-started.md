@@ -61,7 +61,7 @@ Before evaluating IntroVox at scale, read:
 ## Architectural Highlights
 
 - **Native Nextcloud integration** — uses NC's `IConfig` for storage, `IL10N` for language detection, `IGroupManager` for group filtering, and `IUserSession` for per-user state.
-- **Server-side group filtering** — `visibleToGroups` enforcement happens in the PHP backend ([ApiController](../lib/Controller/ApiController.php)), so users cannot see hidden steps via browser tools.
+- **Server-side group filtering** — `visibleToGroups` enforcement happens in the PHP backend ([ApiController](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php)), so users cannot see hidden steps via browser tools.
 - **Transifex-ready translations** — new language files (`l10n/<lang>.json`) are automatically picked up; no code changes required.
 
 ## Next Steps

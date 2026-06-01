@@ -130,7 +130,7 @@ As of v1.5.0, IntroVox declares compatibility with **Nextcloud 32–34** and req
 
 ### What's new in version X?
 
-See [CHANGELOG.md](../../CHANGELOG.md) for the full version history. Highlights:
+See [CHANGELOG.md](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md) for the full version history. Highlights:
 
 - **v1.6.1** — fix for previously-shown steps stacking behind the current step
 - **v1.6.0** — Transifex translation infrastructure, auto-discovery of language display names, ~50 new translatable strings for PWA install instructions

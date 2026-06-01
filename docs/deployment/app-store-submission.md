@@ -1,6 +1,6 @@
 # Nextcloud App Store Submission
 
-This guide walks through submitting an IntroVox release to the Nextcloud App Store. For the full per-release checklist see [RELEASE_CHECKLIST.md](../../RELEASE_CHECKLIST.md) in the repository root.
+This guide walks through submitting an IntroVox release to the Nextcloud App Store. For the full per-release checklist see [RELEASE_CHECKLIST.md](https://github.com/nextcloud/IntroVox/blob/main/RELEASE_CHECKLIST.md) in the repository root.
 
 ## Prerequisites
 
@@ -235,5 +235,5 @@ The IntroVox API token at `appstore-api-token.txt` has expired silently in the p
 ## See Also
 
 - [Release Process](release-process.md) — full per-release flow
-- [RELEASE_CHECKLIST.md](../../RELEASE_CHECKLIST.md) — authoritative per-release checklist
+- [RELEASE_CHECKLIST.md](https://github.com/nextcloud/IntroVox/blob/main/RELEASE_CHECKLIST.md) — authoritative per-release checklist
 - [Installation](installation.md) — installing IntroVox on a Nextcloud instance
