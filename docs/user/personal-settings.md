@@ -2,6 +2,8 @@
 
 You can manage your IntroVox tour preferences at any time from your personal settings.
 
+![IntroVox personal settings panel](../screenshots/personal-settings.png)
+
 ## Accessing Your IntroVox Settings
 
 1. Click your **profile picture** or **username** in the top right

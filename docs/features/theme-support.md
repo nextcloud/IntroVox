@@ -2,6 +2,8 @@
 
 IntroVox automatically adapts to all Nextcloud themes. No configuration needed.
 
+![IntroVox tour in Nextcloud dark theme](../screenshots/dark-theme.png)
+
 ## Supported Themes
 
 - ✅ **Light mode** (default)

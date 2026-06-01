@@ -2,6 +2,8 @@
 
 This guide describes day-to-day administration of IntroVox. For installation, see the [Installation Guide](../deployment/installation.md).
 
+![IntroVox admin interface](../screenshots/admin-interface.png)
+
 ## Overview
 
 IntroVox is an interactive onboarding wizard that helps new Nextcloud users discover key features through a guided tour. As an administrator, you control:

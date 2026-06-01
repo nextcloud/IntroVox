@@ -2,6 +2,8 @@
 
 Welcome to **IntroVox** — your personal guide to Nextcloud.
 
+![IntroVox tour in action](../screenshots/introvox-demo.gif)
+
 IntroVox is an interactive tour that helps you discover Nextcloud's most important features when you first log in. Think of it as a friendly companion that shows you around your new cloud workspace.
 
 ## What You'll Learn
