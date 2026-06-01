@@ -41,7 +41,9 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
     <repository type="git">https://github.com/nextcloud/IntroVox.git</repository>
     <documentation>
-        <admin>https://github.com/nextcloud/IntroVox/blob/main/docs/ADMINISTRATOR_GUIDE.md</admin>
+        <user>https://github.com/nextcloud/IntroVox/blob/main/docs/user/overview.md</user>
+        <admin>https://github.com/nextcloud/IntroVox/blob/main/docs/admin/guide.md</admin>
+        <developer>https://github.com/nextcloud/IntroVox/blob/main/docs/architecture/overview.md</developer>
     </documentation>
     <dependencies>
         <php min-version="8.1"/>

@@ -124,9 +124,14 @@ After logging in, IntroVox will automatically guide you through Nextcloud's main
 - **Global Controls** - Enable/disable wizard, force show to all users
 
 **📚 Complete Documentation:**
-- [Administrator Guide](docs/ADMINISTRATOR_GUIDE.md) - Comprehensive guide covering all features, FAQ, and best practices
-- [User Manual](docs/USER_MANUAL.md) - End-user guide for using the wizard
-- [Deployment Guide](docs/ADMINISTRATOR_GUIDE.md#deployment-scenarios) - Best practices for organizations
+- [Documentation Hub](docs/index.md) - Full documentation index
+- [Getting Started](docs/getting-started.md) - Role-based quickstart
+- [Administrator Guide](docs/admin/guide.md) - Day-to-day administration
+- [Managing Wizard Steps](docs/admin/managing-steps.md) - Step CRUD, reordering, reset
+- [Group-Based Visibility](docs/admin/group-visibility.md) - Role-based onboarding
+- [User Manual](docs/user/overview.md) - End-user guide
+- [Architecture Overview](docs/architecture/overview.md) - For architects and developers
+- [Installation](docs/deployment/installation.md) - App Store and manual install
 
 ## 🛠️ Development
 
