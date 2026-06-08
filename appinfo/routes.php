@@ -13,6 +13,7 @@ return [
         ['name' => 'admin#getSettings', 'url' => '/admin/settings', 'verb' => 'GET'],
         ['name' => 'admin#saveSettings', 'url' => '/admin/settings', 'verb' => 'POST'],
         ['name' => 'admin#getAvailableLanguagesWithMetadata', 'url' => '/admin/languages', 'verb' => 'GET'],
+        ['name' => 'admin#listOverrides', 'url' => '/admin/overrides', 'verb' => 'GET'],
         ['name' => 'admin#getGroups', 'url' => '/admin/groups', 'verb' => 'GET'],
 
         // Admin Statistics/Telemetry API routes

@@ -6,14 +6,18 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IL10N;
+use OCP\L10N\IFactory;
 use OCP\IGroupManager;
 use OCP\IUserSession;
+use OCA\IntroVox\Service\DefaultStepsService;
 use OCA\IntroVox\Service\TelemetryService;
 
 class ApiController extends Controller {
     protected $config;
     protected $appName;
     protected $l10n;
+    protected $l10nFactory;
+    protected $defaultSteps;
     protected $groupManager;
     protected $userSession;
     protected $telemetryService;
@@ -23,6 +27,8 @@ class ApiController extends Controller {
         IRequest $request,
         IConfig $config,
         IL10N $l10n,
+        IFactory $l10nFactory,
+        DefaultStepsService $defaultSteps,
         IGroupManager $groupManager,
         IUserSession $userSession,
         TelemetryService $telemetryService
@@ -31,41 +37,11 @@ class ApiController extends Controller {
         $this->config = $config;
         $this->appName = $appName;
         $this->l10n = $l10n;
+        $this->l10nFactory = $l10nFactory;
+        $this->defaultSteps = $defaultSteps;
         $this->groupManager = $groupManager;
         $this->userSession = $userSession;
         $this->telemetryService = $telemetryService;
-    }
-
-    /**
-     * Get available languages by detecting l10n translation files
-     * Returns array of language codes that have translation files
-     */
-    private function getAvailableLanguages(): array {
-        $l10nPath = __DIR__ . '/../../l10n';
-        $availableLanguages = [];
-
-        if (is_dir($l10nPath)) {
-            $files = scandir($l10nPath);
-            foreach ($files as $file) {
-                // Check for .json files (e.g., en.json, nl.json)
-                if (preg_match('/^([a-z]{2}(_[A-Z]{2})?)\.json$/', $file, $matches)) {
-                    $langCode = $matches[1];
-                    // Extract base language code (e.g., en_US -> en)
-                    $baseLang = substr($langCode, 0, 2);
-                    if (!in_array($baseLang, $availableLanguages)) {
-                        $availableLanguages[] = $baseLang;
-                    }
-                }
-            }
-        }
-
-        // Ensure English is always available as fallback
-        if (!in_array('en', $availableLanguages)) {
-            $availableLanguages[] = 'en';
-        }
-
-        sort($availableLanguages);
-        return $availableLanguages;
     }
 
     /**
@@ -88,39 +64,18 @@ class ApiController extends Controller {
             ]);
         }
 
-        // Get user's language from l10n
-        $userLang = $this->l10n->getLanguageCode();
-
-        // Get available languages from translation files
-        $availableLanguages = $this->getAvailableLanguages();
+        // Resolve the user's actual chosen language. We pass null (not 'introvox') to
+        // findLanguage() so NC returns the unvalidated user preference based on its full
+        // signal stack (user config → session → Accept-Language → system default).
+        // Passing 'introvox' would re-route to a language that ships a translation file,
+        // silently sending e.g. an Italian user to the system fallback (Dutch).
+        // The defaults service handles the English fallback when no Italian translation exists.
+        $userLang = $this->l10nFactory->findLanguage(null);
 
         // Extract base language (e.g., 'en_US' -> 'en')
         $baseLang = substr($userLang, 0, 2);
-
-        // Use base language if available, otherwise fallback to English
-        if (!in_array($baseLang, $availableLanguages)) {
+        if (!preg_match('/^[a-z]{2}$/', $baseLang)) {
             $baseLang = 'en';
-        }
-
-        // Check if the user's language is enabled
-        $enabledLanguagesJson = $this->config->getAppValue($this->appName, 'enabled_languages', '');
-        if (empty($enabledLanguagesJson)) {
-            // Default to only English enabled on first install
-            $enabledLanguages = ['en'];
-        } else {
-            $enabledLanguages = json_decode($enabledLanguagesJson, true);
-        }
-
-        // If user's language is not enabled, disable the wizard for them
-        if (!in_array($baseLang, $enabledLanguages)) {
-            return new JSONResponse([
-                'success' => true,
-                'steps' => [],
-                'useDefault' => false,
-                'enabled' => false,
-                'language' => $baseLang,
-                'languageDisabled' => true
-            ]);
         }
 
         $configKey = 'wizard_steps_' . $baseLang;
@@ -129,29 +84,27 @@ class ApiController extends Controller {
         // Get wizard version for forcing re-show
         $wizardVersion = $this->config->getAppValue($this->appName, 'wizard_version', '1');
 
-        // If no steps are configured, return empty and let frontend use defaults
-        // The admin panel will save steps when they are first loaded/modified
+        // No admin override for this language → serve Transifex-translated defaults
         if (empty($stepsJson)) {
             return new JSONResponse([
                 'success' => true,
-                'steps' => [],
+                'steps' => $this->defaultSteps->getForLanguage($baseLang),
                 'useDefault' => true,
-                'enabled' => $enabled === 'true',
+                'enabled' => true,
                 'language' => $baseLang,
-                'version' => $wizardVersion
+                'version' => $wizardVersion,
             ]);
         }
 
         $steps = json_decode($stepsJson, true);
 
-        // Config-blob decodet niet naar een array (corrupt of legacy non-array waarde):
-        // val terug op het 'geen steps geconfigureerd'-pad zodat de frontend defaults gebruikt.
+        // Corrupt/legacy non-array override → fall back to defaults
         if (!is_array($steps)) {
             return new JSONResponse([
                 'success' => true,
-                'steps' => [],
+                'steps' => $this->defaultSteps->getForLanguage($baseLang),
                 'useDefault' => true,
-                'enabled' => $enabled === 'true',
+                'enabled' => true,
                 'language' => $baseLang,
                 'version' => $wizardVersion,
             ]);

@@ -377,12 +377,12 @@ class LicenseService {
     }
 
     /**
-     * Get step counts per enabled language
+     * Get step counts per language that has an admin override row.
      * @return array ['en' => 8, 'nl' => 10, ...]
      */
     public function getStepCountsPerLanguage(): array {
         $counts = [];
-        foreach ($this->getEnabledLanguages() as $lang) {
+        foreach ($this->getOverriddenLanguages() as $lang) {
             $stepsJson = $this->config->getAppValue(Application::APP_ID, 'wizard_steps_' . $lang, '');
             if (empty($stepsJson)) {
                 $counts[$lang] = 0;
@@ -398,13 +398,21 @@ class LicenseService {
         return array_sum($this->getStepCountsPerLanguage());
     }
 
-    private function getEnabledLanguages(): array {
-        $enabledLanguagesJson = $this->config->getAppValue(Application::APP_ID, 'enabled_languages', '');
-        if (empty($enabledLanguagesJson)) {
-            return ['en'];
+    /**
+     * Languages with an admin-authored wizard_steps_<lang> row.
+     * Always includes 'en' so downstream callers that assume ≥1 entry don't break.
+     */
+    private function getOverriddenLanguages(): array {
+        $keys = $this->config->getAppKeys(Application::APP_ID);
+        $codes = ['en'];
+        foreach ($keys as $key) {
+            if (preg_match('/^wizard_steps_([a-z]{2}(?:_[A-Z]{2})?)$/', $key, $m)) {
+                if (!in_array($m[1], $codes, true)) {
+                    $codes[] = $m[1];
+                }
+            }
         }
-        $decoded = json_decode($enabledLanguagesJson, true);
-        return is_array($decoded) && !empty($decoded) ? $decoded : ['en'];
+        return $codes;
     }
 
     private function getUserCount(): int {
@@ -453,7 +461,7 @@ class LicenseService {
             'stepCounts' => $stepCounts,
             'totalSteps' => array_sum($stepCounts),
             'freeLimit' => self::FREE_LIMIT,
-            'enabledLanguages' => $this->getEnabledLanguages(),
+            'languagesWithOverrides' => $this->getOverriddenLanguages(),
             'hasLicense' => $hasLicense,
             'licenseValid' => $validation['valid'],
             'licenseInfo' => $validation['license'] ?? null,

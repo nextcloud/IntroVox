@@ -9,10 +9,10 @@
 **Features:**
 * Interactive step-by-step tour through Nextcloud's main features
 * Full admin interface for customizing tour steps per language
-* Multi-language support (6 languages: EN, NL, DE, DA, FR, SV)
+* Multi-language support via Transifex (every translated language is automatically available)
 * Import/export functionality for easy tour configuration sharing
 * Global enable/disable control for administrators
-* Language-specific tour availability management
+* Per-language admin overrides for custom tour copy
 * Group-based visibility for individual steps
 * Personal settings for users to restart or permanently disable the tour
 * Admin statistics dashboard with wizard usage metrics
@@ -28,7 +28,7 @@
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.6.1</version>
+    <version>1.7.0</version>
     <licence>agpl</licence>
     <author mail="info@voxcloud.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>

@@ -45,10 +45,12 @@ Follow this checklist for every release to the Nextcloud App Store.
 
 ## 2. Translations (l10n/)
 
-- [ ] Check that all new strings are translated in all supported languages (EN, NL, DE, FR, DA, SV)
-- [ ] Validate JSON syntax in all translation files (`l10n/*.json`)
+Since v1.7.0, IntroVox uses Transifex for translations (`nextcloud/introvox` resource). The Nextcloud sync bot pushes our POT and pulls translated PO/JSON files back via PRs — no need to translate strings manually before release.
+
+- [ ] Confirm new source strings are reflected in `translationfiles/templates/introvox.pot` (the sync bot regenerates this on its side, but a local check catches missing extractions)
+- [ ] Validate JSON syntax in all translation files: `for f in l10n/*.json; do python3 -m json.tool "$f" > /dev/null && echo "OK: $f" || echo "FAIL: $f"; done`
 - [ ] Regenerate `.js` translation files: `python3 regenerate_js_translations.py`
-- [ ] Test the application in each language for missing or truncated text
+- [ ] Spot-check the wizard in a non-English session to make sure no string falls back to English unexpectedly when it should have a translation
 
 ---
 
@@ -383,7 +385,7 @@ If HTTP 403 → token is expired, fall back to web UI at https://apps.nextcloud.
 ## Notes
 
 - **Minimum Nextcloud version:** 32 (check `appinfo/info.xml`)
-- **Supported languages:** EN, NL, DE, FR, DA, SV
+- **Supported languages:** every language Nextcloud supports — translations come from Transifex (`nextcloud/introvox` resource); whatever exists in `l10n/` ships, languages without a translation file fall back to English at runtime
 - **App Store:** https://apps.nextcloud.com
 - **App Store dev page:** https://apps.nextcloud.com/developer/apps/introvox
 - **App Store new-release (web UI):** https://apps.nextcloud.com/developer/apps/introvox/releases/new (login required)

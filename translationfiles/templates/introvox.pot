@@ -141,10 +141,11 @@ msgid ""
 "**Features:**\n"
 "* Interactive step-by-step tour through Nextcloud's main features\n"
 "* Full admin interface for customizing tour steps per language\n"
-"* Multi-language support (6 languages: EN, NL, DE, DA, FR, SV)\n"
+"* Multi-language support via Transifex (every translated language is "
+"automatically available)\n"
 "* Import/export functionality for easy tour configuration sharing\n"
 "* Global enable/disable control for administrators\n"
-"* Language-specific tour availability management\n"
+"* Per-language admin overrides for custom tour copy\n"
 "* Group-based visibility for individual steps\n"
 "* Personal settings for users to restart or permanently disable the tour\n"
 "* Admin statistics dashboard with wizard usage metrics\n"
@@ -287,15 +288,15 @@ msgstr ""
 #. TRANSLATORS kdekker/Documents/Development/IntroVox/src/components/SupportSettings.vue:88
 #: /Users/rikdekker/Documents/Development/IntroVox/specialVueFakeDummyForL10nScript.js:880
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:68
-msgid "Saving..."
+msgid "Saving …"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/specialVueFakeDummyForL10nScript.js:880
-msgid "Validating..."
+msgid "Validating …"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/specialVueFakeDummyForL10nScript.js:880
-msgid "Activating..."
+msgid "Activating …"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/specialVueFakeDummyForL10nScript.js:880
@@ -386,18 +387,6 @@ msgstr ""
 msgid "Got it"
 msgstr ""
 
-#: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:29
-#: /Users/rikdekker/Documents/Development/IntroVox/templates/personal.php:50
-msgid "The introduction tour is not available in your language."
-msgstr ""
-
-#: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:30
-#: /Users/rikdekker/Documents/Development/IntroVox/templates/personal.php:53
-msgid ""
-"Contact your administrator if you would like to have the tour available in "
-"your language."
-msgstr ""
-
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:36
 #: /Users/rikdekker/Documents/Development/IntroVox/templates/personal.php:43
 msgid "The introduction tour is currently disabled by your administrator."
@@ -409,7 +398,7 @@ msgid "Contact your administrator if you would like to see the guided tour."
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:75
-msgid "Settings saved successfully"
+msgid "Settings saved"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:76
@@ -425,7 +414,7 @@ msgid "Error saving settings"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:108
-msgid "Restarting tour..."
+msgid "Restarting tour …"
 msgstr ""
 
 #: /Users/rikdekker/Documents/Development/IntroVox/src/personal.js:116

@@ -11,6 +11,7 @@ use OCP\L10N\IFactory as IL10NFactory;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\IGroupManager;
+use OCA\IntroVox\Service\DefaultStepsService;
 use OCA\IntroVox\Service\TelemetryService;
 
 class AdminController extends Controller {
@@ -21,6 +22,7 @@ class AdminController extends Controller {
     protected $userManager;
     protected $groupManager;
     protected $userSession;
+    protected $defaultSteps;
     protected $telemetryService;
 
     public function __construct(
@@ -32,6 +34,7 @@ class AdminController extends Controller {
         IUserManager $userManager,
         IGroupManager $groupManager,
         IUserSession $userSession,
+        DefaultStepsService $defaultSteps,
         TelemetryService $telemetryService
     ) {
         parent::__construct($appName, $request);
@@ -42,6 +45,7 @@ class AdminController extends Controller {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->userSession = $userSession;
+        $this->defaultSteps = $defaultSteps;
         $this->telemetryService = $telemetryService;
     }
 
@@ -62,16 +66,21 @@ class AdminController extends Controller {
     }
 
     /**
-     * Sanitize wizard-step text. Steps are admin-authored and rendered by
-     * Shepherd.js as HTML, so we strip script/event handlers but allow
-     * basic formatting tags admins use in tour copy.
+     * Trim wizard-step fields. Title/text are intentionally NOT HTML-escaped:
+     * admins author wizard copy as HTML (e.g. `<p>`, `<strong>`, `<ul>`) and
+     * Shepherd.js renders it as HTML in the tour bubble. Escaping would surface
+     * literal `<p>` tags to end users.
+     *
+     * Trust model: this endpoint requires admin, and admins already control the
+     * Nextcloud instance — no XSS surface is introduced that they don't already
+     * have through e.g. login-screen theming or other admin-authored HTML.
      */
     private function sanitizeStep(array $step): array {
         if (isset($step['text']) && is_string($step['text'])) {
-            $step['text'] = \OCP\Util::sanitizeHTML($step['text']);
+            $step['text'] = trim($step['text']);
         }
         if (isset($step['title']) && is_string($step['title'])) {
-            $step['title'] = \OCP\Util::sanitizeHTML($step['title']);
+            $step['title'] = trim($step['title']);
         }
         return $step;
     }
@@ -109,29 +118,30 @@ class AdminController extends Controller {
     }
 
     /**
-     * Get available languages with metadata
+     * Return every language Nextcloud knows about — used by the "Add language
+     * override" picker so admins aren't limited to the small set of languages
+     * IntroVox happens to ship a translation file for. Deduplicated by base
+     * code (e.g. en_GB merged with en) and sorted by display name.
      * @NoCSRFRequired
      */
     public function getAvailableLanguagesWithMetadata(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
 
-        $available = $this->getAvailableLanguages();
-
-        // Pull display names from Nextcloud's IFactory — auto-localized to the
-        // admin's UI locale and includes every language NC knows about.
         $ncLanguages = $this->l10nFactory->getLanguages();
-        $nameByCode = [];
-        foreach (array_merge($ncLanguages['commonLanguages'], $ncLanguages['otherLanguages']) as $entry) {
-            $nameByCode[$entry['code']] = $entry['name'];
-        }
-
+        $seen = [];
         $result = [];
-        foreach ($available as $lang) {
+        foreach (array_merge($ncLanguages['commonLanguages'], $ncLanguages['otherLanguages']) as $entry) {
+            $code = substr($entry['code'], 0, 2);
+            if (!preg_match('/^[a-z]{2}$/', $code) || isset($seen[$code])) {
+                continue;
+            }
+            $seen[$code] = true;
             $result[] = [
-                'code' => $lang,
-                'name' => $nameByCode[$lang] ?? ucfirst($lang),
+                'code' => $code,
+                'name' => $entry['name'],
             ];
         }
+        usort($result, fn($a, $b) => strcmp($a['name'], $b['name']));
 
         return new JSONResponse([
             'success' => true,
@@ -139,85 +149,47 @@ class AdminController extends Controller {
         ]);
     }
 
-    private function getDefaultSteps(): array {
-        return $this->buildDefaultSteps($this->l10n);
-    }
-
     /**
-     * Get default steps for a specific language by loading translations for that language
-     * @param string $lang Language code
+     * List languages that currently have an admin-authored override row.
+     * English is always included so the Steps editor has at least one entry.
+     * @NoCSRFRequired
      */
-    private function getDefaultStepsForLanguage(string $lang): array {
-        return $this->buildDefaultSteps($this->l10nFactory->get($this->appName, $lang));
+    public function listOverrides(): JSONResponse {
+        if ($forbidden = $this->requireAdmin()) return $forbidden;
+
+        $keys = $this->config->getAppKeys($this->appName);
+        $codes = ['en'];
+        foreach ($keys as $key) {
+            if (preg_match('/^wizard_steps_([a-z]{2}(?:_[A-Z]{2})?)$/', $key, $m)) {
+                if (!in_array($m[1], $codes, true)) {
+                    $codes[] = $m[1];
+                }
+            }
+        }
+        sort($codes);
+
+        $ncLanguages = $this->l10nFactory->getLanguages();
+        $nameByCode = [];
+        foreach (array_merge($ncLanguages['commonLanguages'], $ncLanguages['otherLanguages']) as $entry) {
+            $nameByCode[$entry['code']] = $entry['name'];
+        }
+
+        $result = [];
+        foreach ($codes as $code) {
+            $result[] = [
+                'code' => $code,
+                'name' => $nameByCode[$code] ?? ucfirst($code),
+            ];
+        }
+
+        return new JSONResponse([
+            'success' => true,
+            'overrides' => $result,
+        ]);
     }
 
-    private function buildDefaultSteps(IL10N $l): array {
-        return [
-            [
-                'id' => 'welcome',
-                'title' => $l->t('👋 Welcome to Nextcloud'),
-                'text' => $l->t('<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>'),
-                'attachTo' => '',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'files',
-                'title' => $l->t('📁 Files'),
-                'text' => $l->t('<p>This is your main menu. Click here to view and manage all your files.</p><p>You can upload files, create folders and share with others.</p>'),
-                'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'calendar',
-                'title' => $l->t('📅 Calendar'),
-                'text' => $l->t('<p>Here you\'ll find your personal calendar.</p><p>Schedule appointments, set reminders and share your calendar with others.</p>'),
-                'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'search',
-                'title' => $l->t('🔍 Search'),
-                'text' => $l->t('<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
-                'attachTo' => '.unified-search__trigger, .header-menu__trigger',
-                'position' => 'bottom',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'intro',
-                'title' => $l->t('🎯 Getting started'),
-                'text' => $l->t('<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>'),
-                'attachTo' => '',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'features',
-                'title' => $l->t('✨ Important features'),
-                'text' => $l->t('<p><strong>Navigation:</strong></p><ul><li>Use the <strong>main menu</strong> (left) to switch between apps</li><li>Click on your <strong>username</strong> (top right) for settings</li><li>Use the <strong>search bar</strong> to quickly find files</li></ul>'),
-                'attachTo' => '',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'tips',
-                'title' => $l->t('💡 Useful tips'),
-                'text' => $l->t('<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>'),
-                'attachTo' => '',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-            [
-                'id' => 'complete',
-                'title' => $l->t('🎉 Done!'),
-                'text' => $l->t('<p>You\'re all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>'),
-                'attachTo' => '',
-                'position' => 'right',
-                'enabled' => true,
-            ],
-        ];
+    private function getDefaultStepsForLanguage(string $lang): array {
+        return $this->defaultSteps->getForLanguage($lang);
     }
 
     /**
@@ -227,11 +199,7 @@ class AdminController extends Controller {
      */
     public function getSteps(string $lang = 'en'): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
-        // Get available languages
-        $availableLanguages = $this->getAvailableLanguages();
-
-        // Validate language code, fallback to English if not available
-        if (!in_array($lang, $availableLanguages)) {
+        if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
             $lang = 'en';
         }
 
@@ -239,11 +207,7 @@ class AdminController extends Controller {
         $stepsJson = $this->config->getAppValue($this->appName, $configKey, '');
 
         if (empty($stepsJson)) {
-            // Try to get default steps in the requested language
-            // If translation doesn't exist, getDefaultStepsForLanguage will use English fallback
             $steps = $this->getDefaultStepsForLanguage($lang);
-            // Save default steps to database so they can be reordered
-            $this->config->setAppValue($this->appName, $configKey, json_encode($steps));
         } else {
             $steps = json_decode($stepsJson, true);
 
@@ -280,14 +244,10 @@ class AdminController extends Controller {
     public function saveSteps(array $steps, string $lang = 'en'): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
-            // Get available languages
-            $availableLanguages = $this->getAvailableLanguages();
-
-            // Validate language code
-            if (!in_array($lang, $availableLanguages)) {
+            if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang . '. Available: ' . implode(', ', $availableLanguages)
+                    'error' => 'Invalid language code: ' . $lang
                 ], 400);
             }
 
@@ -309,7 +269,7 @@ class AdminController extends Controller {
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Steps saved successfully',
+                'message' => 'Steps saved',
                 'language' => $lang
             ]);
         } catch (\Exception $e) {
@@ -441,29 +401,19 @@ class AdminController extends Controller {
     public function resetToDefault(string $lang = 'en'): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
-            // Get available languages
-            $availableLanguages = $this->getAvailableLanguages();
-
-            // Validate language code
-            if (!in_array($lang, $availableLanguages)) {
+            if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang . '. Available: ' . implode(', ', $availableLanguages)
+                    'error' => 'Invalid language code: ' . $lang
                 ], 400);
             }
 
-            $configKey = 'wizard_steps_' . $lang;
-
-            // Delete custom steps
-            $this->config->deleteAppValue($this->appName, $configKey);
-
-            // Load and save default steps (will use English fallback if translation not available)
-            $steps = $this->getDefaultStepsForLanguage($lang);
-            $this->config->setAppValue($this->appName, $configKey, json_encode($steps));
+            // Delete the override row; next GET serves Transifex-translated defaults
+            $this->config->deleteAppValue($this->appName, 'wizard_steps_' . $lang);
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Steps reset to default for language: ' . $lang,
+                'message' => 'Override discarded for language: ' . $lang,
                 'language' => $lang
             ]);
         } catch (\Exception $e) {
@@ -481,24 +431,11 @@ class AdminController extends Controller {
     public function getSettings(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
-            // Default to enabled on first install with only English enabled
             $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
-            $enabledLanguagesJson = $this->config->getAppValue($this->appName, 'enabled_languages', '');
-
-            // Default to only English enabled on first install
-            if (empty($enabledLanguagesJson)) {
-                $enabledLanguages = ['en'];
-                // Save the default on first load
-                $this->config->setAppValue($this->appName, 'enabled_languages', json_encode($enabledLanguages));
-                $this->config->setAppValue($this->appName, 'wizard_enabled', 'true');
-            } else {
-                $enabledLanguages = json_decode($enabledLanguagesJson, true);
-            }
 
             return new JSONResponse([
                 'success' => true,
-                'enabled' => $enabled === 'true',
-                'enabledLanguages' => $enabledLanguages
+                'enabled' => $enabled === 'true'
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([
@@ -525,20 +462,6 @@ class AdminController extends Controller {
 
             $this->config->setAppValue($this->appName, 'wizard_enabled', $enabled ? 'true' : 'false');
 
-            // Save enabled languages if provided
-            if (isset($data['enabledLanguages']) && is_array($data['enabledLanguages'])) {
-                // Get available languages from translation files
-                $availableLanguages = $this->getAvailableLanguages();
-                $enabledLanguages = array_values(array_intersect($data['enabledLanguages'], $availableLanguages));
-
-                // Ensure at least one language is enabled
-                if (empty($enabledLanguages)) {
-                    $enabledLanguages = ['en'];
-                }
-
-                $this->config->setAppValue($this->appName, 'enabled_languages', json_encode($enabledLanguages));
-            }
-
             // Handle show to all users (reset all user preferences)
             if (isset($data['showToAll']) && $data['showToAll'] === true) {
                 // Reset wizard_disabled preference for ALL users
@@ -556,7 +479,7 @@ class AdminController extends Controller {
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Settings saved successfully',
+                'message' => 'Settings saved',
                 'enabled' => $enabled
             ]);
         } catch (\Exception $e) {
@@ -574,14 +497,10 @@ class AdminController extends Controller {
     public function exportSteps(string $lang = 'en'): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
-            // Get available languages
-            $availableLanguages = $this->getAvailableLanguages();
-
-            // Validate language code
-            if (!in_array($lang, $availableLanguages)) {
+            if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang . '. Available: ' . implode(', ', $availableLanguages)
+                    'error' => 'Invalid language code: ' . $lang
                 ], 400);
             }
 
@@ -647,14 +566,10 @@ class AdminController extends Controller {
 
             $lang = $importData['language'];
 
-            // Get available languages
-            $availableLanguages = $this->getAvailableLanguages();
-
-            // Validate language code
-            if (!in_array($lang, $availableLanguages)) {
+            if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang . '. Available: ' . implode(', ', $availableLanguages)
+                    'error' => 'Invalid language code: ' . $lang
                 ], 400);
             }
 

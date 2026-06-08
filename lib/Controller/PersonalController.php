@@ -68,7 +68,7 @@ class PersonalController extends Controller {
 
             return new JSONResponse([
                 'success' => true,
-                'message' => 'Settings saved successfully'
+                'message' => 'Settings saved'
             ]);
         } catch (\Exception $e) {
             return new JSONResponse([

@@ -357,10 +357,6 @@ export default {
             return
           }
 
-          if (stepsResponse.languageDisabled) {
-            return
-          }
-
           waitForNextcloudReady().then(async () => {
             setTimeout(async () => {
               await startTour()

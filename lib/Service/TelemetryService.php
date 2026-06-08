@@ -131,7 +131,7 @@ class TelemetryService {
             'nextcloudVersion' => $this->getNextcloudVersion(),
             'phpVersion' => PHP_VERSION,
             'totalSteps' => $this->getStepCounts(),
-            'enabledLanguages' => $this->getEnabledLanguages(),
+            'languagesWithOverrides' => $this->getOverriddenLanguages(),
             'wizardEnabled' => $this->isWizardEnabled(),
             'wizardStartedCount' => $this->getWizardStartedCount(),
             'wizardCompletedCount' => $this->getWizardCompletedCount(),
@@ -343,9 +343,9 @@ class TelemetryService {
      * Privacy-friendly: only boolean, no group names
      */
     private function isGroupVisibilityUsed(): bool {
-        $enabledLanguages = $this->getEnabledLanguages();
+        $overriddenLanguages = $this->getOverriddenLanguages();
 
-        foreach ($enabledLanguages as $lang) {
+        foreach ($overriddenLanguages as $lang) {
             $configKey = 'wizard_steps_' . $lang;
             $stepsJson = $this->config->getAppValue(Application::APP_ID, $configKey, '');
             if (!empty($stepsJson)) {
@@ -368,9 +368,9 @@ class TelemetryService {
      */
     private function getStepCounts(): array {
         $counts = [];
-        $enabledLanguages = $this->getEnabledLanguages();
+        $overriddenLanguages = $this->getOverriddenLanguages();
 
-        foreach ($enabledLanguages as $lang) {
+        foreach ($overriddenLanguages as $lang) {
             $configKey = 'wizard_steps_' . $lang;
             $stepsJson = $this->config->getAppValue(Application::APP_ID, $configKey, '');
             if (!empty($stepsJson)) {
@@ -385,14 +385,20 @@ class TelemetryService {
     }
 
     /**
-     * Get enabled languages
+     * Languages with an admin-authored wizard_steps_<lang> override row.
+     * Always includes 'en'.
      */
-    private function getEnabledLanguages(): array {
-        $enabledLanguagesJson = $this->config->getAppValue(Application::APP_ID, 'enabled_languages', '');
-        if (empty($enabledLanguagesJson)) {
-            return ['en'];
+    private function getOverriddenLanguages(): array {
+        $keys = $this->config->getAppKeys(Application::APP_ID);
+        $codes = ['en'];
+        foreach ($keys as $key) {
+            if (preg_match('/^wizard_steps_([a-z]{2}(?:_[A-Z]{2})?)$/', $key, $m)) {
+                if (!in_array($m[1], $codes, true)) {
+                    $codes[] = $m[1];
+                }
+            }
         }
-        return json_decode($enabledLanguagesJson, true) ?: ['en'];
+        return $codes;
     }
 
     /**
@@ -572,7 +578,7 @@ class TelemetryService {
             'usersStartedWizard' => $this->getUsersStartedCount(),
             'usersCompletedWizard' => $this->getUsersCompletedCount(),
             'totalSteps' => $this->getStepCounts(),
-            'enabledLanguages' => $this->getEnabledLanguages(),
+            'languagesWithOverrides' => $this->getOverriddenLanguages(),
             'wizardEnabled' => $this->isWizardEnabled(),
         ];
     }

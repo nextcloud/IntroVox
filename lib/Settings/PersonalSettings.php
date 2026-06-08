@@ -21,28 +21,9 @@ class PersonalSettings implements ISettings {
     public function getForm() {
         $wizardGloballyEnabled = $this->config->getAppValue('introvox', 'wizard_enabled', 'true') === 'true';
 
-        // Get user's language
-        $userLang = $this->l10n->getLanguageCode();
-        $baseLang = substr($userLang, 0, 2);
-
-        // Check if user's language is enabled
-        $enabledLanguagesJson = $this->config->getAppValue('introvox', 'enabled_languages', '');
-        if (empty($enabledLanguagesJson)) {
-            // Default to only English enabled on first install
-            $enabledLanguages = ['en'];
-        } else {
-            $enabledLanguages = json_decode($enabledLanguagesJson, true);
-        }
-
-        $userLanguageEnabled = in_array($baseLang, $enabledLanguages);
-
-        // Wizard is only enabled if both globally enabled AND user's language is enabled
-        $wizardEnabled = $wizardGloballyEnabled && $userLanguageEnabled;
-
         return new TemplateResponse('introvox', 'personal', [
-            'wizardEnabled' => $wizardEnabled,
+            'wizardEnabled' => $wizardGloballyEnabled,
             'wizardGloballyEnabled' => $wizardGloballyEnabled,
-            'userLanguageEnabled' => $userLanguageEnabled
         ], '');
     }
 

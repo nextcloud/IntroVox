@@ -7,8 +7,7 @@ style('introvox', 'personal');
 // Pass wizard status to JavaScript
 window.introvoxPersonalSettings = {
     wizardEnabled: <?php p($_['wizardEnabled'] ? 'true' : 'false'); ?>,
-    wizardGloballyEnabled: <?php p($_['wizardGloballyEnabled'] ? 'true' : 'false'); ?>,
-    userLanguageEnabled: <?php p($_['userLanguageEnabled'] ? 'true' : 'false'); ?>
+    wizardGloballyEnabled: <?php p($_['wizardGloballyEnabled'] ? 'true' : 'false'); ?>
 };
 </script>
 
@@ -38,19 +37,12 @@ window.introvoxPersonalSettings = {
                 💾 <?php p($l->t('Save settings')); ?>
             </button>
         </div>
-    <?php elseif (!$_['wizardGloballyEnabled']): ?>
+    <?php else: ?>
         <p class="settings-hint">
             <?php p($l->t('The introduction tour is currently disabled by your administrator.')); ?>
         </p>
         <p class="settings-hint">
             <?php p($l->t('Contact your administrator if you would like to see the guided tour.')); ?>
-        </p>
-    <?php elseif (!$_['userLanguageEnabled']): ?>
-        <p class="settings-hint">
-            <?php p($l->t('The introduction tour is not available in your language.')); ?>
-        </p>
-        <p class="settings-hint">
-            <?php p($l->t('Contact your administrator if you would like to have the tour available in your language.')); ?>
         </p>
     <?php endif; ?>
 </div>

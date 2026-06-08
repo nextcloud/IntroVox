@@ -29,7 +29,7 @@
 
 			<div v-if="licenseStats" class="stats-overview">
 				<div
-					v-for="lang in licenseStats.enabledLanguages"
+					v-for="lang in licenseStats.languagesWithOverrides"
 					:key="lang"
 					class="language-stat-row">
 					<div class="language-info">
@@ -85,7 +85,7 @@
 				<NcButton type="primary"
 					:disabled="savingLicense"
 					@click="saveLicenseKey">
-					{{ licenseStep === 'saving' ? t('introvox', 'Saving...') : licenseStep === 'validating' ? t('introvox', 'Validating...') : licenseStep === 'activating' ? t('introvox', 'Activating...') : t('introvox', 'Save & activate') }}
+					{{ licenseStep === 'saving' ? t('introvox', 'Saving …') : licenseStep === 'validating' ? t('introvox', 'Validating …') : licenseStep === 'activating' ? t('introvox', 'Activating …') : t('introvox', 'Save & activate') }}
 				</NcButton>
 				<NcButton v-if="licenseStats && licenseStats.hasLicense"
 					type="tertiary"

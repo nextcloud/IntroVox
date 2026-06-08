@@ -1,105 +1,88 @@
 # Language Management
 
-IntroVox supports completely separate wizard steps per language. You can configure different content for each language, enable or disable specific languages, and add new languages via Transifex translations.
+As of v1.7.0, IntroVox automatically supports every language Nextcloud knows about. The wizard's default tour content is translated via Transifex, and end users see it in their Nextcloud language without any admin action.
 
-## Supported Languages
+Admins can optionally provide **per-language overrides** — custom copy that replaces the default content for a specific language only. Overrides are the exception; for most installs you never need one.
 
-Out of the box, IntroVox includes:
+## How language coverage works (the short version)
 
-- 🇬🇧 English (`en`)
-- 🇳🇱 Nederlands (`nl`)
-- 🇩🇪 Deutsch (`de`)
-- 🇫🇷 Français (`fr`)
-- 🇩🇰 Dansk (`da`)
-- 🇸🇪 Svenska (`sv`)
+- **Default content** comes from `$l->t('…')` calls in `lib/Controller/AdminController.php`. The English source strings are extracted to `translationfiles/templates/introvox.pot` and translated on Transifex (`nextcloud/introvox`).
+- **End users always get the wizard in their Nextcloud language**, with the standard fallback chain: user locale → base language → English. No language opt-in by the admin, no per-user gating.
+- **Admin overrides** live in the database (`oc_appconfig`, key `wizard_steps_<lang>`). One row per language that has an override; if no row exists, the Transifex-translated default is served.
 
-Additional languages can be added without code changes — see [Adding New Languages](#adding-new-languages) and [Multi-Language Support](../features/multi-language.md).
+## Adding a language override
 
-## Enabling and Disabling Languages
+1. Go to **Settings → Administration → IntroVox → Steps**.
+2. Click **+ Add language override**.
+3. Type to search the full Nextcloud language list, pick a language, click **Add override**.
+4. The Steps editor switches to that language and shows the current default content as a starting point.
+5. Edit the steps and click **💾 Save changes**. The override row is created at save-time, not earlier — so picking a language and bailing out costs nothing.
 
-1. Go to **Settings → Administration → IntroVox**
-2. In the **Available languages** section, check or uncheck languages
-3. The setting saves automatically on each change
+The override-language dropdown only lists languages that currently have an override (plus English, always). It will never show the full 80+ language list directly.
 
-**Constraints:**
+## Discarding an override
 
-- At least one language must be enabled (the last enabled language cannot be disabled)
-- Default on first install: only English is enabled
+To send a language back to the auto-translated defaults:
 
-**Effect of disabling a language:**
+1. Select the language in the dropdown.
+2. Click **🔄 Reset**.
+3. Confirm.
 
-- Users with that language as their Nextcloud language setting cannot see the wizard
-- In personal settings they see: *"The introduction tour is not available in your language."*
+The `wizard_steps_<lang>` row is deleted. Users in that language now see the Transifex-translated defaults — including any new translations that landed on Transifex since the override was authored.
 
-## How Language Detection Works
+## How language detection works at runtime
 
-When a user logs in, IntroVox:
+When a user opens Nextcloud, IntroVox:
 
-1. Reads the user's Nextcloud language code via `IL10N::getLanguageCode()`
-2. Extracts the base language (`en_US` → `en`)
-3. Scans `l10n/` to discover all languages that have a `<lang>.json` file
-4. Checks whether the base language is in the **Available languages** allowlist
-5. Loads `wizard_steps_<lang>` from appconfig, falling back to defaults if not configured
-6. Falls back to English if the user's language is not available
+1. Reads the user's language via `IL10N::getLanguageCode()` (e.g. `nl_BE`).
+2. Extracts the base language (`nl_BE` → `nl`).
+3. Looks for `wizard_steps_nl` in `oc_appconfig`.
+4. **Override exists** → serves it as-is (after group-visibility filtering).
+5. **No override** → calls `DefaultStepsService::getForLanguage('nl')`, which builds the eight default steps via the Nextcloud `IFactory` translator. If a Dutch translation exists on Transifex, the user sees Dutch; if not, the fallback chain hands them English.
 
-See [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) for the implementation.
+See [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) and [DefaultStepsService](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php) for the implementation.
 
-## Per-Language Step Configuration
+## Upgrade notes for installs coming from 1.6.x
 
-Each language has its own independent set of wizard steps. To edit steps for a specific language:
+In 1.6.x, opening the Steps tab silently auto-persisted the default tour content into `oc_appconfig` so that the reorder UX worked. As a result, most 1.6.x installs have six rows in the database (en/nl/de/da/fr/sv) that are byte-identical to the 1.6.x defaults at the time.
 
-1. Under **Language settings**, click the language dropdown
-2. Choose a language (only enabled languages appear)
-3. The step list reloads with that language's configuration
-4. Make your changes
-5. Click **💾 Save changes** to persist
+After upgrade to 1.7.0:
 
-> **Warning:** Switching languages with unsaved changes will discard them — you'll see a confirmation dialog.
+- Those six rows show up in the Steps-tab dropdown as **overrides**.
+- The wizard keeps working — end users see no difference.
+- However, **those six languages won't pick up new Transifex translations** until the override row is removed. The 1.6.x default copy stays frozen in the DB.
 
-**Example use cases:**
+To get back to "everything served from Transifex" for any of those six languages:
 
-- **Region-specific tips**: Dutch users get steps mentioning Dutch Nextcloud cloud providers; international users see generic steps.
-- **Cultural adaptation**: Adjust tone, examples, or emoji use per language.
-- **Translation control**: Hand each language's JSON to a translator; reimport when done.
+1. Open the Steps tab.
+2. Pick the language in the dropdown.
+3. Click **🔄 Reset**.
 
-## Resetting One Language
+This deletes the row; from then on, Transifex updates flow through automatically.
 
-To reset only one language to defaults:
+If you'd actually customised one of those six languages in 1.6.x, leave it alone — it's a real override and Reset would discard your work.
 
-1. Select the language from the dropdown
-2. Click **🔄 Reset to default**
-3. Confirm
+The obsolete `enabled_languages` appconfig key is ignored by 1.7.0 code but left in the database for downgrade safety. You can remove it manually with:
 
-Only that language's `wizard_steps_<lang>` is reset; other languages remain unchanged.
+```bash
+occ config:app:delete introvox enabled_languages
+```
 
-## Adding New Languages
+## Adding a language that isn't on Transifex yet
 
-IntroVox auto-discovers languages from the `l10n/` directory — no code changes needed.
+You don't need to wait for Transifex — the override flow works for any language Nextcloud knows about, even if Transifex hasn't translated the IntroVox strings for it yet. Just add an override, write the copy yourself, save. Users in that language will see your override; users in other languages keep seeing whatever Transifex provides (or English fallback).
 
-1. Visit the [Nextcloud Transifex project](https://www.transifex.com/nextcloud/nextcloud/) and contribute or download translations for IntroVox
-2. Drop the resulting `l10n/<lang>.json` file into the app directory
-3. The new language appears in the **Available languages** checkboxes automatically
-4. Enable it and optionally customize its wizard steps
+If Transifex later adds a translation for that language, your override **wins**. Reset the override when you no longer need the custom copy.
 
-For the full Transifex flow see [Transifex Integration](../architecture/transifex-integration.md).
+## Example use cases for overrides
 
-## Default Step Content per Language
-
-When a language has no custom configuration, IntroVox uses built-in default steps wrapped in `t('introvox', '<English source>')`. As of v1.6.0, these source strings serve as Transifex msgids, so translators see the actual English content rather than opaque keys like `step_welcome_title`.
-
-The defaults cover:
-
-- Welcome to Nextcloud
-- File management
-- Calendar
-- Search functionality
-- Important features
-- Useful tips
-- Conclusion
+- **Region-specific tips**: Dutch users get steps mentioning Dutch Nextcloud cloud providers; international users see generic Transifex-translated content.
+- **Tenant-specific wording**: an institution wants "Welcome to ACME Cloud" instead of "Welcome to Nextcloud" for their users only.
+- **Translation gaps**: a language Transifex hasn't covered yet — the admin writes it themselves as an override until a Transifex translation arrives.
 
 ## See Also
 
 - [Multi-Language Support](../features/multi-language.md) — Transifex integration details
 - [Transifex Integration](../architecture/transifex-integration.md) — l10n workflow
 - [Managing Wizard Steps](managing-steps.md) — Edit steps per language
-- [Settings](settings.md) — Available languages reference
+- [Settings](settings.md) — Available admin settings

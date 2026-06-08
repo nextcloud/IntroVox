@@ -9,11 +9,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Check wizard status dynamically from server
     let wizardEnabled = false;
-    let languageDisabled = false;
     try {
         const statusResponse = await axios.get(generateUrl('/apps/introvox/api/steps'));
         wizardEnabled = statusResponse.data.enabled === true;
-        languageDisabled = statusResponse.data.languageDisabled === true;
     } catch (error) {
         wizardEnabled = false;
     }
@@ -21,22 +19,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     // If wizard is disabled, update the UI to show the appropriate message
     const settingsContainer = document.getElementById('introvox-personal-settings');
     if (!wizardEnabled && settingsContainer) {
-        let message = '';
-        if (languageDisabled) {
-            // Language not enabled
-            message = `
-                <h2>${t('introvox', 'IntroVox')}</h2>
-                <p class="settings-hint">${t('introvox', 'The introduction tour is not available in your language.')}</p>
-                <p class="settings-hint">${t('introvox', 'Contact your administrator if you would like to have the tour available in your language.')}</p>
-            `;
-        } else {
-            // Wizard globally disabled
-            message = `
-                <h2>${t('introvox', 'IntroVox')}</h2>
-                <p class="settings-hint">${t('introvox', 'The introduction tour is currently disabled by your administrator.')}</p>
-                <p class="settings-hint">${t('introvox', 'Contact your administrator if you would like to see the guided tour.')}</p>
-            `;
-        }
+        const message = `
+            <h2>${t('introvox', 'IntroVox')}</h2>
+            <p class="settings-hint">${t('introvox', 'The introduction tour is currently disabled by your administrator.')}</p>
+            <p class="settings-hint">${t('introvox', 'Contact your administrator if you would like to see the guided tour.')}</p>
+        `;
         settingsContainer.innerHTML = message;
         return;
     }
@@ -65,14 +52,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         saveBtn.addEventListener('click', async function() {
             try {
                 saveBtn.disabled = true;
-                saveBtn.textContent = t('introvox', 'Saving...');
+                saveBtn.textContent = t('introvox', 'Saving …');
 
                 const response = await axios.post(generateUrl('/apps/introvox/personal/settings'), {
                     wizardDisabled: disableCheckbox.checked
                 });
 
                 if (response.data.success) {
-                    OCP.Toast.success(t('introvox', 'Settings saved successfully'));
+                    OCP.Toast.success(t('introvox', 'Settings saved'));
                     saveBtn.textContent = '💾 ' + t('introvox', 'Save settings');
                 } else {
                     OCP.Toast.error(t('introvox', 'Error saving settings'));
@@ -105,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
 
             // Show feedback
-            restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour...');
+            restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour …');
             restartBtn.disabled = true;
 
             // Redirect to Nextcloud home after a short delay

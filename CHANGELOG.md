@@ -7,8 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-06-08
+
+### Upgrade notes
+- **Stale `wizard_steps_<lang>` rows from 1.6.x are kept as-is.** Versions before 1.7.0 auto-persisted the default tour content into `oc_appconfig` the first time the admin opened the Steps tab, so most 1.6.x installs have six rows (en/nl/de/da/fr/sv) that are byte-identical to the bundled defaults at the time. After upgrade, those rows show up in the Steps-tab dropdown as "overrides". The wizard keeps working and end users see no difference, but those six languages will no longer pick up new Transifex translations until the admin clicks **Reset** on each one — that deletes the row and lets the Transifex-translated defaults take over. Languages that were never touched on the old install have no row and are unaffected; their users get fresh Transifex translations automatically. No data is lost either way.
+- **Obsolete `enabled_languages` appconfig key is ignored, not deleted.** Left in place so a downgrade to 1.6.x stays functional. Can be removed manually with `occ config:app:delete introvox enabled_languages` if desired; harmless if left.
+
+### Added
+- **Language-override workflow for admins** ([#17](https://github.com/nextcloud/IntroVox/issues/17)) — Steps tab gains an explicit "Add language override" flow. A searchable dropdown shows every Transifex-supported language; admins pick one and start authoring custom copy. No DB rows are created until first save. New `GET /admin/overrides` endpoint returns the list of languages with admin-authored overrides.
+- **`DefaultStepsService`** — Single source of truth for the eight built-in tour steps. Both `AdminController` (editor view) and `ApiController` (end-user fetch) consume the same Transifex-translated defaults via this service. Removes a previously duplicated step-builder.
+
 ### Changed
+- **Wizard is automatically available in every Transifex-translated language** ([#17](https://github.com/nextcloud/IntroVox/issues/17)) — Default tour content is auto-translated; end users always see the wizard in their Nextcloud locale (fallback chain: user lang → base lang → English). The admin no longer needs to opt languages in. API path: when no admin override exists for a user's language, `/api/steps` now returns the Transifex-translated defaults inline instead of `useDefault:true` + empty array.
+- **Settings tab simplified** — The language checkbox grid is replaced by a single hint line stating how many languages have overrides. Wizard-on/off switch and "Show wizard to all users" button remain.
+- **Reset semantics for a per-language override** — "Reset to default" now deletes the override row entirely; the next request serves Transifex-translated defaults. Previously the row was re-saved with defaults baked into the DB.
+- **License/telemetry payload field rename** — `enabledLanguages` → `languagesWithOverrides`. Same data shape, more honest name.
 - **Documentation restructured to match IntraVox/MetaVox layout** — Replaced the four flat doc files (`ADMINISTRATOR_GUIDE.md`, `ADMIN_MANUAL.md`, `USER_MANUAL.md`, `APP_STORE_SUBMISSION.md`) with a nested structure: `docs/index.md` hub, `docs/getting-started.md`, plus `admin/`, `user/`, `features/`, `architecture/`, and `deployment/` subdirectories. The two admin monoliths (which largely duplicated each other) were deduplicated into nine topic-scoped files. README and `appinfo/info.xml` `<documentation>` block updated to point at the new paths.
+
+### Removed
+- **"Enable languages" concept** ([#17](https://github.com/nextcloud/IntroVox/issues/17)) — The Settings tab's per-language checkbox grid is gone, and the `enabled_languages` appconfig key is no longer read or written. Existing rows are left in place on upgrade (harmless; ignored). Existing `wizard_steps_<lang>` override rows are preserved and now displayed in the Steps-tab dropdown.
+- **"Tour not available in your language" personal-settings branch** — Since every Transifex-translated language is auto-available, this branch was always dead post-upgrade. Removed from `lib/Settings/PersonalSettings.php`, `templates/personal.php`, and `src/personal.js`.
+- **Auto-persist of default steps on first GET** — `AdminController::getSteps` used to write defaults to `oc_appconfig` on first read; this artificially inflated the override-list. Defaults are now persisted only when an admin explicitly saves changes.
+
+### Fixed
+- **l10n source-string adaptations for Transifex** ([#18](https://github.com/nextcloud/IntroVox/issues/18)) — Replaced triple-dot ellipses with U+2026 + nbsp (`Saving …`, `Validating …`, `Activating …`, `Restarting tour …`) per Nextcloud translation dos-and-don'ts. Dropped "successfully" from `Settings saved` per Nextcloud writing guidelines. Existing translations for the renamed keys are preserved.
+- **App description no longer claims a fixed 6-language limit** ([#17](https://github.com/nextcloud/IntroVox/issues/17)) — `appinfo/info.xml` description rewritten to reflect Transifex-driven language coverage; removed the "Language-specific tour availability management" bullet.
+- **Admin-saved step content rendered with literal `<p>` tags** — `AdminController::sanitizeStep` ran `OCP\Util::sanitizeHTML()` on every save, which *escapes* HTML rather than sanitising it; admin-authored copy ended up in the DB as `&lt;p&gt;...&lt;/p&gt;` and Shepherd surfaced the raw tags to end users. Replaced with a plain `trim()`. Admin-authored wizard copy is intentionally HTML and admins are already trusted.
+- **End-user wizard could be served in the wrong language** — `ApiController` used `IL10N::getLanguageCode()` which returns NC's *validated* language (the one with a translation file), silently rerouting e.g. an Italian user to Dutch when no Italian IntroVox translation existed. Switched to `IFactory::findLanguage(null)` so the raw user preference is used, and the defaults service falls back to English (not the system default language) when the user's language has no translation file.
+- **Wizard client ignored server-provided default steps and re-translated locally** — `src/components/wizardSteps.js` discarded `data.steps` whenever the response had `useDefault:true`, then rebuilt the eight default steps in the browser via `t('introvox', '<English source>')`. Combined with the wrong-language IL10N bug above, this meant a non-translated user's wizard came out in the system default language. The client now uses the server's full step list directly.
 
 ## [1.6.1] - 2026-05-29
 

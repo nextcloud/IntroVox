@@ -44,33 +44,9 @@
         {{ t('When disabled, the wizard will not automatically start for new users.') }}
       </p>
 
-      <div class="language-settings">
-        <label class="language-label">{{ t('Available languages') }}</label>
-        <div class="language-grid">
-          <label
-            v-for="lang in allLanguages"
-            :key="lang.code"
-            class="language-checkbox-item"
-            :class="{
-              disabled: isLastLanguage(lang.code),
-              enabled: enabledLanguages.includes(lang.code)
-            }"
-          >
-            <input
-              type="checkbox"
-              :checked="enabledLanguages.includes(lang.code)"
-              :disabled="isLastLanguage(lang.code)"
-              @change="toggleLanguage(lang.code, $event.target.checked)"
-              class="checkbox"
-            />
-            <span class="language-label-text">
-              {{ lang.name }}
-              <span v-if="isLastLanguage(lang.code)" class="language-badge">{{ t('Required') }}</span>
-            </span>
-          </label>
-        </div>
-        <p class="settings-hint">{{ t('At least one language must be selected') }}</p>
-      </div>
+      <p class="settings-hint language-coverage-hint">
+        {{ t('The tour is auto-translated into every Nextcloud-supported language. {n} languages currently have an admin override.', { n: overrideLanguages.length }) }}
+      </p>
 
       <div class="show-to-all-section">
         <NcButton @click="showToAllUsers" type="warning">
@@ -91,7 +67,7 @@
       <div class="language-selector-row">
         <NcSelect
           v-model="selectedLanguageObj"
-          :options="availableLanguages"
+          :options="overrideLanguages"
           label="name"
           @input="onLanguageChange"
           :clearable="false"
@@ -103,6 +79,40 @@
             {{ name }}
           </template>
         </NcSelect>
+        <NcButton @click="openAddOverrideDialog" type="secondary">
+          ➕ {{ t('Add language override') }}
+        </NcButton>
+      </div>
+
+      <div v-if="showAddOverride" class="add-override-modal">
+        <div class="add-override-content">
+          <h3>{{ t('Add language override') }}</h3>
+          <p class="settings-hint">
+            {{ t('Pick a language to customise. Until you save, no data is written.') }}
+          </p>
+          <NcSelect
+            v-model="pendingOverrideLanguage"
+            :options="addableLanguages"
+            label="name"
+            :clearable="false"
+            :placeholder="t('Search language…')"
+          >
+            <template #selected-option="{ name }">
+              {{ name }}
+            </template>
+            <template #option="{ name }">
+              {{ name }}
+            </template>
+          </NcSelect>
+          <div class="add-override-actions">
+            <NcButton @click="cancelAddOverride">
+              {{ t('Cancel') }}
+            </NcButton>
+            <NcButton type="primary" :disabled="!pendingOverrideLanguage" @click="confirmAddOverride">
+              {{ t('Add override') }}
+            </NcButton>
+          </div>
+        </div>
       </div>
 
       <div class="action-buttons">
@@ -307,8 +317,8 @@
             <span class="stat-label">{{ t('Total steps') }}</span>
           </div>
           <div class="stat-card">
-            <span class="stat-value">{{ (statistics.enabledLanguages || []).length }}</span>
-            <span class="stat-label">{{ t('Languages enabled') }}</span>
+            <span class="stat-value">{{ (statistics.languagesWithOverrides || []).length }}</span>
+            <span class="stat-label">{{ t('Languages with overrides') }}</span>
           </div>
         </div>
 
@@ -422,10 +432,12 @@ export default {
     const wizardEnabled = ref(true)
     const stepsListRef = ref(null)
     const selectedLanguage = ref('en')
-    const enabledLanguages = ref(['en'])
+    const overrideLanguages = ref([{ code: 'en', name: 'English' }])
     const fileInputRef = ref(null)
     const allLanguages = ref([])
     const availableGroups = ref([])
+    const showAddOverride = ref(false)
+    const pendingOverrideLanguage = ref(null)
 
     // Tab navigation
     const activeTab = ref('settings')
@@ -450,14 +462,21 @@ export default {
       return Object.values(statistics.value.totalSteps).reduce((a, b) => a + b, 0)
     })
 
-    // Computed property for NcSelect
+    // Computed property for NcSelect — selected option in the override-dropdown
     const selectedLanguageObj = computed({
-      get: () => allLanguages.value.find(lang => lang.code === selectedLanguage.value),
+      get: () => overrideLanguages.value.find(lang => lang.code === selectedLanguage.value)
+        || allLanguages.value.find(lang => lang.code === selectedLanguage.value),
       set: (val) => {
         if (val && val.code) {
           selectedLanguage.value = val.code
         }
       }
+    })
+
+    // Languages an admin can still add as override (all Transifex langs minus those that already have an override)
+    const addableLanguages = computed(() => {
+      const existing = new Set(overrideLanguages.value.map(l => l.code))
+      return allLanguages.value.filter(l => !existing.has(l.code))
     })
 
     // Load available languages from backend
@@ -553,52 +572,22 @@ export default {
       try {
         const response = await axios.get(generateUrl('/apps/introvox/admin/settings'))
         wizardEnabled.value = response.data.enabled === true
-        if (response.data.enabledLanguages) {
-          enabledLanguages.value = response.data.enabledLanguages
-
-          // Set selectedLanguage to first available language if current selection is not enabled
-          if (!enabledLanguages.value.includes(selectedLanguage.value)) {
-            selectedLanguage.value = enabledLanguages.value[0] || 'en'
-            // Load steps for the new language
-            await loadSteps()
-          }
-        }
       } catch (error) {
         // Use defaults on error (e.g., 404 on fresh install before app is fully initialized)
         wizardEnabled.value = true
-        enabledLanguages.value = ['en']
-        selectedLanguage.value = 'en'
         showInfo(trans('Using default settings. Save your changes to persist them.'))
       }
     }
 
-    const isLastLanguage = (langCode) => {
-      return enabledLanguages.value.length === 1 && enabledLanguages.value.includes(langCode)
-    }
-
-    const toggleLanguage = async (langCode, checked) => {
-      if (isLastLanguage(langCode) && !checked) {
-        return // Don't allow disabling the last language
-      }
-
-      if (checked) {
-        if (!enabledLanguages.value.includes(langCode)) {
-          enabledLanguages.value.push(langCode)
+    const loadOverrides = async () => {
+      try {
+        const response = await axios.get(generateUrl('/apps/introvox/admin/overrides'))
+        if (response.data.success && Array.isArray(response.data.overrides)) {
+          overrideLanguages.value = response.data.overrides
         }
-      } else {
-        const index = enabledLanguages.value.indexOf(langCode)
-        if (index > -1) {
-          enabledLanguages.value.splice(index, 1)
-        }
+      } catch (error) {
+        overrideLanguages.value = [{ code: 'en', name: 'English' }]
       }
-
-      // If only one language is enabled, automatically select it
-      if (enabledLanguages.value.length === 1) {
-        selectedLanguage.value = enabledLanguages.value[0]
-        await loadSteps()
-      }
-
-      await saveGlobalSettings()
     }
 
     const onLanguageChange = async (value) => {
@@ -615,11 +604,37 @@ export default {
       await loadSteps()
     }
 
+    const openAddOverrideDialog = () => {
+      pendingOverrideLanguage.value = null
+      showAddOverride.value = true
+    }
+
+    const cancelAddOverride = () => {
+      pendingOverrideLanguage.value = null
+      showAddOverride.value = false
+    }
+
+    const confirmAddOverride = async () => {
+      const lang = pendingOverrideLanguage.value
+      if (!lang || !lang.code) {
+        return
+      }
+      // In-memory only — actual DB row appears when admin clicks Save changes
+      if (!overrideLanguages.value.find(l => l.code === lang.code)) {
+        overrideLanguages.value = [...overrideLanguages.value, lang].sort((a, b) =>
+          a.name.localeCompare(b.name)
+        )
+      }
+      selectedLanguage.value = lang.code
+      showAddOverride.value = false
+      pendingOverrideLanguage.value = null
+      await loadSteps()
+    }
+
     const saveGlobalSettings = async () => {
       try {
         await axios.post(generateUrl('/apps/introvox/admin/settings'), {
-          enabled: wizardEnabled.value,
-          enabledLanguages: enabledLanguages.value
+          enabled: wizardEnabled.value
         })
         showSuccess(trans('Global settings saved'))
       } catch (error) {
@@ -641,7 +656,6 @@ export default {
       try {
         await axios.post(generateUrl('/apps/introvox/admin/settings'), {
           enabled: wizardEnabled.value,
-          enabledLanguages: enabledLanguages.value,
           showToAll: true
         })
         showSuccess(trans('Wizard will be shown to all users on their next login'))
@@ -721,9 +735,11 @@ export default {
           steps: steps.value,
           lang: selectedLanguage.value
         })
-        showSuccess(trans('Steps saved successfully!'))
+        showSuccess(trans('Steps saved'))
         hasChanges.value = false
         originalSteps.value = JSON.parse(JSON.stringify(steps.value))
+        // New override may have been created; refresh the dropdown
+        await loadOverrides()
       } catch (error) {
         showError(trans('Error saving: %s', {error: error.message}))
       } finally {
@@ -733,17 +749,23 @@ export default {
 
     const resetToDefault = async () => {
       const confirmed = await showConfirmation({
-        name: trans('Reset to default'),
-        text: trans('Are you sure you want to reset to default steps for the selected language? All custom steps will be removed.'),
+        name: trans('Discard override'),
+        text: trans('Discard the custom steps for this language and fall back to the auto-translated defaults?'),
       })
       if (confirmed) {
         try {
           loading.value = true
+          const langBeingReset = selectedLanguage.value
           await axios.post(generateUrl('/apps/introvox/admin/reset'), {
-            lang: selectedLanguage.value
+            lang: langBeingReset
           })
+          await loadOverrides()
+          // If we just removed the currently selected non-English language, jump back to English
+          if (langBeingReset !== 'en' && !overrideLanguages.value.find(l => l.code === langBeingReset)) {
+            selectedLanguage.value = 'en'
+          }
           await loadSteps()
-          showSuccess(trans('Reset to default steps successful!'))
+          showSuccess(trans('Override discarded — language now uses auto-translated defaults'))
         } catch (error) {
           const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
           showError(trans('Error resetting') + ': ' + errorMsg)
@@ -921,21 +943,6 @@ export default {
       return names.join(', ')
     }
 
-    // Computed property for available languages based on enabled languages
-    const availableLanguages = computed(() => {
-      return allLanguages.value.filter(lang => enabledLanguages.value.includes(lang.code))
-    })
-
-    // Helper function to check if language is enabled
-    const isLanguageEnabled = (langCode) => {
-      return enabledLanguages.value.includes(langCode)
-    }
-
-    // Helper function to set language enabled state
-    const setLanguageEnabled = (langCode, enabled) => {
-      toggleLanguage(langCode, enabled)
-    }
-
     // Watch for stepsListRef to become available and initialize Sortable
     watch(stepsListRef, (newVal) => {
       if (newVal && !loading.value) {
@@ -956,7 +963,7 @@ export default {
 
     // Watch for language changes and reload steps
     watch(selectedLanguage, async (newLang, oldLang) => {
-      if (newLang !== oldLang && enabledLanguages.value.includes(newLang)) {
+      if (newLang !== oldLang) {
         await loadSteps()
       }
     })
@@ -981,16 +988,12 @@ export default {
       }
     })
 
-    // Load global settings first, then steps (loadGlobalSettings will call loadSteps if needed)
     const initializeAdmin = async () => {
       await loadAvailableLanguages()
       await loadAvailableGroups()
+      await loadOverrides()
       await loadGlobalSettings()
-      // Only load steps if selectedLanguage is still enabled after loading global settings
-      if (enabledLanguages.value.includes(selectedLanguage.value)) {
-        await loadSteps()
-      }
-      // Mark initialization as complete
+      await loadSteps()
       isInitializing = false
     }
     initializeAdmin()
@@ -1006,17 +1009,19 @@ export default {
       stepsListRef,
       selectedLanguage,
       selectedLanguageObj,
-      enabledLanguages,
+      overrideLanguages,
+      addableLanguages,
       allLanguages,
-      availableLanguages,
       availableGroups,
+      showAddOverride,
+      pendingOverrideLanguage,
+      openAddOverrideDialog,
+      cancelAddOverride,
+      confirmAddOverride,
       loadAvailableLanguages,
       loadAvailableGroups,
+      loadOverrides,
       formatGroupNames,
-      isLanguageEnabled,
-      setLanguageEnabled,
-      isLastLanguage,
-      toggleLanguage,
       onLanguageChange,
       saveGlobalSettings,
       showToAllUsers,
@@ -1068,128 +1073,40 @@ export default {
   font-size: 14px;
 }
 
-.language-settings {
-  margin-top: 20px;
+.language-coverage-hint {
+  margin-top: 16px;
 }
 
-.language-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 12px;
+.add-override-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.add-override-content {
+  background: var(--color-main-background);
   color: var(--color-main-text);
+  padding: 24px;
+  border-radius: var(--border-radius-large, 12px);
+  min-width: 360px;
+  max-width: 480px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
-.language-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+.add-override-content h3 {
+  margin-top: 0;
   margin-bottom: 8px;
 }
 
-.language-checkbox-item {
+.add-override-actions {
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
   gap: 8px;
-  padding: 8px 12px;
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--color-main-background);
-  position: relative;
-}
-
-/* Enabled state - clear visual indication */
-.language-checkbox-item.enabled {
-  background: var(--color-primary-element-light, rgba(0, 130, 201, 0.08));
-  border-color: var(--color-primary-element);
-}
-
-.language-checkbox-item.enabled:hover:not(.disabled) {
-  background: var(--color-primary-element-light-hover, rgba(0, 130, 201, 0.12));
-  border-color: var(--color-primary-element-hover);
-}
-
-/* Disabled state (unchecked) */
-.language-checkbox-item:not(.enabled) {
-  background: var(--color-background-dark, #f5f5f5);
-  opacity: 0.7;
-}
-
-.language-checkbox-item:hover:not(.disabled):not(.enabled) {
-  background: var(--color-background-hover);
-  border-color: var(--color-border-dark);
-  opacity: 0.9;
-}
-
-.language-checkbox-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: var(--color-background-dark);
-  border-style: dashed;
-}
-
-.language-checkbox-item .checkbox {
-  margin: 0;
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-}
-
-.language-checkbox-item.disabled .checkbox {
-  cursor: not-allowed;
-}
-
-.language-label-text {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  user-select: none;
-  font-weight: 500;
-}
-
-/* Enabled languages have bolder text */
-.language-checkbox-item.enabled .language-label-text {
-  font-weight: 600;
-}
-
-.language-badge {
-  padding: 2px 8px;
-  background: var(--color-warning);
-  color: var(--color-primary-element-text, var(--color-main-background));
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: 700;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid var(--color-warning);
-}
-
-/* Dark theme support for language badge */
-@media (prefers-color-scheme: dark) {
-  .language-badge {
-    background: var(--color-warning);
-    color: var(--color-main-background);
-    border-color: var(--color-warning);
-  }
-}
-
-[data-themes*="dark"] .language-badge,
-[data-theme-dark] .language-badge,
-body[data-theme="dark"] .language-badge {
-  background: var(--color-warning);
-  color: var(--color-main-background);
-  border-color: var(--color-warning);
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .language-badge {
-    border: 2px solid var(--color-main-text);
-    font-weight: 800;
-  }
+  margin-top: 16px;
 }
 
 .show-to-all-section {
