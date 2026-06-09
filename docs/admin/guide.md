@@ -4,12 +4,14 @@ This guide describes day-to-day administration of IntroVox. For installation, se
 
 ![IntroVox admin interface](../screenshots/admin-interface.png)
 
+> The screenshot above shows the pre-1.7.0 admin UI with the per-language checkbox grid. The 1.7.0 layout drops that grid in favour of an override-picker on the Steps tab; the rest of the screen is unchanged. Updated screenshots will land in a follow-up.
+
 ## Overview
 
 IntroVox is an interactive onboarding wizard that helps new Nextcloud users discover key features through a guided tour. As an administrator, you control:
 
 - **Global wizard availability** — turn the tour on or off for everyone
-- **Language support** — which languages are available, with per-language configuration
+- **Per-language overrides** — optionally replace the auto-translated default copy with custom text for specific languages
 - **Step management** — add, edit, delete, reorder, and enable/disable individual steps
 - **Group-based visibility** — restrict specific steps to certain user groups (role-based onboarding)
 - **User overrides** — force-show the tour to all users, even those who disabled it
@@ -30,13 +32,14 @@ The admin interface consists of three main sections:
 ### 1. Global Settings
 
 - **Enable wizard for all users** — master on/off toggle ([Settings](settings.md))
-- **Available languages** — checkboxes to enable/disable specific languages ([Language Management](language-management.md))
 - **Show wizard to all users** — force-show button that clears all user preferences
+- Read-only counter of the number of languages that currently have an admin override
 
-### 2. Language Selector
+### 2. Language Selector (Steps tab)
 
-- Dropdown showing only enabled languages
-- Switches the step list to the chosen language's configuration
+- Dropdown lists English plus every language that currently has an admin override
+- **+ Add language override** — searchable picker over the full Nextcloud language list; switches the editor to that language seeded with the current default copy. No DB row is written until you save
+- Switches the step list to the chosen language's override configuration
 
 ### 3. Step Management
 
@@ -45,7 +48,7 @@ The admin interface consists of three main sections:
 - **Drag handle** — reorder steps
 - **Enable/disable toggle** — temporarily hide steps without deleting
 - **Export / Import** — share configurations as JSON ([Import/Export](import-export.md))
-- **Reset to default** — restore factory defaults for the selected language
+- **Reset** — delete the current language's override row; the next request serves the auto-translated defaults straight from Transifex
 - **Save changes** — persist all modifications
 
 See [Managing Wizard Steps](managing-steps.md) for details.
@@ -54,26 +57,24 @@ See [Managing Wizard Steps](managing-steps.md) for details.
 
 ### Automatic Start
 
-When the wizard is enabled and the user's language is enabled:
+When the wizard is enabled:
 
-- New users see the wizard automatically on first login
+- New users see the wizard automatically on first login, in their Nextcloud language
 - The wizard starts on the dashboard page
 - Users can close the wizard anytime with **✕** or **Skip and don't show again**
 
-The wizard automatically starts for users with any enabled language — IntroVox detects the user's Nextcloud language setting and shows steps in that language.
+IntroVox detects the user's Nextcloud language and serves the matching translated default copy, or — if you authored one — the admin override for that language. When neither a Transifex translation nor an admin override exists for the user's language, the wizard falls back to English defaults.
 
 ### Manual Start
 
 Users can restart the wizard from **Personal Settings → IntroVox → Restart tour now**, then refresh the page.
 
-### Behavior When Wizard or Language Is Disabled
+### Behavior When the Wizard Is Disabled
 
-If you disable the wizard globally or disable a user's language:
+If you disable the wizard globally:
 
 - Users do **not** see the wizard automatically
-- In their personal settings they see a message:
-  - **Globally disabled**: "The introduction tour is currently disabled by your administrator."
-  - **Language disabled**: "The introduction tour is not available in your language."
+- In their personal settings they see: "The introduction tour is currently disabled by your administrator."
 - They cannot start the wizard manually
 
 ## Force-Showing the Wizard

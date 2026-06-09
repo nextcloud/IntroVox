@@ -37,11 +37,12 @@ Returns the wizard steps for the current user, filtered by language and group vi
 
 **Special response fields:**
 
-- `useDefault: true` — no custom configuration exists for this language; frontend should use built-in defaults
-- `languageDisabled: true` — user's language is not in `enabled_languages`; tour does not start
+- `useDefault: true` — no admin override exists for this language; the `steps` array is the auto-translated Transifex default set (the client should use it as-is and **not** rebuild defaults locally)
 - `enabled: false` — global wizard toggle is off
 
-**Implementation:** [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php#L77)
+> The `languageDisabled: true` field was removed in v1.7.0 along with the `enabled_languages` opt-in concept.
+
+**Implementation:** [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php)
 
 ### `POST /apps/introvox/api/wizard/start`
 
@@ -96,7 +97,7 @@ All admin endpoints require administrator privileges. CSRF protection is enforce
 | `POST` | `/apps/introvox/admin/step` | Add a single step |
 | `PUT` | `/apps/introvox/admin/step/{id}` | Update a single step |
 | `DELETE` | `/apps/introvox/admin/step/{id}` | Delete a single step |
-| `POST` | `/apps/introvox/admin/reset` | Reset a language to defaults |
+| `POST` | `/apps/introvox/admin/reset` | Delete a language's override row; next GET serves auto-translated defaults |
 
 ### Import/Export
 
@@ -111,7 +112,8 @@ All admin endpoints require administrator privileges. CSRF protection is enforce
 |---|---|---|
 | `GET` | `/apps/introvox/admin/settings` | Get global settings |
 | `POST` | `/apps/introvox/admin/settings` | Save global settings |
-| `GET` | `/apps/introvox/admin/languages` | Get available languages with metadata (display name, enabled flag) |
+| `GET` | `/apps/introvox/admin/languages` | List every Nextcloud-supported language (for the "Add language override" picker), with native display names |
+| `GET` | `/apps/introvox/admin/overrides` | List languages that currently have an admin override row (powers the Steps-tab dropdown) — always includes `en` |
 | `GET` | `/apps/introvox/admin/groups` | Get list of Nextcloud groups for the **Visible to groups** dropdown |
 
 ### Statistics and Telemetry

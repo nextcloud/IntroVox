@@ -21,7 +21,7 @@ For reliability, use multiple selectors separated by commas — see [Best Practi
 
 Yes. Supported tags include `<p>`, `<strong>`, `<b>`, `<em>`, `<i>`, `<ul>`, `<ol>`, `<li>`, `<br>`, `<a href="...">`.
 
-> **Security note:** Step `title` and `text` are sanitized server-side via `OCP\Util::sanitizeHTML` on save/import (since v1.5.0) to prevent stored XSS.
+> **Security note:** Step `title` and `text` are stored as-is and rendered as HTML by Shepherd.js. Admins are trusted to author tour copy directly. Until v1.7.0 the backend passed both fields through `OCP\Util::sanitizeHTML` which actually escapes rather than sanitises HTML, causing literal `<p>` tags to surface in the wizard; that double-escape was removed.
 
 Example:
 
@@ -68,30 +68,27 @@ There's no built-in conditional logic, but:
 
 ### How do I add a new language?
 
-IntroVox auto-discovers languages from `l10n/<lang>.json` — no code changes needed.
+You don't have to do anything. Every language that has a translation on the [Nextcloud Transifex `nextcloud/introvox` resource](https://www.transifex.com/nextcloud/nextcloud/) becomes available automatically — the sync bot pulls the translations into `l10n/<lang>.json` via PRs, and end users in that language immediately see the auto-translated tour.
 
-1. Contribute or download translations via [Nextcloud Transifex](https://www.transifex.com/nextcloud/nextcloud/)
-2. Drop the `.json` file into the app's `l10n/` directory
-3. The new language appears in **Available languages** checkboxes automatically
-4. Enable it and customize steps if desired
+If you want **custom copy** for a specific language (different from the auto-translated default), open the **Steps** tab, click **+ Add language override**, pick the language, edit, save.
 
 See [Multi-Language Support](../features/multi-language.md) for the full Transifex flow.
 
 ### Can I have different steps for different languages?
 
-Yes — that's one of the core features. Each language has its own independent `wizard_steps_<lang>` configuration.
+Yes — that's what overrides are for. Each override-language has its own independent `wizard_steps_<lang>` configuration that replaces the auto-translated defaults for that language. Languages without an override get the defaults.
 
-### How do I reset one language without affecting others?
+### How do I discard an override and go back to the auto-translated defaults?
 
-Select the language in the dropdown → click **🔄 Reset to default** → confirm. Only that language is reset.
+Select the language in the dropdown → click **🔄 Reset** → confirm. The override row is deleted; from then on Transifex updates flow through automatically for that language.
 
-### What if a user's language isn't enabled?
+### What if a user's language has no Transifex translation yet?
 
-They see "*The introduction tour is not available in your language*" in personal settings and can't start the wizard. The tour does not fall back to English automatically — this is intentional, so users aren't surprised by an unfamiliar language.
+The wizard falls back to the **English** defaults for that user. (NC's per-app language detection falls back to the system default; IntroVox forces an English fallback in `DefaultStepsService` so users never see a surprise third language.)
 
 ### Can I mix languages in step text?
 
-Not recommended. Each language should have its own complete translation via the language dropdown.
+Not recommended. Each override-language should have its own coherent copy. Languages without an override use the auto-translated Transifex defaults.
 
 ## Audience Control
 
@@ -101,8 +98,9 @@ Several options:
 
 1. **Limit app to groups** (Nextcloud-level, recommended for full exclusion) — **Settings → Apps → IntroVox → Limit to groups**
 2. **Group-based step visibility** (v1.2.0+) — restrict individual steps to groups ([Group Visibility](group-visibility.md))
-3. **Per-language** — disable the user's language in **Available languages**
-4. **Globally** — uncheck **Enable wizard for all users**
+3. **Globally** — uncheck **Enable wizard for all users**
+
+(Per-language opt-out was removed in v1.7.0 — that pattern doesn't scale across 80+ Transifex languages.)
 
 ### Can users disable the wizard themselves?
 
@@ -132,6 +130,7 @@ As of v1.5.0, IntroVox declares compatibility with **Nextcloud 32–34** and req
 
 See [CHANGELOG.md](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md) for the full version history. Highlights:
 
+- **v1.7.0** — Transifex-driven language model: every translated language available automatically, admin UI shifts from "enable languages" to "manage overrides", `enabled_languages` concept dropped; fixes for HTML-escape, wrong-language fallback, client-side re-translation; #17 and #18 closed
 - **v1.6.1** — fix for previously-shown steps stacking behind the current step
 - **v1.6.0** — Transifex translation infrastructure, auto-discovery of language display names, ~50 new translatable strings for PWA install instructions
 - **v1.5.0** — Enterprise subscription support, NC 34 support, CSRF + XSS hardening
@@ -146,9 +145,11 @@ See [CHANGELOG.md](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md)
 
 ### Where are wizard configurations stored?
 
-- **Global settings**: `oc_appconfig` (`wizard_enabled`, `enabled_languages`, `wizard_version`)
-- **Per-language steps**: `oc_appconfig` (`wizard_steps_en`, `wizard_steps_nl`, ...)
+- **Global settings**: `oc_appconfig` (`wizard_enabled`, `wizard_version`)
+- **Per-language overrides**: `oc_appconfig` (`wizard_steps_<lang>` — only present when an admin saved an override)
 - **User preferences** (permanent disable): `oc_preferences` (user-scoped)
+
+> 1.6.x installs may still carry a stale `enabled_languages` row. The 1.7.0 code ignores it; it's harmless and left in place for downgrade safety.
 
 See [Backend Architecture](../architecture/backend-architecture.md).
 

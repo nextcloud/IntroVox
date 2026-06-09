@@ -55,9 +55,9 @@ sudo -u www-data php occ app:enable introvox
 After enabling the app:
 
 1. Go to **Settings → Administration → IntroVox**
-2. Toggle **Enable wizard for all users**
-3. Under **Available languages**, check the languages you want to support (default: English only)
-4. Optionally customize wizard steps per language via the language dropdown
+2. Toggle **Enable wizard for all users** — the tour is now live in every Nextcloud-supported language automatically (auto-translated via Transifex; English fallback for languages without a translation)
+3. Optionally open the **Steps** tab and click **+ Add language override** to author custom copy for a specific language
+4. Optionally restrict steps to specific user groups for role-based onboarding
 
 See [Admin Guide](../admin/guide.md) for the full configuration walkthrough.
 

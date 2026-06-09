@@ -9,7 +9,6 @@ Common issues and resolutions for IntroVox administrators. For user-facing issue
 | Possible cause | Solution |
 |---|---|
 | Wizard globally disabled | Enable in **Settings → Administration → IntroVox** |
-| User's language not enabled | Enable the language in **Available languages** |
 | User previously disabled the wizard | Use **Show wizard to all users** to reset preferences |
 | JavaScript errors | Check the browser console (F12); verify IntroVox version is compatible with your Nextcloud version |
 | App-menu readiness timeout | Pre-v1.4.2 versions could hang on some NC versions; upgrade to v1.4.2+ which adds fallback selectors and a 10s timeout |

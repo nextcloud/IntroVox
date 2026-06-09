@@ -41,7 +41,7 @@ Pre-v1.4.1, missing elements caused the step to be skipped entirely with a conso
 Steps are filtered server-side before reaching the frontend:
 
 1. **Global enable check** — if `wizard_enabled` is `false`, the API returns an empty step list
-2. **Language check** — the user's base language must be in `enabled_languages`
+2. **Language resolution** — `IFactory::findLanguage(null)` resolves the user's base language; the API serves either the admin override `wizard_steps_<lang>` or the Transifex-translated default set (with explicit English fallback when no translation exists for that language)
 3. **Group check** — steps with non-empty `visibleToGroups` must intersect with the user's groups (via `IGroupManager::getUserGroupIds()`)
 
 Disabled steps (`enabled: false`) are also filtered out before being sent to the frontend.
@@ -53,7 +53,6 @@ See [API Reference](../architecture/api-reference.md) for the request/response f
 The tour auto-starts when **all** of these are true:
 
 - `wizard_enabled` is `true` (admin setting)
-- The user's language is in `enabled_languages`
 - The user has not set the `permanent_disable` preference
 - The user has not completed the wizard (per localStorage)
 - The current `wizard_version` is newer than what the user last saw (used by **Show wizard to all users**)

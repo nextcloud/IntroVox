@@ -115,11 +115,15 @@ If import fails you'll see a specific error:
 
 ### Translator Collaboration
 
+This pattern only applies when an admin wants a *custom override* for a specific language. The auto-translated default tour comes from Transifex — for that, the better path is to contribute on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) directly so all installs benefit.
+
+For per-install custom copy:
+
 1. **Admin** exports English steps as the source
 2. **Admin** sends the JSON to a translator
 3. **Translator** edits only the `title` and `text` fields, returns the file
-4. **Admin** selects the target language, imports the file
-5. **Admin** enables the language in **Available languages**
+4. **Admin** in the Steps tab clicks **+ Add language override**, picks the target language
+5. **Admin** imports the edited file into that override — the override row is written on save
 
 ### Multi-Instance Deployment
 

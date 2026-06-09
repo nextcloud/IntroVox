@@ -14,6 +14,7 @@ lib/
 │   ├── LicenseController.php    ← Enterprise subscription validation (v1.4.x+)
 │   └── PersonalController.php   ← Per-user permanent_disable preference
 ├── Service/
+│   ├── DefaultStepsService.php  ← Single source of truth for the eight built-in tour steps (v1.7.0+)
 │   ├── TelemetryService.php     ← Aggregate usage tracking, sends to license server
 │   └── LicenseService.php       ← Subscription validation against licenses.voxcloud.nl
 ├── BackgroundJob/
@@ -74,6 +75,12 @@ Two endpoints for the per-user permanent-disable preference:
 
 ## Services
 
+### `DefaultStepsService` (v1.7.0+)
+
+Single source of truth for the eight built-in tour steps (Welcome / Files / Calendar / Search / Getting started / Important features / Useful tips / Done). Used by both `AdminController` (to seed the Steps editor when no override exists) and `ApiController` (to serve end users when no override exists).
+
+`getForLanguage(string $lang)` returns the eight steps built with `IFactory::get('introvox', $lang)`. If no translation file ships for `$lang`, the service explicitly falls back to English rather than letting `IFactory` pick the system default — so an Italian user without an Italian translation gets English copy, not whatever the instance's `default_language` happens to be.
+
 ### `TelemetryService`
 
 Tracks per-user wizard lifecycle events (start, complete, skip) and aggregates them into anonymous statistics. Uses `oc_preferences` to record per-user timestamps.
@@ -132,11 +139,12 @@ IntroVox does not create custom database tables. All persistent state lives in N
 | Key | Type | Purpose |
 |---|---|---|
 | `wizard_enabled` | string `'true'` / `'false'` | Global on/off |
-| `enabled_languages` | JSON array of language codes | Which languages are available |
 | `wizard_version` | integer string | Bumped by **Show wizard to all users** to force re-show |
-| `wizard_steps_<lang>` | JSON array of step objects | Per-language step configuration |
+| `wizard_steps_<lang>` | JSON array of step objects | Per-language admin override; only present when an admin saved one |
 | `subscription_key` | string | Enterprise subscription key (v1.4.x+) |
 | `telemetry_enabled` | string `'true'` / `'false'` | Whether telemetry is active |
+
+> The `enabled_languages` key was used pre-1.7.0 to gate which languages the wizard would start in. It was removed alongside #17. Installs upgraded from 1.6.x may still carry a stale row; the 1.7.0 code ignores it.
 
 ### `oc_preferences` keys (per user, app `introvox`)
 

@@ -89,9 +89,9 @@ This means:
 | Goal | Approach |
 |---|---|
 | Hide the entire app from certain users | **Settings → Apps → IntroVox → Limit to groups** (Nextcloud-level) |
-| Disable the wizard for all users in a language | Uncheck the language in **Available languages** |
 | Disable the wizard globally | Uncheck **Enable wizard for all users** |
 | Show different steps per user role | **Group-based visibility** (this page) |
+| Author different copy for one language only | **+ Add language override** in the Steps tab |
 
 ## See Also
 

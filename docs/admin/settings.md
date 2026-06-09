@@ -12,40 +12,22 @@ Reference for every option in **Settings → Administration → IntroVox**.
 
 | State | Behavior |
 |---|---|
-| ✅ Checked | Wizard is enabled. New users see it automatically on first login (in their enabled language). All users can restart it via personal settings. |
+| ✅ Checked | Wizard is enabled. New users see it automatically on first login, in their Nextcloud language. All users can restart it via personal settings. |
 | ☐ Unchecked | Wizard is fully disabled. No auto-start, no manual restart. Users see "The introduction tour is currently disabled by your administrator." |
 
 **Storage:** `appconfig` key `wizard_enabled` (`'true'` / `'false'`)
 
 **Use case:** Useful during maintenance or when you want to temporarily disable the onboarding experience without losing your step configuration.
 
-### Available Languages
+### Language Coverage
 
-**Location:** Below the wizard toggle in "Global settings"
+**Location:** A read-only hint line under the wizard toggle
 
-**Function:** Multi-checkbox controlling which languages the wizard is available for.
-
-**Supported languages out of the box:**
-
-- 🇬🇧 English (`en`)
-- 🇳🇱 Nederlands (`nl`)
-- 🇩🇪 Deutsch (`de`)
-- 🇫🇷 Français (`fr`)
-- 🇩🇰 Dansk (`da`)
-- 🇸🇪 Svenska (`sv`)
-
-Additional languages appear automatically once their `l10n/<lang>.json` file is present — see [Multi-Language Support](../features/multi-language.md).
-
-**Defaults:**
-
-- On first installation, only **English** is enabled
-- At least one language must remain enabled
-
-**Storage:** `appconfig` key `enabled_languages` (JSON array of base language codes)
+**Function:** Tells you how many languages currently have an admin override. There is no per-language opt-in; every Nextcloud-supported language is automatically available to end users via the Transifex-translated defaults (`nextcloud/introvox` resource). Override management itself happens on the **Steps** tab — see [Language Management](language-management.md).
 
 ### Show Wizard to All Users
 
-**Location:** Below "Available languages" in "Global settings"
+**Location:** Below the wizard toggle in "Global settings"
 
 **Function:** Force-restart the wizard for **all users**, including those who explicitly opted out.
 
@@ -57,21 +39,22 @@ Additional languages appear automatically once their `l10n/<lang>.json` file is 
 
 > **Warning:** This overrides all user preferences. Users who set "Permanently disable the introduction tour" will see the wizard again.
 
-## Language Settings
+## Override Picker (Steps tab)
 
 ### Select Language to Edit
 
-**Location:** "Language settings" section, dropdown menu
+**Location:** Top of the **Steps** tab
 
-**Function:** Picks which language's step configuration you're editing. The step list below the dropdown reloads for the selected language.
+**Function:** Picks which language's override you're editing. The step list below the dropdown reloads with that language's override content (or the auto-translated defaults if no override exists yet).
 
 **Behavior:**
 
-- Only enabled languages appear in the dropdown
+- The dropdown lists English plus every language that currently has an admin override row
+- The **+ Add language override** button opens a searchable picker over the full Nextcloud language list; no DB row is written until you save
 - Changes only apply to the **selected language**
 - If you switch languages with unsaved changes, you're warned
 
-For full per-language configuration details see [Language Management](language-management.md).
+For full override workflow see [Language Management](language-management.md).
 
 ## Step Management
 
@@ -86,7 +69,7 @@ The step management section is detailed in [Managing Wizard Steps](managing-step
 | **✅ / ❌** toggle | Enable/disable individual steps | [Managing Steps → Enable/Disable](managing-steps.md#enabledisable-step) |
 | **📥 Export** | Download steps as JSON | [Import/Export](import-export.md#exporting-wizard-steps) |
 | **📤 Import** | Upload steps from JSON | [Import/Export](import-export.md#importing-wizard-steps) |
-| **🔄 Reset to default** | Restore factory defaults for the selected language | [Managing Steps → Reset](managing-steps.md#reset-to-default) |
+| **🔄 Reset** | Delete the current language's override row; next request serves auto-translated defaults | [Managing Steps → Reset](managing-steps.md#reset-to-default) |
 | **💾 Save changes** | Persist all modifications | [Managing Steps → Save](managing-steps.md#save-changes) |
 
 ## Where Settings Are Stored
@@ -94,9 +77,10 @@ The step management section is detailed in [Managing Wizard Steps](managing-step
 | Setting | Backend storage |
 |---|---|
 | Global enable/disable | `appconfig` → `wizard_enabled` |
-| Enabled languages | `appconfig` → `enabled_languages` (JSON array) |
 | Wizard version (force-show) | `appconfig` → `wizard_version` (integer) |
-| Steps per language | `appconfig` → `wizard_steps_<lang>` (JSON array) |
+| Per-language overrides | `appconfig` → `wizard_steps_<lang>` (JSON array, only present when admin saved an override) |
 | Per-user permanent disable | `preferences` table (user-scoped) |
+
+> Installs upgraded from 1.6.x may still carry a stale `enabled_languages` appconfig row. The 1.7.0 code ignores it; it's left in place for downgrade safety and can be removed with `occ config:app:delete introvox enabled_languages`.
 
 See [Backend Architecture](../architecture/backend-architecture.md) for the full storage model.

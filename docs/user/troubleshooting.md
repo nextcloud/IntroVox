@@ -13,7 +13,7 @@ Common issues users experience with IntroVox and how to resolve them. For admin-
 3. Make sure you're on the **Dashboard** page (that's where the tour starts)
 4. Try starting manually from **Personal Settings → IntroVox → Restart tour now**
 
-If the tour still doesn't appear, your administrator may have disabled it or not enabled your language. Contact them.
+If the tour still doesn't appear, your administrator may have disabled it for everyone. Contact them.
 
 ## Steps Are Missing or Skipped
 
@@ -32,11 +32,13 @@ The tour automatically shows only the steps relevant to your setup and role.
 
 **Problem:** The tour shows English text but you selected a different Nextcloud language.
 
-**Try:**
+**Most likely cause:** the tour copy hasn't been translated for your language on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) yet. IntroVox falls back to English in that case so you always get readable text. Anyone can contribute translations on Transifex — once your language has translated strings there, the next Nextcloud sync ships them to IntroVox automatically.
+
+**Other things to try:**
 
 1. Check your Nextcloud language: **Personal Settings → Language**
 2. Hard-refresh the page: `Ctrl+Shift+R` (Windows) or `Cmd+Shift+R` (Mac)
-3. Contact your administrator — they may need to enable your language
+3. If your admin has authored a custom override for your language, ask them to verify it's saved
 
 ## Tour Window Is Too Small or Large
 

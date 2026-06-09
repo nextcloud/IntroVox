@@ -80,7 +80,7 @@ See [Backend Architecture](backend-architecture.md).
 
 | Storage | Use |
 |---|---|
-| `oc_appconfig` | Global settings (`wizard_enabled`, `enabled_languages`, `wizard_version`); per-language step configurations (`wizard_steps_<lang>`); telemetry preferences |
+| `oc_appconfig` | Global settings (`wizard_enabled`, `wizard_version`); per-language admin overrides (`wizard_steps_<lang>`, only present when an admin saved one); telemetry preferences |
 | `oc_preferences` | Per-user state (`introvox/permanent_disable`, telemetry timestamps for `markUserStarted/Completed/Skipped`) |
 | Browser localStorage | Frontend-only completion state (`seen` / `completed`); checked against `wizard_version` to decide auto-restart |
 
@@ -93,12 +93,11 @@ No custom database tables — IntroVox stays within Nextcloud's standard storage
 IntroVox depends on these Nextcloud APIs:
 
 - **`OCP\IConfig`** — global and per-user configuration
-- **`OCP\IL10N`** — user language detection and translation
+- **`OCP\IL10N`** — translation context (admin/personal UI strings)
+- **`OCP\L10N\IFactory`** — `findLanguage(null)` for raw user-locale detection (v1.7.0+, deliberately bypasses per-app validation that silently rerouted on missing translations), `getLanguages()` for the override-picker display names, and `get('introvox', $lang)` to build the auto-translated default tour for any language
 - **`OCP\IGroupManager`** — group membership checks for step filtering
 - **`OCP\IUserSession`** — current-user lookup
-- **`OCP\Util::sanitizeHTML`** — XSS prevention on step content (v1.5.0+)
 - **`OCP\Util::hasExtendedSupport`** — Enterprise tier detection (v1.5.0+)
-- **`OCP\L10N\IFactory`** — language display name auto-discovery (v1.6.0+)
 - **Nextcloud Settings sections** — admin and personal settings pages
 - **Background jobs** — `TimedJob` for telemetry and license sync
 
@@ -114,9 +113,11 @@ Browser                  IntroVox Frontend            IntroVox Backend
    │── login to NC ──────────────▶│                          │
    │                              │── GET /api/steps ───────▶│
    │                              │                          │── load wizard_enabled
-   │                              │                          │── load enabled_languages
-   │                              │                          │── detect IL10N->getLanguageCode()
-   │                              │                          │── load wizard_steps_<lang>
+   │                              │                          │── IFactory->findLanguage(null) → baseLang
+   │                              │                          │── load wizard_steps_<baseLang>
+   │                              │                          │   if no override:
+   │                              │                          │     DefaultStepsService->getForLanguage(baseLang)
+   │                              │                          │     (auto-translated via $l->t; English fallback)
    │                              │                          │── filter by visibleToGroups
    │                              │◀─ steps[] ───────────────│
    │                              │                          │

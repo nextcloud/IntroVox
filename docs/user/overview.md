@@ -39,9 +39,10 @@ See [Taking the Tour](taking-the-tour.md) for the full walkthrough.
 The tour might not show automatically if:
 
 - Your administrator has disabled it globally
-- Your language is not enabled by your administrator (supported: EN, NL, DE, DA, FR, SV)
 - You previously disabled it permanently in your settings
 - You already completed the tour (it only shows again if you restart it)
+
+(IntroVox itself is available in every language Nextcloud supports. If a particular language has no translation on Transifex yet, the tour falls back to English so you still get readable text.)
 
 You can always start it manually — see [Personal Settings](personal-settings.md).
 

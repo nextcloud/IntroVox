@@ -27,7 +27,7 @@ Installation, configuration, step management, and operations.
 
 - [Admin Guide](admin/guide.md) — Day-to-day administration
 - [Settings](admin/settings.md) — Admin panel reference
-- [Language Management](admin/language-management.md) — Enable/disable languages, per-language configuration
+- [Language Management](admin/language-management.md) — Override-based per-language customisation (Transifex provides defaults automatically)
 - [Managing Wizard Steps](admin/managing-steps.md) — CRUD, reordering, enable/disable, reset to default
 - [Group-Based Visibility](admin/group-visibility.md) — Role-based onboarding with group filters
 - [Import/Export](admin/import-export.md) — Share configurations between instances

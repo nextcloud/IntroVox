@@ -75,17 +75,15 @@ If you're busy and want to skip the tour for now without permanently disabling i
 
 This is useful if you're interrupted and want to complete it later.
 
-## "Tour Unavailable" Messages
+## "Tour Unavailable" Message
 
-You might see one of these messages in personal settings instead of the restart button:
+You might see this message in personal settings instead of the restart button:
 
 ### "The introduction tour is currently disabled by your administrator"
 
 Your Nextcloud administrator turned off the tour for all users. Contact your administrator if you'd like to see it.
 
-### "The introduction tour is not available in your language"
-
-Your language is not enabled by your administrator. IntroVox supports English, Dutch, German, Danish, French, and Swedish out of the box, and administrators can add new languages via Transifex translations. Contact your administrator to enable your language.
+> Earlier IntroVox versions also showed a "not available in your language" message when an admin had restricted languages. Since v1.7.0 the tour is available in every Nextcloud-supported language automatically (via Transifex), so this message no longer exists.
 
 ## See Also
 

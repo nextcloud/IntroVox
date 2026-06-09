@@ -34,40 +34,24 @@ Next IntroVox release
     ▼
 Admin's Nextcloud instance
     │
-    │ (5) IntroVox auto-discovers the language
+    │ (5) Users in that NC language see the wizard auto-translated, no admin action needed
     ▼
-"Available languages" checklist
-    │
-    │ (6) admin enables the language
-    ▼
-Users with that NC language setting see the wizard in their language
+End user sees the tour in their language
 ```
+
+Since v1.7.0 there is no admin opt-in step — every translation that ships in `l10n/` becomes available immediately. Admins only intervene if they want a per-language **override** (custom copy that replaces the auto-translated default for one specific language).
 
 ## Auto-Discovery Mechanisms
 
-IntroVox uses two auto-discovery patterns to make new languages "just work" without code changes.
-
-### Language Code Discovery
-
-`AdminController::getAvailableLanguagesWithMetadata()` (and `ApiController::getAvailableLanguages()`) scan the `l10n/` directory:
-
-```php
-foreach (scandir($l10nPath) as $file) {
-    if (preg_match('/^([a-z]{2}(_[A-Z]{2})?)\.json$/', $file, $matches)) {
-        $availableLanguages[] = substr($matches[1], 0, 2);  // base language code
-    }
-}
-```
-
-This means any `l10n/<lang>.json` file dropped into the app instantly appears in **Available languages** — no source code change, no PHP update.
-
 ### Display Name Discovery (v1.6.0+)
 
-Language picker labels (e.g., "Nederlands", "Português") are sourced from `OCP\L10N\IFactory::getLanguages()` — Nextcloud's built-in localized-language-name database.
+The "+ Add language override" picker labels (e.g., "Nederlands", "Português") come from `OCP\L10N\IFactory::getLanguages()` — Nextcloud's built-in localized-language-name database. Every language Nextcloud knows about is selectable, not just the ones IntroVox already has a translation file for. This means an admin can author an override for a language that Transifex hasn't covered yet.
 
-Before v1.6.0, IntroVox maintained a hardcoded map of language codes to display names (and emoji flags). Adding a new language required a code change. Since v1.6.0, the map is gone — Nextcloud provides the names, including correct localization (an English user sees "German", a German user sees "Deutsch").
+Before v1.6.0, IntroVox maintained a hardcoded map of language codes to display names (and emoji flags). Since v1.6.0 the map is gone — NC provides the names, correctly localised (an English admin sees "German", a German admin sees "Deutsch"). No emoji flags, matching the Nextcloud Settings convention.
 
-The picker also no longer shows emoji flags, matching the Nextcloud Settings convention.
+### Translation Resolution at Runtime
+
+`ApiController::getWizardSteps()` uses `IFactory::findLanguage(null)` to obtain the user's raw language preference (deliberately not `findLanguage('introvox')`, which would re-route to a language IntroVox happens to ship a translation file for). `DefaultStepsService::getForLanguage($lang)` then builds the eight default steps via `IFactory::get('introvox', $lang)`, with an explicit English fallback when `$lang` has no translation file — never the system default language.
 
 ## English as Transifex Source (v1.6.0+)
 
@@ -114,16 +98,18 @@ npm run build
 
 The Python script converts `l10n/<lang>.json` files into the `l10n/<lang>.js` format that webpack picks up at build time. Both `.json` and `.js` files are shipped in the App Store tarball.
 
-## Removed: `DefaultStepsService` (v1.6.0+)
+## Reintroduced: `DefaultStepsService` (v1.7.0+)
 
-`lib/Service/DefaultStepsService.php` was removed in v1.6.0. It contained hardcoded Dutch defaults and was never instantiated. Default step content now lives entirely in `src/components/wizardSteps.js` with proper `t()` wrapping.
+A `DefaultStepsService` was originally removed in v1.6.0 because it shipped hardcoded Dutch defaults and was dead code. It was **reintroduced** in v1.7.0 — this time as the single source of truth for the eight built-in steps, shared between `AdminController` (editor view seed) and `ApiController` (end-user fetch). It uses `IFactory::get('introvox', $lang)` to render via Transifex, with explicit English fallback when the requested language has no translation file.
+
+This is what made it possible to remove the legacy `useDefault: true` + empty-steps response pattern: the API now returns the full inline-translated step set in every response, so the client never has to rebuild defaults locally (which had been re-translating them through the browser-loaded Vue bundle, sometimes in the wrong language).
 
 ## Adding a New Language
 
-1. **Via Transifex** (preferred): contribute translations on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) → wait for the NC sync bot to commit them → wait for the next IntroVox release.
-2. **Manually**: drop a `l10n/<lang>.json` file into the app directory. The language appears in **Available languages** on the next page load.
+1. **Via Transifex** (only path): contribute translations on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) → the NC sync bot opens a PR to commit them → the next IntroVox release ships the new translations and end users in that language immediately get the auto-translated tour. No admin action required.
+2. **Authoring a custom override locally**: an admin can add a `wizard_steps_<lang>` override row through the UI for any language Nextcloud supports, even before a Transifex translation exists. The override wins until it's reset, at which point Transifex takes over.
 
-For full admin instructions see [Language Management → Adding New Languages](../admin/language-management.md#adding-new-languages).
+For full admin instructions see [Language Management](../admin/language-management.md).
 
 ## See Also
 
