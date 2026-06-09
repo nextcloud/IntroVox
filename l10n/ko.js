@@ -1,0 +1,11 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Danish" : "덴마크어",
+    "French" : "프랑스어",
+    "Swedish" : "스웨덴어",
+    "Next" : "다음",
+    "Got it" : "알았음",
+    "Settings saved" : "설정이 저장되었습니다"
+},
+"nplurals=1; plural=0;");

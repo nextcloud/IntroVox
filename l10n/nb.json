@@ -1,0 +1,9 @@
+{ "translations": {
+    "Danish" : "Dans",
+    "French" : "Fransk",
+    "Swedish" : "Svensk",
+    "Done" : "Ferdig",
+    "Next" : "Neste",
+    "Settings saved" : "Innstillinger lagret"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

@@ -1,0 +1,10 @@
+{ "translations": {
+    "Danish" : "Dinamarquês",
+    "French" : "Francês",
+    "Swedish" : "Sueco",
+    "Done" : "Concluído",
+    "Next" : "Próximo",
+    "Got it" : "Entendi",
+    "Settings saved" : "Configurações salvas"
+},"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
+}
