@@ -1,11 +1,21 @@
 OC.L10N.register(
     "introvox",
     {
+    "Dutch" : "네덜란드어",
+    "English" : "영어",
+    "German" : "독일어",
     "Danish" : "덴마크어",
     "French" : "프랑스어",
     "Swedish" : "스웨덴어",
+    "Total" : "합계",
+    "Subscription key" : "구독 키",
+    "Saving …" : "저장중 …",
+    "Back" : "뒤로",
+    "Done" : "완료",
     "Next" : "다음",
+    "Skip" : "건너뛰기",
     "Got it" : "알았음",
-    "Settings saved" : "설정이 저장되었습니다"
+    "Settings saved" : "설정이 저장되었습니다",
+    "Save settings" : "설정 저장"
 },
 "nplurals=1; plural=0;");

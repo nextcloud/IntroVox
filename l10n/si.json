@@ -1,4 +1,9 @@
 { "translations": {
-    "French" : "ප්‍රංශ"
+    "English" : "ඉංග්‍රීසි",
+    "German" : "ජර්මානු",
+    "French" : "ප්‍රංශ",
+    "Back" : "ආපසු",
+    "Skip" : "මඟ හරින්න",
+    "Save settings" : "සැකසුම් සුරකින්න"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

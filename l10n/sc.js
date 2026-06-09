@@ -1,10 +1,16 @@
 OC.L10N.register(
     "introvox",
     {
+    "Dutch" : "Olandesu",
+    "English" : "Inglesu",
+    "German" : "Tedescu",
     "Danish" : "Danesu",
     "French" : "Frantzesu",
     "Swedish" : "Isvedesu",
+    "Total" : "Totale",
     "Subscription key" : "Crae de sutaiscritzione",
+    "Saving …" : "Sarvende …",
+    "Back" : "In segus",
     "Next" : "Imbeniente",
     "Settings saved" : "Cunfiguratzione sarvada"
 },

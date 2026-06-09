@@ -1,6 +1,10 @@
 OC.L10N.register(
     "introvox",
     {
-    "Settings saved" : "პარამეტრები შენახულია"
+    "Total" : "სულ",
+    "Done" : "დასრულდა",
+    "Skip" : "გამოტოვება",
+    "Settings saved" : "პარამეტრები შენახულია",
+    "Save settings" : "პარამეტრების შენახვა"
 },
 "nplurals=2; plural=(n!=1);");

@@ -1,7 +1,19 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "englanti",
+    "German" : "saksa",
+    "Danish" : "tanska",
     "French" : "ranska",
-    "Next" : "Seuraava"
+    "Swedish" : "ruotsi",
+    "Total" : "Yhteensä",
+    "Subscription key" : "Tilausavain",
+    "Saving …" : "Tallennetaan…",
+    "Back" : "Takaisin",
+    "Done" : "Valmis",
+    "Next" : "Seuraava",
+    "Skip" : "Ohita",
+    "Settings saved" : "Asetukset tallennettu",
+    "Save settings" : "Tallenna asetukset"
 },
 "nplurals=2; plural=(n != 1);");

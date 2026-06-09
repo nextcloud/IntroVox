@@ -1,4 +1,6 @@
 { "translations": {
+    "Total" : "Total",
+    "Done" : "Preste",
     "Next" : "Proxime",
     "Settings saved" : "Configurationes salveguardate"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

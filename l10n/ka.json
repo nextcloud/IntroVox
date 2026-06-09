@@ -1,0 +1,15 @@
+{ "translations": {
+    "Dutch" : "Dutch",
+    "English" : "English",
+    "German" : "German",
+    "Danish" : "Danish",
+    "French" : "French",
+    "Swedish" : "Swedish",
+    "Saving …" : "შენახვა…",
+    "Back" : "უკან",
+    "Done" : "მზადაა",
+    "Next" : "Next",
+    "Skip" : "გამოტოვება",
+    "Settings saved" : "Settings saved"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
+}

@@ -1,0 +1,20 @@
+{ "translations": {
+    "Dutch" : "Neerlandés",
+    "English" : "Inglés",
+    "German" : "Alemán",
+    "Danish" : "Danés",
+    "French" : "Francés",
+    "Swedish" : "Sueco",
+    "Total" : "Total",
+    "Subscription key" : "Chave de subscrición",
+    "Saving …" : "Gardando…",
+    "Back" : "Atrás",
+    "Done" : "Feito",
+    "Next" : "Seguinte",
+    "Skip" : "Omitir",
+    "Got it" : "Entendido",
+    "Settings saved" : "Axustes gardados",
+    "Save settings" : "Gardar os axustes",
+    "Error saving settings" : "Produciuse un erro ao gardar os axustes"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

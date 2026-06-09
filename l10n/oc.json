@@ -1,8 +1,14 @@
 { "translations": {
+    "Dutch" : "Neerlandés",
+    "English" : "Anglés",
+    "German" : "Alemand",
     "Danish" : "Danés",
     "French" : "Francés",
     "Swedish" : "Suedés",
+    "Saving …" : "Enregistrament...",
     "Next" : "Seguent",
-    "Settings saved" : "Paramètres salvats"
+    "Skip" : "Sautar",
+    "Settings saved" : "Paramètres salvats",
+    "Save settings" : "Salvar paramètres"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

@@ -1,0 +1,22 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "Ollainnis",
+    "English" : "Béarla",
+    "German" : "Gearmáinis",
+    "Danish" : "Danmhairgis",
+    "French" : "Fraincis",
+    "Swedish" : "Sualainnis",
+    "Total" : "Iomlán",
+    "Subscription key" : "Eochair síntiús",
+    "Saving …" : "Shábháil …",
+    "Back" : "Ar ais",
+    "Done" : "Déanta",
+    "Next" : "Ar aghaidh",
+    "Skip" : "Scipeáil",
+    "Got it" : "Fuair é",
+    "Settings saved" : "Socruithe sábháilte",
+    "Save settings" : "Sábháil socruithe",
+    "Error saving settings" : "Earráid ag sábháil socruithe"
+},
+"nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");

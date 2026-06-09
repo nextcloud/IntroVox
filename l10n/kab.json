@@ -1,4 +1,8 @@
 { "translations": {
-    "Next" : "Uḍfir"
+    "Saving …" : "Asekles ...",
+    "Back" : "Tuɣalin",
+    "Done" : "Immed",
+    "Next" : "Uḍfir",
+    "Skip" : "Ttu"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

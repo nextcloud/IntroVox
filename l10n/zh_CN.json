@@ -1,12 +1,18 @@
 { "translations": {
+    "Dutch" : "荷兰语",
+    "English" : "英语",
     "German" : "德语",
     "Danish" : "丹麦语",
     "French" : "法语",
     "Swedish" : "瑞典语",
+    "Total" : "总量",
     "Subscription key" : "订阅密钥",
+    "Saving …" : "保存中……",
+    "Back" : "返回",
     "Done" : "完成",
     "Next" : "下一个",
     "Skip" : "跳过",
-    "Settings saved" : "已保存设置"
+    "Settings saved" : "已保存设置",
+    "Save settings" : "保存设置"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

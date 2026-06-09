@@ -1,6 +1,8 @@
 OC.L10N.register(
     "introvox",
     {
+    "Dutch" : "荷蘭語",
+    "English" : "英語",
     "German" : "德語",
     "Danish" : "丹麥語",
     "French" : "法語",
@@ -8,10 +10,12 @@ OC.L10N.register(
     "Total" : "總共",
     "Subscription key" : "訂閱金鑰",
     "Saving …" : "正在儲存…",
+    "Back" : "返回",
     "Done" : "完成",
     "Next" : "下一步",
     "Skip" : "跳過",
     "Settings saved" : "設定已儲存",
+    "Save settings" : "儲存設定",
     "Error saving settings" : "儲存設定時發生錯誤"
 },
 "nplurals=1; plural=0;");
