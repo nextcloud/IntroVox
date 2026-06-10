@@ -1,0 +1,21 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "Nederlandera",
+    "English" : "Ingelesa",
+    "German" : "Alemana",
+    "Danish" : "Daniera",
+    "French" : "Frantsesa",
+    "Swedish" : "Suediera",
+    "Total" : "Denetara",
+    "Subscription key" : "Harpidetza-gakoa",
+    "Saving …" : "Gordetzen …",
+    "Back" : "Itzuli",
+    "Done" : "Egina",
+    "Next" : "Hurrengoa",
+    "Skip" : "Saltatu",
+    "Got it" : "Lortu",
+    "Settings saved" : "Ezarpenak gordeta",
+    "Save settings" : "Gorde ezarpenak"
+},
+"nplurals=2; plural=(n != 1);");
