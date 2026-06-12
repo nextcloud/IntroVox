@@ -45,16 +45,69 @@ Follow this checklist for every release to the Nextcloud App Store.
 
 ## 2. Translations (l10n/)
 
-Since v1.7.0, IntroVox uses Transifex for translations (`nextcloud/introvox` resource). The Nextcloud sync bot pushes our POT (source) automatically. The translated PO/JSON files are pulled back into the repo with **one command before each release** — don't rely on the bot's timing.
+Since v1.7.0, IntroVox uses Transifex (`nextcloud:introvox` resource, part of the official `nextcloud:nextcloud` project). **Read this whole section before touching `l10n/` — the pipeline is two-directional and has two non-obvious gotchas that bit the v1.7.1 release.**
+
+### How the pipeline works
+
+```
+                    code ($l->t / t('introvox',…))
+                              │
+        (1) Nextcloud Transifex BOT extracts source strings  ── automatic ──►  Transifex .pot
+                              │                                                      │
+                              │                                       translators work on transifex.com
+                              ▼                                                      │
+   (2) translators' work comes back into the repo via TWO paths:                    ▼
+                                                                          translated .po per language
+        path A — the BOT opens PRs on GitHub (nextcloud/IntroVox)  ◄──────────────┤
+        path B — YOU pull manually before release (tx pull)        ◄──────────────┘
+                              │
+                              ▼
+                  l10n/<lang>.js + <lang>.json   ← what Nextcloud actually loads
+```
+
+- The **source push (1) is fully automatic** — never do it by hand. Verify it's current with the Transifex API if unsure (resource `string_count` should match the `$l->t()` + `t('introvox',…)` count in the code).
+- The **translation pull-back (2) happens via two paths that drift apart**, which is the root of both gotchas below.
+- Only `l10n/*.js` (frontend, `OC.L10N.register`) and `l10n/*.json` (PHP `IL10N`) are loaded at runtime. The `.po` files (`translationfiles/`) are an intermediate `tx pull` artifact — **gitignored**, never committed, never shipped.
+- English has **no** `l10n/en.*` file — English *is* the source (the `$l->t()` strings in code).
+
+### ⚠️ Gotcha 1 — the GitHub bot pushes translation commits DIRECTLY to `nextcloud/IntroVox`
+
+The Nextcloud l10n bot commits `fix(l10n): Update translations from Transifex` straight to `github/main`, **not** to Gitea. So before any release the GitHub remote is almost always **ahead** of Gitea on `l10n/`. A plain `git push github main` will be **rejected (non-fast-forward)**.
+
+**Do NOT force-push** — that wipes the bot's translations. Instead:
+```bash
+git fetch github main
+git log --oneline HEAD..github/main          # confirm the new commits are ONLY l10n/
+git diff --name-only <last-common> github/main | grep -v '^l10n/'   # must print nothing
+git merge github/main --no-edit -X ours       # our fresh tx pull wins content conflicts
+```
+After `-X ours` you may still get `modify/delete` conflicts (see Gotcha 2) — resolve those, then commit the merge and push to **both** remotes.
+
+### ⚠️ Gotcha 2 — `tx pull` and the bot disagree on near-empty languages
+
+`./scripts/sync-translations.sh` runs `tx pull -a --minimum-perc=1`, so it pulls back **any** language with ≥1% translated (e.g. `ta` at 2/110 strings). The bot, however, **deletes** files that drop below its completeness threshold. During a merge this shows up as `modify/delete` conflicts (the bot deleted `l10n/ta.json`, our pull re-created it).
+
+**Convention: follow the bot — delete the near-empty files.** A 2-string file adds clutter, ships almost nothing, and would re-conflict on every future sync. Resolve with:
+```bash
+# for each modify/delete conflict where the file has only a handful of strings:
+git rm --force l10n/<lang>.js l10n/<lang>.json
+```
+(If a disputed language is actually substantial, keep ours instead with `git add l10n/<lang>.*` — judge by string count, not reflexively.)
+
+### Checklist
 
 - [ ] **Pull the latest translations** and regenerate `l10n/`:
       ```bash
       export TX_TOKEN="1/xxxxxxxx"        # Transifex token, read-access to nextcloud:introvox
-      ./scripts/sync-translations.sh      # = tx pull -a  +  python3 scripts/po2l10n.py
+      ./scripts/sync-translations.sh      # = tx pull -a --minimum-perc=1  +  python3 scripts/po2l10n.py
       ```
 - [ ] Validate JSON syntax in all translation files: `for f in l10n/*.json; do python3 -m json.tool "$f" > /dev/null && echo "OK: $f" || echo "FAIL: $f"; done`
+- [ ] Reconcile with the GitHub bot (Gotcha 1): `git fetch github main` then merge `-X ours`, resolving near-empty `modify/delete` conflicts per Gotcha 2
+- [ ] Confirm the core languages survived the merge: `for l in de nl; do python3 -c "import json;print('$l',len(json.load(open('l10n/$l.json'))['translations']))"; done` (de should be ~110, nl ~105)
 - [ ] Review the diff (`git diff --stat l10n/`) and commit the refreshed translations
 - [ ] Spot-check the wizard in a non-English session to make sure no string falls back to English unexpectedly when it should have a translation
+- [ ] **Build the tarball AFTER the merge** — if you cut it before reconciling with the bot it will contain the wrong set of languages (the v1.7.1 tarball had to be regenerated for exactly this reason)
+- [ ] Translation typos (e.g. a wrong German string) live on Transifex — they **cannot** be fixed in the repo durably (next pull overwrites them) and the read-only token can't write them. Report them to the language team on transifex.com.
 
 ---
 
@@ -249,6 +302,14 @@ The API-token page used to be at `https://apps.nextcloud.com/account/api-token` 
 - The `apps.nextcloud.com/api/v1/apps.json` cert-verification endpoint now returns HTTP 302 → `garm2.nextcloud.com`. Use `curl -sL` (follow redirects) in the §0 cert-check command, otherwise the MD5 comparison silently fails on empty input (gives `d41d8cd98f00b204e9800998ecf8427e` — the MD5 of an empty string).
 - The "sensitive content" grep in §8.1 (`grep -iE '(password=|api_key=|...)'`) matches webpack-minified bundle bytes by coincidence (`Math.pow(2,...)` etc. contains the literal characters). Extract the tarball and `grep -r` per text-file extension instead of piping `tar -xzf -O` into one big blob.
 
+#### Lessons learned (v1.7.1, 12 June 2026)
+
+- **GitHub was ahead of Gitea on `l10n/`** because the Nextcloud Transifex bot commits translations straight to `nextcloud/IntroVox`. `git push github main` was rejected; resolved with a merge (`-X ours`), never a force-push. See §2 Gotcha 1.
+- **`tx pull --minimum-perc=1` vs the bot disagreed on near-empty languages**, producing `modify/delete` merge conflicts. Followed the bot and `git rm`'d the 6 sub-handful-of-strings files. See §2 Gotcha 2.
+- **The tarball had to be regenerated** after the bot merge — the first one (cut before reconciling) carried 90 languages, the released one 82. Always build the tarball *after* the l10n merge.
+- **`npm audit fix` broke the build**: it bumped `@nextcloud/dialogs` to 7.4, which pulls in `sax`/`@file-type/xml` referencing Node built-ins (`stream`, `string_decoder`) that webpack 5 doesn't polyfill. Fixed by stubbing them in `webpack.config.js` (`resolve.fallback: { stream: false, string_decoder: false }`) — that SVG-detection path is unused by IntroVox. Always re-build *and* re-deploy to nc-dev after `npm audit fix` before tagging.
+- `package-lock.json` is gitignored, so the audit-fix lockfile change is local-only; the committed `js/` bundles carry the actual fix.
+
 ---
 
 ## 9. Post-Release Verification
@@ -409,4 +470,4 @@ If HTTP 403 → token is expired, fall back to web UI at https://apps.nextcloud.
 
 ---
 
-*Last updated: 2026-05-05 (after v1.4.3 release — added § 8.2 with both upload routes after API token returned HTTP 403)*
+*Last updated: 2026-06-12 (after v1.7.1 release — rewrote § 2 with the two-way Transifex pipeline + the GitHub-bot-divergence and near-empty-language gotchas; added v1.7.1 lessons learned)*
