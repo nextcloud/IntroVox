@@ -1,0 +1,18 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "ໂຮນລັງ",
+    "English" : "ພາສາອັງກິດ",
+    "German" : "ພາສາເຢຍລະມັນ",
+    "French" : "ພາສາຝຣັ່ງ",
+    "Total" : "ລວມ",
+    "Saving …" : "ກຳລັງບັນທຶກ...",
+    "Back" : "ກັບຄືນ",
+    "Done" : "ສະຖານະ",
+    "Next" : "ຕໍ່ໄປ",
+    "Skip" : "ຂ້າມໄປ",
+    "Got it" : "ເຂົ້າໃຈແລ້ວ",
+    "Settings saved" : "ບັນທຶກການຕັ້ງຄ່າແລ້ວ",
+    "Save settings" : "ບັນທຶກການຕັ້ງຄ່າ"
+},
+"nplurals=1; plural=0;");

@@ -1,0 +1,18 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "הולנדית",
+    "English" : "אנגלית",
+    "German" : "גרמנית",
+    "Danish" : "דנית",
+    "French" : "צרפתית",
+    "Swedish" : "שוודית",
+    "Total" : "סך הכול",
+    "Subscription key" : "מפתח מינוי",
+    "Saving …" : "מתבצעת שמירה…",
+    "Back" : "אחורה",
+    "Done" : "הסתיים",
+    "Skip" : "דלג",
+    "Settings saved" : "הגדרות נשמרו"
+},
+"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;");

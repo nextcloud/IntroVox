@@ -4,6 +4,9 @@ package-lock.json
 
 # Build outputs
 js/
+# Transifex pull artifacts — only l10n/*.js|*.json are committed, not the
+# intermediate .po files. Keep the .pot template if one is checked in.
+translationfiles/*/
 *.tar.gz
 *.sig
 *.key

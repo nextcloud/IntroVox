@@ -1,11 +1,17 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "English",
+    "German" : "German",
     "Danish" : "Danish",
     "French" : "French",
     "Swedish" : "Swedish",
+    "Saving …" : "Se salvează",
+    "Back" : "Înapoi",
     "Done" : "Realizat",
     "Next" : "Următorul",
-    "Settings saved" : "Setările au fost salvate"
+    "Skip" : "Sari peste",
+    "Settings saved" : "Setările au fost salvate",
+    "Save settings" : "Salvează setări"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

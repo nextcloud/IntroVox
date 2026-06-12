@@ -7,6 +7,7 @@ use OCA\IntroVox\AppInfo\Application;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
 
@@ -21,6 +22,7 @@ class LicenseService {
     private IClientService $clientService;
     private IUserManager $userManager;
     private IGroupManager $groupManager;
+    private IURLGenerator $urlGenerator;
     private LoggerInterface $logger;
 
     public function __construct(
@@ -28,12 +30,14 @@ class LicenseService {
         IClientService $clientService,
         IUserManager $userManager,
         IGroupManager $groupManager,
+        IURLGenerator $urlGenerator,
         LoggerInterface $logger
     ) {
         $this->config = $config;
         $this->clientService = $clientService;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
+        $this->urlGenerator = $urlGenerator;
         $this->logger = $logger;
     }
 
@@ -73,7 +77,7 @@ class LicenseService {
     public function getInstanceUrl(): string {
         $instanceUrl = $this->config->getSystemValue('overwrite.cli.url', '');
         if (empty($instanceUrl)) {
-            $instanceUrl = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
+            $instanceUrl = $this->urlGenerator->getAbsoluteURL('/');
         }
         return $instanceUrl;
     }

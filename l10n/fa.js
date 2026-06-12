@@ -1,0 +1,22 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "هلندی",
+    "English" : "انگلیسی",
+    "German" : "آلمانی",
+    "Danish" : "دانمارکی",
+    "French" : "فرانسوی",
+    "Swedish" : "سوئدی",
+    "Total" : "جمع",
+    "Subscription key" : "کلید اشتراک",
+    "Saving …" : "در حال ذخیره …",
+    "Back" : "بازگشت",
+    "Done" : "انجام شد",
+    "Next" : "بعدی",
+    "Skip" : "پرش.",
+    "Got it" : "متوجه شدم",
+    "Settings saved" : "تنظیمات ذخیره شد",
+    "Save settings" : "ذخیره تنظیمات",
+    "Error saving settings" : "خطا در ذخیره تنظیمات"
+},
+"nplurals=2; plural=(n > 1);");

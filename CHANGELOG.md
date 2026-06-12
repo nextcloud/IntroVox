@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-06-12
+
+### Fixed
+- **Nextcloud 34 compatibility.** Replaced the removed `\OC::$server->getURLGenerator()` service-locator call in `LicenseService` with a proper `IURLGenerator` constructor injection. On NC 34 the legacy `\OC::$server` accessor is gone, which broke license validation and telemetry (both rely on the instance URL hash).
+
+### Added
+- **Synced translations from Transifex.** Pulled the full `nextcloud:introvox` resource (110 source strings) and regenerated `l10n/*.js|*.json` for 89 languages. German is now 100 % translated and Dutch 95 %; the complete tour content, PWA install flow and subscription UI are now localized instead of falling back to English.
+- `scripts/po2l10n.py` + `scripts/sync-translations.sh` — pull translations from Transifex (`tx pull`) and convert the `.po` files into the Nextcloud `l10n/<lang>.js` + `.json` format, so the sync can be re-run before each release without depending on the upstream bot.
+
 ## [1.7.0] - 2026-06-08
 
 ### Upgrade notes

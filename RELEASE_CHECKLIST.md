@@ -45,11 +45,15 @@ Follow this checklist for every release to the Nextcloud App Store.
 
 ## 2. Translations (l10n/)
 
-Since v1.7.0, IntroVox uses Transifex for translations (`nextcloud/introvox` resource). The Nextcloud sync bot pushes our POT and pulls translated PO/JSON files back via PRs — no need to translate strings manually before release.
+Since v1.7.0, IntroVox uses Transifex for translations (`nextcloud/introvox` resource). The Nextcloud sync bot pushes our POT (source) automatically. The translated PO/JSON files are pulled back into the repo with **one command before each release** — don't rely on the bot's timing.
 
-- [ ] Confirm new source strings are reflected in `translationfiles/templates/introvox.pot` (the sync bot regenerates this on its side, but a local check catches missing extractions)
+- [ ] **Pull the latest translations** and regenerate `l10n/`:
+      ```bash
+      export TX_TOKEN="1/xxxxxxxx"        # Transifex token, read-access to nextcloud:introvox
+      ./scripts/sync-translations.sh      # = tx pull -a  +  python3 scripts/po2l10n.py
+      ```
 - [ ] Validate JSON syntax in all translation files: `for f in l10n/*.json; do python3 -m json.tool "$f" > /dev/null && echo "OK: $f" || echo "FAIL: $f"; done`
-- [ ] Regenerate `.js` translation files: `python3 regenerate_js_translations.py`
+- [ ] Review the diff (`git diff --stat l10n/`) and commit the refreshed translations
 - [ ] Spot-check the wizard in a non-English session to make sure no string falls back to English unexpectedly when it should have a translation
 
 ---

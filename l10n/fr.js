@@ -1,0 +1,21 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Dutch" : "Néerlandais",
+    "English" : "Anglais",
+    "German" : "Allemand",
+    "Danish" : "Danois",
+    "French" : "Français",
+    "Swedish" : "Suédois",
+    "Total" : "Total",
+    "Subscription key" : "Clé de licence",
+    "Saving …" : "Enregistrement...",
+    "Back" : "Retour",
+    "Done" : "Terminé",
+    "Next" : "Suivant",
+    "Skip" : "Passer",
+    "Got it" : "Compris",
+    "Settings saved" : "Paramètres enregistrés",
+    "Save settings" : "Enregistrer les paramètres"
+},
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

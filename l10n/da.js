@@ -1,0 +1,19 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "English" : "Engelsk",
+    "German" : "Tysk",
+    "Danish" : "Dansk",
+    "French" : "Fransk",
+    "Swedish" : "Svensk",
+    "Total" : "Total",
+    "Subscription key" : "Abonnementsnøgle",
+    "Saving …" : "Gemmer ...",
+    "Back" : "Tilbage",
+    "Done" : "Færdig",
+    "Next" : "Næste",
+    "Skip" : "Spring over",
+    "Settings saved" : "Indstillinger gemt",
+    "Save settings" : "Gem indstillinger"
+},
+"nplurals=2; plural=(n != 1);");
