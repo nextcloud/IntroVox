@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.2] - 2026-06-15
+
+### Fixed
+- **App Store install/update failed with "App with id introvox has invalid signature".** The signature registered for the 1.7.1 release in the Nextcloud App Store carried a stray trailing marker, so Nextcloud's `base64_decode` produced a 522-byte signature instead of 512 bytes and verification failed on every instance (reproduced on NC 33.0.1, 33.0.5 and 34.0.0). Re-released as 1.7.2 with a correctly generated signature. No functional changes compared to 1.7.1. ([#19](https://github.com/nextcloud/IntroVox/issues/19))
+
 ## [1.7.1] - 2026-06-12
 
 ### Fixed
