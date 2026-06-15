@@ -3,6 +3,9 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 Tere tulemast Nextcloudi",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Tore, et oled siin! Järgnev lühitutvustus aitab sul mugavasti algust teha.</p><p>Võid selle viisardivaate alati sulgeda ja igal ajal uuesti avada.</p>",
+    "📁 Files" : "📁 Failid",
+    "📅 Calendar" : "📅 Kalender",
+    "🔍 Search" : "🔍 Otsing",
     "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>" : "<p>Algus ongi nüüd tehtud!</p><p>Kui tahad seda sissejuhatavat tutvustust uuesti näha, siis leiad tema oma isiklikest seadistusest.</p><p>Head Nextcloudi kasutamist!</p>",
     "Interactive onboarding tour for new Nextcloud users" : "Interaktiivne sissejuhatav tutvustus uutele Nextcloudi kasutajatele",
     "Please enter a subscription key" : "Palun sisesta tellimuse võti",
