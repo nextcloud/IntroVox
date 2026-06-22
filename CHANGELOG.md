@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.3] - 2026-06-22
+
+### Fixed
+- **Nextcloud Enterprise instances were never recognised in telemetry.** The telemetry `instanceHash` was computed differently from the license `instance_url_hash` (different fallback source and no URL normalisation), so the license server's enterprise-claim validation could never match the two. `TelemetryService::getInstanceHash()` now delegates to `LicenseService::getInstanceUrlHash()`, guaranteeing both are byte-for-byte identical. Existing instances will report under a new (correct) instance hash on their next telemetry run.
+
 ## [1.7.2] - 2026-06-15
 
 ### Fixed

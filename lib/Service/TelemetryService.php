@@ -24,6 +24,7 @@ class TelemetryService {
     private IUserManager $userManager;
     private IGroupManager $groupManager;
     private IDBConnection $db;
+    private LicenseService $licenseService;
 
     public function __construct(
         IClientService $httpClient,
@@ -31,7 +32,8 @@ class TelemetryService {
         LoggerInterface $logger,
         IUserManager $userManager,
         IGroupManager $groupManager,
-        IDBConnection $db
+        IDBConnection $db,
+        LicenseService $licenseService
     ) {
         $this->httpClient = $httpClient;
         $this->config = $config;
@@ -39,6 +41,7 @@ class TelemetryService {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->db = $db;
+        $this->licenseService = $licenseService;
     }
 
     /**
@@ -217,14 +220,16 @@ class TelemetryService {
     }
 
     /**
-     * Get SHA-256 hash of instance URL for privacy
+     * Get SHA-256 hash of instance URL for privacy.
+     *
+     * Delegates to LicenseService so the telemetry instanceHash is byte-for-byte
+     * identical to the license_usage.instance_url_hash bound on the license server.
+     * This is required for the platform's enterprise-claim validation, which joins
+     * the telemetry instanceHash against license_usage.instance_url_hash — the two
+     * must match exactly for a genuine Enterprise instance to be recognised.
      */
     private function getInstanceHash(): string {
-        $instanceUrl = $this->config->getSystemValue('overwrite.cli.url', '');
-        if (empty($instanceUrl)) {
-            $instanceUrl = $this->config->getSystemValue('instanceid', '');
-        }
-        return hash('sha256', $instanceUrl);
+        return $this->licenseService->getInstanceUrlHash();
     }
 
     /**
