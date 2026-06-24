@@ -13,6 +13,9 @@ const APPS_MENU_TRIGGER = '.app-menu__waffle, [aria-label="Open apps menu"]'
 const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"]'
 // Items inside the opened waffle menu (NC 34): anchors with per-app hrefs.
 const APPS_MENU_ITEM = '[role="menu"] a.app-item'
+// The opened waffle menu panel (the white popover box). Used as the attach
+// target so the tooltip sits beside the whole menu instead of under it.
+const APPS_MENU_PANEL = '.app-menu .v-popper__popper, .v-popper__popper:has([role="menu"] a.app-item)'
 
 // Track the trigger we opened ourselves, so cleanup never closes a menu the
 // user opened on their own.
@@ -135,16 +138,20 @@ function getBaseWizardSteps() {
       text: t('introvox', '<p>Switch between Files, Calendar, Mail, Contacts and more from the apps menu.</p><p>Click it any time to jump to another app.</p>'),
       // Only relevant where the apps menu (waffle) exists, i.e. NC 34+.
       showOn: () => !!document.querySelector(APPS_MENU_TRIGGER),
-      // Open the waffle menu before showing so we can point at a real app entry
-      // inside it. Degrades to the closed waffle button if the menu never opens.
+      // Open the waffle menu before showing so we can point at the open menu.
+      // Degrades to the closed waffle button if the menu never opens.
       beforeShowPromise: () => openMenuAndWait(APPS_MENU_TRIGGER, APPS_MENU_ITEM),
+      // Attach to the whole menu panel and sit to its right — the open menu is a
+      // wide panel on the left, so 'bottom' on an icon would put the tooltip
+      // under the menu. The panel falls back to the Files item, then the waffle.
       attachTo: {
         element: firstMatch(
+          APPS_MENU_PANEL,
           '[role="menu"] a.app-item[href*="/apps/files/"]',
           APPS_MENU_ITEM,
           APPS_MENU_TRIGGER,
         ),
-        on: 'bottom'
+        on: 'right-start'
       },
       // Don't let clicks reach the highlighted item — that would navigate away
       // or close the menu mid-step.
