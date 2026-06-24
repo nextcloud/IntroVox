@@ -49,26 +49,40 @@ class DefaultStepsService {
             [
                 'id' => 'files',
                 'title' => $l->t('📁 Files'),
-                'text' => $l->t('<p>This is your main menu. Click here to view and manage all your files.</p><p>You can upload files, create folders and share with others.</p>'),
-                'attachTo' => '[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]',
-                'position' => 'right',
+                'text' => $l->t('<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 your apps live behind the apps menu (top left) — open it to find Files.</p>'),
+                // NC <=33 pinned the app in the header; NC 34 keeps everything behind the
+                // always-visible apps menu (waffle). Pinned entries are tried first, then
+                // the waffle, so the step always has a visible target. The client wraps
+                // this string in a lazy resolver and may override it with a richer
+                // function attachTo via enrichSteps().
+                'attachTo' => '#appmenu li[data-id="files"], a.app-menu-entry[href*="/apps/files"], [data-id="files"], .app-menu__waffle, [aria-label="Open apps menu"]',
+                'position' => 'bottom',
                 'enabled' => true,
                 'visibleToGroups' => [],
             ],
-            [
-                'id' => 'calendar',
-                'title' => $l->t('📅 Calendar'),
-                'text' => $l->t('<p>Here you\'ll find your personal calendar.</p><p>Schedule appointments, set reminders and share your calendar with others.</p>'),
-                'attachTo' => '[data-id="calendar"], #appmenu li[data-id="calendar"], a[href*="/apps/calendar"]',
-                'position' => 'right',
-                'enabled' => true,
-                'visibleToGroups' => [],
-            ],
+            // NOTE: the old "calendar" step is intentionally gone. Calendar is often not
+            // installed, and on NC 34 app entries live behind the apps menu. The client
+            // injects a richer auto-opening "appsmenu" step here instead (it cannot live
+            // server-side because it needs function-valued behavior).
             [
                 'id' => 'search',
                 'title' => $l->t('🔍 Search'),
                 'text' => $l->t('<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
-                'attachTo' => '.unified-search__trigger, .header-menu__trigger',
+                // NC 34+ renders an inline searchbar (.unified-search-input); NC <=33 used an
+                // icon button (.unified-search__trigger). Tried in order so the step targets
+                // the real search on every supported version (.header-menu__trigger alone
+                // lands on the notifications bell in NC 34).
+                'attachTo' => '.unified-search-input, .unified-search__trigger, .header-menu__trigger',
+                'position' => 'bottom',
+                'enabled' => true,
+                'visibleToGroups' => [],
+            ],
+            [
+                'id' => 'settings',
+                'title' => $l->t('⚙️ Your account & settings'),
+                'text' => $l->t('<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>'),
+                // The account/avatar menu trigger is always visible on every version.
+                'attachTo' => '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #settings .header-menu__trigger, #expand',
                 'position' => 'bottom',
                 'enabled' => true,
                 'visibleToGroups' => [],
@@ -85,7 +99,7 @@ class DefaultStepsService {
             [
                 'id' => 'features',
                 'title' => $l->t('✨ Important features'),
-                'text' => $l->t('<p><strong>Navigation:</strong></p><ul><li>Use the <strong>main menu</strong> (left) to switch between apps</li><li>Click on your <strong>username</strong> (top right) for settings</li><li>Use the <strong>search bar</strong> to quickly find files</li></ul>'),
+                'text' => $l->t('<p><strong>Finding your way around:</strong></p><ul><li>Use the <strong>apps menu</strong> (top left) to switch between apps</li><li>Open your <strong>avatar</strong> (top right) for your account and settings</li><li>Use the <strong>search bar</strong> to quickly find files and more</li></ul>'),
                 'attachTo' => '',
                 'position' => 'right',
                 'enabled' => true,

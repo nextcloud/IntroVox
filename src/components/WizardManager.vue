@@ -8,7 +8,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
 import { translate as t, getLanguage } from '@nextcloud/l10n'
-import { getWizardSteps, loadCustomSteps } from './wizardSteps'
+import { getWizardSteps, loadCustomSteps, enrichSteps, closeOpenedMenu } from './wizardSteps'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 
@@ -119,12 +119,17 @@ export default {
 
       const serverVersion = response ? response.version : '1'
       const customSteps = response ? response.steps : null
-      let stepsToUse = customSteps || getWizardSteps()
+      // Server steps carry copy/order but not function-valued behavior (lazy
+      // attachTo, beforeShowPromise, when, …). Re-attach those by id and inject
+      // any client-only steps; fall back to the fully bundled steps when offline.
+      let stepsToUse = customSteps ? enrichSteps(customSteps) : getWizardSteps()
 
       // Filter out disabled steps (handle both boolean false and string "false")
+      // and steps whose showOn() guard says they don't apply on this instance.
       stepsToUse = stepsToUse.filter(step => {
         const isEnabled = step.enabled !== false && step.enabled !== 'false' && step.enabled !== 0
-        return isEnabled
+        const passesShowOn = typeof step.showOn !== 'function' || step.showOn()
+        return isEnabled && passesShowOn
       })
 
       tour = new Shepherd.Tour({
@@ -153,16 +158,23 @@ export default {
               on: step.position || 'right'
             }
           } else if (step.attachTo.element) {
-            // Default step format: object with element and on
+            // Default step format: object with element (string or function) + on
             attachTo = step.attachTo
           }
         }
 
-        // For steps with attachTo, check if element exists
+        // Resolve the target lazily at show-time instead of once at build-time.
+        // NC 34 hides several targets behind menus that only render after a
+        // beforeShowPromise opens them, so an eager querySelector here would
+        // wrongly null them out. A function that returns undefined makes
+        // Shepherd center the step automatically.
         if (attachTo) {
-          const element = document.querySelector(attachTo.element)
-          if (!element) {
-            attachTo = null // Fallback: show step centered instead of skipping
+          const selector = attachTo.element
+          attachTo = {
+            element: typeof selector === 'function'
+              ? selector
+              : () => document.querySelector(selector) || undefined,
+            on: attachTo.on
           }
         }
 
@@ -218,15 +230,28 @@ export default {
           buttons = step.buttons
         }
 
-        // Determine if step should be centered (no attachTo)
-        const stepClasses = attachTo
-          ? 'nextcloud-wizard-step'
-          : 'nextcloud-wizard-step shepherd-centered'
+        // Centering can no longer be decided at build-time because attachTo is
+        // resolved lazily. Add/remove .shepherd-centered in a show hook based on
+        // whether the target actually resolved, and preserve any when handlers
+        // the step already defines (e.g. the apps-menu cleanup).
+        const stepWhen = { ...(step.when || {}) }
+        const userShow = stepWhen.show
+        stepWhen.show = function() {
+          const el = this.getElement && this.getElement()
+          if (el) {
+            const centered = !(this.getTarget && this.getTarget())
+            el.classList.toggle('shepherd-centered', centered)
+          }
+          if (typeof userShow === 'function') {
+            userShow.call(this)
+          }
+        }
 
         tour.addStep({
           ...step,
           attachTo: attachTo,
-          classes: stepClasses,
+          classes: 'nextcloud-wizard-step',
+          when: stepWhen,
           buttons: buttons.map(btn => ({
             ...btn,
             action: btn.action === 'markCompleted'
@@ -247,6 +272,8 @@ export default {
       // Setup event listeners
       tour.on('complete', () => {
         // Don't auto-disable here, it's handled by the specific button actions
+        // Safety net: close any header menu a step opened but didn't clean up.
+        closeOpenedMenu()
       })
 
       tour.on('cancel', () => {
@@ -255,6 +282,8 @@ export default {
         if (serverVersion) {
           localStorage.setItem(versionKey, serverVersion)
         }
+        // Safety net: close any header menu a step opened but didn't clean up.
+        closeOpenedMenu()
       })
 
       return serverVersion

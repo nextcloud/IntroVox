@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.4] - 2026-06-24
+
+### Fixed
+- **Tour steps pointed at the wrong header elements on Nextcloud 34.** NC 34 ("Hub 26 Spring") restructured the top header: the search became an always-visible inline searchbar (`.unified-search-input`, replacing the `.unified-search__trigger` icon button), and the app navigation (Files, Calendar, …) plus the personal settings moved behind the apps "waffle" menu and the account/avatar menu — those items no longer exist in the DOM until their menu is opened. As a result the **Search** step highlighted the notifications bell, and the **Files**/**Calendar** steps either highlighted nothing (centered fallback) or a random sidebar link. ([#19](https://github.com/nextcloud/IntroVox/issues/19))
+
+### Changed
+- **Wizard targets are now resolved lazily and degrade gracefully.** `WizardManager` previously resolved each step's selector once at tour-build time, so any target behind a menu was permanently nulled to a centered popup. Targets are now resolved at show-time (Shepherd accepts a function `attachTo`), so a step can point at an element a menu reveals — and a genuinely missing target still centers cleanly.
+- **Nav steps retargeted for NC 34, with NC ≤ 33 fallbacks.** The **Files** step now leads with the pinned app entry (NC ≤ 33) and falls back to the always-visible apps menu (waffle); the **Search** step leads with `.unified-search-input`; a new **⚙️ Settings** step highlights the always-visible account/avatar menu. The brittle **Calendar** step (often not installed) is replaced by a new **🧭 All your apps** step that opens the apps menu (`beforeShowPromise`), highlights an app entry inside it, and closes the menu again afterward (with cancel/complete cleanup safety nets). The **features** step copy was updated to match the NC 34 layout. All targeting is selector-presence driven — no hard version checks.
+- Function-valued step behavior (lazy `attachTo`, `beforeShowPromise`, `when`, `showOn`, `canClickTarget`) lives only in the client; since the API serves the default steps inline, the client now re-attaches these behaviors onto the server-provided steps by `id` (`enrichSteps`) and injects client-only steps, keeping server copy/translations/ordering authoritative.
+
 ## [1.7.3] - 2026-06-22
 
 ### Fixed
