@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 欢迎访问 Nextcloud",
     "📁 Files" : "📁 文件",
-    "📅 Calendar" : "📅 日历",
     "🔍 Search" : "🔍 查询",
     "🎯 Getting started" : "🎯 开始",
     "✨ Important features" : "✨ 重要功能",

@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 Tervetuloa Nextcloudiin",
     "📁 Files" : "📁 Tiedostot",
-    "📅 Calendar" : "📅 Kalenteri",
     "🔍 Search" : "🔍 Haku",
     "🎯 Getting started" : "🎯 Aloitetaan",
     "✨ Important features" : "✨ Tärkeät ominaisuudet",
