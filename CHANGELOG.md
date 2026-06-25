@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.7.4] - 2026-06-24
+## [1.7.4] - 2026-06-25
 
 ### Fixed
 - **Tour steps pointed at the wrong header elements on Nextcloud 34.** NC 34 ("Hub 26 Spring") restructured the top header: the search became an always-visible inline searchbar (`.unified-search-input`, replacing the `.unified-search__trigger` icon button), and the app navigation (Files, Calendar, …) plus the personal settings moved behind the apps "waffle" menu and the account/avatar menu — those items no longer exist in the DOM until their menu is opened. As a result the **Search** step highlighted the notifications bell, and the **Files**/**Calendar** steps either highlighted nothing (centered fallback) or a random sidebar link. ([#19](https://github.com/nextcloud/IntroVox/issues/19))
