@@ -15,7 +15,9 @@ const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, 
 const APPS_MENU_ITEM = '[role="menu"] a.app-item'
 // The opened waffle menu panel (the white popover box). Used as the attach
 // target so the tooltip sits beside the whole menu instead of under it.
-const APPS_MENU_PANEL = '.app-menu .v-popper__popper, .v-popper__popper:has([role="menu"] a.app-item)'
+// `.app-menu__popover` is a stable direct class on the panel; the :has()
+// variant is a fallback for older/newer markup.
+const APPS_MENU_PANEL = '.app-menu__popover, [role="menu"].app-menu__popover, .v-popper__popper:has([role="menu"] a.app-item)'
 
 // Track the trigger we opened ourselves, so cleanup never closes a menu the
 // user opened on their own.

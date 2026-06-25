@@ -53,6 +53,11 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
         <job>OCA\IntroVox\BackgroundJob\TelemetryJob</job>
         <job>OCA\IntroVox\BackgroundJob\LicenseUsageJob</job>
     </background-jobs>
+    <repair-steps>
+        <post-migration>
+            <step>OCA\IntroVox\Migration\RemoveStaleDefaultWizardSteps</step>
+        </post-migration>
+    </repair-steps>
     <settings>
         <admin>OCA\IntroVox\Settings\AdminSettings</admin>
         <admin-section>OCA\IntroVox\Settings\AdminSection</admin-section>
