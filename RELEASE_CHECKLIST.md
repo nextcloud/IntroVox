@@ -85,14 +85,28 @@ After `-X ours` you may still get `modify/delete` conflicts (see Gotcha 2) — r
 
 ### ⚠️ Gotcha 2 — `tx pull` and the bot disagree on near-empty languages
 
-`./scripts/sync-translations.sh` runs `tx pull -a --minimum-perc=1`, so it pulls back **any** language with ≥1% translated (e.g. `ta` at 2/110 strings). The bot, however, **deletes** files that drop below its completeness threshold. During a merge this shows up as `modify/delete` conflicts (the bot deleted `l10n/ta.json`, our pull re-created it).
+`./scripts/sync-translations.sh` runs `tx pull -a --minimum-perc=1`, so it pulls back **any** language with ≥1% translated (e.g. `ta` at 2/110 strings). The bot, however, only commits files above its completeness threshold. So after a sync you'll see a pile of near-empty languages that the bot would never ship. This surfaces in **two** shapes:
 
-**Convention: follow the bot — delete the near-empty files.** A 2-string file adds clutter, ships almost nothing, and would re-conflict on every future sync. Resolve with:
+1. **Untracked new files** (the common case) — `git status --short l10n/` lists many `??` files (e.g. `an`, `az`, the `es_*` regional variants, `fo`, `gd`, `ia`, `ka_GE`, `nn_NO`, `ta`, `tk`), each with only a handful of strings. A single 1.7.4 sync produced **50 such files (25 languages × js+json), all 2–5 strings**.
+2. **`modify/delete` conflicts** during the bot merge — the bot deleted `l10n/ta.json`, our pull re-created it.
+
+**Convention: follow the bot — drop the near-empty files in both shapes.** A 2–5-string file adds clutter, ships almost nothing, and re-conflicts on every future sync. Triage by string count:
 ```bash
-# for each modify/delete conflict where the file has only a handful of strings:
+# List every changed/new l10n json with its string count, smallest first:
+for f in $(git status --short l10n/ | awk '{print $2}' | grep '\.json$'); do
+  printf '%4s  %s\n' "$(python3 -c "import json;print(len(json.load(open('$f'))['translations']))" 2>/dev/null)" "$f"
+done | sort -n
+
+# Untracked near-empty languages → just remove the files:
+rm -f l10n/<lang>.js l10n/<lang>.json
+# modify/delete conflict near-empty languages → git rm:
 git rm --force l10n/<lang>.js l10n/<lang>.json
 ```
-(If a disputed language is actually substantial, keep ours instead with `git add l10n/<lang>.*` — judge by string count, not reflexively.)
+Keep only languages that gained real content this sync (judge by string count, not reflexively). For 1.7.4 that was `de`/`de_DE` (+6) and `pt_BR` (+2); the 50 near-empty files were dropped. If a disputed language is actually substantial, keep it with `git add l10n/<lang>.*`.
+
+### ℹ️ Note — strings added *in this release* are not translated yet
+
+The Transifex pipeline is automatic but lagged: the bot extracts new source strings **after** you push, translators translate them, and only a *later* `tx pull` brings them back. So any string you just added (e.g. 1.7.4's "📁 Files & apps", "⚙️ Your account & settings", the admin selector hint) ships **in English** this release and picks up translations in a future one. This is expected — don't block a release on it, and don't treat new-string English fallback as the "unexpected fallback" the spot-check below warns about.
 
 ### Checklist
 
@@ -104,8 +118,9 @@ git rm --force l10n/<lang>.js l10n/<lang>.json
 - [ ] Validate JSON syntax in all translation files: `for f in l10n/*.json; do python3 -m json.tool "$f" > /dev/null && echo "OK: $f" || echo "FAIL: $f"; done`
 - [ ] Reconcile with the GitHub bot (Gotcha 1): `git fetch github main` then merge `-X ours`, resolving near-empty `modify/delete` conflicts per Gotcha 2
 - [ ] Confirm the core languages survived the merge: `for l in de nl; do python3 -c "import json;print('$l',len(json.load(open('l10n/$l.json'))['translations']))"; done` (de should be ~110, nl ~105)
+- [ ] Drop the near-empty untracked languages this sync re-created (Gotcha 2, shape 1) — list them with the string-count one-liner above and `rm -f` the 2–5-string ones; keep only languages that gained real content
 - [ ] Review the diff (`git diff --stat l10n/`) and commit the refreshed translations
-- [ ] Spot-check the wizard in a non-English session to make sure no string falls back to English unexpectedly when it should have a translation
+- [ ] Spot-check the wizard in a non-English session to make sure no *previously translated* string falls back to English unexpectedly. New strings added in **this** release showing in English is expected (see the note above) — don't chase those.
 - [ ] **Build the tarball AFTER the merge** — if you cut it before reconciling with the bot it will contain the wrong set of languages (the v1.7.1 tarball had to be regenerated for exactly this reason)
 - [ ] Translation typos (e.g. a wrong German string) live on Transifex — they **cannot** be fixed in the repo durably (next pull overwrites them) and the read-only token can't write them. Report them to the language team on transifex.com.
 
