@@ -48,31 +48,29 @@ class DefaultStepsService {
             ],
             [
                 'id' => 'files',
-                'title' => $l->t('📁 Files'),
-                'text' => $l->t('<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 your apps live behind the apps menu (top left) — open it to find Files.</p>'),
-                // NC <=33 pinned the app in the header; NC 34 keeps everything behind the
-                // always-visible apps menu (waffle). Pinned entries are tried first, then
-                // the waffle, so the step always has a visible target. The client wraps
-                // this string in a lazy resolver and may override it with a richer
-                // function attachTo via enrichSteps().
-                'attachTo' => '#appmenu li[data-id="files"], a.app-menu-entry[href*="/apps/files"], [data-id="files"], .app-menu__waffle, [aria-label="Open apps menu"]',
-                'position' => 'bottom',
+                'title' => $l->t('📁 Files & apps'),
+                'text' => $l->t('<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 it lives in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
+                // The client (enrichSteps) overrides this with a richer function attachTo
+                // that opens the NC 34 apps menu and highlights the Files entry inside it.
+                // This string is the fallback when the bundled defaults run: NC 34 waffle
+                // first, then the NC <=33 inline Files entry (.app-menu-entry, no data-id).
+                'attachTo' => '.app-menu__popover, .app-menu__waffle, [aria-label="Open apps menu"], .app-menu-entry a[href*="/apps/files"]',
+                'position' => 'right',
                 'enabled' => true,
                 'visibleToGroups' => [],
             ],
-            // NOTE: the old "calendar" step is intentionally gone. Calendar is often not
-            // installed, and on NC 34 app entries live behind the apps menu. The client
-            // injects a richer auto-opening "appsmenu" step here instead (it cannot live
-            // server-side because it needs function-valued behavior).
+            // NOTE: the old "calendar" step is intentionally gone — Calendar is often not
+            // installed, and the merged "Files & apps" step above already introduces the
+            // apps menu where Calendar lives.
             [
                 'id' => 'search',
                 'title' => $l->t('🔍 Search'),
                 'text' => $l->t('<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
-                // NC 34+ renders an inline searchbar (.unified-search-input); NC <=33 used an
-                // icon button (.unified-search__trigger). Tried in order so the step targets
-                // the real search on every supported version (.header-menu__trigger alone
-                // lands on the notifications bell in NC 34).
-                'attachTo' => '.unified-search-input, .unified-search__trigger, .header-menu__trigger',
+                // NC 34 renders an inline searchbar (.unified-search-input); NC <=33 has an
+                // icon button (#unified-search). Tried in order so the step targets the real
+                // search on every supported version (.header-menu__trigger alone lands on the
+                // notifications bell in NC 34).
+                'attachTo' => '.unified-search-input, #unified-search, .unified-search__trigger, .header-menu__trigger',
                 'position' => 'bottom',
                 'enabled' => true,
                 'visibleToGroups' => [],
@@ -82,7 +80,7 @@ class DefaultStepsService {
                 'title' => $l->t('⚙️ Your account & settings'),
                 'text' => $l->t('<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>'),
                 // The account/avatar menu trigger is always visible on every version.
-                'attachTo' => '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #settings .header-menu__trigger, #expand',
+                'attachTo' => '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #user-menu .header-menu__trigger, #user-menu, #settings .header-menu__trigger, #expand',
                 'position' => 'bottom',
                 'enabled' => true,
                 'visibleToGroups' => [],

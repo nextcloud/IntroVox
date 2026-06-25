@@ -10,7 +10,8 @@ import { translate as t } from '@nextcloud/l10n'
 // Always-visible header triggers (NC 34). Used both as attach targets and as
 // the buttons we click to reveal the hidden menu items.
 const APPS_MENU_TRIGGER = '.app-menu__waffle, [aria-label="Open apps menu"]'
-const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"]'
+// NC 34: account menu trigger. NC <=33: the avatar lives under #user-menu.
+const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #user-menu .header-menu__trigger, #user-menu'
 // Items inside the opened waffle menu (NC 34): anchors with per-app hrefs.
 const APPS_MENU_ITEM = '[role="menu"] a.app-item'
 // The opened waffle menu panel (the white popover box). Used as the attach
@@ -18,6 +19,13 @@ const APPS_MENU_ITEM = '[role="menu"] a.app-item'
 // `.app-menu__popover` is a stable direct class on the panel; the :has()
 // variant is a fallback for older/newer markup.
 const APPS_MENU_PANEL = '.app-menu__popover, [role="menu"].app-menu__popover, .v-popper__popper:has([role="menu"] a.app-item)'
+
+// NC <=33 keeps the apps as an always-visible inline bar in the header
+// (.app-menu__list with .app-menu-entry items) — no waffle, no data-id. The
+// link lives inside the <li class="app-menu-entry">.
+const NC33_FILES_ENTRY = '.app-menu-entry a[href*="/apps/files"], #appmenu a[href*="/apps/files"]'
+// NC <=33 search is an icon button (#unified-search), not the NC 34 searchbar.
+const NC33_SEARCH_TRIGGER = '#unified-search, [aria-label="Unified search"]'
 
 // Track the trigger we opened ourselves, so cleanup never closes a menu the
 // user opened on their own.
@@ -108,49 +116,20 @@ function getBaseWizardSteps() {
     },
     {
       id: 'files',
-      title: t('introvox', '📁 Files'),
-      text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 your apps live behind the apps menu (top left) — open it to find Files.</p>'),
-      attachTo: {
-        // NC <=33 pinned the app in the header; NC 34 keeps everything behind
-        // the always-visible apps menu (waffle). Try the pinned entry first,
-        // then fall back to the waffle so the step always has a visible target.
-        element: firstMatch(
-          '#appmenu li[data-id="files"]',
-          'a.app-menu-entry[href*="/apps/files"]',
-          '[data-id="files"]',
-          APPS_MENU_TRIGGER,
-        ),
-        on: 'bottom'
-      },
-      buttons: [
-        {
-          text: t('introvox', 'Back'),
-          action: function() { this.back() },
-          secondary: true
-        },
-        {
-          text: t('introvox', 'Next'),
-          action: function() { this.next() }
-        }
-      ]
-    },
-    {
-      id: 'appsmenu',
-      title: t('introvox', '🧭 All your apps'),
-      text: t('introvox', '<p>Switch between Files, Calendar, Mail, Contacts and more from the apps menu.</p><p>Click it any time to jump to another app.</p>'),
-      // Only relevant where the apps menu (waffle) exists, i.e. NC 34+.
-      showOn: () => !!document.querySelector(APPS_MENU_TRIGGER),
-      // Open the waffle menu before showing so we can point at the open menu.
-      // Degrades to the closed waffle button if the menu never opens.
+      title: t('introvox', '📁 Files & apps'),
+      text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 it lives in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
+      // On NC 34 the apps live behind the waffle, so open it first and point at
+      // the Files entry inside the menu. On NC <=33 there is no waffle, so this
+      // is a no-op and the step highlights the always-visible inline Files icon.
       beforeShowPromise: () => openMenuAndWait(APPS_MENU_TRIGGER, APPS_MENU_ITEM),
-      // Attach to the whole menu panel and sit to its right — the open menu is a
-      // wide panel on the left, so 'bottom' on an icon would put the tooltip
-      // under the menu. The panel falls back to the Files item, then the waffle.
       attachTo: {
+        // NC 34: the open menu panel (tooltip sits to its right). NC <=33: the
+        // inline Files entry in the always-visible app bar. Falls back to the
+        // closed waffle button if the menu can't be opened.
         element: firstMatch(
           APPS_MENU_PANEL,
           '[role="menu"] a.app-item[href*="/apps/files/"]',
-          APPS_MENU_ITEM,
+          NC33_FILES_ENTRY,
           APPS_MENU_TRIGGER,
         ),
         on: 'right-start'
@@ -179,12 +158,13 @@ function getBaseWizardSteps() {
       title: t('introvox', '🔍 Search'),
       text: t('introvox', '<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
       attachTo: {
-        // NC 34+ renders an inline searchbar (.unified-search-input); NC <=33 used an
-        // icon button (.unified-search__trigger). Try them in order so the step targets
-        // the real search on every supported version — .header-menu__trigger is the last
-        // resort (on NC 34 alone it would land on the notifications bell).
+        // NC 34 renders an inline searchbar (.unified-search-input). NC <=33 has
+        // an icon button with id #unified-search. Try the NC 34 bar first, then
+        // the NC <=33 button; .header-menu__trigger is a last resort (on NC 34
+        // alone it would land on the notifications bell).
         element: firstMatch(
           '.unified-search-input',
+          NC33_SEARCH_TRIGGER,
           '.unified-search__trigger',
           '.header-menu__trigger',
         ),
@@ -353,8 +333,9 @@ const BEHAVIORAL_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'showOn', 'c
  * Layer the client-side behavioral fields (function attachTo, beforeShowPromise,
  * when, showOn, …) of the bundled default steps onto server-provided steps,
  * keyed by id. The server stays authoritative for title/text/order/enabled;
- * we only restore behaviors that JSON can't carry. Steps that exist only on the
- * client (e.g. the auto-open "appsmenu" step) are injected after their anchor.
+ * we only restore behaviors that JSON can't carry. Any base step that has no
+ * server twin is injected after its anchor (none today, but kept as a safety
+ * net so client-only steps keep working without a server change).
  *
  * Server steps carry attachTo as a plain string selector. When a matching base
  * step exists, its richer function attachTo wins; otherwise the string is kept
