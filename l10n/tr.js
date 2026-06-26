@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 Nextcloud uygulamasına hoş geldiniz",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Sizi burada görmek güzel! Bu kısa tur hızlıca başlamanıza yardımcı olacak.</p><p>Bu yardımcıyı istediğiniz zaman kapatabilir ve daha sonra yeniden açabilirsiniz.</p>",
-    "📁 Files" : "📁 Dosyalar",
     "🔍 Search" : "🔍 Arama",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Arama çubuğu ile dosyaları, kişileri ve diğer şeyleri hızlıca bulabilirsiniz.</p><p>Yalnızca aradığınızı yazın ve Enter tuşuna basın.</p>",
     "🎯 Getting started" : "🎯 Başlamak",

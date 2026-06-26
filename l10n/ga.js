@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 Fáilte go Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Is maith liom go raibh tú anseo! Cabhróidh an turas gearr seo leat tosú go tapa.</p><p>Is féidir leat an draoi seo a dhúnadh am ar bith agus é a oscailt arís níos déanaí.</p>",
-    "📁 Files" : "📁 Comhaid",
     "🔍 Search" : "🔍 Cuardaigh",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Leis an mbarra cuardaigh is féidir leat comhaid, teagmhálacha agus tuilleadh a aimsiú go tapa.</p><p>Níl le déanamh ach an rud atá uait a chlóscríobh agus brúigh Iontráil.</p>",
     "🎯 Getting started" : "🎯 Ag tosú",

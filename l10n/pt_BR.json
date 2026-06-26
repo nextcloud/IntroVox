@@ -1,7 +1,6 @@
 { "translations": {
     "👋 Welcome to Nextcloud" : "👋 Bem-vindo ao Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Que bom que você está aqui! Esta breve introdução vai ajudar você a começar rapidamente.</p><p>Você pode fechar este assistente a qualquer momento e abri-lo novamente mais tarde.</p>",
-    "📁 Files" : "📁 Arquivos",
     "🔍 Search" : "🔍 Pesquisa",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Com a barra de pesquisa, você pode encontrar arquivos, contatos e muito mais rapidamente.</p> <p>Basta digitar o que você está procurando e pressionar Enter.</p>",
     "⚙️ Your account & settings" : "⚙️ Sua conta e configurações",
@@ -51,7 +50,6 @@
     "Done" : "Concluído",
     "Next" : "Próximo",
     "Skip" : "Pular",
-    "🧭 All your apps" : "🧭 Todos os seus aplicativos",
     "Use Nextcloud as a real app!" : "Use o Nextcloud como um aplicativo de verdade!",
     "You can install Nextcloud as an app on your device. It then works just like any other app:" : "Você pode instalar o Nextcloud como um aplicativo no seu dispositivo. Depois disso, ele funciona exatamente como qualquer outro aplicativo:",
     "✨ Own app icon on your home screen/dock" : "✨ Ícone do aplicativo na tela inicial/barra de aplicativos",

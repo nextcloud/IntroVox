@@ -1,8 +1,6 @@
 { "translations": {
     "👋 Welcome to Nextcloud" : "👋 Wilkommen bei der Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Schön, dass Du hier bist! Diese kurze Tour hilft Dir, schnell loszulegen.</p><p>Du kannst diesen Assistenten jederzeit schließen und später wieder öffnen.</p>",
-    "📁 Files" : "📁 Dateien",
-    "<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 your apps live behind the apps menu (top left) — open it to find Files.</p>" : "<p>Unter \"Dateien\" kannst du alle deine gespeicherten Dateien anzeigen und verwalten.</p> <p>In Nextcloud 34 findest du deine Apps im Apps-Menü (oben links) – öffne es, um \"Dateien\" zu finden.</p>",
     "🔍 Search" : "🔍 Suche",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Mit der Suchleiste kannst du schnell Dateien, Kontakte und mehr finden.</p><p>Gebe einfach ein, wonach du suchst, und drücke die Eingabetaste.</p>",
     "⚙️ Your account & settings" : "⚙️ Dein Konto & Einstellungen",
@@ -54,8 +52,6 @@
     "Done" : "Erledigt",
     "Next" : "Weiter",
     "Skip" : "Überspringen",
-    "🧭 All your apps" : "🧭 All deine Apps",
-    "<p>Switch between Files, Calendar, Mail, Contacts and more from the apps menu.</p><p>Click it any time to jump to another app.</p>" : "<p>Wechsle im App-Menü zwischen \"Dateien\", \"Kalender\", \"E-Mail\", \"Kontakte\" und weiteren Apps.</p><p>Klicke jederzeit darauf, um zu einer anderen App zu wechseln.</p>",
     "Use Nextcloud as a real app!" : "Nextcloud als echte App verwenden!",
     "You can install Nextcloud as an app on your device. It then works just like any other app:" : "Du kannst Nextcloud als App auf deinem Gerät installieren. Dann funktioniert sie genau wie jede andere App:",
     "✨ Own app icon on your home screen/dock" : "✨ Eigenes App-Symbol auf dem Startbildschirm/im Dock",

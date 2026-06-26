@@ -2,7 +2,6 @@ OC.L10N.register(
     "introvox",
     {
     "👋 Welcome to Nextcloud" : "👋 欢迎访问 Nextcloud",
-    "📁 Files" : "📁 文件",
     "🔍 Search" : "🔍 查询",
     "🎯 Getting started" : "🎯 开始",
     "✨ Important features" : "✨ 重要功能",
