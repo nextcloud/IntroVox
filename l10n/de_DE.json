@@ -1,6 +1,7 @@
 { "translations": {
     "👋 Welcome to Nextcloud" : "👋 Wilkommen bei der Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Schön, dass Sie hier sind! Diese kurze Tour hilft Ihnen, schnell loszulegen.</p><p>Sie können diesen Assistenten jederzeit schließen und später wieder öffnen.</p>",
+    "📁 Files & apps" : "📁 Dateien & Apps",
     "🔍 Search" : "🔍 Suche",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Mit der Suchleiste können Sie schnell Dateien, Kontakte und mehr finden.</p><p>Geben Sie einfach ein, wonach Sie suchen, und drücken Sie die Eingabetaste.",
     "⚙️ Your account & settings" : "⚙️ Ihr Konto & Einstellungen",

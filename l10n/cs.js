@@ -1,12 +1,15 @@
 OC.L10N.register(
     "introvox",
     {
+    "IntroVox" : "IntroVox",
     "Dutch" : "holandština",
     "English" : "angličtina",
     "German" : "němčina",
     "Danish" : "dánština",
     "French" : "francouzština",
     "Swedish" : "švédština",
+    "Questions?" : "Otázky?",
+    "steps" : "kroky",
     "Total" : "Celkem",
     "Subscription key" : "Klíč předplatného",
     "Saving …" : "Ukládání …",
