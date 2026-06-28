@@ -1,6 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "Inglês",
+    "Danish" : "Dinamarquês",
+    "French" : "Francês",
     "Total" : "Total",
     "Saving …" : "A guardar...",
     "Back" : "Voltar",

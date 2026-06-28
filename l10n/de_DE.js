@@ -4,6 +4,7 @@ OC.L10N.register(
     "👋 Welcome to Nextcloud" : "👋 Wilkommen bei der Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Schön, dass Sie hier sind! Diese kurze Tour hilft Ihnen, schnell loszulegen.</p><p>Sie können diesen Assistenten jederzeit schließen und später wieder öffnen.</p>",
     "📁 Files & apps" : "📁 Dateien & Apps",
+    "<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 it lives in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>" : "<p>In \"Dateien\" können alle gespeicherten Daten angezeigt und verwaltet werden.</p><p>In Nextcloud 34 findet sich die App im App-Menü (oben links) – zusammen mit Kalender, E-Mail, Kontakte und weiteren Apps. Klicken Sie jederzeit auf das Menü, um zwischen den Apps zu wechseln.</p>",
     "🔍 Search" : "🔍 Suche",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>Mit der Suchleiste können Sie schnell Dateien, Kontakte und mehr finden.</p><p>Geben Sie einfach ein, wonach Sie suchen, und drücken Sie die Eingabetaste.",
     "⚙️ Your account & settings" : "⚙️ Ihr Konto & Einstellungen",
