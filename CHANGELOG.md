@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.5] - 2026-07-06
+
+### Fixed
+- **Upgrade to 1.7.4 could silently delete an admin-customized tour (data loss).** The `RemoveStaleDefaultWizardSteps` repair step — meant to clear only the pre-1.7.4 auto-saved default tour so the new NC 34 defaults take over — detected "untouched defaults" by merely checking that a legacy `calendar` step *and* a legacy `search` step were both *present*. An admin who kept those two steps but extended the tour (e.g. added a custom `video` step) still matched, so their entire `wizard_steps_<lang>` override was wiped on upgrade. The step now requires the stored step ids to match the legacy fingerprint **exactly** (same eight ids, same order, nothing added, removed, renamed or reordered) *before* also checking the legacy selectors — so any customized tour is left untouched. As an extra safety net, a recoverable copy is now saved to `stale_wizard_backup_<key>` before any deletion. ([#21](https://github.com/nextcloud/IntroVox/issues/21))
+
 ## [1.7.4] - 2026-06-25
 
 ### Fixed
