@@ -2,7 +2,6 @@ OC.L10N.register(
     "introvox",
     {
     "👋 Welcome to Nextcloud" : "👋 Tervetuloa Nextcloudiin",
-    "📁 Files" : "📁 Tiedostot",
     "🔍 Search" : "🔍 Haku",
     "🎯 Getting started" : "🎯 Aloitetaan",
     "✨ Important features" : "✨ Tärkeät ominaisuudet",

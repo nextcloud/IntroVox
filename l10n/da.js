@@ -1,6 +1,7 @@
 OC.L10N.register(
     "introvox",
     {
+    "Dutch" : "Hollandsk",
     "English" : "Engelsk",
     "German" : "Tysk",
     "Danish" : "Dansk",

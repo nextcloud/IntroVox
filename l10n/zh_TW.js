@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "👋 Welcome to Nextcloud" : "👋 歡迎使用 Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>歡迎您的到來！這段簡短的導覽將幫助您快速上手。</p><p>您可以隨時關閉此精靈，並稍後再次開啟。</p>",
-    "📁 Files" : "📁 檔案",
     "🔍 Search" : "搜尋",
     "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>透過搜尋列，您可以快速找到檔案、聯絡人等內容。</p><p>只需輸入您要搜尋的內容，然後按下 Enter 鍵。</p>",
     "🎯 Getting started" : "🎯 開始使用",
