@@ -246,7 +246,7 @@ tar -xzf introvox-x.x.x.tar.gz -O 2>/dev/null | \
 
 ### 8.2 App Store Upload — actual procedure
 
-There are two upload routes. **Try the API first; fall back to the web UI if the token is rejected.**
+**Convention (since v1.7.5): upload MANUALLY via the web UI (Route B). The API route is retired.** The API token expired on every release from v1.4.3 onward (403) and Rik decided not to refresh it — the web-UI upload is the standing route. Route A below is kept only for reference. You still generate and verify the signature the same way; then hand Rik the download URL + signature for the web form.
 
 The signing key is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key` (also on USB at `/Volumes/WDS/secrets/projects/introvox/introvox.key`). The API token is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt`.
 
@@ -443,22 +443,22 @@ https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.ta
 
 ### 7. App Store Upload
 
-See § 8.2 for the full procedure (API + web-UI fallback). TL;DR:
+**Upload manually via the web UI** (convention since v1.7.5 — the API token is retired, see § 8.2):
 
-```bash
-# Try the API first
-TOKEN=$(tr -d '[:space:]' < /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt)
-SIG=$(cat /tmp/introvox-X.Y.Z.sig)
-curl -s -w "\nHTTP %{http_code}\n" -X POST \
-  -H "Authorization: Token $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "{\"download\":\"https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz\",\"signature\":\"$SIG\",\"nightly\":false}" \
-  https://apps.nextcloud.com/api/v1/apps/releases
-```
+1. Generate + verify the signature:
+   ```bash
+   openssl dgst -sha512 -sign /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key \
+     introvox-X.Y.Z.tar.gz | openssl base64 -A > /tmp/introvox-X.Y.Z.sig
+   # verify it validates against the tarball with the App Store public key:
+   openssl base64 -d -A -in /tmp/introvox-X.Y.Z.sig -out /tmp/introvox-X.Y.Z.sig.bin
+   openssl dgst -sha512 -verify <(openssl rsa -in /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key -pubout 2>/dev/null) \
+     -signature /tmp/introvox-X.Y.Z.sig.bin introvox-X.Y.Z.tar.gz   # → "Verified OK"
+   ```
+2. Log in at https://apps.nextcloud.com/developer/apps/introvox/releases/new and paste:
+   - **Download URL:** `https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz`
+   - **Signature:** contents of `/tmp/introvox-X.Y.Z.sig`
 
-If HTTP 403 → token is expired, fall back to web UI at https://apps.nextcloud.com/developer/apps/introvox/releases/new (login required), then refresh the token (see § 8.2).
-
-**Note:** Regenerate signature after any tarball change!
+**Note:** Regenerate the signature after any tarball change!
 
 ---
 
