@@ -28,7 +28,7 @@
 
 Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     ]]></description>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
     <licence>agpl</licence>
     <author mail="info@voxcloud.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>
@@ -56,6 +56,7 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
     <repair-steps>
         <post-migration>
             <step>OCA\IntroVox\Migration\RemoveStaleDefaultWizardSteps</step>
+            <step>OCA\IntroVox\Migration\UnescapeLegacyWizardStepHtml</step>
         </post-migration>
     </repair-steps>
     <settings>

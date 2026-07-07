@@ -77,12 +77,44 @@ class AdminController extends Controller {
      */
     private function sanitizeStep(array $step): array {
         if (isset($step['text']) && is_string($step['text'])) {
-            $step['text'] = trim($step['text']);
+            $step['text'] = $this->fixMojibake(trim($step['text']));
         }
         if (isset($step['title']) && is_string($step['title'])) {
-            $step['title'] = trim($step['title']);
+            $step['title'] = $this->fixMojibake(trim($step['title']));
         }
         return $step;
+    }
+
+    /**
+     * Repair "mojibake" — UTF-8 text that was decoded as CP1252/Latin-1 and
+     * re-encoded as UTF-8, so "één" arrives as "Ã©Ã©n". This happens when an
+     * import file was saved in a non-UTF-8 encoding: the browser's `file.text()`
+     * always decodes as UTF-8, so the bad bytes reach us as (valid but wrong)
+     * UTF-8 and would otherwise be stored and shown verbatim.
+     *
+     * Conservative by design — it only rewrites a string when BOTH:
+     *   (a) it carries a mojibake signature (a `Ã`/`Â` lead byte followed by a
+     *       continuation byte, or the `â€`-style smart-quote/dash sequences), and
+     *   (b) reinterpreting its code points as the CP1252 bytes they were mis-read
+     *       from yields a *different* string that is itself still valid UTF-8.
+     * Correctly-accented copy ("café", "naïef", "Übung", "—", "→") fails guard
+     * (b) — reinterpreting it produces invalid UTF-8 — so it is left untouched.
+     * The loop undoes up to a few stacked layers (double-encoding), capped.
+     */
+    private function fixMojibake(string $s): string {
+        if ($s === '' || !preg_match('//u', $s)) {
+            return $s;
+        }
+        $marker = "/[\xC3\xC2][\x80-\xBF]|\xE2\x80[\x93\x94\x99\x9c\x9d\xA6]/";
+        $guard = 0;
+        while ($guard++ < 5 && preg_match($marker, $s)) {
+            $bytes = @mb_convert_encoding($s, 'Windows-1252', 'UTF-8');
+            if ($bytes === false || $bytes === '' || $bytes === $s || !preg_match('//u', $bytes)) {
+                break;
+            }
+            $s = $bytes;
+        }
+        return $s;
     }
 
     /**
