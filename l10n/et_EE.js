@@ -35,6 +35,7 @@ OC.L10N.register(
     "Questions?" : "On sul küsimusi?",
     "Your installation" : "Sinu paigaldus",
     "Total" : "Kokku",
+    "Subscription key is invalid or expired." : "Tellimuse võti on vigane või aegunud.",
     "Subscription key" : "Tellimuse võti",
     "e.g. IVOX-XXXX-XXXX-XXXX-XXXX" : "nt. IVOX-XXXX-XXXX-XXXX-XXXX",
     "Saving …" : "Salvestan…",
