@@ -1,12 +1,12 @@
 OC.L10N.register(
     "introvox",
     {
-    "Dutch" : "Dutch",
-    "English" : "Engelsk",
-    "German" : "Tysk",
-    "Danish" : "Dansk",
-    "French" : "Fransk",
-    "Swedish" : "Svensk",
+    "Dutch" : "Nederländska",
+    "English" : "Engelska",
+    "German" : "Tyska",
+    "Danish" : "Danska",
+    "French" : "Franska",
+    "Swedish" : "Svenska",
     "Total" : "Totalt",
     "Subscription key" : "Abonnemangsnyckel",
     "Saving …" : "Sparar …",
