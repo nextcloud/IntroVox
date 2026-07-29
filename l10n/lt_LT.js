@@ -7,6 +7,7 @@ OC.L10N.register(
     "Danish" : "Danų",
     "French" : "Prancūzų",
     "Swedish" : "Švedų",
+    "Questions?" : "Klausimai?",
     "Total" : "Iš viso",
     "Subscription key" : "Prenumeratos raktas",
     "Saving …" : "Įrašoma…",
