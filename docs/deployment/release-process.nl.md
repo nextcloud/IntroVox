@@ -1,6 +1,6 @@
 # Release-proces
 
-> **Let op:** dit is een ontwikkelaars-document voor het uitbrengen van IntroVox-versies. Het wordt onderhouden in het Engels. Zie het [Engelse release-proces](release-process.en.md) voor de volledige stappen en commando's.
+> **Let op:** dit is een ontwikkelaars-document voor het uitbrengen van IntroVox-versies. Het wordt onderhouden in het Engels. Zie het [Engelse release-proces](release-process.md) voor de volledige stappen en commando's.
 
 ## Inleiding
 
@@ -27,7 +27,7 @@ Een IntroVox-release omvat:
 
 ## Voor de complete gids
 
-Zie [release-process.en.md](release-process.en.md) voor:
+Zie [release-process.en.md](release-process.md) voor:
 
 - Exacte versie-bump-commando's (sed-scripts)
 - CHANGELOG-formaat en Keep-a-Changelog-conventies

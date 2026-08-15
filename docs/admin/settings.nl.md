@@ -83,7 +83,7 @@ De stap-beheer-sectie is uitgewerkt in [Wizard-stappen beheren](managing-steps.m
 | **✏️ Bewerken** | Wijzig een bestaande stap | [Stappen beheren → Bewerken](managing-steps.md#stap-bewerken) |
 | **🗑️ Verwijderen** | Verwijder een stap | [Stappen beheren → Verwijderen](managing-steps.md#stap-verwijderen) |
 | **☰** sleep-handle | Stappen herordenen | [Stappen beheren → Herordenen](managing-steps.md#stappen-herordenen) |
-| **✅ / ❌** toggle | Individuele stappen aan/uitschakelen | [Stappen beheren → Aan/uitschakelen](managing-steps.md#stap-aanuitschakelen) |
+| **✅ / ❌** toggle | Individuele stappen aan/uitschakelen | [Stappen beheren → Aan/uitschakelen](managing-steps.md#stap-aan-uitschakelen) |
 | **📥 Exporteren** | Download stappen als JSON | [Import/Export](import-export.md#wizard-stappen-exporteren) |
 | **📤 Importeren** | Upload stappen vanuit JSON | [Import/Export](import-export.md#wizard-stappen-importeren) |
 | **🔄 Reset naar default** | Herstel fabrieks-defaults voor de geselecteerde taal | [Stappen beheren → Reset](managing-steps.md#reset-naar-default) |

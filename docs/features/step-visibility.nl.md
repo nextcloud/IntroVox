@@ -9,7 +9,7 @@ Elke stap heeft een in-/uitschakelen-toggle (✅/❌) in de admin-stap-lijst.
 - **Uitgeschakelde stappen** (`enabled: false`) worden server-side uitgefilterd en nooit naar enige gebruiker gestuurd
 - **Ingeschakelde stappen** gaan door naar de volgende laag
 
-Dit is een simpel tijdelijk-verberg-mechanisme voor seizoens- of in-ontwikkeling-stappen. Zie [Wizard-stappen beheren](../admin/managing-steps.md#stap-aanuitschakelen).
+Dit is een simpel tijdelijk-verberg-mechanisme voor seizoens- of in-ontwikkeling-stappen. Zie [Wizard-stappen beheren](../admin/managing-steps.md#stap-aan-uitschakelen).
 
 ## Laag 2 — groep-gebaseerde zichtbaarheid (v1.2.0+)
 

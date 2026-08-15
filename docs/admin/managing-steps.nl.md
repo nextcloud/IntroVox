@@ -86,7 +86,7 @@ Na het selecteren van een taal onder **Taal-instellingen** zie je de lijst stapp
 3. De stap wordt direct uit de lijst verwijderd
 4. Klik op **💾 Wijzigingen opslaan** om te persisteren
 
-> **Let op:** overweeg om de stap [uit te schakelen](#stap-aanuitschakelen) in plaats van te verwijderen als je hem later misschien terug wilt.
+> **Let op:** overweeg om de stap [uit te schakelen](#stap-aan-uitschakelen) in plaats van te verwijderen als je hem later misschien terug wilt.
 
 ## Stappen herordenen
 

@@ -1,6 +1,6 @@
 # Backend-architectuur
 
-> **Let op:** de gedetailleerde backend-architectuur is uitvoerig technisch en wordt onderhouden in het Engels. Voor de actuele controller-, service- en background-job-implementatie-details, raadpleeg de [Engelse backend-architectuur](backend-architecture.en.md).
+> **Let op:** de gedetailleerde backend-architectuur is uitvoerig technisch en wordt onderhouden in het Engels. Voor de actuele controller-, service- en background-job-implementatie-details, raadpleeg de [Engelse backend-architectuur](backend-architecture.md).
 
 ## Inleiding
 
@@ -62,7 +62,7 @@ De IntroVox-backend is een standaard Nextcloud-PHP-app met:
 
 ## Voor de complete referentie
 
-Zie [backend-architecture.en.md](backend-architecture.en.md) voor:
+Zie [backend-architecture.en.md](backend-architecture.md) voor:
 
 - Per-controller-method-handtekeningen
 - Service-methode-details en HTTP-call-patterns

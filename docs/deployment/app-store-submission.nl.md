@@ -1,6 +1,6 @@
 # App-Store-publicatie
 
-> **Let op:** dit is een ontwikkelaars-document voor het publiceren van IntroVox-releases naar de Nextcloud-App-Store. Het wordt onderhouden in het Engels. Zie de [Engelse App-Store-publicatie-gids](app-store-submission.en.md) voor de volledige checklist en tooling-details.
+> **Let op:** dit is een ontwikkelaars-document voor het publiceren van IntroVox-releases naar de Nextcloud-App-Store. Het wordt onderhouden in het Engels. Zie de [Engelse App-Store-publicatie-gids](app-store-submission.md) voor de volledige checklist en tooling-details.
 
 ## Inleiding
 
@@ -21,7 +21,7 @@ De Nextcloud-App-Store distribueert IntroVox naar duizenden Nextcloud-installati
 
 ## Voor de complete checklist
 
-Zie [app-store-submission.en.md](app-store-submission.en.md) voor:
+Zie [app-store-submission.en.md](app-store-submission.md) voor:
 
 - Tarball-bestandsstructuur en -uitsluitingen
 - `openssl dgst -sha512 -sign`-handtekening-commando

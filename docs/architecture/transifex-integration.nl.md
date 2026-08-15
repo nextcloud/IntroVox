@@ -1,6 +1,6 @@
 # Transifex-integratie
 
-> **Let op:** de complete Transifex-integratie-documentatie is uitvoerig technisch en wordt onderhouden in het Engels. Voor de actuele bestand-conventies, sync-bot-details en code-voorbeelden, raadpleeg de [Engelse Transifex-integratie](transifex-integration.en.md).
+> **Let op:** de complete Transifex-integratie-documentatie is uitvoerig technisch en wordt onderhouden in het Engels. Voor de actuele bestand-conventies, sync-bot-details en code-voorbeelden, raadpleeg de [Engelse Transifex-integratie](transifex-integration.md).
 
 ## Inleiding
 
@@ -54,7 +54,7 @@ Deze bestanden zijn aanwezig in de IntroVox-repository en configureren Transifex
 
 ## Voor de complete referentie
 
-Zie [transifex-integration.en.md](transifex-integration.en.md) voor:
+Zie [transifex-integration.en.md](transifex-integration.md) voor:
 
 - Volledige `.tx/config`-syntax en resource-mapping
 - Python regenerate-script (`regenerate_js_translations.py`)

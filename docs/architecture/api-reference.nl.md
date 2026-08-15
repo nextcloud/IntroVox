@@ -1,6 +1,6 @@
 # API-referentie
 
-> **Let op:** de complete API-referentie wordt onderhouden in het Engels. Voor de actuele endpoint-specificatie, request-/response-schema's en code-voorbeelden, raadpleeg de [Engelse API-referentie](api-reference.en.md).
+> **Let op:** de complete API-referentie wordt onderhouden in het Engels. Voor de actuele endpoint-specificatie, request-/response-schema's en code-voorbeelden, raadpleeg de [Engelse API-referentie](api-reference.md).
 
 ## Inleiding
 
@@ -30,7 +30,7 @@ Endpoints vereisen een actieve Nextcloud-sessie of een app-wachtwoord. Admin-end
 
 ## Voor de complete referentie
 
-Zie [api-reference.en.md](api-reference.en.md) voor:
+Zie [api-reference.md](api-reference.md) voor:
 
 - Volledige request-/response-schema's per endpoint
 - HTTP-statuscodes en error-formaat
