@@ -402,7 +402,7 @@ cp -r appinfo lib l10n templates css img js "$TEMP_DIR/introvox/" && \
 cp CHANGELOG.md LICENSE README.md "$TEMP_DIR/introvox/" && \
 cd "$TEMP_DIR" && \
 tar -czf introvox-X.Y.Z.tar.gz introvox && \
-mv introvox-X.Y.Z.tar.gz /Users/rikdekker/Documents/Development/IntroVox/ && \
+mv introvox-X.Y.Z.tar.gz /Users/rikdekker/Documents/Development/voxcloud-apps/introvox/ && \
 rm -rf "$TEMP_DIR"
 ```
 
