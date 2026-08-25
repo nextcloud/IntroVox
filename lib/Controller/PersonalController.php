@@ -6,6 +6,8 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IUserSession;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 
 class PersonalController extends Controller {
     protected $config;
@@ -26,9 +28,9 @@ class PersonalController extends Controller {
 
     /**
      * Get personal wizard settings
-     * @NoAdminRequired
-     * @NoCSRFRequired
      */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function getSettings(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {
@@ -48,8 +50,8 @@ class PersonalController extends Controller {
 
     /**
      * Save personal wizard settings
-     * @NoAdminRequired
      */
+    #[NoAdminRequired]
     public function saveSettings(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {

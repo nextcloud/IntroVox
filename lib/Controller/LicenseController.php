@@ -47,8 +47,8 @@ class LicenseController extends Controller {
 
     /**
      * Get license statistics
-     * @NoCSRFRequired
      */
+#[NoCSRFRequired]
     public function getStats(): DataResponse {
         if (!$this->isAdmin()) {
             return $this->forbidden();

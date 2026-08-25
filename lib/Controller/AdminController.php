@@ -13,6 +13,7 @@ use OCP\IUserSession;
 use OCP\IGroupManager;
 use OCA\IntroVox\Service\DefaultStepsService;
 use OCA\IntroVox\Service\TelemetryService;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 
 class AdminController extends Controller {
     protected $config;
@@ -154,8 +155,8 @@ class AdminController extends Controller {
      * override" picker so admins aren't limited to the small set of languages
      * IntroVox happens to ship a translation file for. Deduplicated by base
      * code (e.g. en_GB merged with en) and sorted by display name.
-     * @NoCSRFRequired
      */
+    #[NoCSRFRequired]
     public function getAvailableLanguagesWithMetadata(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
 
@@ -184,8 +185,8 @@ class AdminController extends Controller {
     /**
      * List languages that currently have an admin-authored override row.
      * English is always included so the Steps editor has at least one entry.
-     * @NoCSRFRequired
      */
+    #[NoCSRFRequired]
     public function listOverrides(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
 
@@ -226,9 +227,9 @@ class AdminController extends Controller {
 
     /**
      * Get all wizard steps for a specific language
-     * @NoCSRFRequired
      * @param string $lang Language code
      */
+    #[NoCSRFRequired]
     public function getSteps(string $lang = 'en'): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
@@ -458,8 +459,8 @@ class AdminController extends Controller {
 
     /**
      * Get global settings
-     * @NoCSRFRequired
      */
+    #[NoCSRFRequired]
     public function getSettings(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
@@ -643,8 +644,8 @@ class AdminController extends Controller {
 
     /**
      * Get all available groups for group visibility selection
-     * @NoCSRFRequired
      */
+    #[NoCSRFRequired]
     public function getGroups(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {
@@ -670,8 +671,8 @@ class AdminController extends Controller {
 
     /**
      * Get statistics for admin panel
-     * @NoCSRFRequired
      */
+    #[NoCSRFRequired]
     public function getStatistics(): JSONResponse {
         if ($forbidden = $this->requireAdmin()) return $forbidden;
         try {

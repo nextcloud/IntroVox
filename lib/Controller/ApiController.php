@@ -11,6 +11,9 @@ use OCP\IGroupManager;
 use OCP\IUserSession;
 use OCA\IntroVox\Service\DefaultStepsService;
 use OCA\IntroVox\Service\TelemetryService;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\PublicPage;
 
 class ApiController extends Controller {
     protected $config;
@@ -46,10 +49,10 @@ class ApiController extends Controller {
 
     /**
      * Get wizard steps for frontend based on user's language
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
      */
+    #[PublicPage]
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function getWizardSteps(): JSONResponse {
         $enabled = $this->config->getAppValue($this->appName, 'wizard_enabled', 'true');
 
@@ -138,9 +141,9 @@ class ApiController extends Controller {
 
     /**
      * Track wizard start event
-     * @NoAdminRequired
-     * @NoCSRFRequired
      */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function trackWizardStart(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {
@@ -159,9 +162,9 @@ class ApiController extends Controller {
 
     /**
      * Track wizard complete event
-     * @NoAdminRequired
-     * @NoCSRFRequired
      */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function trackWizardComplete(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {
@@ -180,9 +183,9 @@ class ApiController extends Controller {
 
     /**
      * Track wizard skip event
-     * @NoAdminRequired
-     * @NoCSRFRequired
      */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function trackWizardSkip(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {
