@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **The tour named a specific Nextcloud version.** The Files step read "On Nextcloud 34 it lives in the apps menu", which was simply wrong on Nextcloud 35. The layout is identical on 34 and 35, so the version number is gone: "You will find it in the apps menu (top left)". The admin hint about selectors lost its version reference too.
+
 - **Telemetry logged an hourly warning that said nothing.** `TelemetryJob: Telemetry report failed` appeared every hour with no reason attached, because both failure paths in `sendReport()` returned silently. The cause turned out to be the license server's rate limit: it accepts one report per instance per hour and answers HTTP 429, while the job runs more often. That expected case is now a debug line instead of a warning, and every *real* failure logs what actually went wrong (status code plus response, or the exception).
 
 - **Telemetry mis-detected Nextcloud Enterprise.** The subscription check read the *Extended Support* add-on rather than the subscription itself, so instances with a plain Enterprise subscription were reported as Community. It now uses `IRegistry::delegateHasValidSubscription()` (public API since NC 17). This only affects the usage figures reported back to VoxCloud; nothing in the app behaves differently.
