@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.7] - 2026-08-25
+
+### Fixed
+- **Nextcloud Enterprise werd nooit herkend.** De telemetrie meldde of de
+  server de betaalde *Extended Support* add-on had, niet of er een
+  Enterprise-abonnement was. `OCP\Util::hasExtendedSupport()` beantwoordt die
+  eerste, smallere vraag: Extended Support zit bóvenop een abonnement, dus een
+  gewone Enterprise-klant zonder die add-on meldde `false` en werd als
+  Community geteld. Over alle apps stond de teller daardoor op 0 van 3887
+  instances, inclusief servers met 10.000 en 367.000 gebruikers.
+
+  IntroVox vraagt het nu rechtstreeks aan
+  `IRegistry::delegateHasValidSubscription()` — publieke API sinds NC 17,
+  dezelfde beschikbaarheid als voorheen — en stuurt dat als
+  `hasValidSubscription`. Nextcloud core doet het net zo: `ServerDevNotice`,
+  `PushService` en `updatenotification` gebruiken allemaal die methode en
+  nergens `hasExtendedSupport()`.
+
+  `hasExtendedSupport` wordt nog steeds meegestuurd, nu als apart signaal voor
+  de add-on zelf.
+
+### Security
+- De oude controle had een gat: `Util::hasExtendedSupport()` valt terug op de
+  systeeminstelling `extendedSupport` als er geen abonnementshandler is, dus
+  een beheerder kon Enterprise-status met de hand aanzetten. `IRegistry`
+  antwoordt alleen `true` bij een echt geregistreerde `ISubscription`.
+
 ## [1.7.6] - 2026-07-07
 
 ### Fixed
