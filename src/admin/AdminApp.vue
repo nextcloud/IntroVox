@@ -379,9 +379,7 @@
     </NcSettingsSection>
 
     <!-- Tab: Support -->
-    <SupportSettings
-      v-if="activeTab === 'support'"
-      @license-changed="reloadLicenseInfo" />
+    <SupportSettings v-if="activeTab === 'support'" />
 
     <div v-if="message" class="message" :class="message.type">
       {{ message.text }}
@@ -1052,8 +1050,6 @@ export default {
       toggleTelemetry,
       sendTelemetryNow,
       formatDate,
-      // License
-      reloadLicenseInfo: loadStatistics,
       t: trans
     }
   }

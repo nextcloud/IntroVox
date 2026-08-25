@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.7] - 2026-08-25
+
+### Changed
+
+- **IntroVox is free, and the Support tab now says so.** The tab offered a subscription key, per-language progress bars ("0 / 10 steps") and a warning that new steps required a subscription. None of that reflected reality — IntroVox is free at every tier and no code path ever blocked a save — so the key field, the progress bars and the limit warning are gone. In their place: what the app is (free, open source, no user limit, no paid features), a pointer to the other VoxCloud apps for Nextcloud, and where to get help. Step counts per language remain visible on the **Steps** tab. Existing installations with a stored subscription key are unaffected; the licensing endpoints still exist and simply have no UI.
+
 ### Fixed
 
 - **Telemetry mis-detected Nextcloud Enterprise.** The subscription check read the *Extended Support* add-on rather than the subscription itself, so instances with a plain Enterprise subscription were reported as Community. It now uses `IRegistry::delegateHasValidSubscription()` (public API since NC 17). This only affects the usage figures reported back to VoxCloud; nothing in the app behaves differently.
