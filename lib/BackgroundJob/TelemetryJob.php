@@ -76,7 +76,11 @@ class TelemetryJob extends TimedJob {
             if ($success) {
                 $this->logger->info('TelemetryJob: Telemetry report sent successfully');
             } else {
-                $this->logger->warning('TelemetryJob: Telemetry report failed');
+                // TelemetryService already logged why, at the level that fits
+                // the cause (debug for an expected rate-limit, warning for a
+                // real problem). Logging a second warning here turned every
+                // skipped run into noise, so this stays at debug.
+                $this->logger->debug('TelemetryJob: Telemetry report not sent this run');
             }
         } catch (\Exception $e) {
             $this->logger->error('TelemetryJob: Exception during telemetry send', [

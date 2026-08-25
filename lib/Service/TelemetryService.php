@@ -116,14 +116,68 @@ class TelemetryService {
                 return true;
             }
 
-            // Silent fail - server may not be ready yet
-            // TODO v1.3: Add proper error logging once server is stable
+            // 429 is expected: the server rate-limits reports per instance. It
+            // means "you already reported recently", not that anything is wrong,
+            // so record the attempt to stop the job retrying on every cron tick.
+            if ($statusCode === 429) {
+                $this->logger->debug('TelemetryService: Rate-limited by server, skipping this run', [
+                    'statusCode' => $statusCode,
+                ]);
+                $this->config->setAppValue(
+                    Application::APP_ID,
+                    'telemetry_last_attempt',
+                    (string)time()
+                );
+
+                return false;
+            }
+
+            $this->logger->warning('TelemetryService: Report rejected by server', [
+                'statusCode' => $statusCode,
+                'body' => substr((string)$response->getBody(), 0, 500),
+            ]);
+
             return false;
         } catch (\Exception $e) {
-            // Silent fail - server may not be available
-            // TODO v1.3: Add proper error logging once server is stable
+            // The HTTP client throws on 4xx/5xx, so the rate-limit lands here
+            // rather than in the status check above.
+            if ($this->isRateLimited($e)) {
+                $this->logger->debug('TelemetryService: Rate-limited by server, skipping this run');
+                $this->config->setAppValue(
+                    Application::APP_ID,
+                    'telemetry_last_attempt',
+                    (string)time()
+                );
+
+                return false;
+            }
+
+            // Network hiccups and an unreachable server are normal for a
+            // best-effort background report, so this stays a warning rather
+            // than an error — but it does say what went wrong.
+            $this->logger->warning('TelemetryService: Could not send report', [
+                'exception' => $e,
+            ]);
+
             return false;
         }
+    }
+
+    /**
+     * Did this request fail because the server rate-limited us?
+     *
+     * The server allows one report per instance per hour and answers 429 after
+     * that. That is the expected steady state, not an error worth logging.
+     */
+    private function isRateLimited(\Exception $e): bool {
+        if (method_exists($e, 'getResponse')) {
+            $response = $e->getResponse();
+            if ($response !== null && $response->getStatusCode() === 429) {
+                return true;
+            }
+        }
+
+        return str_contains($e->getMessage(), '429 Too Many Requests');
     }
 
     /**
