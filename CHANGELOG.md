@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Telemetry mis-detected Nextcloud Enterprise.** The subscription check read the *Extended Support* add-on rather than the subscription itself, so instances with a plain Enterprise subscription were reported as Community. It now uses `IRegistry::delegateHasValidSubscription()` (public API since NC 17). This only affects the usage figures reported back to VoxCloud; nothing in the app behaves differently.
+
 ## [1.7.6] - 2026-07-07
 
 ### Fixed
