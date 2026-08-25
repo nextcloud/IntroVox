@@ -1,13 +1,14 @@
 import { getPWAInstructions } from '../utils/deviceDetection.js'
 import { translate as t } from '@nextcloud/l10n'
 
-// --- NC34 header navigation helpers -----------------------------------------
+// --- Header navigation helpers ----------------------------------------------
 // Nextcloud 34 ("Hub 26 Spring") moved the app navigation behind the "waffle"
-// apps menu and the personal settings behind the account/avatar menu. Those
-// menu items only exist in the DOM once the menu is opened. The helpers below
-// let a tour step open such a menu before it shows and close it again after.
+// apps menu and the personal settings behind the account/avatar menu; 35 keeps
+// that layout (verified on 35.0.0 beta 4). Those menu items only exist in the
+// DOM once the menu is opened. The helpers below let a tour step open such a
+// menu before it shows and close it again after.
 
-// Always-visible header triggers (NC 34). Used both as attach targets and as
+// Always-visible header triggers (NC 34+). Used both as attach targets and as
 // the buttons we click to reveal the hidden menu items.
 const APPS_MENU_TRIGGER = '.app-menu__waffle, [aria-label="Open apps menu"]'
 // NC 34: account menu trigger. NC <=33: the avatar lives under #user-menu.
@@ -117,7 +118,7 @@ function getBaseWizardSteps() {
     {
       id: 'files',
       title: t('introvox', '📁 Files & apps'),
-      text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 it lives in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
+      text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
       // On NC 34 the apps live behind the waffle, so open it first and point at
       // the Files entry inside the menu. On NC <=33 there is no waffle, so this
       // is a no-op and the step highlights the always-visible inline Files icon.

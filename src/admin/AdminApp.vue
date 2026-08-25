@@ -209,7 +209,7 @@
               :placeholder="t('For example: %s', {example: '.app-menu__waffle, .unified-search-input, #user-menu'})"
             />
             <small class="hint">{{ t('Leave empty for a centered step.') }}</small>
-            <small class="hint">{{ t('Tip: on Nextcloud 34 most apps and settings live inside menus (the apps "waffle" top-left, the avatar top-right) and only exist once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search.') }}</small>
+            <small class="hint">{{ t('Tip: most apps and settings live inside menus (the apps "waffle" top-left, the avatar top-right) and only exist in the page once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search.') }}</small>
           </div>
 
           <div class="form-group" v-if="editingData.attachTo">

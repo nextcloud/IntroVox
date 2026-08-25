@@ -49,7 +49,7 @@ class DefaultStepsService {
             [
                 'id' => 'files',
                 'title' => $l->t('📁 Files & apps'),
-                'text' => $l->t('<p>Files is where you view and manage everything you store.</p><p>On Nextcloud 34 it lives in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
+                'text' => $l->t('<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
                 // The client (enrichSteps) overrides this with a richer function attachTo
                 // that opens the NC 34 apps menu and highlights the Files entry inside it.
                 // This string is the fallback when the bundled defaults run: NC 34 waffle
