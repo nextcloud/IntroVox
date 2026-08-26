@@ -1,0 +1,9 @@
+{ "translations": {
+    "Back" : "Atrás",
+    "Done" : "Fecho",
+    "Next" : "Siguiente",
+    "Skip" : "Saltar",
+    "Saving …" : "Guardando…",
+    "Settings saved" : "Guardóse la configuración"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

@@ -1,0 +1,16 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "IntroVox" : "IntroVox",
+    "Questions?" : "Otázky?",
+    "Back" : "Zpět",
+    "Done" : "Dokončeno",
+    "Next" : "Next",
+    "Skip" : "Přeskočit",
+    "Got it" : "Pochopeno",
+    "Saving …" : "Ukládání …",
+    "Settings saved" : "Nastavení uložena",
+    "Save settings" : "Uložit nastavení",
+    "Error saving settings" : "Chyba při ukládání nastavení"
+},
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");
