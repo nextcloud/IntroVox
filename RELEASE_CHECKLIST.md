@@ -37,9 +37,130 @@ Follow this checklist for every release to the Nextcloud App Store.
 - [ ] Ensure `.gitignore` is up-to-date (keys, certificates, .env files)
 - [ ] Verify that sensitive files are NOT in the repository
 - [ ] Run `npm audit` and fix critical vulnerabilities
-- [ ] Check for XSS, SQL injection, and other OWASP vulnerabilities
+- [ ] Werk de OWASP Top 10-gate af (sectie 1a) — vervangt deze regel
 - [ ] Review all new code for security issues
 - [ ] **Check tarball for sensitive data** (see Section 9.1)
+
+---
+
+## 1a. OWASP Top 10 (2025) release gate
+
+Loop deze lijst af bij **elke** release. De checks zijn bewust *triggers*, geen
+pass/fail-gates: een hit betekent "kijk hier met je ogen naar", niet per se een bug.
+Noteer bij een genegeerde hit kort *waarom* in de PR/commit.
+
+Referentie: <https://owasp.org/Top10/2025/> · Cheat Sheets: <https://cheatsheetseries.owasp.org/>
+
+### A01 — Broken Access Control
+
+- [ ] Elke nieuwe/gewijzigde controller-methode heeft een bewuste access-attribute.
+      Geen attribute = admin-only (NC-default). Controleer dat dat ook de bedoeling was:
+  ```bash
+  grep -rn --include='*.php' -B4 'public function' lib/Controller/ \
+    | grep -E '#\[(NoAdminRequired|PublicPage|AuthorizedAdminSetting)\]|public function'
+  ```
+- [ ] Bij elke `#[NoAdminRequired]`: wordt de *ownership* van het object nog apart
+      gecheckt? Ingelogd zijn is geen autorisatie — een user mag niet via een geraden
+      `fileId`/`id` bij andermans data (IDOR).
+- [ ] Bij elke `#[PublicPage]`: is er een token/secret-check, en gebeurt die met
+      `hash_equals()` (niet `===`)?
+- [ ] Share-scope: bij wijzigingen aan share-/permissie-logica, test expliciet als
+      **anonieme** gebruiker én als user *zonder* rechten — niet alleen als eigenaar.
+
+### A02 — Security Misconfiguration
+
+- [ ] Geen debug-/verbose-output in de release-build (zie sectie 1).
+- [ ] Foutmeldingen naar de client lekken geen paden, stacktraces of SQL.
+- [ ] Nieuwe appconfig-defaults zijn *secure by default* (dicht, niet open).
+- [ ] Als de app externe content of iframes rendert: CSP-policy nog passend?
+
+### A03 — Software Supply Chain Failures *(nieuw in 2025, #3)*
+
+- [ ] `npm audit` — kritieke issues opgelost of expliciet verantwoord.
+      Upstream `@nextcloud/*` issues zijn vaak niet fixbaar; noteer dat dan.
+- [ ] Lockfile is gecommit en hoort bij deze release-build.
+- [ ] Nieuwe dependency toegevoegd sinds vorige release? Check even:
+      onderhouden, redelijk gebruikt, en de licentie past.
+  ```bash
+  git diff <vorige-tag>..HEAD -- package.json composer.json
+  ```
+
+### A04 — Cryptographic Failures
+
+- [ ] Alle nieuwe tokens/secrets via `random_bytes()` — nooit `rand()`, `uniqid()` of `md5()`.
+      (`md5()` voor cache-keys/ETags is prima; voor security niet.)
+- [ ] Alle secret-vergelijkingen via `hash_equals()`:
+  ```bash
+  grep -rn --include='*.php' -E '\$(token|secret|key|hash|signature)[A-Za-z]*\s*===' lib/
+  ```
+- [ ] Secrets staan versleuteld (`ICrypto`) opgeslagen, niet plaintext in appconfig.
+
+### A05 — Injection (incl. XSS)
+
+- [ ] **`v-html` zonder zichtbare sanitizer** — elke hit handmatig nalopen:
+  ```bash
+  grep -rn --include='*.vue' 'v-html' src/ \
+    | grep -viE 'sanitiz|dompurify|escapehtml'
+  ```
+  Regel: alles wat een *gebruiker* kan beïnvloeden (bestandsinhoud, paginatekst,
+  veldwaarden, zoek-snippets) moet door DOMPurify of `escapeHtml()` vóór het in
+  `v-html` belandt. Server-side HTML samenstellen en "vertrouwen" telt niet.
+- [ ] Geen string-interpolatie in SQL — altijd query-builder met named parameters:
+  ```bash
+  grep -rn --include='*.php' -E 'executeQuery|executeStatement' lib/ \
+    | grep -E '"[^"]*\$|\x27[^\x27]*\$'
+  ```
+- [ ] Elke `shell_exec`/`proc_open`/`exec` gebruikt `escapeshellarg()` op *elk* argument:
+  ```bash
+  grep -rn --include='*.php' -E 'shell_exec|proc_open|passthru|\bexec\(|\bsystem\(' lib/
+  ```
+
+### A06 — Insecure Design
+
+- [ ] Nieuwe feature met een security-dimensie (sharing, upload, externe API,
+      tokens)? Beschrijf in de PR kort wie wát mag en hoe dat afgedwongen wordt.
+
+### A07 — Authentication Failures
+
+- [ ] Endpoints die een wachtwoord/token accepteren hebben
+      `#[BruteForceProtection]` en `#[AnonRateLimit]`.
+- [ ] Tokens hebben een geldigheidsduur en zijn intrekbaar.
+
+### A08 — Software or Data Integrity Failures
+
+- [ ] Tarball gesigneerd met de juiste key; `.sig` gearchiveerd (zie release-sectie).
+- [ ] Build gemaakt vanaf een schone `npm ci` op het release-commit
+      (appVersion wordt in de bundle gestempeld).
+- [ ] Import-/restore-paden valideren hun input vóór verwerking.
+
+### A09 — Security Logging and Alerting Failures
+
+- [ ] Auth-fouten, permissie-weigeringen en admin-acties worden gelogd via
+      `LoggerInterface` (niet `error_log()`).
+- [ ] Logs bevatten **geen** wachtwoorden, tokens of volledige persoonsgegevens:
+  ```bash
+  grep -rn --include='*.php' -iE 'logger->[a-z]+\(.*(password|token|secret|apikey)' lib/
+  ```
+
+### A10 — Mishandling of Exceptional Conditions *(nieuw in 2025)*
+
+- [ ] Geen lege `catch {}` die een fout stil opslokt — zeker niet rond een
+      permissie- of validatie-check:
+  ```bash
+  grep -rn --include='*.php' -A2 'catch (' lib/ | grep -B1 '^\s*}' | head -20
+  ```
+- [ ] Faalt de code *dicht*? Bij een exception in een access-check moet toegang
+      geweigerd worden, niet toegestaan.
+- [ ] Een mislukte upload/import laat geen half-verwerkte staat achter.
+
+### IntroVox-specifiek
+
+- [ ] **`step.text` in de admin-preview** wordt via `v-html` gerenderd
+      (`src/admin/AdminApp.vue`). De inhoud komt uit appconfig en is dus
+      admin-controlled — acceptabel, maar: als tour-content ooit door
+      niet-admins bewerkbaar wordt, moet hier eerst een sanitizer in.
+- [ ] Wizard-content uit `wizard_steps_<lang>` appconfig blijft server-side
+      gevalideerd (geen scripts/handlers in de opgeslagen HTML).
 
 ---
 
