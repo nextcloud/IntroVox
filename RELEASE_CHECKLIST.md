@@ -229,13 +229,63 @@ Keep only languages that gained real content this sync (judge by string count, n
 
 The Transifex pipeline is automatic but lagged: the bot extracts new source strings **after** you push, translators translate them, and only a *later* `tx pull` brings them back. So any string you just added (e.g. 1.7.4's "📁 Files & apps", "⚙️ Your account & settings", the admin selector hint) ships **in English** this release and picks up translations in a future one. This is expected — don't block a release on it, and don't treat new-string English fallback as the "unexpected fallback" the spot-check below warns about.
 
+### ℹ️ Note — a *point release right after* a feature release is worth delaying
+
+The note above says not to block a release on untranslated new strings. That still
+holds for the feature release itself. It does **not** hold for a point release cut a
+few days later, when the previous release's strings are being translated *right now*.
+
+**How to tell the difference.** Compare `last_translation_update` per language against
+the moment the bot pushed the source strings (`datetime_modified` on the resource).
+Languages still sitting on the bot's timestamp have had no human near them yet:
+
+```bash
+TOKEN=$(grep '^token' ~/.transifexrc | head -1 | cut -d= -f2 | tr -d ' ')
+# note the URL-encoded %5B/%5D and curl -g: literal [ ] make curl fail with a JSON parse error
+curl -sg -H "Authorization: Bearer $TOKEN" \
+  "https://rest.api.transifex.com/resource_language_stats?filter%5Bproject%5D=o:nextcloud:p:nextcloud&filter%5Bresource%5D=o:nextcloud:p:nextcloud:r:introvox" \
+  | python3 -c "
+import json,sys
+for i in json.load(sys.stdin)['data']:
+    a=i['attributes']; tot=a['total_strings']; t=a['translated_strings']
+    if tot and 100*t/tot>=25:
+        print(f\"{i['id'].split(':l:')[-1]:8} {t:3}/{tot:<3} {a.get('last_translation_update')}\")
+" | sort -k3 -r
+```
+
+**Worked example — 1.7.8, 2026-08-26.** 1.7.7 shipped the new Support tab; the bot put
+its source strings on Transifex at 01:55 that night. By midday `de`, `de_DE`, `et_EE`
+and `pt_BR` had moved (translators active that morning), but **13 languages were still
+on the 01:55 bot timestamp** — nobody had started. The same 7 strings were missing
+across all of them, all from that new Support tab: "About IntroVox", "Do you value this
+app?", "See the other apps", and the free/open-source explanation.
+
+So the copy written to explain that IntroVox is free would have shipped in English to
+exactly the admins who do not read English. Nothing forced the release — the fix in
+1.7.8 was a telemetry measurement problem on *our* side, invisible to users — so we
+waited rather than cutting it that day.
+
+**Rule of thumb.** One day is too short: the active teams pick new strings up within
+hours, but the quieter languages need a weekend before anyone looks. Wait for the
+start of the next week, re-run `tx pull --minimum-perc=25`, and cut then. Languages
+that were already far behind (1.7.8: `zh_CN` at 53%, `lt_LT` at 40%) will not catch up
+in that window — do not wait on those.
+
 ### Checklist
 
+- [ ] **Point release within a week of a feature release?** Check whether the previous
+      release's strings are still being translated before cutting (see the note above) —
+      if most languages still sit on the bot's timestamp, wait for the start of next week.
 - [ ] **Pull the latest translations** and regenerate `l10n/`:
       ```bash
       export TX_TOKEN="1/xxxxxxxx"        # Transifex token, read-access to nextcloud:introvox
       ./scripts/sync-translations.sh      # = tx pull -a --minimum-perc=1  +  python3 scripts/po2l10n.py
       ```
+      Prefer `tx pull -a --minimum-perc=25` followed by `python3 scripts/po2l10n.py`: 25 is what
+      the NC bot itself uses (`docker-ci/translations/handleAppsTranslations.sh`), so Transifex
+      applies the threshold and Gotcha 2's near-empty triage disappears. Clear `translationfiles/`
+      first — `tx pull` skips languages whose local `.po` is newer, and `po2l10n.py` globs every
+      `.po` present, so stale files from an earlier pull silently resurrect dropped languages.
 - [ ] Validate JSON syntax in all translation files: `for f in l10n/*.json; do python3 -m json.tool "$f" > /dev/null && echo "OK: $f" || echo "FAIL: $f"; done`
 - [ ] Reconcile with the GitHub bot (Gotcha 1): `git fetch github main` then merge `-X ours`, resolving near-empty `modify/delete` conflicts per Gotcha 2
 - [ ] Confirm the core languages survived the merge: `for l in de nl; do python3 -c "import json;print('$l',len(json.load(open('l10n/$l.json'))['translations']))"; done` (de should be ~110, nl ~105)
