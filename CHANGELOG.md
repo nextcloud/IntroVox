@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **The instance identifier could change between the cron job and a web request.** Without `overwrite.cli.url` it was derived from the current request host, so the licence server could see one server as two and stop updating its user count. It is now derived from a request-independent source. Instances affected by this migrate themselves at the next report; nothing needs to be reconfigured.
-- **Licence reports did not say how the user count was taken,** so the licence server treated them as unverified. The count itself was already correct. The report now includes the counting method.
+- **Licence reports did not say how the user count was taken,** so the licence server treated them as unverified. The count itself was already correct. The report now includes the counting method and the number of disabled accounts.
 
 ## [1.7.7] - 2026-08-26
 

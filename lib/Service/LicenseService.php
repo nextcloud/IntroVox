@@ -494,8 +494,13 @@ class LicenseService {
      * Users that exist but are disabled. They count towards the named-user
      * total, because disabling is how an account is retired without deleting
      * its data — the seat is still occupied.
+     *
+     * Returns null rather than 0 on failure: the licence server distinguishes
+     * "this app does not report the figure" from "measured, nobody disabled",
+     * and a swallowed error must not read as the latter. Matches
+     * TelemetryService::getDisabledUserCount(), which reports the same figure.
      */
-    private function countDisabledUsers(): int {
+    private function countDisabledUsers(): ?int {
         try {
             $count = 0;
             $this->userManager->callForAllUsers(function ($user) use (&$count) {
@@ -508,7 +513,7 @@ class LicenseService {
             $this->logger->warning('LicenseService: Failed to count disabled users', [
                 'error' => $e->getMessage()
             ]);
-            return 0;
+            return null;
         }
     }
 
