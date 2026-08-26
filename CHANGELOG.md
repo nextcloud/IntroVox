@@ -7,32 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.7.7] - 2026-08-25
+## [1.7.7] - 2026-08-26
+
+### Added
+
+- **Nextcloud 35 support.** `max-version` raised from 34 to 35 so the app installs on Nextcloud 35. Nextcloud 32 remains the minimum — 32, 33 and 34 are all still maintained, and PHP stays at 8.1 because Nextcloud 32 runs on it (Nextcloud 35 enforces PHP 8.3 itself).
+
+### Changed
+
+- **Controller access rules now use PHP attributes.** All 19 PHPDoc annotations (`@NoAdminRequired`, `@NoCSRFRequired`, `@PublicPage`) became `#[NoAdminRequired]`, `#[NoCSRFRequired]` and `#[PublicPage]`. Nextcloud 35 still reads the old annotations, so this changes no behaviour today — it is the form that will keep working. Verified per method that every endpoint kept exactly the same access rules.
+
+- **IntroVox is free, and the Support tab now says so.** The tab offered a subscription key, per-language progress bars ("0 / 10 steps") and a warning that new steps required a subscription. None of that reflected reality — IntroVox is free at every tier and no code path ever blocked a save — so the key field, the progress bars and the limit warning are gone. In their place: what the app is (free, open source, no user limit, no paid features), a pointer to the other VoxCloud apps for Nextcloud, and where to get help. Step counts per language remain visible on the **Steps** tab. Existing installations with a stored subscription key are unaffected; the licensing endpoints still exist and simply have no UI.
 
 ### Fixed
-- **Nextcloud Enterprise werd nooit herkend.** De telemetrie meldde of de
-  server de betaalde *Extended Support* add-on had, niet of er een
-  Enterprise-abonnement was. `OCP\Util::hasExtendedSupport()` beantwoordt die
-  eerste, smallere vraag: Extended Support zit bóvenop een abonnement, dus een
-  gewone Enterprise-klant zonder die add-on meldde `false` en werd als
-  Community geteld. Over alle apps stond de teller daardoor op 0 van 3887
-  instances, inclusief servers met 10.000 en 367.000 gebruikers.
 
-  IntroVox vraagt het nu rechtstreeks aan
-  `IRegistry::delegateHasValidSubscription()` — publieke API sinds NC 17,
-  dezelfde beschikbaarheid als voorheen — en stuurt dat als
-  `hasValidSubscription`. Nextcloud core doet het net zo: `ServerDevNotice`,
-  `PushService` en `updatenotification` gebruiken allemaal die methode en
-  nergens `hasExtendedSupport()`.
+- **The tour named a specific Nextcloud version.** The Files step read "On Nextcloud 34 it lives in the apps menu", which was simply wrong on Nextcloud 35. The layout is identical on 34 and 35, so the version number is gone: "You will find it in the apps menu (top left)". The admin hint about selectors lost its version reference too.
 
-  `hasExtendedSupport` wordt nog steeds meegestuurd, nu als apart signaal voor
-  de add-on zelf.
+- **Telemetry logged an hourly warning that said nothing.** `TelemetryJob: Telemetry report failed` appeared every hour with no reason attached, because both failure paths in `sendReport()` returned silently. The cause turned out to be the license server's rate limit: it accepts one report per instance per hour and answers HTTP 429, while the job runs more often. That expected case is now a debug line instead of a warning, and every *real* failure logs what actually went wrong (status code plus response, or the exception).
 
-### Security
-- De oude controle had een gat: `Util::hasExtendedSupport()` valt terug op de
-  systeeminstelling `extendedSupport` als er geen abonnementshandler is, dus
-  een beheerder kon Enterprise-status met de hand aanzetten. `IRegistry`
-  antwoordt alleen `true` bij een echt geregistreerde `ISubscription`.
+- **Telemetry mis-detected Nextcloud Enterprise.** The subscription check read the *Extended Support* add-on rather than the subscription itself, so instances with a plain Enterprise subscription were reported as Community. It now uses `IRegistry::delegateHasValidSubscription()` (public API since NC 17). This only affects the usage figures reported back to VoxCloud; nothing in the app behaves differently.
 
 ## [1.7.6] - 2026-07-07
 
