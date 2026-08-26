@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Disabled accounts are now reported in telemetry.** Disabling is how Nextcloud offboards someone while keeping their file ownership, so those accounts still count towards the named-user total. Reporting them separately makes the difference visible when usage is compared against a contract — otherwise a customer who has shrunk looks like one who never did. IntraVox and FormVox already sent this; the count is unreported rather than zero when it cannot be taken, so a failure is never mistaken for "nobody disabled". Reporting only, nothing in the app behaves differently.
 
+### Fixed
+
+- **The instance identifier could change between the cron job and a web request.** Without `overwrite.cli.url` it was derived from the current request host, so the licence server could see one server as two and stop updating its user count. It is now derived from a request-independent source. Instances affected by this migrate themselves at the next report; nothing needs to be reconfigured.
+- **Licence reports did not say how the user count was taken,** so the licence server treated them as unverified. The count itself was already correct. The report now includes the counting method and the number of disabled accounts.
+
 ## [1.7.7] - 2026-08-26
 
 ### Added

@@ -18,6 +18,13 @@ class LicenseService {
     private const FREE_LIMIT = 10; // Steps per language in free version
     private const DEFAULT_LICENSE_SERVER_URL = 'https://licenses.voxcloud.nl';
 
+    /**
+     * How the user count is taken, reported alongside it so the licence server
+     * can keep readings from releases that counted unreliably out of the
+     * averages a contract is measured against.
+     */
+    public const COUNT_METHOD = 'callForAllUsers';
+
     private IConfig $config;
     private IClientService $clientService;
     private IUserManager $userManager;
@@ -68,10 +75,69 @@ class LicenseService {
         $this->config->deleteAppValue(Application::APP_ID, 'license_info');
     }
 
+    /**
+     * SHA-256 of the instance URL, so the licence server never sees the URL
+     * itself.
+     *
+     * The source must be request-context-independent: the daily cron job and an
+     * admin web request both compute this hash, and if they disagreed the server
+     * would see two instances for one customer and freeze the seat count.
+     */
     public function getInstanceUrlHash(): string {
-        $instanceUrl = $this->getInstanceUrl();
-        $normalizedUrl = strtolower(rtrim($instanceUrl, '/'));
-        return hash('sha256', $normalizedUrl);
+        return hash('sha256', $this->normalizedInstanceUrl());
+    }
+
+    /**
+     * Request-independent instance URL, lower-cased and without a trailing
+     * slash. overwrite.cli.url wins; otherwise trusted_domains[0] is promoted
+     * to https:// so it is a full URL rather than a bare hostname.
+     *
+     * Deliberately NOT getInstanceUrl(): that falls back to
+     * getAbsoluteURL(), whose result derives from the current request host and
+     * so differs between a web request and the cron job.
+     */
+    private function normalizedInstanceUrl(): string {
+        $url = $this->config->getSystemValue('overwrite.cli.url', '');
+        if (empty($url)) {
+            $domain = $this->config->getSystemValue('trusted_domains', ['localhost'])[0] ?? 'localhost';
+            // Promote a bare hostname to a full URL; leave an already-qualified
+            // value (someone put a scheme in trusted_domains) untouched.
+            $url = preg_match('#^https?://#i', $domain) ? $domain : 'https://' . $domain;
+        }
+        return strtolower(rtrim($url, '/'));
+    }
+
+    /**
+     * The hash this app used to send before the change above, so the server can
+     * recognise the instance across it instead of treating it as a second one —
+     * which would be refused, freezing the seat count at its pre-update value.
+     *
+     * Returns '' when overwrite.cli.url is set (the hash never changed for those
+     * instances) or when the legacy hash equals the current one. Otherwise it
+     * keeps returning the legacy hash: we have no local signal that the server
+     * has adopted the new one, so we keep sending it — the server is idempotent
+     * and ignores it once adopted.
+     */
+    public function getPreviousInstanceUrlHash(): string {
+        if (!empty($this->config->getSystemValue('overwrite.cli.url', ''))) {
+            return '';
+        }
+
+        $legacy = strtolower(rtrim($this->getInstanceUrl(), '/'));
+        $hash = hash('sha256', $legacy);
+
+        return $hash === $this->getInstanceUrlHash() ? '' : $hash;
+    }
+
+    /**
+     * Includes previousInstanceUrlHash while the legacy hash differs from the
+     * current one, so the server can adopt the new hash. The field is omitted
+     * for instances whose hash never changed (overwrite.cli.url set).
+     */
+    private function hashMigrationPayload(): array {
+        $previous = $this->getPreviousInstanceUrlHash();
+
+        return $previous === '' ? [] : ['previousInstanceUrlHash' => $previous];
     }
 
     public function getInstanceUrl(): string {
@@ -112,7 +178,7 @@ class LicenseService {
                     'licenseKey' => $licenseKey,
                     'instanceUrlHash' => $this->getInstanceUrlHash(),
                     'appType' => 'introvox'
-                ],
+                ] + $this->hashMigrationPayload(),
                 'timeout' => 10,
                 'headers' => [
                     'User-Agent' => 'IntroVox/' . $this->getAppVersion(),
@@ -204,8 +270,13 @@ class LicenseService {
                     'appType' => 'introvox',
                     'currentPages' => $totalSteps,
                     'pageCountsPerLanguage' => $stepCounts,
-                    'currentUsers' => $userCount
-                ],
+                    'currentUsers' => $userCount,
+                    'disabledUsers' => $this->countDisabledUsers(),
+                    // Tells the server how the count was taken, so readings
+                    // from releases that counted unreliably stay out of the
+                    // averages a contract is measured against.
+                    'countMethod' => self::COUNT_METHOD,
+                ] + $this->hashMigrationPayload(),
                 'timeout' => 15,
                 'headers' => [
                     'User-Agent' => 'IntroVox/' . $this->getAppVersion(),
@@ -308,7 +379,7 @@ class LicenseService {
                     'instanceUrlHash' => $this->getInstanceUrlHash(),
                     'language' => $language,
                     'pageCountsPerLanguage' => $stepCounts
-                ],
+                ] + $this->hashMigrationPayload(),
                 'timeout' => 10,
                 'headers' => [
                     'User-Agent' => 'IntroVox/' . $this->getAppVersion(),
@@ -417,6 +488,33 @@ class LicenseService {
             }
         }
         return $codes;
+    }
+
+    /**
+     * Users that exist but are disabled. They count towards the named-user
+     * total, because disabling is how an account is retired without deleting
+     * its data — the seat is still occupied.
+     *
+     * Returns null rather than 0 on failure: the licence server distinguishes
+     * "this app does not report the figure" from "measured, nobody disabled",
+     * and a swallowed error must not read as the latter. Matches
+     * TelemetryService::getDisabledUserCount(), which reports the same figure.
+     */
+    private function countDisabledUsers(): ?int {
+        try {
+            $count = 0;
+            $this->userManager->callForAllUsers(function ($user) use (&$count) {
+                if (!$user->isEnabled()) {
+                    $count++;
+                }
+            });
+            return $count;
+        } catch (\Throwable $e) {
+            $this->logger->warning('LicenseService: Failed to count disabled users', [
+                'error' => $e->getMessage()
+            ]);
+            return null;
+        }
     }
 
     private function getUserCount(): int {
