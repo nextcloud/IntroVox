@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Disabled accounts are now reported in telemetry.** Disabling is how Nextcloud offboards someone while keeping their file ownership, so those accounts still count towards the named-user total. Reporting them separately makes the difference visible when usage is compared against a contract — otherwise a customer who has shrunk looks like one who never did. IntraVox and FormVox already sent this; the count is unreported rather than zero when it cannot be taken, so a failure is never mistaken for "nobody disabled". Reporting only, nothing in the app behaves differently.
+
 ## [1.7.7] - 2026-08-26
 
 ### Added
