@@ -1,0 +1,14 @@
+{ "translations": {
+    "Need help?" : "도움이 필요한가요?",
+    "Report an issue" : "문제점 보고",
+    "Source code" : "소스 코드",
+    "Back" : "뒤로",
+    "Done" : "완료",
+    "Next" : "다음",
+    "Skip" : "건너뛰기",
+    "Got it" : "알았음",
+    "Saving …" : "저장중 …",
+    "Settings saved" : "설정이 저장되었습니다",
+    "Save settings" : "설정 저장"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

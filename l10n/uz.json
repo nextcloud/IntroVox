@@ -1,0 +1,11 @@
+{ "translations": {
+    "Need help?" : "Yordam kerakmi?",
+    "Source code" : "Manba kodi",
+    "Back" : "Orqaga",
+    "Done" : "Bajarildi",
+    "Next" : "Keyingisi",
+    "Skip" : "O'tkazib yuborish",
+    "Saving …" : "Saqlanmoqda...",
+    "Settings saved" : "Sozlamalar saqlandi"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

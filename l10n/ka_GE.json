@@ -1,0 +1,9 @@
+{ "translations": {
+    "Need help?" : "გესაჭიროებათ დახმარება?",
+    "Source code" : "კოდი",
+    "Done" : "დასრულდა",
+    "Skip" : "გამოტოვება",
+    "Settings saved" : "პარამეტრები შენახულია",
+    "Save settings" : "პარამეტრების შენახვა"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
+}
