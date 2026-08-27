@@ -11,8 +11,15 @@ import { translate as t } from '@nextcloud/l10n'
 // Always-visible header triggers (NC 34+). Used both as attach targets and as
 // the buttons we click to reveal the hidden menu items.
 const APPS_MENU_TRIGGER = '.app-menu__waffle, [aria-label="Open apps menu"]'
-// NC 34: account menu trigger. NC <=33: the avatar lives under #user-menu.
-const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #user-menu .header-menu__trigger, #user-menu'
+// Account/avatar menu trigger. NC 34+ wraps it in .header-menu__trigger; that
+// class does not exist on NC <=33 (verified against the core bundle of 32.0.7
+// and 33.0.1), where the markup is #user-menu.account-menu > button >
+// .account-menu__avatar. The avatar class is the same on 32-35 and, unlike an
+// aria-label (which core renders through t('core', ...) and therefore differs
+// per language), it is language-independent — so it comes before any
+// label-based match. #user-menu stays last as a wrapper-level fallback: it
+// resolves, but highlights the whole container instead of the avatar.
+const SETTINGS_MENU_TRIGGER = '.header-menu.account-menu .header-menu__trigger, #user-menu .header-menu__trigger, #user-menu .account-menu__avatar, #user-menu button, [aria-label="Settings menu"], #user-menu'
 // Items inside the opened waffle menu (NC 34): anchors with per-app hrefs.
 const APPS_MENU_ITEM = '[role="menu"] a.app-item'
 // The opened waffle menu panel (the white popover box). Used as the attach
@@ -120,8 +127,10 @@ function getBaseWizardSteps() {
       title: t('introvox', '📁 Files & apps'),
       text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
       // On NC 34 the apps live behind the waffle, so open it first and point at
-      // the Files entry inside the menu. On NC <=33 there is no waffle, so this
-      // is a no-op and the step highlights the always-visible inline Files icon.
+      // the Files entry inside the menu. On NC <=33 there is no waffle at all
+      // (the apps sit in an always-visible inline bar), so openMenuAndWait finds
+      // no trigger, resolves immediately without clicking anything, and the step
+      // highlights the inline Files entry instead.
       beforeShowPromise: () => openMenuAndWait(APPS_MENU_TRIGGER, APPS_MENU_ITEM),
       attachTo: {
         // NC 34: the open menu panel (tooltip sits to its right). NC <=33: the

@@ -79,8 +79,13 @@ class DefaultStepsService {
                 'id' => 'settings',
                 'title' => $l->t('⚙️ Your account & settings'),
                 'text' => $l->t('<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>'),
-                // The account/avatar menu trigger is always visible on every version.
-                'attachTo' => '.header-menu.account-menu .header-menu__trigger, [aria-label="Settings menu"], #user-menu .header-menu__trigger, #user-menu, #settings .header-menu__trigger, #expand',
+                // The account/avatar menu trigger is always visible on every version,
+                // but its markup differs: NC 34+ wraps it in .header-menu__trigger,
+                // which does not exist on NC <=33 (verified against 32.0.7/33.0.1),
+                // where it is #user-menu.account-menu > button > .account-menu__avatar.
+                // The avatar class is language-independent, unlike an aria-label
+                // (rendered through the translation layer), so it precedes the label.
+                'attachTo' => '.header-menu.account-menu .header-menu__trigger, #user-menu .header-menu__trigger, #user-menu .account-menu__avatar, #user-menu button, [aria-label="Settings menu"], #user-menu, #settings .header-menu__trigger, #expand',
                 'position' => 'bottom',
                 'enabled' => true,
                 'visibleToGroups' => [],
