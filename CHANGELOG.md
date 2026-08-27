@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.8] - 2026-08-27
+
 ### Added
 
 - **More translated strings** in Danish, German (both variants), Estonian and Brazilian Portuguese — mostly the Support tab introduced in 1.7.7.
 
 ### Fixed
+
+- **A customized tour showed default steps the admin had deleted.** An admin who removed default steps from their tour — say `search`, `settings` and `intro` — still saw them appear in the running tour, in the bundled default wording rather than their own. The steps were re-inserted in the browser: `enrichSteps()` re-attached the behavioral fields the API cannot send (function selectors, `beforeShowPromise`, `when`) and, while doing so, also injected every bundled default step whose id was absent from the API response. Because they were spliced in after the step preceding them in the *default* order, they surfaced as a block in the middle of the tour, with default copy and default tone-of-voice — an informal address in languages that distinguish it. The API was right all along: it returned only the configured steps, with `useDefault: false`. The injection is gone; the server is now solely authoritative over which steps exist and in what order, and `enrichSteps()` only restores behaviors onto steps the server actually sent. Removing a default step is now what it looks like. Introduced in 1.7.4; 1.7.4 through 1.7.7 are affected.
 
 - **Usage reporting could count one server as two,** which left the figures on the licence server stale. Affected instances correct themselves at the next report; nothing needs to be reconfigured. Reporting only — nothing in the app behaves differently.
 

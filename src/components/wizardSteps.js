@@ -333,10 +333,15 @@ const BEHAVIORAL_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'showOn', 'c
 /**
  * Layer the client-side behavioral fields (function attachTo, beforeShowPromise,
  * when, showOn, …) of the bundled default steps onto server-provided steps,
- * keyed by id. The server stays authoritative for title/text/order/enabled;
- * we only restore behaviors that JSON can't carry. Any base step that has no
- * server twin is injected after its anchor (none today, but kept as a safety
- * net so client-only steps keep working without a server change).
+ * keyed by id. The server stays authoritative for which steps exist, their
+ * order and their copy; we only restore behaviors that JSON can't carry.
+ *
+ * A base step with no server twin is deliberately NOT added. The server owns
+ * the step list: when an admin removes a default step from their tour, the API
+ * stops returning it, and re-adding it here would resurrect a step they chose
+ * to delete — in the bundled default wording, ignoring their customized copy.
+ * The bundled set exists only as an offline fallback (see getWizardSteps) and
+ * as the source of the behavioral fields below.
  *
  * Server steps carry attachTo as a plain string selector. When a matching base
  * step exists, its richer function attachTo wins; otherwise the string is kept
@@ -346,11 +351,9 @@ const BEHAVIORAL_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'showOn', 'c
  * @return {Array<object>} Enriched steps
  */
 export function enrichSteps(serverSteps) {
-  const base = getBaseWizardSteps()
-  const baseById = new Map(base.map((s) => [s.id, s]))
-  const serverIds = new Set(serverSteps.map((s) => s.id))
+  const baseById = new Map(getBaseWizardSteps().map((s) => [s.id, s]))
 
-  const enriched = serverSteps.map((step) => {
+  return serverSteps.map((step) => {
     const baseStep = baseById.get(step.id)
     if (!baseStep) {
       return step
@@ -363,23 +366,6 @@ export function enrichSteps(serverSteps) {
     }
     return merged
   })
-
-  // Inject client-only base steps (no server twin) right after the step that
-  // precedes them in the base order, so ordering stays intuitive.
-  base.forEach((baseStep, index) => {
-    if (serverIds.has(baseStep.id)) {
-      return
-    }
-    const anchorId = index > 0 ? base[index - 1].id : null
-    const at = anchorId ? enriched.findIndex((s) => s.id === anchorId) : -1
-    if (at >= 0) {
-      enriched.splice(at + 1, 0, baseStep)
-    } else {
-      enriched.push(baseStep)
-    }
-  })
-
-  return enriched
 }
 
 export async function loadCustomSteps() {
