@@ -1,0 +1,23 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "👋 Welcome to Nextcloud" : "👋 歡迎使用 Nextcloud",
+    "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>歡迎您的到來！這段簡短的導覽將幫助您快速上手。</p><p>您可以隨時關閉此精靈，並稍後再次開啟。</p>",
+    "🔍 Search" : "搜尋",
+    "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>" : "<p>透過搜尋列，您可以快速找到檔案、聯絡人等內容。</p><p>只需輸入您要搜尋的內容，然後按下 Enter 鍵。</p>",
+    "🎯 Getting started" : "🎯 開始使用",
+    "<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>" : "<p><strong>Nextcloud 是您的個人雲端儲存空間！</strong></p><p>您可以：</p><ul><li>📁 上傳、分享以及於檔案協作</li><li>📅 管理您的行事曆</li><li>✉️ 寄送與接收電子郵件</li><li>👥 管理聯絡人</li></ul>",
+    "✨ Important features" : "✨ 重要功能",
+    "Need help?" : "需要協助嗎？",
+    "Report an issue" : "回報問題",
+    "Source code" : "原始碼",
+    "Back" : "返回",
+    "Done" : "完成",
+    "Next" : "下一步",
+    "Skip" : "跳過",
+    "Saving …" : "正在儲存…",
+    "Settings saved" : "設定已儲存",
+    "Save settings" : "儲存設定",
+    "Error saving settings" : "儲存設定時發生錯誤"
+},
+"nplurals=1; plural=0;");

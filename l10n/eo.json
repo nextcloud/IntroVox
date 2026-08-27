@@ -1,0 +1,9 @@
+{ "translations": {
+    "Done" : "Farita",
+    "Next" : "Posten",
+    "Skip" : "Preterpasi",
+    "Saving …" : "Konservado...",
+    "Settings saved" : "Agordoj konservitaj",
+    "Save settings" : "Konservi agordojn"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
