@@ -417,9 +417,32 @@ tar -xzf introvox-x.x.x.tar.gz -O 2>/dev/null | \
 
 ### 8.2 App Store Upload — actual procedure
 
-**Convention (since v1.7.5): upload MANUALLY via the web UI (Route B). The API route is retired.** The API token expired on every release from v1.4.3 onward (403) and Rik decided not to refresh it — the web-UI upload is the standing route. Route A below is kept only for reference. You still generate and verify the signature the same way; then hand Rik the download URL + signature for the web form.
+**Use the API (Route A) with Rik's own token.** Measured 29-08-2026: IntroVox
+is owned by Rik's App Store account, and his token authenticates fine against
+it. The web-UI convention below was based on a wrong diagnosis — see the note.
 
-The signing key is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key` (also on USB at `/Volumes/WDS/secrets/projects/introvox/introvox.key`). The API token is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt`.
+> **Correction (29-08-2026): the token was never expired.** From v1.4.3 onward
+> every API upload returned `403 You do not have permission`, which was read as
+> "the token expired" and led to the manual web-UI convention in v1.7.5. The
+> real cause: `appstore-api-token.txt` belongs to **Sam's** account, which owns
+> only `metavox`. A `403` is a *permission* answer, not an expiry answer — it is
+> returned before the tarball or signature is even looked at.
+>
+> Verified by posting an upload with a deliberately invalid signature: Rik's
+> token answers `400 Signature is invalid` for introvox (i.e. permission OK),
+> Sam's answers `403`. Nothing was published by that test.
+
+**Tokens — pick the right one:**
+
+| App | Token |
+|---|---|
+| `introvox`, `intravox`, `formvox`, `roomvox` | `Keys/appstore-api-token-rikdekker.txt` |
+| `metavox` only | `Keys/appstore-api-token.txt` (Sam's) |
+
+Grabbing the wrong one yields `403`, which reads like a broken package but is
+just the wrong account.
+
+The signing key is at `/Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key` (also on USB at `/Volumes/WDS/secrets/projects/introvox/introvox.key`).
 
 **Always validate the signing key first:**
 
@@ -441,7 +464,7 @@ openssl dgst -sha512 -sign /Users/rikdekker/Documents/Development/.claude/Nextcl
 #### Route A — API upload (preferred when the token works)
 
 ```bash
-TOKEN=$(tr -d '[:space:]' < /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token.txt)
+TOKEN=$(tr -d '[:space:]' < /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/appstore-api-token-rikdekker.txt)
 SIG=$(cat /tmp/introvox-X.Y.Z.sig)
 DOWNLOAD_URL="https://github.com/nextcloud/IntroVox/releases/download/vX.Y.Z/introvox-X.Y.Z.tar.gz"
 
@@ -452,7 +475,7 @@ curl -s -w "\nHTTP %{http_code}\n" -X POST \
   https://apps.nextcloud.com/api/v1/apps/releases
 ```
 
-HTTP 200 = success. **HTTP 403 "You do not have permission"** means the token is expired/revoked — go to Route B and refresh the token afterwards.
+HTTP 200/201 = success. **HTTP 403 "You do not have permission"** almost always means the *wrong token* (Sam's instead of Rik's), not an expired one — check the table above first. Route B stays available as a fallback.
 
 #### Route B — Web UI upload (fallback, always works)
 
