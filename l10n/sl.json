@@ -1,0 +1,13 @@
+{ "translations": {
+    "Need help?" : "Ali potrebujete pomoč?",
+    "Report an issue" : "Pošlji poročilo o hrošču",
+    "Source code" : "Izvorna koda",
+    "Back" : "Nazaj",
+    "Done" : "Končano",
+    "Next" : "Naslednji",
+    "Skip" : "Preskoči",
+    "Saving …" : "Poteka shranjevanje ...",
+    "Settings saved" : "Nastavitve so shranjene",
+    "Save settings" : "Shrani nastavitve"
+},"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
+}

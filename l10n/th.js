@@ -1,0 +1,11 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Need help?" : "ต้องการความช่วยเหลือ?",
+    "Source code" : "โค้ดต้นฉบับ",
+    "Next" : "ถัดไป",
+    "Skip" : "ข้าม",
+    "Saving …" : "กำลังบันทึก …",
+    "Settings saved" : "บันทึกการตั้งค่าแล้ว"
+},
+"nplurals=1; plural=0;");

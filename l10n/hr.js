@@ -1,0 +1,16 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Need help?" : "Treba li vam pomoć?",
+    "Report an issue" : "Prijavi problem",
+    "Source code" : "Izvorni kod",
+    "Back" : "Natrag",
+    "Done" : "Gotovo",
+    "Next" : "Dalje",
+    "Skip" : "Preskoči",
+    "Saving …" : "Spremanje…",
+    "Settings saved" : "Postavke spremljene",
+    "Save settings" : "Spremi postavke",
+    "Error saving settings" : "Pogreška pri spremanju postavki"
+},
+"nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;");

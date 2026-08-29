@@ -1,0 +1,16 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Need help?" : "ຕ້ອງການຄວາມຊ່ວຍເຫຼືອ?",
+    "Report an issue" : "Report an issue",
+    "Source code" : "ລະຫັດແຫຼ່ງ",
+    "Back" : "ກັບຄືນ",
+    "Done" : "ສະຖານະ",
+    "Next" : "ຕໍ່ໄປ",
+    "Skip" : "ຂ້າມໄປ",
+    "Got it" : "ເຂົ້າໃຈແລ້ວ",
+    "Saving …" : "ກຳລັງບັນທຶກ...",
+    "Settings saved" : "ບັນທຶກການຕັ້ງຄ່າແລ້ວ",
+    "Save settings" : "ບັນທຶກການຕັ້ງຄ່າ"
+},
+"nplurals=1; plural=0;");
