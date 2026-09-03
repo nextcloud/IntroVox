@@ -13,6 +13,7 @@ OC.L10N.register(
     "✨ Important features" : "✨ Wichteg Funktiounen",
     "IntroVox" : "IntroVox",
     "Done" : "Fäerdeg",
-    "Skip" : "Iwwersprangen"
+    "Skip" : "Iwwersprangen",
+    "Settings saved" : "Astellunge gespäichert"
 },
 "nplurals=2; plural=(n != 1);");
