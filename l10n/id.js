@@ -4,6 +4,7 @@ OC.L10N.register(
     "Need help?" : "Butuh bantuan?",
     "Report an issue" : "Laporan masalah",
     "Source code" : "Kode sumber",
+    "Questions?" : "Pertanyaan?",
     "Back" : "Kembali",
     "Done" : "Selesai",
     "Next" : "Berikutnya",
