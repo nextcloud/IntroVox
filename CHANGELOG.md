@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Six texts now follow the Nextcloud punctuation guideline,** which asks for a non-breaking space before an ellipsis so the dots never wrap onto their own line. Four of them ("Loading …", "Sending …", "Search language …", "Description of this step …") had no translations yet, so nothing was lost. Two did: "Saving …" and "Restarting tour …" were translated in 17 languages and those translations no longer match the corrected text, so both revert to English until translators pick them up again. Only 2 of the 17 had the non-breaking space right in the translation itself, so this also corrects the punctuation across the board. "Anonymous Usage Statistics" became "Anonymous usage statistics" (sentence case, per the same guideline); it had no translations.
 
+- **Two more languages: Indonesian and Slovak.** Both are fully translated. They were already available from the translation service but had been left out of the shipped set by an oversight in the previous release. The app ships the languages that pass the 25% translation threshold; below that, a mostly-English screen with a few translated words scattered through it reads worse than plain English.
+
 
 ## [1.7.8] - 2026-08-27
 
