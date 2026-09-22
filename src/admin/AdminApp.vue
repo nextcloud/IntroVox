@@ -95,7 +95,7 @@
             :options="addableLanguages"
             label="name"
             :clearable="false"
-            :placeholder="t('Search language…')"
+            :placeholder="t('Search language …')"
           >
             <template #selected-option="{ name }">
               {{ name }}
@@ -142,7 +142,7 @@
     </NcSettingsSection>
 
     <div v-if="activeTab === 'steps' && loading" class="loading">
-      {{ t('Loading...') }}
+      {{ t('Loading …') }}
     </div>
 
     <div v-else-if="activeTab === 'steps'" ref="stepsListRef" class="steps-list">
@@ -277,7 +277,7 @@
       :description="t('Wizard usage statistics and telemetry settings')"
     >
       <div v-if="statisticsLoading" class="loading">
-        {{ t('Loading...') }}
+        {{ t('Loading …') }}
       </div>
 
       <div v-else class="statistics-content">
@@ -324,7 +324,7 @@
         </div>
 
         <!-- Telemetry Settings - IntraVox style -->
-        <h3 class="section-title">{{ t('Anonymous Usage Statistics') }}</h3>
+        <h3 class="section-title">{{ t('Anonymous usage statistics') }}</h3>
         <p class="settings-hint">
           {{ t('Help improve IntroVox by sharing anonymous usage statistics.') }}
         </p>
@@ -352,7 +352,7 @@
               <NcButton type="secondary"
                 :disabled="sendingTelemetry"
                 @click="sendTelemetryNow">
-                {{ sendingTelemetry ? t('Sending...') : t('Send report now') }}
+                {{ sendingTelemetry ? t('Sending …') : t('Send report now') }}
               </NcButton>
             </NcNoteCard>
           </div>
@@ -668,7 +668,7 @@ export default {
       const newStep = {
         id: 'new_' + Date.now(),
         title: trans('New step'),
-        text: '<p>' + trans('Description of this step...') + '</p>',
+        text: '<p>' + trans('Description of this step …') + '</p>',
         attachTo: '',
         position: 'right',
         enabled: true,

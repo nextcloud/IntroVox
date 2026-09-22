@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         saveBtn.addEventListener('click', async function() {
             try {
                 saveBtn.disabled = true;
-                saveBtn.textContent = t('introvox', 'Saving …');
+                saveBtn.textContent = t('introvox', 'Saving …');
 
                 const response = await axios.post(generateUrl('/apps/introvox/personal/settings'), {
                     wizardDisabled: disableCheckbox.checked
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
 
             // Show feedback
-            restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour …');
+            restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour …');
             restartBtn.disabled = true;
 
             // Redirect to Nextcloud home after a short delay
