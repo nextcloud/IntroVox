@@ -1,0 +1,91 @@
+# Backstop for the l10n pipeline.
+#
+# The primary defence is the prebuild guard (scripts/check-l10n-sync.js), which
+# runs on every `npm run build`. This workflow is the safety net for a commit
+# that reaches main without a local build — the exact path by which the admin UI
+# stayed untranslatable from 2026-06 onwards: the sync-bot deleted the POT, the
+# .gitignore rule kept it from coming back, and no build ever complained.
+#
+# It is CHECK-ONLY on purpose — it never writes, commits or pushes. On a red run,
+# run `npm run l10n:push` locally, commit the POT + manifest, and push to GitHub
+# (the Nextcloud bot reads the POT from there, not from Forgejo). An auto-commit
+# action is deliberately avoided: the bot deletes the POT after each sync, so
+# auto-committing it would create a churn loop and collide with the bot's pushes.
+
+name: l10n
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'lib/**'
+      - 'templates/**'
+      - 'l10n/**'
+      - 'tests-js/**'
+      - 'scripts/**'
+      - 'deploy.sh'
+      - '.gitignore'
+      - '.tx/config'
+      - '.github/workflows/l10n.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'lib/**'
+      - 'templates/**'
+      - 'l10n/**'
+      - 'tests-js/**'
+      - 'scripts/**'
+      - 'deploy.sh'
+      - '.gitignore'
+      - '.tx/config'
+      - '.github/workflows/l10n.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Pure Node, no dependencies: the extractor scans src/, lib/ and
+      # templates/ with plain regexes and needs neither node_modules nor
+      # xgettext. The tests use node:test, built in since Node 18.
+      - name: l10n regression tests
+        run: node --test tests-js/
+
+      - name: Source strings in sync with the manifest
+        run: node scripts/check-l10n-sync.js
+
+      # Warning-only (exit 0) unless --strict: NC guideline nits should be
+      # visible in the log without blocking an unrelated change.
+      - name: Nextcloud translation-guideline lint
+        run: node scripts/lint-l10n-strings.js
+
+      # Proves the POT can still be regenerated and is valid gettext — catches a
+      # broken extractor or a malformed msgid before Transifex silently rejects
+      # the ingest and freezes the resource at its previous state.
+      - name: POT regenerates and validates
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          npm run pot
+          msgfmt --check-format -o /dev/null translationfiles/templates/introvox.pot
+
+      # The POT is committed; regenerating it must not change which strings it
+      # contains. A diff here means someone edited a string without running
+      # `npm run l10n:push`.
+      #
+      # POT-Creation-Date is stamped with the current time on every run, so it
+      # always differs and is excluded — comparing it would make this step
+      # permanently red and train everyone to ignore it.
+      - name: POT is up to date with the source
+        run: |
+          git show HEAD:translationfiles/templates/introvox.pot \
+            | grep -v '^"POT-Creation-Date:' > /tmp/pot-committed.pot
+          grep -v '^"POT-Creation-Date:' translationfiles/templates/introvox.pot > /tmp/pot-regenerated.pot
+          if ! diff -u /tmp/pot-committed.pot /tmp/pot-regenerated.pot; then
+            echo "::error::The POT is out of date. Run 'npm run l10n:push' and commit the result."
+            exit 1
+          fi

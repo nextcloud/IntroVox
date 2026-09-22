@@ -1,6 +1,6 @@
 {
   "name": "nextcloud-introvox",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "Interactive onboarding tour for new Nextcloud users",
   "repository": {
     "type": "git",
@@ -11,7 +11,14 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "deploy": "npm run build && ./deploy.sh"
+    "deploy": "npm run build && ./deploy.sh",
+    "test:js": "node --test tests-js/",
+    "l10n:extract": "node scripts/extract-en-json.js",
+    "l10n:lint": "node scripts/lint-l10n-strings.js",
+    "pot": "npm run l10n:extract && node scripts/generate-pot.js",
+    "l10n:push": "npm run l10n:extract && node scripts/lint-l10n-strings.js && node scripts/generate-pot.js",
+    "lint:l10n": "node scripts/check-l10n-sync.js",
+    "prebuild": "node scripts/check-l10n-sync.js"
   },
   "dependencies": {
     "@nextcloud/axios": "^2.4.0",

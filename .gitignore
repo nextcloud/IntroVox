@@ -5,8 +5,21 @@ package-lock.json
 # Build outputs
 js/
 # Transifex pull artifacts — only l10n/*.js|*.json are committed, not the
-# intermediate .po files. Keep the .pot template if one is checked in.
-translationfiles/*/
+# intermediate .po files. The POT template IS tracked: .tx/config points at it
+# as source_file, and the sync-bot deletes it from the repo after every ingest
+# (normal behaviour — see scripts/check-l10n-sync.js). The negations below are
+# what let `git add` put it back; without them the restore silently no-ops.
+translationfiles/*
+!translationfiles/templates/
+!translationfiles/templates/*.pot
+
+# l10n/en.json + en.js are generated build artifacts (scripts/extract-en-json.js)
+# and the NC Transifex bot deletes en.json after sync. Never commit them.
+# NOTE: l10n/.source-count.json and l10n/.source-strings.json ARE committed on
+# purpose — scripts/check-l10n-sync.js compares against them to catch source
+# strings that were never pushed to Transifex.
+l10n/en.json
+l10n/en.js
 *.tar.gz
 *.sig
 *.key

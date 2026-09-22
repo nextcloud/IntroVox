@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.9] - 2026-09-22
+
+### Fixed
+
+- **The admin and personal settings pages were stuck in English,** whatever language the account used. The tour itself translated correctly, which made the screens look half-finished: a French tour wrapped in an English settings page. 120 of the app's 207 texts had never been sent to the translators at all, so no language could ever have shown them — the tabs, "Global settings", "Enable wizard for all users", "Show wizard to all users" and every confirmation and error message on those pages. Two causes, both invisible from the outside: the settings screens call translations through a local helper that the string collector did not recognise, and the translation template the Nextcloud translation service reads was removed from the repository on 9 June and could not be restored, because a rule in `.gitignore` silently discarded it. All 205 translatable texts are now in the template. Existing translations keep working — apart from the two texts noted under Changed below — and the newly exposed ones will appear language by language as translators work through them.
+
+### Added
+
+- **Automated checks for the translation pipeline.** A test suite and a CI workflow now assert that every text the settings screens use is actually collected, that the template can be regenerated and committed, that no language file loses a translation to an invisible whitespace change, and that build artefacts stay out of the release package. The failure this release fixes went unnoticed for three months because nothing ever checked it.
+
+### Changed
+
+- **Six texts now follow the Nextcloud punctuation guideline,** which asks for a non-breaking space before an ellipsis so the dots never wrap onto their own line. Four of them ("Loading …", "Sending …", "Search language …", "Description of this step …") had no translations yet, so nothing was lost. Two did: "Saving …" and "Restarting tour …" were translated in 17 languages and those translations no longer match the corrected text, so both revert to English until translators pick them up again. Only 2 of the 17 had the non-breaking space right in the translation itself, so this also corrects the punctuation across the board. "Anonymous Usage Statistics" became "Anonymous usage statistics" (sentence case, per the same guideline); it had no translations.
+
+
 ## [1.7.8] - 2026-08-27
 
 ### Added
