@@ -1,0 +1,23 @@
+{ "translations": {
+    "🔍 Search" : "🔍 Hledat",
+    "🎉 Done!" : "🎉 Hotovo!",
+    "IntroVox" : "IntroVox",
+    "Need help?" : "Potřebujete nápovědu?",
+    "Report an issue" : "Nahlásit problém",
+    "Source code" : "Zdrojové kódy",
+    "Questions?" : "Otázky?",
+    "Start tour" : "Spustit prohlídku",
+    "Back" : "Zpět",
+    "Done" : "Dokončeno",
+    "Next" : "Next",
+    "Skip" : "Přeskočit",
+    "Got it" : "Pochopeno",
+    "Settings saved" : "Nastavení uložena",
+    "Save settings" : "Uložit nastavení",
+    "Error saving settings" : "Chyba při ukládání nastavení",
+    "Tap <strong>Install</strong>" : "Klepněte na <strong>Nainstalovat</strong>",
+    "Click <strong>Install</strong>" : "Klikněte na <strong>Nainstalovat</strong>",
+    "Tap <strong>\"Install\"</strong>" : "Klepněte na <strong>„Nainstalovat“</strong>",
+    "Click/tap <strong>Install</strong>" : "Klikněte/klepněte na <strong>Nainstalovat</strong>"
+},"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;"
+}
