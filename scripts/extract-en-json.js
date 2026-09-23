@@ -89,14 +89,13 @@ function makeRegexes() {
 		N_RE: new RegExp(`(?<![\\w$])${T_PREFIX}n\\(\\s*(?:'introvox'\\s*,\\s*)?${STR}\\s*,\\s*${STR}`, 'g'),
 		DT_RE: new RegExp(`(?:this\\.)?\\$t\\(\\s*${STR}`, 'g'),
 		DN_RE: new RegExp(`(?:this\\.)?\\$n\\(\\s*${STR}\\s*,\\s*${STR}`, 'g'),
-		// Named wrappers. src/admin/AdminApp.vue defines
-		//   const trans = (key, vars = {}) => translate('introvox', key, vars)
-		// and exposes it as `t: trans`, so <template> uses t('…') (caught by
-		// T_RE) while <script> uses trans('…') — 35 call-sites that T_RE cannot
-		// see, because its (?<![\w$]) lookbehind deliberately rejects the `t`
-		// inside a longer identifier (spli`t(`, impor`t(`). Anchoring on the
-		// full wrapper name is unambiguous, so no lookbehind is needed.
-		W_RE: new RegExp(`(?<![\\w$])trans\\(\\s*${STR}`, 'g'),
+		// Named wrapper. src/admin/AdminApp.vue exposes `trans` as `t`, so its
+		// <script> calls read trans('introvox', '…') while T_RE's (?<![\w$])
+		// lookbehind rejects the `t` inside that longer identifier (the same
+		// rule that keeps spli`t(` and impor`t(` out). The app id is optional
+		// here for the same reason it is in T_RE: both call forms are valid,
+		// and isAppId() drops a bare id that slips through.
+		W_RE: new RegExp(`(?<![\\w$])trans\\(\\s*(?:'introvox'\\s*,\\s*)?${STR}`, 'g'),
 	};
 }
 

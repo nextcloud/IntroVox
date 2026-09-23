@@ -6,54 +6,54 @@
         :class="['tab-button', { active: activeTab === 'settings' }]"
         @click="activeTab = 'settings'">
         <Cog :size="16" />
-        {{ t('Settings') }}
+        {{ t('introvox', 'Settings') }}
       </button>
       <button
         :class="['tab-button', { active: activeTab === 'steps' }]"
         @click="activeTab = 'steps'">
         <FormatListNumbered :size="16" />
-        {{ t('Steps') }}
+        {{ t('introvox', 'Steps') }}
       </button>
       <button
         :class="['tab-button', { active: activeTab === 'statistics' }]"
         @click="activeTab = 'statistics'">
         <ChartBox :size="16" />
-        {{ t('Statistics') }}
+        {{ t('introvox', 'Statistics') }}
       </button>
       <button
         :class="['tab-button', { active: activeTab === 'support' }]"
         @click="activeTab = 'support'">
         <Lifebuoy :size="16" />
-        {{ t('Support') }}
+        {{ t('introvox', 'Support') }}
       </button>
     </div>
 
     <!-- Tab: Instellingen (Settings) -->
     <NcSettingsSection
       v-if="activeTab === 'settings'"
-      :name="t('Global settings')"
-      :description="t('Configure wizard availability and languages')"
+      :name="t('introvox', 'Global settings')"
+      :description="t('introvox', 'Configure wizard availability and languages')"
     >
       <NcCheckboxRadioSwitch
         v-model="wizardEnabled"
         type="switch"
       >
-        {{ t('Enable wizard for all users') }}
+        {{ t('introvox', 'Enable wizard for all users') }}
       </NcCheckboxRadioSwitch>
       <p class="settings-hint">
-        {{ t('When disabled, the wizard will not automatically start for new users.') }}
+        {{ t('introvox', 'When disabled, the wizard will not automatically start for new users.') }}
       </p>
 
       <p class="settings-hint language-coverage-hint">
-        {{ t('The tour is auto-translated into every Nextcloud-supported language. {n} languages currently have an admin override.', { n: overrideLanguages.length }) }}
+        {{ t('introvox', 'The tour is auto-translated into every Nextcloud-supported language. {n} languages currently have an admin override.', { n: overrideLanguages.length }) }}
       </p>
 
       <div class="show-to-all-section">
         <NcButton @click="showToAllUsers" type="warning">
-          🔄 {{ t('Show wizard to all users') }}
+          🔄 {{ t('introvox', 'Show wizard to all users') }}
         </NcButton>
         <p class="settings-hint">
-          {{ t('This will reset the wizard for ALL users, including those who have permanently disabled it in their personal settings. Their "disable wizard" preference will be cleared, and the wizard will be shown again on their next login.') }}
+          {{ t('introvox', 'This will reset the wizard for ALL users, including those who have permanently disabled it in their personal settings. Their "disable wizard" preference will be cleared, and the wizard will be shown again on their next login.') }}
         </p>
       </div>
     </NcSettingsSection>
@@ -61,8 +61,8 @@
     <!-- Tab: Stappen (Steps) -->
     <NcSettingsSection
       v-if="activeTab === 'steps'"
-      :name="t('Edit steps')"
-      :description="t('Manage wizard steps for each language')"
+      :name="t('introvox', 'Edit steps')"
+      :description="t('introvox', 'Manage wizard steps for each language')"
     >
       <div class="language-selector-row">
         <NcSelect
@@ -80,22 +80,22 @@
           </template>
         </NcSelect>
         <NcButton @click="openAddOverrideDialog" type="secondary">
-          ➕ {{ t('Add language override') }}
+          ➕ {{ t('introvox', 'Add language override') }}
         </NcButton>
       </div>
 
       <div v-if="showAddOverride" class="add-override-modal">
         <div class="add-override-content">
-          <h3>{{ t('Add language override') }}</h3>
+          <h3>{{ t('introvox', 'Add language override') }}</h3>
           <p class="settings-hint">
-            {{ t('Pick a language to customise. Until you save, no data is written.') }}
+            {{ t('introvox', 'Pick a language to customise. Until you save, no data is written.') }}
           </p>
           <NcSelect
             v-model="pendingOverrideLanguage"
             :options="addableLanguages"
             label="name"
             :clearable="false"
-            :placeholder="t('Search language …')"
+            :placeholder="t('introvox', 'Search language …')"
           >
             <template #selected-option="{ name }">
               {{ name }}
@@ -106,10 +106,10 @@
           </NcSelect>
           <div class="add-override-actions">
             <NcButton @click="cancelAddOverride">
-              {{ t('Cancel') }}
+              {{ t('introvox', 'Cancel') }}
             </NcButton>
             <NcButton type="primary" :disabled="!pendingOverrideLanguage" @click="confirmAddOverride">
-              {{ t('Add override') }}
+              {{ t('introvox', 'Add override') }}
             </NcButton>
           </div>
         </div>
@@ -117,13 +117,13 @@
 
       <div class="action-buttons">
         <NcButton @click="addStep" type="primary">
-          ➕ {{ t('Add step') }}
+          ➕ {{ t('introvox', 'Add step') }}
         </NcButton>
         <NcButton @click="exportSteps">
-          📥 {{ t('Export') }}
+          📥 {{ t('introvox', 'Export') }}
         </NcButton>
         <NcButton @click="triggerImport">
-          📤 {{ t('Import') }}
+          📤 {{ t('introvox', 'Import') }}
         </NcButton>
         <input
           ref="fileInputRef"
@@ -133,16 +133,16 @@
           style="display: none"
         />
         <NcButton @click="resetToDefault" type="error">
-          🔄 {{ t('Reset') }}
+          🔄 {{ t('introvox', 'Reset') }}
         </NcButton>
         <NcButton @click="saveSteps" type="success" :disabled="!hasChanges">
-          💾 {{ t('Save changes') }}
+          💾 {{ t('introvox', 'Save changes') }}
         </NcButton>
       </div>
     </NcSettingsSection>
 
     <div v-if="activeTab === 'steps' && loading" class="loading">
-      {{ t('Loading …') }}
+      {{ t('introvox', 'Loading …') }}
     </div>
 
     <div v-else-if="activeTab === 'steps'" ref="stepsListRef" class="steps-list">
@@ -153,77 +153,77 @@
         :class="{ editing: editingStep === step.id }"
       >
         <div class="step-header">
-          <div class="drag-handle" :title="t('Drag to reorder')">
+          <div class="drag-handle" :title="t('introvox', 'Drag to reorder')">
             ⋮⋮
           </div>
           <h3>
-            <span class="step-number">{{ t('Step') }} {{ index + 1 }}</span>
+            <span class="step-number">{{ t('introvox', 'Step') }} {{ index + 1 }}</span>
             <span class="step-title" :class="{ 'step-disabled': !step.enabled }">{{ step.title }}</span>
             <span class="step-id">ID: {{ step.id }}</span>
           </h3>
           <div class="step-actions">
-            <label class="toggle-checkbox" :title="step.enabled ? t('Enabled') : t('Disabled')">
+            <label class="toggle-checkbox" :title="step.enabled ? t('introvox', 'Enabled') : t('introvox', 'Disabled')">
               <input type="checkbox" v-model="step.enabled" @change="markChanged" />
               <span class="toggle-label">{{ step.enabled ? '✓' : '✗' }}</span>
             </label>
             <button @click="editStep(step)" class="icon-button">
-              ✏️ {{ t('Edit') }}
+              ✏️ {{ t('introvox', 'Edit') }}
             </button>
             <button @click="deleteStep(step.id)" class="icon-button delete">
-              🗑️ {{ t('Delete') }}
+              🗑️ {{ t('introvox', 'Delete') }}
             </button>
           </div>
         </div>
 
         <div v-if="editingStep === step.id" class="step-editor">
           <div class="form-group">
-            <label>{{ t('ID (not editable)') }}</label>
+            <label>{{ t('introvox', 'ID (not editable)') }}</label>
             <input type="text" :value="step.id" disabled class="disabled-input" />
           </div>
 
           <div class="form-group">
-            <label>{{ t('Title') }} *</label>
+            <label>{{ t('introvox', 'Title') }} *</label>
             <input
               v-model="editingData.title"
               type="text"
-              :placeholder="t('For example: %s', {example: '👋 ' + t('Welcome to Nextcloud')})"
+              :placeholder="t('introvox', 'For example: %s', {example: '👋 ' + t('introvox', 'Welcome to Nextcloud')})"
               required
             />
           </div>
 
           <div class="form-group">
-            <label>{{ t('Text (HTML)') }} *</label>
+            <label>{{ t('introvox', 'Text (HTML)') }} *</label>
             <textarea
               v-model="editingData.text"
               rows="6"
-              :placeholder="t('HTML content placeholder')"
+              :placeholder="t('introvox', 'HTML content placeholder')"
               required
             ></textarea>
           </div>
 
           <div class="form-group">
-            <label>{{ t('Attach to element (CSS selector)') }}</label>
+            <label>{{ t('introvox', 'Attach to element (CSS selector)') }}</label>
             <input
               v-model="editingData.attachTo"
               type="text"
-              :placeholder="t('For example: %s', {example: '.app-menu__waffle, .unified-search-input, #user-menu'})"
+              :placeholder="t('introvox', 'For example: %s', {example: '.app-menu__waffle, .unified-search-input, #user-menu'})"
             />
-            <small class="hint">{{ t('Leave empty for a centered step.') }}</small>
-            <small class="hint">{{ t('Tip: most apps and settings live inside menus (the apps "waffle" top-left, the avatar top-right) and only exist in the page once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search.') }}</small>
+            <small class="hint">{{ t('introvox', 'Leave empty for a centered step.') }}</small>
+            <small class="hint">{{ t('introvox', 'Tip: most apps and settings live inside menus (the apps "waffle" top-left, the avatar top-right) and only exist in the page once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search.') }}</small>
           </div>
 
           <div class="form-group" v-if="editingData.attachTo">
-            <label>{{ t('Position') }}</label>
+            <label>{{ t('introvox', 'Position') }}</label>
             <select v-model="editingData.position">
-              <option value="right">{{ t('Right') }}</option>
-              <option value="left">{{ t('Left') }}</option>
-              <option value="top">{{ t('Top') }}</option>
-              <option value="bottom">{{ t('Bottom') }}</option>
+              <option value="right">{{ t('introvox', 'Right') }}</option>
+              <option value="left">{{ t('introvox', 'Left') }}</option>
+              <option value="top">{{ t('introvox', 'Top') }}</option>
+              <option value="bottom">{{ t('introvox', 'Bottom') }}</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>{{ t('Visible to groups') }}</label>
+            <label>{{ t('introvox', 'Visible to groups') }}</label>
             <NcSelect
               v-model="editingData.visibleToGroups"
               :options="availableGroups"
@@ -231,18 +231,18 @@
               label="displayName"
               track-by="id"
               :reduce="group => group.id"
-              :placeholder="t('All users (no restriction)')"
+              :placeholder="t('introvox', 'All users (no restriction)')"
               :close-on-select="false"
             />
-            <small class="hint">{{ t('Leave empty to show to all users, or select groups to restrict visibility') }}</small>
+            <small class="hint">{{ t('introvox', 'Leave empty to show to all users, or select groups to restrict visibility') }}</small>
           </div>
 
           <div class="editor-actions">
             <button @click="saveEdit" class="primary">
-              ✓ {{ t('Save') }}
+              ✓ {{ t('introvox', 'Save') }}
             </button>
             <button @click="cancelEdit" class="secondary">
-              ✗ {{ t('Cancel') }}
+              ✗ {{ t('introvox', 'Cancel') }}
             </button>
           </div>
         </div>
@@ -251,21 +251,21 @@
           <div class="preview-text" v-html="step.text"></div>
           <div v-if="step.attachTo" class="preview-meta">
             <span>📍 Element: <code>{{ step.attachTo }}</code></span>
-            <span>📐 {{ t('Position') }}: {{ step.position || 'right' }}</span>
+            <span>📐 {{ t('introvox', 'Position') }}: {{ step.position || 'right' }}</span>
           </div>
           <div v-else class="preview-meta">
-            <span>📍 {{ t('Centered step') }}</span>
+            <span>📍 {{ t('introvox', 'Centered step') }}</span>
           </div>
           <div class="preview-meta">
-            <span>👥 {{ t('Visible to') }}: {{ formatGroupNames(step.visibleToGroups) }}</span>
+            <span>👥 {{ t('introvox', 'Visible to') }}: {{ formatGroupNames(step.visibleToGroups) }}</span>
           </div>
         </div>
       </div>
 
       <div v-if="steps.length === 0" class="empty-state">
-        <p>{{ t('No steps defined yet.') }}</p>
+        <p>{{ t('introvox', 'No steps defined yet.') }}</p>
         <button @click="addStep" class="primary">
-          {{ t('Add first step') }}
+          {{ t('introvox', 'Add first step') }}
         </button>
       </div>
     </div>
@@ -273,60 +273,60 @@
     <!-- Tab: Statistieken (Statistics) -->
     <NcSettingsSection
       v-if="activeTab === 'statistics'"
-      :name="t('Statistics')"
-      :description="t('Wizard usage statistics and telemetry settings')"
+      :name="t('introvox', 'Statistics')"
+      :description="t('introvox', 'Wizard usage statistics and telemetry settings')"
     >
       <div v-if="statisticsLoading" class="loading">
-        {{ t('Loading …') }}
+        {{ t('introvox', 'Loading …') }}
       </div>
 
       <div v-else class="statistics-content">
         <!-- Wizard Statistics -->
-        <h3 class="section-title">📊 {{ t('Wizard usage') }}</h3>
+        <h3 class="section-title">📊 {{ t('introvox', 'Wizard usage') }}</h3>
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-value">{{ statistics.usersStartedWizard || 0 }}</span>
-            <span class="stat-label">{{ t('Users started') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Users started') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ statistics.usersCompletedWizard || 0 }}</span>
-            <span class="stat-label">{{ t('Users completed') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Users completed') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ statistics.wizardSkippedCount || 0 }}</span>
-            <span class="stat-label">{{ t('Times skipped') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Times skipped') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ completionRate }}%</span>
-            <span class="stat-label">{{ t('Completion rate') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Completion rate') }}</span>
           </div>
         </div>
 
         <!-- Instance Statistics -->
-        <h3 class="section-title">🖥️ {{ t('Instance information') }}</h3>
+        <h3 class="section-title">🖥️ {{ t('introvox', 'Instance information') }}</h3>
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-value">{{ statistics.totalUsers || 0 }}</span>
-            <span class="stat-label">{{ t('Total users') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Total users') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ statistics.activeUsers30d || 0 }}</span>
-            <span class="stat-label">{{ t('Active users (30d)') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Active users (30d)') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ totalStepsCount }}</span>
-            <span class="stat-label">{{ t('Total steps') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Total steps') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-value">{{ (statistics.languagesWithOverrides || []).length }}</span>
-            <span class="stat-label">{{ t('Languages with overrides') }}</span>
+            <span class="stat-label">{{ t('introvox', 'Languages with overrides') }}</span>
           </div>
         </div>
 
         <!-- Telemetry Settings - IntraVox style -->
-        <h3 class="section-title">{{ t('Anonymous usage statistics') }}</h3>
+        <h3 class="section-title">{{ t('introvox', 'Anonymous usage statistics') }}</h3>
         <p class="settings-hint">
-          {{ t('Help improve IntroVox by sharing anonymous usage statistics.') }}
+          {{ t('introvox', 'Help improve IntroVox by sharing anonymous usage statistics.') }}
         </p>
 
         <div class="telemetry-settings">
@@ -337,41 +337,41 @@
               @update:model-value="toggleTelemetry"
             >
               <div class="option-info">
-                <span class="option-label">{{ t('Share anonymous usage statistics') }}</span>
-                <span class="option-desc">{{ t('We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared.') }}</span>
+                <span class="option-label">{{ t('introvox', 'Share anonymous usage statistics') }}</span>
+                <span class="option-desc">{{ t('introvox', 'We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared.') }}</span>
               </div>
             </NcCheckboxRadioSwitch>
           </div>
 
           <div v-if="telemetryEnabled" class="telemetry-info">
             <NcNoteCard type="success">
-              <p>{{ t('Thank you for helping improve IntroVox!') }}</p>
+              <p>{{ t('introvox', 'Thank you for helping improve IntroVox!') }}</p>
               <p v-if="statistics.lastTelemetrySent">
-                {{ t('Last report sent:') }} {{ formatDate(statistics.lastTelemetrySent) }}
+                {{ t('introvox', 'Last report sent:') }} {{ formatDate(statistics.lastTelemetrySent) }}
               </p>
               <NcButton type="secondary"
                 :disabled="sendingTelemetry"
                 @click="sendTelemetryNow">
-                {{ sendingTelemetry ? t('Sending …') : t('Send report now') }}
+                {{ sendingTelemetry ? t('introvox', 'Sending …') : t('introvox', 'Send report now') }}
               </NcButton>
             </NcNoteCard>
           </div>
 
           <div class="telemetry-details">
-            <h4>{{ t('What we collect:') }}</h4>
+            <h4>{{ t('introvox', 'What we collect:') }}</h4>
             <ul>
-              <li>{{ t('Step counts per language (e.g., EN: 8, NL: 5)') }}</li>
-              <li>{{ t('Total user count and active users') }}</li>
-              <li>{{ t('IntroVox, Nextcloud, and PHP version numbers') }}</li>
-              <li>{{ t('A unique hash of your instance URL (privacy-friendly identifier)') }}</li>
-              <li>{{ t('Basic server configuration (database, OS, web server, language, timezone)') }}</li>
+              <li>{{ t('introvox', 'Step counts per language (e.g., EN: 8, NL: 5)') }}</li>
+              <li>{{ t('introvox', 'Total user count and active users') }}</li>
+              <li>{{ t('introvox', 'IntroVox, Nextcloud, and PHP version numbers') }}</li>
+              <li>{{ t('introvox', 'A unique hash of your instance URL (privacy-friendly identifier)') }}</li>
+              <li>{{ t('introvox', 'Basic server configuration (database, OS, web server, language, timezone)') }}</li>
             </ul>
-            <h4>{{ t('What we never collect:') }}</h4>
+            <h4>{{ t('introvox', 'What we never collect:') }}</h4>
             <ul class="not-collected">
-              <li>{{ t('Step content or titles') }}</li>
-              <li>{{ t('User names or email addresses') }}</li>
-              <li>{{ t('Your actual server URL') }}</li>
-              <li>{{ t('Any personal or sensitive data') }}</li>
+              <li>{{ t('introvox', 'Step content or titles') }}</li>
+              <li>{{ t('introvox', 'User names or email addresses') }}</li>
+              <li>{{ t('introvox', 'Your actual server URL') }}</li>
+              <li>{{ t('introvox', 'Any personal or sensitive data') }}</li>
             </ul>
           </div>
         </div>
@@ -488,7 +488,7 @@ export default {
       } catch (error) {
         // Fallback to English only if loading fails
         allLanguages.value = [{ code: 'en', name: 'English' }]
-        showWarning(trans('Could not load available languages, using English only'))
+        showWarning(t('introvox', 'Could not load available languages, using English only'))
       }
     }
 
@@ -514,7 +514,7 @@ export default {
         originalSteps.value = JSON.parse(JSON.stringify(response.data.steps))
         hasChanges.value = false
       } catch (error) {
-        showError(trans('Error loading steps: %s', {error: error.message}))
+        showError(t('introvox', 'Error loading steps: %s', {error: error.message}))
       } finally {
         loading.value = false
       }
@@ -523,8 +523,8 @@ export default {
     const loadStepsForLanguage = async () => {
       if (hasChanges.value) {
         const confirmed = await showConfirmation({
-          name: trans('Unsaved changes'),
-          text: trans('You have unsaved changes. Do you want to discard them?'),
+          name: t('introvox', 'Unsaved changes'),
+          text: t('introvox', 'You have unsaved changes. Do you want to discard them?'),
         })
         if (confirmed) {
           await loadSteps()
@@ -574,7 +574,7 @@ export default {
       } catch (error) {
         // Use defaults on error (e.g., 404 on fresh install before app is fully initialized)
         wizardEnabled.value = true
-        showInfo(trans('Using default settings. Save your changes to persist them.'))
+        showInfo(t('introvox', 'Using default settings. Save your changes to persist them.'))
       }
     }
 
@@ -592,8 +592,8 @@ export default {
     const onLanguageChange = async (value) => {
       if (hasChanges.value) {
         const confirmed = await showConfirmation({
-          name: trans('Unsaved changes'),
-          text: trans('You have unsaved changes. Do you want to discard them?'),
+          name: t('introvox', 'Unsaved changes'),
+          text: t('introvox', 'You have unsaved changes. Do you want to discard them?'),
         })
         if (!confirmed) {
           return
@@ -635,18 +635,18 @@ export default {
         await axios.post(generateUrl('/apps/introvox/admin/settings'), {
           enabled: wizardEnabled.value
         })
-        showSuccess(trans('Global settings saved'))
+        showSuccess(t('introvox', 'Global settings saved'))
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        showError(trans('Error saving global settings') + ': ' + errorMsg)
+        showError(t('introvox', 'Error saving global settings') + ': ' + errorMsg)
       }
     }
 
     const showToAllUsers = async () => {
       // Show Nextcloud confirmation dialog
       const confirmed = await showConfirmation({
-        name: trans('Show wizard to all users'),
-        text: trans('This will show the wizard again to all users who have already seen it. Continue?'),
+        name: t('introvox', 'Show wizard to all users'),
+        text: t('introvox', 'This will show the wizard again to all users who have already seen it. Continue?'),
       })
       if (!confirmed) {
         return
@@ -657,18 +657,18 @@ export default {
           enabled: wizardEnabled.value,
           showToAll: true
         })
-        showSuccess(trans('Wizard will be shown to all users on their next login'))
+        showSuccess(t('introvox', 'Wizard will be shown to all users on their next login'))
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        showError(trans('Error triggering show to all') + ': ' + errorMsg)
+        showError(t('introvox', 'Error triggering show to all') + ': ' + errorMsg)
       }
     }
 
     const addStep = () => {
       const newStep = {
         id: 'new_' + Date.now(),
-        title: trans('New step'),
-        text: '<p>' + trans('Description of this step …') + '</p>',
+        title: t('introvox', 'New step'),
+        text: '<p>' + t('introvox', 'Description of this step …') + '</p>',
         attachTo: '',
         position: 'right',
         enabled: true,
@@ -718,8 +718,8 @@ export default {
 
     const deleteStep = async (id) => {
       const confirmed = await showConfirmation({
-        name: trans('Delete step'),
-        text: trans('Are you sure you want to delete this step?'),
+        name: t('introvox', 'Delete step'),
+        text: t('introvox', 'Are you sure you want to delete this step?'),
       })
       if (confirmed) {
         steps.value = steps.value.filter(s => s.id !== id)
@@ -734,13 +734,13 @@ export default {
           steps: steps.value,
           lang: selectedLanguage.value
         })
-        showSuccess(trans('Steps saved'))
+        showSuccess(t('introvox', 'Steps saved'))
         hasChanges.value = false
         originalSteps.value = JSON.parse(JSON.stringify(steps.value))
         // New override may have been created; refresh the dropdown
         await loadOverrides()
       } catch (error) {
-        showError(trans('Error saving: %s', {error: error.message}))
+        showError(t('introvox', 'Error saving: %s', {error: error.message}))
       } finally {
         loading.value = false
       }
@@ -748,8 +748,8 @@ export default {
 
     const resetToDefault = async () => {
       const confirmed = await showConfirmation({
-        name: trans('Discard override'),
-        text: trans('Discard the custom steps for this language and fall back to the auto-translated defaults?'),
+        name: t('introvox', 'Discard override'),
+        text: t('introvox', 'Discard the custom steps for this language and fall back to the auto-translated defaults?'),
       })
       if (confirmed) {
         try {
@@ -764,10 +764,10 @@ export default {
             selectedLanguage.value = 'en'
           }
           await loadSteps()
-          showSuccess(trans('Override discarded — language now uses auto-translated defaults'))
+          showSuccess(t('introvox', 'Override discarded — language now uses auto-translated defaults'))
         } catch (error) {
           const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-          showError(trans('Error resetting') + ': ' + errorMsg)
+          showError(t('introvox', 'Error resetting') + ': ' + errorMsg)
         } finally {
           loading.value = false
         }
@@ -793,13 +793,13 @@ export default {
           document.body.removeChild(link)
           window.URL.revokeObjectURL(url)
 
-          showSuccess(trans('Steps exported successfully!'))
+          showSuccess(t('introvox', 'Steps exported successfully!'))
         } else {
-          showError(trans('Error exporting steps: %s', { error: response.data.error }))
+          showError(t('introvox', 'Error exporting steps: %s', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        showError(trans('Error exporting steps') + ': ' + errorMsg)
+        showError(t('introvox', 'Error exporting steps') + ': ' + errorMsg)
       } finally {
         loading.value = false
       }
@@ -827,7 +827,7 @@ export default {
 
         if (response.data.success) {
           showSuccess(
-            trans('Successfully imported %s steps for language %s', {
+            t('introvox', 'Successfully imported %s steps for language %s', {
               count: response.data.stepsCount,
               lang: response.data.language
             })
@@ -841,11 +841,11 @@ export default {
           // Reload steps to show imported data
           await loadSteps()
         } else {
-          showError(trans('Error importing steps: %s', { error: response.data.error }))
+          showError(t('introvox', 'Error importing steps: %s', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        showError(trans('Error importing steps') + ': ' + errorMsg)
+        showError(t('introvox', 'Error importing steps') + ': ' + errorMsg)
       } finally {
         loading.value = false
         // Reset file input
@@ -862,9 +862,16 @@ export default {
       }, 5000)
     }
 
-    // Translation helper
-    const trans = (key, vars = {}) => {
-      return translate('introvox', key, vars)
+    // Translation helper.
+    //
+    // App id first, and every call-site passes it literally. That is not
+    // decoration: the Nextcloud Transifex extractor runs xgettext with
+    // --keyword=t:2 over the <script> block and matches `t('introvox', 'appid', '…')` in
+    // <template>, so a wrapper with an implicit app id makes every string it
+    // wraps invisible to translators. This file once had 38 such calls and all
+    // of them were untranslatable.
+    const t = (app, key, vars = {}) => {
+      return translate(app, key, vars)
     }
 
     // Load statistics from backend
@@ -882,7 +889,7 @@ export default {
           }
         }
       } catch (error) {
-        showError(trans('Error loading statistics'))
+        showError(t('introvox', 'Error loading statistics'))
       } finally {
         statisticsLoading.value = false
       }
@@ -896,12 +903,12 @@ export default {
         })
         if (response.data.success) {
           telemetryEnabled.value = enabled
-          showSuccess(enabled ? trans('Telemetry enabled') : trans('Telemetry disabled'))
+          showSuccess(enabled ? t('introvox', 'Telemetry enabled') : t('introvox', 'Telemetry disabled'))
         }
       } catch (error) {
         // Revert the switch
         telemetryEnabled.value = !enabled
-        showError(trans('Error saving telemetry setting'))
+        showError(t('introvox', 'Error saving telemetry setting'))
       }
     }
 
@@ -911,15 +918,15 @@ export default {
         sendingTelemetry.value = true
         const response = await axios.post(generateUrl('/apps/introvox/admin/telemetry/send'))
         if (response.data.success) {
-          showSuccess(trans('Statistics sent successfully'))
+          showSuccess(t('introvox', 'Statistics sent successfully'))
           // Reload statistics to update last sent time
           await loadStatistics()
         } else {
-          showError(trans('Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
+          showError(t('introvox', 'Error sending statistics') + ': ' + (response.data.error || 'Unknown error'))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
-        showError(trans('Error sending statistics') + ': ' + errorMsg)
+        showError(t('introvox', 'Error sending statistics') + ': ' + errorMsg)
       } finally {
         sendingTelemetry.value = false
       }
@@ -927,14 +934,14 @@ export default {
 
     // Format date helper
     const formatDate = (timestamp) => {
-      if (!timestamp) return trans('Never')
+      if (!timestamp) return t('introvox', 'Never')
       const date = new Date(timestamp * 1000)
       return date.toLocaleString()
     }
 
     // Helper function to format group names for display
     const formatGroupNames = (groupIds) => {
-      if (!groupIds || groupIds.length === 0) return trans('All users')
+      if (!groupIds || groupIds.length === 0) return t('introvox', 'All users')
       const names = groupIds.map(id => {
         const group = availableGroups.value.find(g => g.id === id)
         return group ? group.displayName : id
@@ -1050,7 +1057,7 @@ export default {
       toggleTelemetry,
       sendTelemetryNow,
       formatDate,
-      t: trans
+      t
     }
   }
 }

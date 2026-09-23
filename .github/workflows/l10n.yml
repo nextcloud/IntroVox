@@ -6,6 +6,12 @@
 # stayed untranslatable from 2026-06 onwards: the sync-bot deleted the POT, the
 # .gitignore rule kept it from coming back, and no build ever complained.
 #
+# The most important check here is the bot-visibility simulation in
+# tests-js/l10n-bot-visibility.test.js. Our committed POT is NOT what Transifex
+# ingests: the bot regenerates it with its own extractor, which only sees
+# t('introvox', '…'). A string can be in our POT, valid and committed, and still
+# never reach a translator.
+#
 # It is CHECK-ONLY on purpose — it never writes, commits or pushes. On a red run,
 # run `npm run l10n:push` locally, commit the POT + manifest, and push to GitHub
 # (the Nextcloud bot reads the POT from there, not from Forgejo). An auto-commit
