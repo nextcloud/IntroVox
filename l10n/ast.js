@@ -1,0 +1,14 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Reset" : "Reafitar",
+    "Need help?" : "¿Precises ayuda?",
+    "Report an issue" : "Informar d'un problema",
+    "Source code" : "Códigu fonte",
+    "Back" : "Atrás",
+    "Done" : "Fecho",
+    "Next" : "Siguiente",
+    "Skip" : "Saltar",
+    "Settings saved" : "Guardóse la configuración"
+},
+"nplurals=2; plural=(n != 1);");

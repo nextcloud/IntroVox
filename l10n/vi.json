@@ -1,0 +1,26 @@
+{ "translations": {
+    "Unsaved changes" : "Thay đổi chưa được lưu",
+    "Never" : "Không bao giờ",
+    "Settings" : "Thiết lập",
+    "Cancel" : "Cancel",
+    "Export" : "Xuất ra",
+    "Import" : "Nhập vào",
+    "Reset" : "Đặt lại",
+    "Save changes" : "Lưu thay đổi",
+    "Loading …" : "Đang tải …",
+    "Enabled" : "Đá kích hoạt",
+    "Disabled" : "Đã vô hiệu",
+    "Edit" : "Chỉnh sửa",
+    "Delete" : "Delete",
+    "Title" : "Tên",
+    "Save" : "Save",
+    "Need help?" : "Cần hỗ trợ ?",
+    "Report an issue" : "Báo cáo vấn đề",
+    "Source code" : "Mã nguồn",
+    "Back" : "Trở lại",
+    "Done" : "Hoàn tất",
+    "Next" : "Tiếp theo",
+    "Skip" : "Bỏ qua",
+    "Settings saved" : "Cấu hình đã được lưu"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

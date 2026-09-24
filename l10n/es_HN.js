@@ -1,0 +1,23 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Unsaved changes" : "Cambios no guardados",
+    "Never" : "Nunca",
+    "Cancel" : "Cancel",
+    "Export" : "Exportar",
+    "Import" : "Importar",
+    "Reset" : "Restablecer",
+    "Save changes" : "Guardar cambios",
+    "Enabled" : "Habilitado",
+    "Disabled" : "Deshabilitado",
+    "Edit" : "Editar",
+    "Delete" : "Delete",
+    "Title" : "Título",
+    "Save" : "Save",
+    "Need help?" : "¿Necesitas ayuda?",
+    "Source code" : "Código fuente",
+    "Skip" : "Saltar",
+    "Settings saved" : "Se han guardado las configuraciones ",
+    "Save settings" : "Guardar configuraciones"
+},
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
