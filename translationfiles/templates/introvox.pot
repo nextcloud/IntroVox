@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IntroVox 1.7.9\n"
 "Report-Msgid-Bugs-To: translations@nextcloud.com\n"
-"POT-Creation-Date: 2026-09-23 05:25+0000\n"
+"POT-Creation-Date: 2026-09-24 13:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -207,19 +207,19 @@ msgstr ""
 msgid "Error exporting steps"
 msgstr ""
 
-msgid "Error exporting steps: %s"
+msgid "Error exporting steps: {error}"
 msgstr ""
 
 msgid "Error importing steps"
 msgstr ""
 
-msgid "Error importing steps: %s"
+msgid "Error importing steps: {error}"
 msgstr ""
 
 msgid "Error loading statistics"
 msgstr ""
 
-msgid "Error loading steps: %s"
+msgid "Error loading steps: {error}"
 msgstr ""
 
 msgid "Error resetting"
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Error saving telemetry setting"
 msgstr ""
 
-msgid "Error saving: %s"
+msgid "Error saving: {error}"
 msgstr ""
 
 msgid "Error sending statistics"
@@ -252,7 +252,7 @@ msgstr ""
 msgid "Firefox currently does not support PWA installation"
 msgstr ""
 
-msgid "For example: %s"
+msgid "For example: {example}"
 msgstr ""
 
 msgid "For the best experience: use Chrome, Edge or Safari"
@@ -280,6 +280,9 @@ msgid "ID (not editable)"
 msgstr ""
 
 msgid "Import"
+msgstr ""
+
+msgid "Imported {count} steps ({language})"
 msgstr ""
 
 msgid "Install Nextcloud in Opera"
@@ -471,7 +474,7 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-msgid "Statistics sent successfully"
+msgid "Statistics sent"
 msgstr ""
 
 msgid "Step"
@@ -486,13 +489,10 @@ msgstr ""
 msgid "Steps"
 msgstr ""
 
-msgid "Steps exported successfully!"
+msgid "Steps exported"
 msgstr ""
 
 msgid "Steps saved"
-msgstr ""
-
-msgid "Successfully imported %s steps for language %s"
 msgstr ""
 
 msgid "Support"

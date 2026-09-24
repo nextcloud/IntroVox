@@ -186,7 +186,7 @@
             <input
               v-model="editingData.title"
               type="text"
-              :placeholder="t('introvox', 'For example: %s', {example: '👋 ' + t('introvox', 'Welcome to Nextcloud')})"
+              :placeholder="t('introvox', 'For example: {example}', {example: '👋 ' + t('introvox', 'Welcome to Nextcloud')})"
               required
             />
           </div>
@@ -206,7 +206,7 @@
             <input
               v-model="editingData.attachTo"
               type="text"
-              :placeholder="t('introvox', 'For example: %s', {example: '.app-menu__waffle, .unified-search-input, #user-menu'})"
+              :placeholder="t('introvox', 'For example: {example}', {example: '.app-menu__waffle, .unified-search-input, #user-menu'})"
             />
             <small class="hint">{{ t('introvox', 'Leave empty for a centered step.') }}</small>
             <small class="hint">{{ t('introvox', 'Tip: most apps and settings live inside menus (the apps "waffle" top-left, the avatar top-right) and only exist in the page once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search.') }}</small>
@@ -514,7 +514,7 @@ export default {
         originalSteps.value = JSON.parse(JSON.stringify(response.data.steps))
         hasChanges.value = false
       } catch (error) {
-        showError(t('introvox', 'Error loading steps: %s', {error: error.message}))
+        showError(t('introvox', 'Error loading steps: {error}', {error: error.message}))
       } finally {
         loading.value = false
       }
@@ -740,7 +740,7 @@ export default {
         // New override may have been created; refresh the dropdown
         await loadOverrides()
       } catch (error) {
-        showError(t('introvox', 'Error saving: %s', {error: error.message}))
+        showError(t('introvox', 'Error saving: {error}', {error: error.message}))
       } finally {
         loading.value = false
       }
@@ -793,9 +793,9 @@ export default {
           document.body.removeChild(link)
           window.URL.revokeObjectURL(url)
 
-          showSuccess(t('introvox', 'Steps exported successfully!'))
+          showSuccess(t('introvox', 'Steps exported'))
         } else {
-          showError(t('introvox', 'Error exporting steps: %s', { error: response.data.error }))
+          showError(t('introvox', 'Error exporting steps: {error}', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
@@ -827,9 +827,9 @@ export default {
 
         if (response.data.success) {
           showSuccess(
-            t('introvox', 'Successfully imported %s steps for language %s', {
+            t('introvox', 'Imported {count} steps ({language})', {
               count: response.data.stepsCount,
-              lang: response.data.language
+              language: response.data.language
             })
           )
 
@@ -841,7 +841,7 @@ export default {
           // Reload steps to show imported data
           await loadSteps()
         } else {
-          showError(t('introvox', 'Error importing steps: %s', { error: response.data.error }))
+          showError(t('introvox', 'Error importing steps: {error}', { error: response.data.error }))
         }
       } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
@@ -918,7 +918,7 @@ export default {
         sendingTelemetry.value = true
         const response = await axios.post(generateUrl('/apps/introvox/admin/telemetry/send'))
         if (response.data.success) {
-          showSuccess(t('introvox', 'Statistics sent successfully'))
+          showSuccess(t('introvox', 'Statistics sent'))
           // Reload statistics to update last sent time
           await loadStatistics()
         } else {
