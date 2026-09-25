@@ -1,0 +1,22 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Never" : "Aldri",
+    "Settings" : "Innstillingar",
+    "Support" : "Støtte",
+    "Cancel" : "Avbryt",
+    "Export" : "Eksporter",
+    "Import" : "Importer",
+    "Save changes" : "Lagre endringar",
+    "Drag to reorder" : "Dra for å endre rekkefylgje",
+    "Disabled" : "Deaktivert",
+    "Edit" : "Rediger",
+    "Delete" : "Delete",
+    "Save" : "Save",
+    "Need help?" : "Treng du hjelp?",
+    "Back" : "Tilbake",
+    "Done" : "Ferdig",
+    "Skip" : "Hopp over",
+    "Saving …" : "Lagrar …"
+},
+"nplurals=2; plural=(n != 1);");
