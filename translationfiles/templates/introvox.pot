@@ -1,0 +1,631 @@
+# IntroVox translation template.
+# Copyright (C) 2026 VoxCloud
+# This file is distributed under the AGPL-3.0 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IntroVox 1.7.9\n"
+"Report-Msgid-Bugs-To: translations@nextcloud.com\n"
+"POT-Creation-Date: 2026-09-24 13:02+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>"
+msgstr ""
+
+msgid "<p><strong>Finding your way around:</strong></p><ul><li>Use the <strong>apps menu</strong> (top left) to switch between apps</li><li>Open your <strong>avatar</strong> (top right) for your account and settings</li><li>Use the <strong>search bar</strong> to quickly find files and more</li></ul>"
+msgstr ""
+
+msgid "<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>"
+msgstr ""
+
+msgid "<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>"
+msgstr ""
+
+msgid "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>"
+msgstr ""
+
+msgid "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>"
+msgstr ""
+
+msgid "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>"
+msgstr ""
+
+msgid "<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>"
+msgstr ""
+
+msgid "⚙️ Your account & settings"
+msgstr ""
+
+msgid "⚠️ When enabled, you will never see the introduction tour again, even after app updates. Your administrator can override this setting by using the \"Show wizard to all users\" button in the admin settings, which will reset your preference and show the wizard again."
+msgstr ""
+
+msgid "⚡ Faster to open (no browser needed)"
+msgstr ""
+
+msgid "✨ Important features"
+msgstr ""
+
+msgid "✨ Own app icon on your home screen/dock"
+msgstr ""
+
+msgid "🎉 Done!"
+msgstr ""
+
+msgid "🎯 Full focus without browser tabs"
+msgstr ""
+
+msgid "🎯 Getting started"
+msgstr ""
+
+msgid "👋 Welcome to Nextcloud"
+msgstr ""
+
+msgid "💡 Useful tips"
+msgstr ""
+
+msgid "💡 You can also skip this step and install later whenever you want."
+msgstr ""
+
+msgid "📁 Files & apps"
+msgstr ""
+
+msgid "📱 Also works offline for some features"
+msgstr ""
+
+msgid "🔍 Search"
+msgstr ""
+
+msgid "A unique hash of your instance URL (privacy-friendly identifier)"
+msgstr ""
+
+msgid "About IntroVox"
+msgstr ""
+
+msgid "Active users (30d)"
+msgstr ""
+
+msgid "Add first step"
+msgstr ""
+
+msgid "Add language override"
+msgstr ""
+
+msgid "Add override"
+msgstr ""
+
+msgid "Add step"
+msgstr ""
+
+msgid "All users"
+msgstr ""
+
+msgid "All users (no restriction)"
+msgstr ""
+
+msgid "Anonymous usage statistics"
+msgstr ""
+
+msgid "Any personal or sensitive data"
+msgstr ""
+
+msgid "Are you sure you want to delete this step?"
+msgstr ""
+
+msgid "Attach to element (CSS selector)"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Basic server configuration (database, OS, web server, language, timezone)"
+msgstr ""
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Centered step"
+msgstr ""
+
+msgid "Click <strong>File</strong> in the menu bar"
+msgstr ""
+
+msgid "Click <strong>Install</strong>"
+msgstr ""
+
+msgid "Click the <strong>install icon</strong> in the address bar (right)"
+msgstr ""
+
+msgid "Click/tap <strong>Install</strong>"
+msgstr ""
+
+msgid "Click/tap the menu icon"
+msgstr ""
+
+msgid "Completion rate"
+msgstr ""
+
+msgid "Configure wizard availability and languages"
+msgstr ""
+
+msgid "Contact your administrator if you would like to see the guided tour."
+msgstr ""
+
+msgid "Could not load available languages, using English only"
+msgstr ""
+
+msgid "Create a shortcut in Firefox"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete step"
+msgstr ""
+
+msgid "Description of this step …"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Discard override"
+msgstr ""
+
+msgid "Discard the custom steps for this language and fall back to the auto-translated defaults?"
+msgstr ""
+
+msgid "Do you value this app?"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit steps"
+msgstr ""
+
+msgid "Enable wizard for all users"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Error exporting steps"
+msgstr ""
+
+msgid "Error exporting steps: {error}"
+msgstr ""
+
+msgid "Error importing steps"
+msgstr ""
+
+msgid "Error importing steps: {error}"
+msgstr ""
+
+msgid "Error loading statistics"
+msgstr ""
+
+msgid "Error loading steps: {error}"
+msgstr ""
+
+msgid "Error resetting"
+msgstr ""
+
+msgid "Error restarting tour"
+msgstr ""
+
+msgid "Error saving global settings"
+msgstr ""
+
+msgid "Error saving settings"
+msgstr ""
+
+msgid "Error saving telemetry setting"
+msgstr ""
+
+msgid "Error saving: {error}"
+msgstr ""
+
+msgid "Error sending statistics"
+msgstr ""
+
+msgid "Error triggering show to all"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Firefox currently does not support PWA installation"
+msgstr ""
+
+msgid "For example: {example}"
+msgstr ""
+
+msgid "For the best experience: use Chrome, Edge or Safari"
+msgstr ""
+
+msgid "Global settings"
+msgstr ""
+
+msgid "Global settings saved"
+msgstr ""
+
+msgid "Got it"
+msgstr ""
+
+msgid "Help improve IntroVox by sharing anonymous usage statistics."
+msgstr ""
+
+msgid "How to install the app:"
+msgstr ""
+
+msgid "HTML content placeholder"
+msgstr ""
+
+msgid "ID (not editable)"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Imported {count} steps ({language})"
+msgstr ""
+
+msgid "Install Nextcloud in Opera"
+msgstr ""
+
+msgid "Install Nextcloud on your Android"
+msgstr ""
+
+msgid "Install Nextcloud on your computer"
+msgstr ""
+
+msgid "Install Nextcloud on your iPhone/iPad"
+msgstr ""
+
+msgid "Install Nextcloud on your Mac"
+msgstr ""
+
+msgid "Instance information"
+msgstr ""
+
+msgid "IntroVox"
+msgstr ""
+
+msgid "IntroVox is free and open source (AGPL-3.0), with no user limit and no paid features. Everything the app does is available to everyone."
+msgstr ""
+
+msgid "IntroVox is part of a range of apps that extend Nextcloud — from intranet and metadata to room booking and forms. One coherent experience, all open source."
+msgstr ""
+
+msgid "IntroVox, Nextcloud, and PHP version numbers"
+msgstr ""
+
+msgid "Languages with overrides"
+msgstr ""
+
+msgid "Last report sent:"
+msgstr ""
+
+msgid "Leave empty for a centered step."
+msgstr ""
+
+msgid "Leave empty to show to all users, or select groups to restrict visibility"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Loading …"
+msgstr ""
+
+msgid "Look in the menu for options like \"Install\" or \"Add to home screen\""
+msgstr ""
+
+msgid "Manage the introduction tour steps shown to new users."
+msgstr ""
+
+msgid "Manage wizard steps for each language"
+msgstr ""
+
+msgid "Manage your introduction tour preferences."
+msgstr ""
+
+msgid "Need help?"
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "New step"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Nextcloud is now available as an app!"
+msgstr ""
+
+msgid "Nextcloud now appears as an app on your home screen!"
+msgstr ""
+
+msgid "Nextcloud now appears in your Dock as an app!"
+msgstr ""
+
+msgid "Nextcloud now opens as an app in its own window!"
+msgstr ""
+
+msgid "No steps defined yet."
+msgstr ""
+
+msgid "Or use Chrome/Edge for the full app experience"
+msgstr ""
+
+msgid "Or: click the menu (three dots) → <strong>\"Install Nextcloud\"</strong>"
+msgstr ""
+
+msgid "Or: click the menu (three dots) → <strong>\"More tools\"</strong> → <strong>\"Apps\"</strong> → <strong>\"Install this site as an app\"</strong>"
+msgstr ""
+
+msgid "Override discarded — language now uses auto-translated defaults"
+msgstr ""
+
+msgid "Permanently disable the introduction tour"
+msgstr ""
+
+msgid "Pick a language to customise. Until you save, no data is written."
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Questions?"
+msgstr ""
+
+msgid "Report an issue"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Restart tour now"
+msgstr ""
+
+msgid "Restarting tour …"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Run into a problem or missing something? Report it on GitHub and we will take a look."
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Saving …"
+msgstr ""
+
+msgid "Scroll down and tap <strong>\"Add to Home Screen\"</strong>"
+msgstr ""
+
+msgid "Search language …"
+msgstr ""
+
+msgid "See the other apps"
+msgstr ""
+
+msgid "Select <strong>\"Add to Dock\"</strong>"
+msgstr ""
+
+msgid "Select <strong>\"Install Nextcloud\"</strong>"
+msgstr ""
+
+msgid "Send report now"
+msgstr ""
+
+msgid "Sending …"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings saved"
+msgstr ""
+
+msgid "Share anonymous usage statistics"
+msgstr ""
+
+msgid "Show wizard to all users"
+msgstr ""
+
+msgid "Skip"
+msgstr ""
+
+msgid "Skip and don't show again"
+msgstr ""
+
+msgid "Source code"
+msgstr ""
+
+msgid "Start tour"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Statistics sent"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Step content or titles"
+msgstr ""
+
+msgid "Step counts per language (e.g., EN: 8, NL: 5)"
+msgstr ""
+
+msgid "Steps"
+msgstr ""
+
+msgid "Steps exported"
+msgstr ""
+
+msgid "Steps saved"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "Tap <strong>\"Install app\"</strong> or <strong>\"Add to home screen\"</strong>"
+msgstr ""
+
+msgid "Tap <strong>\"Install\"</strong>"
+msgstr ""
+
+msgid "Tap <strong>Add to Home Screen</strong>"
+msgstr ""
+
+msgid "Tap <strong>Add</strong> in the top right"
+msgstr ""
+
+msgid "Tap <strong>Install</strong>"
+msgstr ""
+
+msgid "Tap the <strong>Share</strong> icon (square with up arrow) at the bottom"
+msgstr ""
+
+msgid "Tap the menu icon (three dots) in the top right"
+msgstr ""
+
+msgid "Telemetry disabled"
+msgstr ""
+
+msgid "Telemetry enabled"
+msgstr ""
+
+msgid "Text (HTML)"
+msgstr ""
+
+msgid "Thank you for helping improve IntroVox!"
+msgstr ""
+
+msgid "The introduction tour is currently disabled by your administrator."
+msgstr ""
+
+msgid "The tour is auto-translated into every Nextcloud-supported language. {n} languages currently have an admin override."
+msgstr ""
+
+msgid "This will reset the wizard for ALL users, including those who have permanently disabled it in their personal settings. Their \"disable wizard\" preference will be cleared, and the wizard will be shown again on their next login."
+msgstr ""
+
+msgid "This will show the wizard again to all users who have already seen it. Continue?"
+msgstr ""
+
+msgid "Times skipped"
+msgstr ""
+
+msgid "Tip: most apps and settings live inside menus (the apps \"waffle\" top-left, the avatar top-right) and only exist in the page once opened. Point at the always-visible button instead — e.g. .app-menu__waffle for apps, #user-menu for settings, .unified-search-input for search."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Top"
+msgstr ""
+
+msgid "Total steps"
+msgstr ""
+
+msgid "Total user count and active users"
+msgstr ""
+
+msgid "Total users"
+msgstr ""
+
+msgid "Unsaved changes"
+msgstr ""
+
+msgid "Use Nextcloud as a real app!"
+msgstr ""
+
+msgid "Use Nextcloud as an app"
+msgstr ""
+
+msgid "User names or email addresses"
+msgstr ""
+
+msgid "Users completed"
+msgstr ""
+
+msgid "Users started"
+msgstr ""
+
+msgid "Using default settings. Save your changes to persist them."
+msgstr ""
+
+msgid "Visible to"
+msgstr ""
+
+msgid "Visible to groups"
+msgstr ""
+
+msgid "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared."
+msgstr ""
+
+msgid "Welcome to Nextcloud"
+msgstr ""
+
+msgid "What we collect:"
+msgstr ""
+
+msgid "What we never collect:"
+msgstr ""
+
+msgid "When disabled, the wizard will not automatically start for new users."
+msgstr ""
+
+msgid "Wizard usage"
+msgstr ""
+
+msgid "Wizard usage statistics and telemetry settings"
+msgstr ""
+
+msgid "Wizard will be shown to all users on their next login"
+msgstr ""
+
+msgid "You can however create a bookmark for quick access"
+msgstr ""
+
+msgid "You can install Nextcloud as an app on your device. It then works just like any other app:"
+msgstr ""
+
+msgid "You have unsaved changes. Do you want to discard them?"
+msgstr ""
+
+msgid "Your actual server URL"
+msgstr ""
+
+msgid "Your browser may support app installation"
+msgstr ""
