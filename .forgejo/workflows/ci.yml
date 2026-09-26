@@ -1,0 +1,113 @@
+# Forgejo Actions: IntroVox CI — lint + static analysis + unit tests.
+#
+# Runs the STANDALONE suites (no running Nextcloud needed). Everything here is
+# fast and runs on every push and PR.
+#
+# NOT here (yet): PHPUnit and Psalm. IntroVox has no composer.json, so there is
+# no autoloader and no OCP stubs to resolve `OCP\*` against. Adding those is a
+# separate step — see RELEASE_CHECKLIST.md §4b.
+#
+# Modelled on formvox/.forgejo/workflows/ci.yml; the runner-specific workarounds
+# there (no PHP on the image, no setup-php mirror, pipx for semgrep) apply here
+# too and are kept verbatim.
+
+name: CI
+
+on:
+  # Every branch push, so feature branches are gated too.
+  push:
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  php:
+    name: PHP — syntax lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The runner image has Node for the actions but no PHP, and
+      # data.forgejo.org does not mirror shivammathur/setup-php, so install PHP
+      # on the host via ondrej/php.
+      - name: Install PHP on the host
+        run: |
+          set -e
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -qq
+          apt-get install -y --no-install-recommends software-properties-common >/dev/null
+          add-apt-repository -y ppa:ondrej/php >/dev/null
+          apt-get update -qq
+          apt-get install -y --no-install-recommends php8.2-cli >/dev/null
+          php -v
+
+      # appinfo/info.xml declares php min-version 8.1; we lint on 8.2 because
+      # that is the floor NC 32+ realistically runs on and it matches FormVox.
+      - name: Syntax check every PHP file
+        run: |
+          set -e
+          find lib templates appinfo -name '*.php' -print0 \
+            | xargs -0 -n1 php -l \
+            | grep -v 'No syntax errors' && exit 1 || true
+          echo "PHP syntax OK"
+
+  js:
+    name: JS — unit + l10n guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Catches %s-style placeholders that translate() silently never
+      # substitutes, plus helper shapes the NC bot extractor cannot see.
+      - name: l10n string lint
+        run: npm run l10n:lint
+
+      # Fails when the source strings in the code drift from the committed
+      # manifest — i.e. when someone changed a t() string without pushing the
+      # POT to Transifex.
+      - name: l10n sync guard
+        run: npm run lint:l10n
+
+      - name: Unit tests
+        run: npm run test:js
+
+      # The real build, including the prebuild guard. Proves the bundle still
+      # compiles before a release does.
+      - name: Production build
+        run: npm run build
+
+  security:
+    name: Security — Semgrep SAST
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pipx, not `pip install --break-system-packages`: the runner's pip is too
+      # old to know that flag, and pipx is the right tool for a CLI anyway.
+      - name: Install Semgrep on the host
+        run: |
+          set -e
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -qq
+          apt-get install -y --no-install-recommends python3 python3-pip python3-venv pipx >/dev/null
+          pipx install semgrep
+          pipx ensurepath
+
+      # Scans lib/ for injection, XSS, path-traversal, SSRF and secrets.
+      # --error makes any finding fail the build.
+      - name: Semgrep scan (lib/)
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          semgrep --config p/php --config p/security-audit --config p/secrets \
+            --error --disable-version-check lib/

@@ -14,7 +14,7 @@ Follow this checklist for every release to the Nextcloud App Store.
   openssl rsa -in introvox.key -pubout 2>/dev/null | openssl md5
 
   # Hash of App Store certificate (must be IDENTICAL!)
-  curl -s "https://apps.nextcloud.com/api/v1/apps.json" | \
+  curl -sL "https://apps.nextcloud.com/api/v1/apps.json" | \
     python3 -c "import json,sys; [print(a['certificate']) for a in json.load(sys.stdin) if a['id']=='introvox']" | \
     openssl x509 -pubkey -noout 2>/dev/null | openssl md5
   ```
@@ -313,6 +313,34 @@ in that window — do not wait on those.
 
 ## 4. Build & Testing
 
+### 4a. Run what CI runs — before you tag
+
+`.forgejo/workflows/ci.yml` gates every push. Run the same commands locally
+first, so a release is never cut on a red pipeline:
+
+```bash
+find lib templates appinfo -name '*.php' -print0 | xargs -0 -n1 php -l \
+  | grep -v 'No syntax errors' || echo "PHP syntax OK"
+npm run l10n:lint     # placeholder shapes + extractor-visible helpers
+npm run lint:l10n     # source strings vs committed manifest
+npm run test:js
+npm run build         # includes the prebuild guard
+```
+
+> **`npm run build` alone is not the gate.** Its `prebuild` runs only the l10n
+> sync guard — not the string lint, not the tests, not the PHP syntax sweep. A
+> green build reads like a green pipeline and is not one.
+
+**Not yet covered by CI (known gap):** there are no PHP unit tests and no static
+analysis, because IntroVox has no `composer.json` and therefore no autoloader
+and no `nextcloud/ocp` stubs to resolve `OCP\*` against. Until that exists,
+`lib/` is gated by syntax linting and Semgrep only — every behavioural change in
+PHP must be verified by hand in the manual list below. FormVox has the full
+setup (`composer.json` + `phpunit.xml` + `psalm.xml` + `tests/bootstrap.php`)
+and is the template to copy when closing this.
+
+### 4b. Manual verification
+
 - [ ] Remove `node_modules/` and run `npm ci` (clean install)
 - [ ] Run `npm run build` without errors or warnings
 - [ ] Check bundle size (no unexpected growth)
@@ -397,13 +425,44 @@ in that window — do not wait on those.
 
 **ALWAYS check** the tarball for sensitive data before uploading!
 
-```bash
-# Check for sensitive files
-tar -tzf introvox-x.x.x.tar.gz | grep -iE '(internal|credential|\.key|\.env|deploy)'
+> **The old content-grep here was removed — it did not work.** Piping
+> `tar -xzf -O` into one blob matched webpack-minified bundle bytes by
+> coincidence (`Math.pow(2,…)` contains the literal `ow(2,` etc.), so it cried
+> wolf on every release and got ignored. That is worse than no check. Use the
+> *anchored path* grep below, and grep content per text-file extension on an
+> extracted copy instead of on the whole blob.
 
-# Search for IP addresses, passwords
-tar -xzf introvox-x.x.x.tar.gz -O 2>/dev/null | \
-  grep -iE '(password\s*=|api_key\s*=|secret\s*=|145\.|192\.168\.)' | head -20
+```bash
+V=x.x.x
+
+# 1. Sensitive PATHS — anchored so it cannot match inside a minified bundle.
+#    Prints nothing on a good tarball.
+tar -tzf introvox-$V.tar.gz | grep -iE \
+  '\.(key|pem|crt|env)$|/\.git/|/src/|/node_modules/|\.tx/|translationfiles/|deploy\.sh$|push-to-github\.sh$|push-all\.sh$|RELEASE_CHECKLIST\.md$|CLAUDE\.md$|Sample_files/'
+
+# 2. Root folder must be exactly "introvox/"
+tar -tzf introvox-$V.tar.gz | head -1
+
+# 3. Required directories must be PRESENT (a count of 0 is a broken package —
+#    the old check could only spot files that should not be there, never files
+#    that went missing).
+for dir in appinfo lib l10n templates js img css; do
+  printf '%-12s %s\n' "$dir" "$(tar -tzf introvox-$V.tar.gz | grep -c "^introvox/$dir/")"
+done
+
+# 4. src/ must be absent (expect 0)
+tar -tzf introvox-$V.tar.gz | grep -c 'introvox/src/'
+
+# 5. Shipped translations: nl/de_DE/fr must be present AND non-trivial.
+tar -tzf introvox-$V.tar.gz | grep -E 'l10n/(nl|de_DE|fr)\.(js|json)$'
+tar -xzOf introvox-$V.tar.gz introvox/l10n/nl.js | grep -oc '" : "'
+
+# 6. Content scan on an EXTRACTED copy, per text extension — never on the blob.
+tmp=$(mktemp -d) && tar -xzf introvox-$V.tar.gz -C "$tmp"
+grep -rIl --include='*.php' --include='*.json' --include='*.xml' --include='*.md' \
+  -E '(password|api_key|secret|token)\s*=\s*["'\''][^"'\'']+' "$tmp" || echo "clean"
+grep -rIl --include='*.php' --include='*.xml' -E '\b(145\.|178\.63\.|192\.168\.)' "$tmp" || echo "clean"
+rm -rf "$tmp"
 ```
 
 **Do NOT include in tarball:**
@@ -449,7 +508,7 @@ The signing key is at `/Users/rikdekker/Documents/Development/.claude/NextcloudA
 ```bash
 # These two MD5 hashes must be identical
 openssl rsa -in /Users/rikdekker/Documents/Development/.claude/NextcloudApps/Keys/introvox.key -pubout 2>/dev/null | openssl md5
-curl -s "https://apps.nextcloud.com/api/v1/apps.json" | \
+curl -sL "https://apps.nextcloud.com/api/v1/apps.json" | \
   python3 -c "import json,sys; [print(a['certificate']) for a in json.load(sys.stdin) if a['id']=='introvox']" | \
   openssl x509 -pubkey -noout 2>/dev/null | openssl md5
 ```
@@ -523,6 +582,48 @@ The API-token page used to be at `https://apps.nextcloud.com/account/api-token` 
 
 ## 9. Post-Release Verification
 
+### 9.0 "Is the release actually out?" — run this before ticking anything below
+
+A release can be built, signed, tested and deployed and still never reach
+anyone: the tag never pushed, the GitHub release left as a draft, the App Store
+upload silently skipped. Each of those leaves the repo looking finished.
+IntraVox shipped 2.4.0 and 2.4.1 this way and only noticed two versions later.
+These four commands assert it, instead of assuming it.
+
+```bash
+V=x.x.x
+
+# 1. Tag exists locally AND on both remotes
+git rev-list -n1 "v$V" >/dev/null 2>&1 && echo "tag ok" || echo "NO TAG"
+git ls-remote --tags origin "v$V" | grep -q . && echo "tag on forgejo" || echo "NOT ON FORGEJO"
+git ls-remote --tags github "v$V" | grep -q . && echo "tag on github" || echo "NOT ON GITHUB"
+
+# 2. GitHub release is published (not a draft) and the asset finished uploading
+gh release view "v$V" --repo nextcloud/IntroVox --json isDraft,assets \
+  -q '"draft=\(.isDraft)  asset=\(.assets[0].state)"' || echo "NO GITHUB RELEASE"
+#    want: draft=false  asset=uploaded
+#    fix:  gh release edit "v$V" --draft=false
+
+# 3. The download URL really serves the tarball.
+#    404 + 9 bytes = still a draft. This is what the App Store would fetch.
+curl -s -o /dev/null -w "%{http_code} %{size_download}\n" -L \
+  "https://github.com/nextcloud/IntroVox/releases/download/v$V/introvox-$V.tar.gz"
+
+# 4. The App Store actually serves the new version (cache-buster is required)
+curl -s -H "Accept: application/json" \
+  "https://apps.nextcloud.com/api/v1/platform/32.0.0/apps.json?t=$(date +%s)" \
+  | python3 -c "import json,sys;a=[x for x in json.load(sys.stdin) if x['id']=='introvox'][0];print('app store:',a['releases'][0]['version'])"
+```
+
+**Ordering gate.** The GitHub release must exist *before* the App Store upload.
+The App Store fetches the tarball from the download URL itself; if the release
+is still a draft it downloads GitHub's 404 page — nine bytes of text — and
+reports `introvox-x.x.x.tar.gz is not a valid tar.gz archive`, which reads like
+a corrupt tarball and costs an hour. A `curl -I` is *not* a reliable substitute
+for check 2 (CDN lag); trust `gh release view --json assets,isDraft`.
+
+### 9.1 Functional verification
+
 - [ ] Install the app from the App Store on a test server
 - [ ] Verify the app works correctly after installation
 - [ ] Check that the version is displayed correctly
@@ -588,6 +689,18 @@ git push github main --tags
 
 ### 4. Create Tarball
 **IMPORTANT:** Root folder must be `introvox` (lowercase, no version number)
+
+**First: assert the working tree matches the tag.** `./deploy.sh` reads the
+version from `package.json`, so a "deploy to test, then package" round can leave
+the tree on a different version than the tag you just cut — and the tarball then
+ships an `info.xml` that disagrees with its own release.
+
+```bash
+git diff --stat vX.Y.Z          # must print nothing
+git status --porcelain          # must print nothing
+# if it does not, and the drift is only the version fields:
+git checkout appinfo/info.xml package.json
+```
 
 ```bash
 TEMP_DIR=$(mktemp -d) && \
