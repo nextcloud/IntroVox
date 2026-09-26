@@ -4,6 +4,33 @@ Follow this checklist for every release to the Nextcloud App Store.
 
 ---
 
+## Start here — the two automated gates
+
+Most of this file is prose you read and judge. Two moments are mechanical
+enough to assert, and both are moments where a release has gone wrong before:
+
+```bash
+./scripts/release-check.sh pre     # before tagging
+./scripts/release-check.sh post    # after uploading to the App Store
+```
+
+`pre` checks version consistency, a clean tree, a free tag, a CHANGELOG section
+dated today, and everything CI runs — then prints how much of the release ships
+in English. `post` asserts that the tag reached both remotes, that the GitHub
+release is published rather than a draft, that the tarball actually downloads,
+and that the App Store serves the new version. It exits non-zero on failure.
+
+They do not replace this checklist — nothing automated checks the signing
+certificate, the tarball contents or whether the app still works. Run the script
+first, then work through the sections below.
+
+> **Why `post` exists.** 1.7.9 sat in the repo for four days looking finished —
+> version bumped, CHANGELOG written, everything pushed — while the App Store
+> still served 1.7.8. IntraVox lost 2.4.0 and 2.4.1 the same way and only
+> noticed two versions later. "It looks done" is not evidence that it shipped.
+
+---
+
 ## 0. Certificate Verification (CRITICAL!)
 
 **Before every release**, verify that your signing key matches the App Store certificate!
