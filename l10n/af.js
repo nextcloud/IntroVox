@@ -1,0 +1,16 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Unsaved changes" : "Onbewaarde veranderinge",
+    "Settings" : "Instellings",
+    "Cancel" : "Cancel",
+    "Export" : "Voer uit",
+    "Import" : "Invoer",
+    "Reset" : "Herstel",
+    "Delete" : "Delete",
+    "Position" : "Posisie",
+    "Save" : "Save",
+    "Need help?" : "Hulp nodig?",
+    "Settings saved" : "Instellings gestoor"
+},
+"nplurals=2; plural=(n != 1);");

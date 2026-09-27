@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Unsaved changes" : "შეუნახავი ცვლილებები",
+    "Never" : "არასდროს",
+    "Settings" : "პარამეტრები",
+    "Cancel" : "Cancel",
+    "Export" : "ექსპორტი",
+    "Import" : "იმპორტი",
+    "Reset" : "საწყის მდოგმარეობაში დაბრუნება",
+    "Save changes" : "ცვილებების შენახვა",
+    "Enabled" : "მოქმედია",
+    "Disabled" : "არაა მოქმედი",
+    "Edit" : "შეცვლა",
+    "Delete" : "Delete",
+    "Title" : "სათაური",
+    "Position" : "პოზიცია",
+    "Save" : "Save",
+    "Need help?" : "გესაჭიროებათ დახმარება?",
+    "Source code" : "კოდი",
+    "Done" : "დასრულდა",
+    "Skip" : "გამოტოვება",
+    "Settings saved" : "პარამეტრები შენახულია",
+    "Save settings" : "პარამეტრების შენახვა"
+},
+"nplurals=2; plural=(n!=1);");

@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Unsaved changes" : "Modificări nesalvate",
+    "Never" : "Niciodată",
+    "Settings" : "Setări",
+    "Cancel" : "Cancel",
+    "Export" : "Exportă",
+    "Import" : "Importă",
+    "Reset" : "Resetare",
+    "Enabled" : "Activat",
+    "Disabled" : "Dezactivați",
+    "Edit" : "Editează",
+    "Delete" : "Delete",
+    "Title" : "Titlu",
+    "Position" : "Poziție",
+    "Save" : "Save",
+    "Need help?" : "Ai nevoie de ajutor?",
+    "Report an issue" : "Raportează o problemă",
+    "Source code" : "Cod sursă",
+    "Back" : "Înapoi",
+    "Done" : "Realizat",
+    "Next" : "Următorul",
+    "Skip" : "Sari peste",
+    "Settings saved" : "Setările au fost salvate",
+    "Save settings" : "Salvează setări"
+},
+"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

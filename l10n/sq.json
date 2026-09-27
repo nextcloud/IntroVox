@@ -1,0 +1,25 @@
+{ "translations": {
+    "Unsaved changes" : "Ndryshime të paruajtura",
+    "Never" : "Kurrë",
+    "Settings" : "Rregullimet",
+    "Cancel" : "Cancel",
+    "Export" : "Eksport",
+    "Import" : "Import",
+    "Reset" : "Rivendos",
+    "Enabled" : "E aktivizuar",
+    "Disabled" : "I/E çaktivizuar",
+    "Edit" : "Përpuno",
+    "Delete" : "Delete",
+    "Title" : "Titulli",
+    "Position" : "Pozicion",
+    "Save" : "Save",
+    "Need help?" : "Ju duhet ndihmë?",
+    "Source code" : "Kodi burim",
+    "Back" : "Mbrapsht",
+    "Done" : "U bë",
+    "Next" : "I ardhshëm",
+    "Skip" : "Kalo",
+    "Settings saved" : "Opsjonet u Ruajtën.",
+    "Save settings" : "Ruaj konfigurimet"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
