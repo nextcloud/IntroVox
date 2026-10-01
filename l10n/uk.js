@@ -27,6 +27,7 @@ OC.L10N.register(
     "Save" : "Save",
     "Total users" : "Всього користувачів",
     "Sending …" : "Надсилання ...",
+    "Any personal or sensitive data" : "Будь-які особисті або чутливі дані",
     "Need help?" : "Потрібна допомога?",
     "Report an issue" : "Повідомити про проблему",
     "Source code" : "Вихідний код",
