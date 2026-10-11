@@ -108,10 +108,12 @@ function getBaseWizardSteps() {
   return [
     {
       id: 'welcome',
+      // TRANSLATORS: Title of the first step of the welcome tour; keep the emoji
       title: t('introvox', '👋 Welcome to Nextcloud'),
       text: t('introvox', '<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>'),
       buttons: [
         {
+          // TRANSLATORS: Button (verb): ends the tour now
           text: t('introvox', 'Skip'),
           action: 'markCompleted',
           secondary: true
@@ -124,6 +126,7 @@ function getBaseWizardSteps() {
     },
     {
       id: 'files',
+      // TRANSLATORS: Title of a step of the welcome tour; keep the emoji
       title: t('introvox', '📁 Files & apps'),
       text: t('introvox', '<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>'),
       // On NC 34 the apps live behind the waffle, so open it first and point at
@@ -165,6 +168,7 @@ function getBaseWizardSteps() {
     },
     {
       id: 'search',
+      // TRANSLATORS: Noun: title of a step of the welcome tour about the search; keep the emoji
       title: t('introvox', '🔍 Search'),
       text: t('introvox', '<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you\'re looking for and press Enter.</p>'),
       attachTo: {
@@ -220,7 +224,9 @@ function getBaseWizardSteps() {
     },
     {
       id: 'intro',
+      // TRANSLATORS: Title of a step of the welcome tour; keep the emoji
       title: t('introvox', '🎯 Getting started'),
+      // TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
       text: t('introvox', '<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>'),
       buttons: [
         {
@@ -236,7 +242,9 @@ function getBaseWizardSteps() {
     },
     {
       id: 'features',
+      // TRANSLATORS: Title of a step of the welcome tour; keep the emoji
       title: t('introvox', '✨ Important features'),
+      // TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
       text: t('introvox', '<p><strong>Finding your way around:</strong></p><ul><li>Use the <strong>apps menu</strong> (top left) to switch between apps</li><li>Open your <strong>avatar</strong> (top right) for your account and settings</li><li>Use the <strong>search bar</strong> to quickly find files and more</li></ul>'),
       buttons: [
         {
@@ -252,7 +260,9 @@ function getBaseWizardSteps() {
     },
     {
       id: 'tips',
+      // TRANSLATORS: Title of a step of the welcome tour; keep the emoji
       title: t('introvox', '💡 Useful tips'),
+      // TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
       text: t('introvox', '<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>'),
       buttons: [
         {
@@ -268,6 +278,7 @@ function getBaseWizardSteps() {
     },
     {
       id: 'complete',
+      // TRANSLATORS: Title of the last step of the welcome tour; keep the emoji
       title: t('introvox', '🎉 Done!'),
       text: t('introvox', '<p>You\'re all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>'),
       buttons: [
@@ -321,6 +332,7 @@ export function getWizardSteps() {
           secondary: true
         },
         {
+          // TRANSLATORS: Button: closes the step about installing Nextcloud as an app and goes on
           text: t('introvox', 'Got it'),
           action: function() { this.next() }
         }

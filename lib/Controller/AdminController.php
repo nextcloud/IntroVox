@@ -59,7 +59,8 @@ class AdminController extends Controller {
         $user = $this->userSession->getUser();
         if ($user === null || !$this->groupManager->isAdmin($user->getUID())) {
             return new JSONResponse(
-                ['success' => false, 'error' => 'Admin privileges required'],
+                // TRANSLATORS: Error message: only administrators may do this
+                ['success' => false, 'error' => $this->l10n->t('Administrator privileges required')],
                 Http::STATUS_FORBIDDEN
             );
         }
@@ -280,7 +281,8 @@ class AdminController extends Controller {
             if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang
+                    // TRANSLATORS: Error message; %s is the language code that was refused, such as "en-US!"
+                    'error' => $this->l10n->t('Invalid language code: %s', [$lang])
                 ], 400);
             }
 
@@ -290,7 +292,7 @@ class AdminController extends Controller {
                 if (!isset($step['id']) || !isset($step['title'])) {
                     return new JSONResponse([
                         'success' => false,
-                        'error' => 'Invalid step data: id and title are required'
+                        'error' => $this->l10n->t('Invalid step data: ID and title are required')
                     ], 400);
                 }
                 $sanitized[] = $this->sanitizeStep($step);
@@ -437,7 +439,7 @@ class AdminController extends Controller {
             if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang
+                    'error' => $this->l10n->t('Invalid language code: %s', [$lang])
                 ], 400);
             }
 
@@ -533,7 +535,7 @@ class AdminController extends Controller {
             if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang
+                    'error' => $this->l10n->t('Invalid language code: %s', [$lang])
                 ], 400);
             }
 
@@ -585,7 +587,8 @@ class AdminController extends Controller {
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid JSON format: ' . json_last_error_msg()
+                    // TRANSLATORS: %s is PHP's own description of the JSON error, in English, such as "Syntax error"
+                    'error' => $this->l10n->t('Invalid JSON format: %s', [json_last_error_msg()])
                 ], 400);
             }
 
@@ -593,7 +596,7 @@ class AdminController extends Controller {
             if (!isset($importData['language']) || !isset($importData['steps']) || !is_array($importData['steps'])) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid import format: missing language or steps'
+                    'error' => $this->l10n->t('Invalid import format: missing language or steps')
                 ], 400);
             }
 
@@ -602,7 +605,7 @@ class AdminController extends Controller {
             if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $lang)) {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Invalid language code: ' . $lang
+                    'error' => $this->l10n->t('Invalid language code: %s', [$lang])
                 ], 400);
             }
 
@@ -613,7 +616,7 @@ class AdminController extends Controller {
                 if (!isset($step['id']) || !isset($step['title'])) {
                     return new JSONResponse([
                         'success' => false,
-                        'error' => 'Invalid step data: id and title are required'
+                        'error' => $this->l10n->t('Invalid step data: ID and title are required')
                     ], 400);
                 }
             }
@@ -748,7 +751,7 @@ class AdminController extends Controller {
             } else {
                 return new JSONResponse([
                     'success' => false,
-                    'error' => 'Failed to send telemetry report'
+                    'error' => $this->l10n->t('Failed to send telemetry report')
                 ], 500);
             }
         } catch (\Exception $e) {

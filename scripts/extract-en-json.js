@@ -130,6 +130,14 @@ function findTranslatorComment(content, index) {
 	const sameLine = lines[lines.length - 1];
 	const inline = sameLine.match(TRANSLATORS_RE);
 	if (inline) return inline[1].trim();
+	// Or after the call on the same line, which the Nextcloud bot also reads
+	// (it takes a TRANSLATORS comment on the current line first). Needed
+	// where a comment above would change what a component sees: an
+	// NcAction* takes its text from the first node of its slot.
+	const lineEnd = content.indexOf('\n', index);
+	const rest = content.slice(index, lineEnd === -1 ? undefined : lineEnd);
+	const trailing = rest.match(/(?:\/\/|<!--)\s*TRANSLATORS:\s?(.*?)\s*(?:-->)?\s*$/);
+	if (trailing) return trailing[1].trim();
 	// Otherwise only a comment on the immediately preceding line(s) attaches.
 	const parts = [];
 	for (let i = lines.length - 2; i >= 0; i--) {

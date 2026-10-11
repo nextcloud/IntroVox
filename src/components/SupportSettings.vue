@@ -2,6 +2,7 @@
 	<div class="support-settings">
 		<!-- Section 1: About IntroVox -->
 		<div class="settings-section">
+			<!-- TRANSLATORS: Section heading. "IntroVox" is the app name -->
 			<h2>{{ t('introvox', 'About IntroVox') }}</h2>
 			<p class="settings-section-desc">
 				{{ t('introvox', 'IntroVox is free and open source (AGPL-3.0), with no user limit and no paid features. Everything the app does is available to everyone.') }}
@@ -19,6 +20,7 @@
 					:href="appsUrl"
 					target="_blank"
 					rel="noopener noreferrer">
+					<!-- TRANSLATORS: Button: opens the website with the other apps of the same makers -->
 					{{ t('introvox', 'See the other apps') }}
 				</NcButton>
 			</div>
@@ -26,6 +28,7 @@
 
 		<!-- Section 3: Help -->
 		<div class="settings-section">
+			<!-- TRANSLATORS: Section heading -->
 			<h2>{{ t('introvox', 'Need help?') }}</h2>
 			<p class="settings-section-desc">
 				{{ t('introvox', 'Run into a problem or missing something? Report it on GitHub and we will take a look.') }}
@@ -35,15 +38,18 @@
 					href="https://github.com/nextcloud/IntroVox/issues"
 					target="_blank"
 					rel="noopener noreferrer">
+					<!-- TRANSLATORS: Button: opens the issue tracker of the app on GitHub -->
 					{{ t('introvox', 'Report an issue') }}
 				</NcButton>
 				<NcButton type="tertiary"
 					href="https://github.com/nextcloud/IntroVox"
 					target="_blank"
 					rel="noopener noreferrer">
+					<!-- TRANSLATORS: Button: opens the source code of the app on GitHub -->
 					{{ t('introvox', 'Source code') }}
 				</NcButton>
 				<p class="cta-contact">
+					<!-- TRANSLATORS: Followed by an email address to write to -->
 					{{ t('introvox', 'Questions?') }}
 					<a href="mailto:info@voxcloud.nl">info@voxcloud.nl</a>
 				</p>

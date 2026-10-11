@@ -16,7 +16,15 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
+        options: {
+          // Template comments stay out of the bundle. vue-loader keeps them
+          // otherwise, and they then become real comment nodes: the
+          // <!-- TRANSLATORS: … --> hints would ship, and a comment in a
+          // slot is a node a component can mistake for its content
+          // (NcAction* take their label from the first node of the slot).
+          compilerOptions: { comments: false }
+        }
       },
       {
         test: /\.css$/,

@@ -46,7 +46,9 @@ const APP_ID = 'introvox';
 const collapsePhpWhitespace = (s) => s.replace(/[ \t\n\r\f\v]+/g, ' ');
 const { computeSourceStrings } = require(path.join(ROOT, 'scripts/extract-en-json.js'));
 
-// Collect .vue/.js under src/, honouring .l10nignore the way the bot does.
+// Collect .vue/.js/.mjs/.ts under src/, honouring .l10nignore the way the bot
+// does. translationtool hands .mjs and .ts to xgettext too (the guided-tours
+// work added src/**/*.mjs), so a t() call there must follow the same rules.
 const IGNORED = fs.readFileSync(path.join(ROOT, '.l10nignore'), 'utf8')
 	.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
 
@@ -61,7 +63,7 @@ function walk(dir, acc = []) {
 		const rel = path.relative(ROOT, full);
 		if (isIgnored(rel)) continue;
 		if (e.isDirectory()) walk(full, acc);
-		else if (/\.(vue|js)$/.test(e.name)) acc.push(full);
+		else if (/\.(vue|js|mjs|ts)$/.test(e.name)) acc.push(full);
 	}
 	return acc;
 }
@@ -96,9 +98,17 @@ function botSees(file) {
 		for (const m of templateMatch[1].matchAll(re)) {
 			if (m[1] === APP_ID) found.add(collapsePhpWhitespace(m[2].replace(/\\'/g, "'")));
 		}
+
+		// n('introvox', 'singular', 'plural', count): translationtool.php has
+		// a second template regex for plurals, also needing the app id first
+		// and both forms on one line. The singular is the msgid.
+		const plural = new RegExp(`\\Wn\\s*\\(\\s*'?([\\w.]+)'?,\\s*'((?:[^'\\\\]|\\\\.)*)'\\s*,\\s*'((?:[^'\\\\]|\\\\.)*)'`, 'g');
+		for (const m of templateMatch[1].matchAll(plural)) {
+			if (m[1] === APP_ID) found.add(collapsePhpWhitespace(m[2].replace(/\\'/g, "'")));
+		}
 	}
 
-	// <script> (or a plain .js): xgettext with --keyword=t:2 / --keyword=n:2,3.
+	// <script> (or a plain .js/.mjs/.ts): xgettext with --keyword=t:2 / --keyword=n:2,3.
 	const scripts = isVue ? scriptMatches.map((m) => m[1]) : [source];
 	for (const body of scripts) {
 		const re = new RegExp(`(?<![\\w$.])[tn]\\(\\s*'${APP_ID}'\\s*,\\s*'((?:[^'\\\\]|\\\\.)*)'`, 'g');
@@ -179,3 +189,84 @@ describe('Transifex bot visibility', () => {
 			: '');
 	});
 });
+
+/**
+ * TRANSLATORS hints: a hint in the code is no proof that Transifex gets it.
+ * The bot reads a <template> hint only from the line directly above the
+ * t() call, or from that line itself; xgettext (scripts, PHP) attaches a
+ * `//` hint to the first call on the next line. Our own POT pipeline
+ * (extract-en-json.js) must agree, or the POT we review misleads.
+ */
+describe('TRANSLATORS hints', () => {
+	const files = [...walk(path.join(ROOT, 'src')), ...walkPhp(path.join(ROOT, 'lib'))];
+	const { comments } = computeSourceStrings();
+	const CALL = /(?<![\w$])(?:t|n)\(\s*(?:'introvox'\s*,\s*)?'((?:[^'\\]|\\.)*)'/;
+
+	test('hints are written TRANSLATORS: with a colon, which our extractor needs', () => {
+		const offenders = [];
+		for (const f of files) {
+			fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+				if (/(?:\/\/|<!--)\s*TRANSLATORS(?!:)/.test(line)) offenders.push(`${path.relative(ROOT, f)}:${i + 1}`);
+			});
+		}
+		assert.deepEqual(offenders, []);
+	});
+
+	test('no other comment says TRANSLATORS', () => {
+		// xgettext --add-comments=TRANSLATORS starts a hint at the word
+		// anywhere in a comment: "… keeps its TRANSLATORS hint" above a real
+		// hint reached Transifex as part of it.
+		const offenders = [];
+		for (const f of files) {
+			fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+				if (/TRANSLATORS/.test(line) && !/(?:\/\/|<!--)\s*TRANSLATORS:/.test(line)) {
+					offenders.push(`${path.relative(ROOT, f)}:${i + 1}`);
+				}
+			});
+		}
+		assert.deepEqual(offenders, []);
+	});
+
+	test('a template hint is one line, so the bot can read it', () => {
+		const offenders = [];
+		for (const f of files) {
+			fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+				if (/<!--\s*TRANSLATORS/.test(line) && !line.includes('-->')) {
+					offenders.push(`${path.relative(ROOT, f)}:${i + 1}`);
+				}
+			});
+		}
+		assert.deepEqual(offenders, []);
+	});
+
+	test('every hint reaches our POT for the string it describes', () => {
+		const lost = [];
+		for (const f of files) {
+			const lines = fs.readFileSync(f, 'utf8').split('\n');
+			lines.forEach((line, i) => {
+				if (!/(?:\/\/|<!--)\s*TRANSLATORS:/.test(line)) return;
+				// Inline after the call, or describing the call on the next line
+				let j = i + 1;
+				while (!CALL.test(line) && j < lines.length && /^\s*\/\/(?!\s*TRANSLATORS)/.test(lines[j])) j++; // continuation lines
+				const target = CALL.test(line) ? line : lines[j] || '';
+				const m = target.match(CALL);
+				if (!m) {
+					lost.push(`${path.relative(ROOT, f)}:${i + 1} (no t()/n() call directly below)`);
+					return;
+				}
+				const msgid = m[1].replace(/\\'/g, "'").replace(/\\\\/g, '\\');
+				if (!comments.has(msgid)) lost.push(`${path.relative(ROOT, f)}:${i + 1} ${msgid.slice(0, 60)}`);
+			});
+		}
+		assert.deepEqual(lost, [], 'hints the POT pipeline drops:\n' + lost.join('\n'));
+	});
+});
+
+function walkPhp(dir, acc = []) {
+	for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+		const full = path.join(dir, e.name);
+		if (e.isDirectory()) walkPhp(full, acc);
+		else if (e.name.endsWith('.php')) acc.push(full);
+	}
+	return acc;
+}

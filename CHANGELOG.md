@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **The English source strings use American spelling**, as Nextcloud itself does: "customise" became "customize". Until translators catch up, that one string shows in English in the languages that had it translated.
+
 ## [1.7.9] - 2026-09-26
 
 ### Fixed

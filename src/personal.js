@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         saveBtn.addEventListener('click', async function() {
             try {
                 saveBtn.disabled = true;
+                // TRANSLATORS: Button label while the settings are being saved
                 saveBtn.textContent = t('introvox', 'Saving …');
 
                 const response = await axios.post(generateUrl('/apps/introvox/personal/settings'), {
@@ -59,9 +60,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
 
                 if (response.data.success) {
+                    // TRANSLATORS: Message after a setting was saved
                     OCP.Toast.success(t('introvox', 'Settings saved'));
+                    // TRANSLATORS: Button: saves the personal settings
                     saveBtn.textContent = '💾 ' + t('introvox', 'Save settings');
                 } else {
+                    // TRANSLATORS: Error message after saving a setting failed
                     OCP.Toast.error(t('introvox', 'Error saving settings'));
                     saveBtn.textContent = '💾 ' + t('introvox', 'Save settings');
                 }
@@ -92,6 +96,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
 
             // Show feedback
+            // TRANSLATORS: Button label while the tour is being restarted
             restartBtn.textContent = '✅ ' + t('introvox', 'Restarting tour …');
             restartBtn.disabled = true;
 
@@ -100,7 +105,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 window.location.href = generateUrl('/');
             }, 1000);
         } catch (error) {
+            // TRANSLATORS: Error message
             OCP.Toast.error(t('introvox', 'Error restarting tour'));
+            // TRANSLATORS: Button: starts the welcome tour again
             restartBtn.textContent = '🔄 ' + t('introvox', 'Restart tour now');
             restartBtn.disabled = false;
         }

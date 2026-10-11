@@ -139,7 +139,8 @@ export default {
           scrollTo: { behavior: 'smooth', block: 'center' },
           cancelIcon: {
             enabled: true,
-            label: 'Close'
+            // TRANSLATORS: Invisible label of the X button that closes a tour step or a preview
+            label: t('introvox', 'Close')
           },
           modalOverlayOpeningPadding: 12,
           modalOverlayOpeningRadius: 16
@@ -193,6 +194,7 @@ export default {
               secondary: true
             },
             {
+              // TRANSLATORS: Button on the first step: starts the tour
               text: step.buttons?.[1]?.text || t('introvox', 'Start tour'),
               action: tour.next
             }
@@ -201,11 +203,13 @@ export default {
           // Last step: Back button + Complete button
           buttons = [
             {
+              // TRANSLATORS: Button: goes to the previous page or step; keep it short
               text: t('introvox', 'Back'),
               action: tour.back,
               secondary: true
             },
             {
+              // TRANSLATORS: Button: ends the tour
               text: step.buttons?.[1]?.text || t('introvox', 'Done'),
               action: 'markCompleted'
             }
@@ -219,6 +223,7 @@ export default {
               secondary: true
             },
             {
+              // TRANSLATORS: Button: goes to the next page or step; keep it short
               text: t('introvox', 'Next'),
               action: tour.next
             }

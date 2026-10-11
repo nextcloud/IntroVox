@@ -92,6 +92,7 @@ export function getPWAInstructions() {
       title: t('introvox', 'Install Nextcloud on your Mac'),
       steps: [
         t('introvox', 'Click <strong>File</strong> in the menu bar'),
+        // TRANSLATORS: "Add to Dock" is a menu entry in Safari on a Mac: use the name Safari shows in your language
         t('introvox', 'Select <strong>"Add to Dock"</strong>'),
         t('introvox', 'Nextcloud now appears in your Dock as an app!')
       ]
@@ -106,6 +107,7 @@ export function getPWAInstructions() {
       steps: [
         t('introvox', 'Tap the menu icon (three dots) in the top right'),
         t('introvox', 'Tap <strong>"Install app"</strong> or <strong>"Add to home screen"</strong>'),
+        // TRANSLATORS: "Install" is a button in Chrome on Android: use the name Chrome shows in your language
         t('introvox', 'Tap <strong>Install</strong>'),
         t('introvox', 'Nextcloud now appears as an app on your home screen!')
       ]
@@ -120,6 +122,7 @@ export function getPWAInstructions() {
       steps: [
         t('introvox', 'Click the <strong>install icon</strong> in the address bar (right)'),
         t('introvox', 'Or: click the menu (three dots) → <strong>"More tools"</strong> → <strong>"Apps"</strong> → <strong>"Install this site as an app"</strong>'),
+        // TRANSLATORS: "Install" is a button in the browser: use the name the browser shows in your language
         t('introvox', 'Click <strong>Install</strong>'),
         t('introvox', 'Nextcloud now opens as an app in its own window!')
       ]
@@ -147,6 +150,7 @@ export function getPWAInstructions() {
       title: t('introvox', 'Install Nextcloud on your Android'),
       steps: [
         t('introvox', 'Tap the menu icon (three dots) in the top right'),
+        // TRANSLATORS: "Install" is a menu entry in Samsung Internet: use the name it shows in your language
         t('introvox', 'Tap <strong>"Install"</strong>'),
         t('introvox', 'Tap <strong>Add to Home Screen</strong>'),
         t('introvox', 'Nextcloud now appears as an app on your home screen!')
@@ -171,10 +175,14 @@ export function getPWAInstructions() {
   if (browser === 'opera') {
     return {
       icon: deviceType === 'mobile' ? '📱' : '💻',
+      // TRANSLATORS: Title of a tour step. "Opera" is a web browser
       title: t('introvox', 'Install Nextcloud in Opera'),
       steps: [
+        // TRANSLATORS: Instruction in Opera, a web browser
         t('introvox', 'Click/tap the menu icon'),
+        // TRANSLATORS: "Install Nextcloud" is a menu entry in the browser: use the words it shows in your language
         t('introvox', 'Select <strong>"Install Nextcloud"</strong>'),
+        // TRANSLATORS: "Install" is a button in the browser: use the name it shows in your language
         t('introvox', 'Click/tap <strong>Install</strong>'),
         t('introvox', 'Nextcloud is now available as an app!')
       ]
