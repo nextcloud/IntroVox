@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "Незахаваныя змены",
     "Never" : "Ніколі",
+    "Enabled" : "Уключаны",
+    "Disabled" : "Адключаны",
     "Settings" : "Налады",
     "Support" : "Падтрымка",
     "Cancel" : "Cancel",
@@ -11,8 +13,6 @@ OC.L10N.register(
     "Reset" : "Скінуць",
     "Save changes" : "Захаваць змены",
     "Loading …" : "Загрузка …",
-    "Enabled" : "Уключаны",
-    "Disabled" : "Адключаны",
     "Edit" : "Рэдагаваць",
     "Delete" : "Delete",
     "Title" : "Загаловак",

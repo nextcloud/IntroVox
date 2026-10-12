@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "Cambios no guardados",
     "Never" : "Nunca",
+    "Enabled" : "Habilitado",
+    "Disabled" : "Deshabilitado",
     "All users" : "Todos los usuarios",
     "Settings" : "Ajustes",
     "Steps" : "Pasos",
@@ -14,8 +16,6 @@ OC.L10N.register(
     "Export" : "Exportar",
     "Import" : "Importar",
     "Reset" : "Restablecer",
-    "Enabled" : "Habilitado",
-    "Disabled" : "Deshabilitado",
     "Edit" : "Editar",
     "Delete" : "Delete",
     "Title" : "Título",

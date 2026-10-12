@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "Hi ha canvis sense desar",
     "Never" : "Mai",
+    "Enabled" : "Habilitat",
+    "Disabled" : "Inhabilitat",
     "All users" : "Tots els usuaris",
     "Settings" : "Paràmetres",
     "Steps" : "Passes",
@@ -15,8 +17,6 @@ OC.L10N.register(
     "Reset" : "Reinicialitza",
     "Save changes" : "Desa els canvis",
     "Loading …" : "S'està carregant ...",
-    "Enabled" : "Habilitat",
-    "Disabled" : "Inhabilitat",
     "Edit" : "Edita",
     "Delete" : "Suprimeix",
     "Title" : "Títol",

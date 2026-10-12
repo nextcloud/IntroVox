@@ -1,6 +1,8 @@
 { "translations": {
     "Unsaved changes" : "Незахаваныя змены",
     "Never" : "Ніколі",
+    "Enabled" : "Уключаны",
+    "Disabled" : "Адключаны",
     "Settings" : "Налады",
     "Support" : "Падтрымка",
     "Cancel" : "Cancel",
@@ -9,8 +11,6 @@
     "Reset" : "Скінуць",
     "Save changes" : "Захаваць змены",
     "Loading …" : "Загрузка …",
-    "Enabled" : "Уключаны",
-    "Disabled" : "Адключаны",
     "Edit" : "Рэдагаваць",
     "Delete" : "Delete",
     "Title" : "Загаловак",

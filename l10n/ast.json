@@ -1,6 +1,8 @@
 { "translations": {
     "Unsaved changes" : "Cambeos ensin guardar",
     "Never" : "Enxamás",
+    "Enabled" : "Activóse",
+    "Disabled" : "Desactivóse",
     "All users" : "Tolos usuarios",
     "Settings" : "Configuración",
     "Steps" : "Pasos",
@@ -12,8 +14,6 @@
     "Import" : "Importa",
     "Reset" : "Reafitar",
     "Save changes" : "Guardar los cambeos",
-    "Enabled" : "Activóse",
-    "Disabled" : "Desactivóse",
     "Edit" : "Editar",
     "Delete" : "Delete",
     "Title" : "Títulu",

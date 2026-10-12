@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "Незаписани промени",
     "Never" : "Никога",
+    "Enabled" : "Включено",
+    "Disabled" : "Изключено",
     "All users" : "Всички потребители",
     "Settings" : "Настройки",
     "Steps" : "Стъпки",
@@ -15,8 +17,6 @@ OC.L10N.register(
     "Import" : "Импортиране /внасяне/",
     "Reset" : "Възстановяване",
     "Save changes" : "Запиши промените",
-    "Enabled" : "Включено",
-    "Disabled" : "Изключено",
     "Edit" : "Промяна",
     "Delete" : "Delete",
     "Title" : "Заглавие",

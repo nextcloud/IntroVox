@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "Unknown error" : "Ukjend feil",
     "Never" : "Aldri",
+    "Disabled" : "Deaktivert",
     "Settings" : "Innstillingar",
     "Support" : "Støtte",
     "Cancel" : "Avbryt",
@@ -9,11 +11,11 @@ OC.L10N.register(
     "Import" : "Importer",
     "Save changes" : "Lagre endringar",
     "Drag to reorder" : "Dra for å endre rekkefylgje",
-    "Disabled" : "Deaktivert",
     "Edit" : "Rediger",
     "Delete" : "Delete",
     "Save" : "Save",
     "Need help?" : "Treng du hjelp?",
+    "Close" : "Lukk",
     "Back" : "Tilbake",
     "Done" : "Ferdig",
     "Skip" : "Hopp over",

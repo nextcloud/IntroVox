@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "Inglishcha",
     "Unsaved changes" : "Saqlanmagan o'zgarishlar",
+    "Unknown error" : "Noma'lum xato",
     "Never" : "Hech qachon",
     "Settings" : "Sozlamalar",
     "Cancel" : "Bekor qilish",
@@ -16,6 +18,7 @@ OC.L10N.register(
     "Save" : "Saqlash",
     "Need help?" : "Yordam kerakmi?",
     "Source code" : "Manba kodi",
+    "Close" : "Yopish",
     "Back" : "Orqaga",
     "Done" : "Bajarildi",
     "Next" : "Keyingisi",

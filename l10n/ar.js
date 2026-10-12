@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "تغييرات لم يتم حفظها",
     "Never" : "مُطلَقاً",
+    "Enabled" : "مُفعّل",
+    "Disabled" : "مُعطّل",
     "All users" : "كُلّ المستخدمين",
     "Settings" : "الإعدادات",
     "Steps" : "الخطوات",
@@ -15,8 +17,6 @@ OC.L10N.register(
     "Import" : "إستيراد",
     "Reset" : "إعادة تعيين",
     "Save changes" : "حفظ التعديلات",
-    "Enabled" : "مُفعّل",
-    "Disabled" : "مُعطّل",
     "Edit" : "تحرير",
     "Delete" : "Delete",
     "Title" : "العنوان",

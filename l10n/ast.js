@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Unsaved changes" : "Cambeos ensin guardar",
     "Never" : "Enxamás",
+    "Enabled" : "Activóse",
+    "Disabled" : "Desactivóse",
     "All users" : "Tolos usuarios",
     "Settings" : "Configuración",
     "Steps" : "Pasos",
@@ -14,8 +16,6 @@ OC.L10N.register(
     "Import" : "Importa",
     "Reset" : "Reafitar",
     "Save changes" : "Guardar los cambeos",
-    "Enabled" : "Activóse",
-    "Disabled" : "Desactivóse",
     "Edit" : "Editar",
     "Delete" : "Delete",
     "Title" : "Títulu",

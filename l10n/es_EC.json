@@ -1,6 +1,8 @@
 { "translations": {
     "Unsaved changes" : "Cambios no guardados",
     "Never" : "Nunca",
+    "Enabled" : "Habilitado",
+    "Disabled" : "Deshabilitado",
     "All users" : "Todos los usuarios",
     "Settings" : "Ajustes",
     "Steps" : "Pasos",
@@ -12,8 +14,6 @@
     "Export" : "Exportar",
     "Import" : "Importar",
     "Reset" : "Restablecer",
-    "Enabled" : "Habilitado",
-    "Disabled" : "Deshabilitado",
     "Edit" : "Editar",
     "Delete" : "Delete",
     "Title" : "Título",

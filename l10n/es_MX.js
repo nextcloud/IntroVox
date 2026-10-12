@@ -2,6 +2,8 @@ OC.L10N.register(
     "introvox",
     {
     "Unsaved changes" : "Cambios no guardados",
+    "Enabled" : "Habilitado",
+    "Disabled" : "Deshabilitado",
     "All users" : "Todos los usuarios",
     "Settings" : "Ajustes",
     "Support" : "Soporte",
@@ -10,8 +12,6 @@ OC.L10N.register(
     "Import" : "Importar",
     "Reset" : "Reiniciar",
     "Save changes" : "Guardar cambios",
-    "Enabled" : "Habilitado",
-    "Disabled" : "Deshabilitado",
     "Edit" : "Editar",
     "Delete" : "Delete",
     "Position" : "Posición",

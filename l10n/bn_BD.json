@@ -1,11 +1,11 @@
 { "translations": {
+    "Enabled" : "কার্যকর",
+    "Disabled" : "অকার্যকর",
     "Settings" : "সেটিংস",
     "Cancel" : "Cancel",
     "Export" : "রপ্তানি",
     "Import" : "আমদানি",
     "Reset" : "পূণঃনির্ধানণ",
-    "Enabled" : "কার্যকর",
-    "Disabled" : "অকার্যকর",
     "Edit" : "সম্পাদনা",
     "Delete" : "Delete",
     "Save" : "Save",
