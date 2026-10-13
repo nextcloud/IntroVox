@@ -2,6 +2,7 @@ OC.L10N.register(
     "introvox",
     {
     "Unsaved changes" : "Cambios no guardados",
+    "Unknown error" : "Error desconocido",
     "Never" : "Nunca",
     "Enabled" : "Habilitado",
     "Disabled" : "Deshabilitado",
@@ -18,6 +19,7 @@ OC.L10N.register(
     "Save" : "Save",
     "Need help?" : "¿Necesitas ayuda?",
     "Source code" : "Código fuente",
+    "Close" : "Close",
     "Settings saved" : "Se han guardado las configuraciones ",
     "Save settings" : "Guardar configuraciones"
 },

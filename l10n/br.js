@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "Saozneg",
     "Unsaved changes" : "Kemmoù n'int ket bet enrollet",
+    "Unknown error" : "Fazi dianav",
     "Never" : "James",
     "Disabled" : "Disaotreañ",
     "Settings" : "Arventennoù",
@@ -13,6 +15,7 @@ OC.L10N.register(
     "Title" : "Titl",
     "Save" : "Save",
     "Need help?" : "Sikour o po ?",
+    "Close" : "Serriñ",
     "Done" : "Graet",
     "Next" : "War-lerc'h",
     "Skip" : "Lezel a-gostez",

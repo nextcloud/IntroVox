@@ -1,5 +1,7 @@
 { "translations": {
+    "English" : "Angla",
     "Unsaved changes" : "Nekonservitaj ŝanĝoj",
+    "Unknown error" : "Nekonata eraro",
     "Never" : "Neniam",
     "Disabled" : "Malkapabligita",
     "Settings" : "Agordoj",
@@ -13,6 +15,7 @@
     "Position" : "Loko",
     "Save" : "Save",
     "Need help?" : "Ĉu necesas helpo?",
+    "Close" : "Malfermi",
     "Done" : "Farita",
     "Next" : "Posten",
     "Skip" : "Preterpasi",

@@ -1,4 +1,5 @@
 { "translations": {
+    "Unknown error" : "Bəlli olmayan səhv baş verdi",
     "Never" : "Heç vaxt",
     "Enabled" : "İşə salınıb",
     "Disabled" : "Dayandırılıb",
@@ -11,6 +12,7 @@
     "Edit" : "Dəyişiklik et",
     "Delete" : "Delete",
     "Save" : "Save",
+    "Close" : "Bağla",
     "Back" : "Geri",
     "Done" : "Edildi",
     "Saving …" : "Saxlanılır …",

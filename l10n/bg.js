@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "английски",
     "Unsaved changes" : "Незаписани промени",
+    "Unknown error" : "Неизвестна грешка",
     "Never" : "Никога",
     "Enabled" : "Включено",
     "Disabled" : "Изключено",
@@ -26,6 +28,7 @@ OC.L10N.register(
     "Need help?" : "Нуждаете се от помощ?",
     "Report an issue" : "Докладвайте за проблем",
     "Source code" : "Изходен код",
+    "Close" : "Затваряне",
     "Back" : "Назад",
     "Done" : "Завършено",
     "Next" : "Следващо",

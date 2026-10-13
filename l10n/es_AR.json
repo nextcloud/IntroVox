@@ -1,4 +1,5 @@
 { "translations": {
+    "Unknown error" : "Error desconocido",
     "Never" : "Nunca",
     "Enabled" : "Habilitado",
     "Disabled" : "Deshabilitado",
@@ -14,6 +15,7 @@
     "Save" : "Save",
     "Need help?" : "¿Necesita ayuda?",
     "Source code" : "Código fuente",
+    "Close" : "Cerrar",
     "Back" : "Volver",
     "Done" : "Terminado",
     "Skip" : "Saltar",

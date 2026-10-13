@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "الإنجليزية",
     "Unsaved changes" : "تغييرات لم يتم حفظها",
+    "Unknown error" : "خطأ غير مُحدّدٍ",
     "Never" : "مُطلَقاً",
     "Enabled" : "مُفعّل",
     "Disabled" : "مُعطّل",
@@ -25,6 +27,7 @@ OC.L10N.register(
     "Need help?" : "تحتاج إلى مساعدة؟",
     "Report an issue" : "الإبلاغ عن خطأ",
     "Source code" : "الكود المصدري",
+    "Close" : "إغلاق",
     "Back" : "عودة",
     "Done" : "تمّ",
     "Next" : "التالي",

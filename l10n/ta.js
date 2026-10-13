@@ -1,0 +1,16 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Settings" : "அமைப்புகள்",
+    "Cancel" : "Cancel",
+    "Export" : "ஏற்றுமதி",
+    "Import" : "இறக்குமதி",
+    "Edit" : "தொகுக்க",
+    "Delete" : "Delete",
+    "Title" : "தலைப்பு",
+    "Save" : "Save",
+    "Close" : "மூடுக",
+    "Back" : "பின்னுக்கு",
+    "Done" : "Done"
+},
+"nplurals=2; plural=(n != 1);");

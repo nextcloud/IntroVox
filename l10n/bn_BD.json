@@ -1,4 +1,5 @@
 { "translations": {
+    "Unknown error" : "অজানা জটিলতা",
     "Enabled" : "কার্যকর",
     "Disabled" : "অকার্যকর",
     "Settings" : "সেটিংস",
@@ -9,6 +10,7 @@
     "Edit" : "সম্পাদনা",
     "Delete" : "Delete",
     "Save" : "Save",
+    "Close" : "বন্ধ",
     "Done" : "শেষ হলো"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

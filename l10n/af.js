@@ -1,7 +1,9 @@
 OC.L10N.register(
     "introvox",
     {
+    "English" : "Engels",
     "Unsaved changes" : "Onbewaarde veranderinge",
+    "Unknown error" : "Onbekende fout",
     "Settings" : "Instellings",
     "Cancel" : "Cancel",
     "Export" : "Voer uit",
@@ -11,6 +13,7 @@ OC.L10N.register(
     "Position" : "Posisie",
     "Save" : "Save",
     "Need help?" : "Hulp nodig?",
+    "Close" : "Close",
     "Settings saved" : "Instellings gestoor"
 },
 "nplurals=2; plural=(n != 1);");

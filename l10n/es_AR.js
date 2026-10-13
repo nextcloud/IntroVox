@@ -1,6 +1,7 @@
 OC.L10N.register(
     "introvox",
     {
+    "Unknown error" : "Error desconocido",
     "Never" : "Nunca",
     "Enabled" : "Habilitado",
     "Disabled" : "Deshabilitado",
@@ -16,6 +17,7 @@ OC.L10N.register(
     "Save" : "Save",
     "Need help?" : "¿Necesita ayuda?",
     "Source code" : "Código fuente",
+    "Close" : "Cerrar",
     "Back" : "Volver",
     "Done" : "Terminado",
     "Skip" : "Saltar",

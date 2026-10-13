@@ -1,6 +1,7 @@
 OC.L10N.register(
     "introvox",
     {
+    "Unknown error" : "Bəlli olmayan səhv baş verdi",
     "Never" : "Heç vaxt",
     "Enabled" : "İşə salınıb",
     "Disabled" : "Dayandırılıb",
@@ -13,6 +14,7 @@ OC.L10N.register(
     "Edit" : "Dəyişiklik et",
     "Delete" : "Delete",
     "Save" : "Save",
+    "Close" : "Bağla",
     "Back" : "Geri",
     "Done" : "Edildi",
     "Saving …" : "Saxlanılır …",
