@@ -78,6 +78,7 @@ OC.L10N.register(
     "Edit steps" : "Schritte bearbeiten",
     "Manage wizard steps for each language" : "Die Assistentenschritte für jede Sprache verwalten",
     "Add language override" : "Sprachüberschreibung hinzufügen",
+    "Pick a language to customize. Until you save, no data is written." : "Eine Sprache zur Anpassung auswählen. Bis zum Speichern werden keine Daten geschrieben.",
     "Search language …" : "Sprache suchen …",
     "Cancel" : "Abbrechen",
     "Add override" : "Überschreibung hinzufügen",

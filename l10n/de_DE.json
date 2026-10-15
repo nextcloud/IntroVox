@@ -1,6 +1,7 @@
 { "translations": {
     "Administrator privileges required" : "Administrationsrechte erforderlich",
     "Invalid language code: %s" : "Ungültiger Sprachcode: %s",
+    "Invalid step data: ID and title are required" : "Ungültige Schrittdaten: ID und Titel sind erforderlich",
     "Invalid JSON format: %s" : "Ungültiges JSON-Format: %s",
     "Invalid import format: missing language or steps" : "Ungültiges Importformat: fehlende Sprache oder Schritte",
     "Failed to send telemetry report" : "Telemetriebericht konnte nicht gesendet werden",
