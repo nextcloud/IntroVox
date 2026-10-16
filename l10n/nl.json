@@ -1,4 +1,5 @@
 { "translations": {
+    "Invalid language code: %s" : "Ongeldige taalcode: %s",
     "👋 Welcome to Nextcloud" : "👋 Welkom bij Nextcloud",
     "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>" : "<p>Leuk dat je er bent! Deze korte tour helpt je om snel op weg te gaan.</p><p>Je kunt op elk moment deze wizard afsluiten en later weer openen.</p>",
     "📁 Files & apps" : "📁 Bestanden & apps",
