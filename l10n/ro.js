@@ -12,6 +12,8 @@ OC.L10N.register(
     "Export" : "Exportă",
     "Import" : "Importă",
     "Reset" : "Resetare",
+    "Save changes" : "Salvează modificările",
+    "Loading …" : "Se încarcă …",
     "Edit" : "Editează",
     "Delete" : "Delete",
     "Title" : "Titlu",
@@ -25,6 +27,7 @@ OC.L10N.register(
     "Done" : "Realizat",
     "Next" : "Următorul",
     "Skip" : "Sari peste",
+    "Saving …" : "Se salvează …",
     "Settings saved" : "Setările au fost salvate",
     "Save settings" : "Salvează setări"
 },
