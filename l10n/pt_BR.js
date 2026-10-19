@@ -51,7 +51,7 @@ OC.L10N.register(
     "Error resetting: {error}" : "Erro ao redefinir: {error}",
     "Steps exported" : "Etapas exportadas",
     "Error exporting steps: {error}" : "Erro ao exportar as etapas: {error}",
-    "_Imported %n step ({language})_::_Imported %n steps ({language})_" : ["Importou %n etapa ({language})","Importou %n de etapas ({language})","Importou %n etapas ({language})"],
+    "_Imported %n step ({language})_::_Imported %n steps ({language})_" : ["Foi importada %n etapa ({language})","Foram importadas %n de etapas ({language})","Foram importadas %n etapas ({language})"],
     "Error importing steps: {error}" : "Erro ao importar as etapas: {error}",
     "Error loading statistics" : "Erro ao carregar as estatísticas",
     "Telemetry enabled" : "Telemetria ativada",
