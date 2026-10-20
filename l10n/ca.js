@@ -19,6 +19,7 @@ OC.L10N.register(
     "Reset" : "Reinicialitza",
     "Save changes" : "Desa els canvis",
     "Loading …" : "S'està carregant ...",
+    "Drag to reorder" : "Arrossega per reordenar",
     "Edit" : "Edita",
     "Delete" : "Suprimeix",
     "Title" : "Títol",
