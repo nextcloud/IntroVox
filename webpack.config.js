@@ -9,6 +9,10 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
+    // Chunks load without Nextcloud's ?v= version parameter, and browsers
+    // keep .js for months: without a hash in the name, an update could pair
+    // an old chunk with a new entry bundle.
+    chunkFilename: '[name].[contenthash:8].js',
     path: path.resolve(__dirname, 'js'),
     clean: true
   },

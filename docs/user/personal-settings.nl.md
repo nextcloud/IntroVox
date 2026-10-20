@@ -1,21 +1,23 @@
 # Persoonlijke instellingen
 
-Je kunt je IntroVox-tour-voorkeuren op elk moment beheren via je persoonlijke instellingen.
+Je kunt je IntroVox-tour-voorkeuren op elk moment beheren via je persoonlijke instellingen: de welkomsttour die je na je eerste login krijgt, en de tours die je beheerder voor apps heeft gemaakt.
 
 ![IntroVox-persoonlijke-instellingen-paneel](../screenshots/personal-settings.png)
 
 ## Je IntroVox-instellingen openen
 
 1. Klik op je **profielfoto** of **gebruikersnaam** rechtsboven
-2. Selecteer **Persoonlijke instellingen**
-3. Scroll naar beneden in de linker-sidebar en klik op **IntroVox**
+2. Kies **Tours**, net boven **Help**
+
+Of: **Persoonlijke instellingen**, en dan **IntroVox** in de linker-sidebar. Je beheerder kan het item **Tours** verbergen; de pagina is er altijd.
 
 ## Beschikbare opties
 
 In je persoonlijke instellingen kun je:
 
-- **De tour herstarten** — bekijk de begeleide tour opnieuw
-- **De tour permanent uitschakelen** — toon hem nooit meer, ook niet na updates
+- **Start tours by themselves** — zet je dit uit, dan start er geen tour meer vanzelf
+- **De tour herstarten** — bekijk de welkomsttour opnieuw
+- **Een tour voor een app starten** — onder **Tours**, als je beheerder die heeft gemaakt
 
 ## De tour herstarten
 
@@ -38,7 +40,7 @@ In je persoonlijke instellingen kun je:
 
 4. Druk op **Enter**
 
-Dit werkt alleen wanneer je al ingelogd bent en op een Nextcloud-pagina staat.
+Dit start de welkomsttour. Het werkt alleen wanneer je al ingelogd bent en op een Nextcloud-pagina staat.
 
 ### Wanneer herstarten
 
@@ -47,47 +49,54 @@ Dit werkt alleen wanneer je al ingelogd bent en op een Nextcloud-pagina staat.
 - Om je kennis op te frissen na een tijdje geen Nextcloud te hebben gebruikt
 - Om Nextcloud te tonen aan een collega of vriend
 
-## De tour permanent uitschakelen
+## Tours voor apps
 
-Als je de tour nooit meer automatisch wilt zien, heb je drie opties:
+Naast de welkomsttour kan je beheerder een korte tour maken voor een app, zoals Talk, of voor een andere pagina van Nextcloud. Zo'n tour start vanzelf de eerste keer dat je die app opent, één keer; hij start niet opnieuw in een andere browser of op een ander apparaat. Hij start nooit bovenop de welkomsttour: heb je de welkomsttour nog niet gehad, dan krijg je die eerst, en de tour van de app bij een later bezoek.
 
-### Vanuit de welkom-stap
+Zijn er zulke tours voor je, dan staan ze in **Persoonlijke instellingen → IntroVox** onder **Tours**. Bij elke tour zie je het icoon van de app, de naam, en **Seen** of **Not seen yet**. Klik op **Start** (of **Start again**) om de app te openen en de tour te starten. Dat werkt ook als **Start tours by themselves** uit staat.
 
-- Klik in de eerste stap op **Overslaan en niet meer tonen**
-- De tour wordt permanent uitgeschakeld en sluit direct
+## Tours niet meer vanzelf laten starten
 
-### Vanuit persoonlijke instellingen
+### Alle tours
 
 1. **Persoonlijke instellingen → IntroVox**
-2. Vink **"Introductie-tour permanent uitschakelen"** aan
-3. Klik op **💾 Instellingen opslaan**
+2. Zet **Start tours by themselves** uit; de instelling wordt direct opgeslagen
 
-### Door de tour te voltooien
+Staat hij uit, dan start er geen tour vanzelf: de welkomsttour niet, en de tours voor apps ook niet. Je kunt elke tour nog wel zelf starten vanaf dezelfde pagina. Standaard staat de schakelaar aan.
 
-Door op **Klaar** te klikken in de laatste stap, wordt de permanent-uitschakelen-voorkeur ook gezet.
+> Had je de tour in je persoonlijke instellingen uitgezet voordat IntroVox tours voor apps had, dan staat **Start tours by themselves** na die update uit. Zet hem aan als je de tours voor apps wel wilt krijgen.
 
-> **Let op:** zelfs na permanent uitschakelen kun je de tour nog steeds handmatig herstarten via **Persoonlijke instellingen → IntroVox**. "Permanent uitschakelen" geldt alleen voor het automatisch starten. Je beheerder kan de tour ook geforceerd tonen aan iedereen, inclusief gebruikers die hem hebben uitgeschakeld.
+### Alleen de welkomsttour
+
+- Klik in de eerste stap op **Skip and don't show again**, of
+- Klik in de laatste stap op **Done**
+
+Allebei markeren ze de welkomsttour als klaar voor jou. Andere tours blijven aan: een tour voor een app start nog steeds de eerste keer dat je die app opent.
+
+In een tour voor een app heeft de eerste stap in plaats daarvan een knop **Skip**. Die tour start daarna niet meer vanzelf.
+
+> **Let op:** je kunt de welkomsttour altijd herstarten via **Persoonlijke instellingen → IntroVox**. Je beheerder kan de welkomsttour ook opnieuw aan iedereen tonen; je krijgt hem dan bij je volgende login, tenzij je **Start tours by themselves** hebt uitgezet.
 
 ## Tijdelijk negeren
 
-Als je het druk hebt en de tour voor nu wilt overslaan zonder hem permanent uit te schakelen:
+Als je het druk hebt en de welkomsttour voor nu wilt overslaan:
 
 - Klik op **✕** rechtsboven
-- De tour sluit, maar verschijnt opnieuw bij de volgende login
+- De tour sluit en telt in deze browser als gezien; in een andere browser start hij opnieuw, en je kunt hem zelf starten vanuit deze instellingen
 
 Dit is handig als je onderbroken wordt en hem later wilt afronden.
 
-## "Tour niet beschikbaar"-berichten
+Een tour voor een app komt niet vanzelf terug als hij eenmaal gestart is, ook niet na **✕**. Start hem opnieuw via **Tours** in je persoonlijke instellingen.
 
-Je kunt in plaats van de herstart-knop een van deze berichten zien in persoonlijke instellingen:
+## "Tour niet beschikbaar"-bericht
+
+Je kunt in plaats van de herstart-knop dit bericht zien in persoonlijke instellingen:
 
 ### "De introductie-tour is momenteel uitgeschakeld door je beheerder"
 
-Je Nextcloud-beheerder heeft de tour voor alle gebruikers uitgezet. Neem contact op met je beheerder als je hem alsnog wilt zien.
+Je Nextcloud-beheerder heeft de tours voor alle gebruikers uitgezet. Er start geen tour, de welkomsttour niet en een tour voor een app ook niet, en je kunt er zelf ook geen starten. Neem contact op met je beheerder als je hem alsnog wilt zien.
 
-### "De introductie-tour is niet beschikbaar in je taal"
-
-Je taal is niet ingeschakeld door je beheerder. IntroVox ondersteunt Engels, Nederlands, Duits, Deens, Frans en Zweeds out-of-the-box, en beheerders kunnen nieuwe talen toevoegen via Transifex-vertalingen. Neem contact op met je beheerder om je taal in te schakelen.
+> Eerdere IntroVox-versies toonden ook een melding "niet beschikbaar in je taal" als een beheerder talen had beperkt. Sinds v1.7.0 is de tour automatisch beschikbaar in elke taal die Nextcloud ondersteunt (via Transifex), dus die melding bestaat niet meer.
 
 ## Zie ook
 

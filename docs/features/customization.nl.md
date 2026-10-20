@@ -4,7 +4,7 @@ Beheerders kunnen wizard-stap-uiterlijk en -gedrag aanpassen via drie primaire c
 
 ## HTML in stap-content
 
-Het **Tekst (HTML)**-veld ondersteunt een gecureerde set HTML-tags. Stap-content wordt server-side gesanitized via `OCP\Util::sanitizeHTML` bij opslaan en importeren (sinds v1.5.0) om stored XSS te voorkomen.
+Het veld **Text** is een opmaakeditor (zie [Tourstappen beheren](../admin/managing-steps.nl.md#tekst)); onder **Edit as HTML** neemt het een gecureerde set HTML-tags aan. De tekst wordt opgeslagen zoals geschreven en opgeschoond waar hij getoond wordt: in de tour en de stappenlijst blijven alleen de tags hieronder over, links houden alleen hun doel, en al het andere (scripts, stijlen, formulieren, afbeeldingen, event-handlers) verdwijnt. Titels en knopteksten zijn platte tekst. Dat geldt ook voor geïmporteerde tours en vertalingen van de standaardstappen, die niemand op opmaak controleert.
 
 ### Ondersteunde tags
 
@@ -15,7 +15,9 @@ Het **Tekst (HTML)**-veld ondersteunt een gecureerde set HTML-tags. Stap-content
 | `<em>`, `<i>` | Cursieve tekst |
 | `<ul>`, `<ol>`, `<li>` | Lijsten |
 | `<br>` | Regel-einde |
-| `<a href="...">` | Links |
+| `<small>`, `<code>`, `<u>` | Kleine letters, code, onderstreept |
+| `<h3>`, `<h4>` | Kopjes |
+| `<a href="...">` | Links; `target="_blank"` opent een nieuw tabblad |
 
 ### Voorbeeld
 
@@ -33,7 +35,7 @@ Het **Tekst (HTML)**-veld ondersteunt een gecureerde set HTML-tags. Stap-content
 
 ### Inline-styles
 
-Inline-styles (`style="..."`) zijn niet aanbevolen — de wizard erft automatisch Nextcloud's thema-variabelen, en custom-styles zullen breken onder dark-mode en hoog-contrast-thema's. Zie [Thema-ondersteuning](theme-support.md).
+Inline-styles (`style="..."`) worden verwijderd als de stap getoond wordt. De tour erft automatisch Nextcloud's thema-variabelen en volgt zo dark-mode en hoog-contrast-thema's zonder ze. Zie [Thema-ondersteuning](theme-support.md).
 
 ### Emoji
 
@@ -41,7 +43,7 @@ Volledig ondersteund in titels en content. Zorg dat je Nextcloud-server UTF-8 ge
 
 ## CSS-selectors
 
-Het **Element (CSS-selector)**-veld bepaalt welk UI-element een stap markeert. Laat leeg voor een gecentreerde modal.
+Het veld **Attach to element (CSS selector)** bepaalt welk UI-element een stap markeert. Laat het leeg voor een gecentreerde stap.
 
 ### Betrouwbare selectors
 
@@ -83,16 +85,22 @@ Default-stappen gebruiken komma-gescheiden selectors zodat als één faalt (bv. 
 [data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
 ```
 
+De tour probeert ze in de volgorde waarin ze staan: de stap wijst naar de eerste selector die een zichtbaar element vindt, waar de andere ook op de pagina staan. Zet de selector die je het liefst hebt vooraan.
+
 Dit vermindert het percentage "element not found"-fouten significant.
 
 ### De juiste selector vinden
+
+Het snelst gaat het met **🎯 Pick element** in de stap-editor: wijs het element aan en de selector wordt ingevuld. Zie [Element kiezen](../admin/managing-steps.nl.md#element-kiezen).
+
+Met de hand zoeken, bijvoorbeeld om komma-gescheiden fallbacks toe te voegen:
 
 1. Open Nextcloud in je browser
 2. Druk op **F12** om Developer Tools te openen
 3. Klik op het "Inspect element"-icoon
 4. Klik op het doel-element
 5. Lees zijn `class`, `id`, `data-*`-attributen
-6. Test je selector in de Console: `document.querySelector('je-selector')` zou het element moeten teruggeven
+6. Test elke selector apart in de Console: `document.querySelector('je-selector')` zou het element moeten teruggeven. Test zo geen hele komma-gescheiden lijst: de browser geeft dan de match die het eerst in de pagina staat, en dat hoeft niet de selector te zijn die de tour kiest
 
 ## Positie
 
@@ -112,7 +120,7 @@ De positie geldt alleen voor **gekoppelde** stappen (waar `attachTo` is ingestel
 - **Gecentreerde stap** — laat `attachTo` leeg. Stap verschijnt in het midden van het scherm.
 - **Gekoppelde stap** — zet `attachTo` op een CSS-selector en kies een `position`. Stap verschijnt naast het gemarkeerde element.
 
-Als het element van een gekoppelde stap niet bestaat ten tijde van de tour, valt de stap terug op gecentreerde weergave (sinds v1.4.1), zodat gebruikers nog steeds de content zien.
+Is het element van een gekoppelde stap er niet als de stap verschijnt, dan wacht de stap met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is). De pagina blijft bruikbaar, en de stap schuift naar het element zodra het verschijnt; **Next** gaat gewoon verder. Zie [Stappen die op de gebruiker wachten](../admin/managing-steps.nl.md#stappen-die-op-de-gebruiker-wachten).
 
 ## Stap-identifier
 
@@ -124,7 +132,7 @@ Het **ID**-veld wordt automatisch gegenereerd voor nieuwe stappen (timestamp-bas
 
 ## Zie ook
 
-- [Wizard-stappen beheren](../admin/managing-steps.md) — stap-CRUD
+- [Tourstappen beheren](../admin/managing-steps.md) — stap-CRUD
 - [Geleide tours](guided-tours.md) — hoe stappen renderen
 - [Thema-ondersteuning](theme-support.md) — CSS-variabele-overerving
 - [Best practices](../admin/best-practices.md) — content-ontwerp-aanbevelingen

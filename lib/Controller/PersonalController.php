@@ -1,13 +1,16 @@
 <?php
 namespace OCA\IntroVox\Controller;
 
+use OCA\IntroVox\Service\TourRepository;
+use OCA\IntroVox\Service\TourStateService;
+use OCA\IntroVox\Service\TourValidator;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
+use OCP\INavigationManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
-use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 
 class PersonalController extends Controller {
     protected $config;
@@ -18,7 +21,10 @@ class PersonalController extends Controller {
         $appName,
         IRequest $request,
         IConfig $config,
-        IUserSession $userSession
+        IUserSession $userSession,
+        private TourRepository $tours,
+        private TourStateService $tourState,
+        private INavigationManager $navigationManager,
     ) {
         parent::__construct($appName, $request);
         $this->config = $config;
@@ -27,10 +33,11 @@ class PersonalController extends Controller {
     }
 
     /**
-     * Get personal wizard settings
+     * Get personal wizard settings: the welcome tour, the switch for tours
+     * that start by themselves, and the app tours this user may get, to start
+     * by hand
      */
     #[NoAdminRequired]
-    #[NoCSRFRequired]
     public function getSettings(): JSONResponse {
         $user = $this->userSession->getUser();
         if (!$user) {
@@ -42,9 +49,35 @@ class PersonalController extends Controller {
         // Get user preference: if true, user permanently disabled wizard
         $wizardDisabledByUser = $this->config->getUserValue($userId, $this->appName, 'wizard_disabled', 'false') === 'true';
 
+        // Names and icons from this user's own apps menu, never stored data
+        $apps = [];
+        foreach ($this->navigationManager->getAll(INavigationManager::TYPE_APPS) as $entry) {
+            $id = $entry['app'] ?? $entry['id'] ?? null;
+            if (is_string($id)) {
+                $apps[$id] = ['name' => (string)($entry['name'] ?? $id), 'icon' => (string)($entry['icon'] ?? '')];
+            }
+        }
+        $tours = [];
+        foreach ($this->tours->all() as $tour) {
+            if ($tour['id'] === TourValidator::WELCOME || !$this->tours->availableTo($tour, $user)) {
+                continue;
+            }
+            $trigger = $tour['trigger'];
+            $tours[] = [
+                'id' => $tour['id'],
+                'name' => $tour['name'],
+                // '' for a tour that starts anywhere
+                'page' => TourValidator::triggerPage($trigger),
+                'app' => $trigger['type'] === 'app' ? ($apps[$trigger['app']] ?? null) : null,
+                'seen' => $this->tourState->seen($userId, $tour['id']) > 0,
+            ];
+        }
+
         return new JSONResponse([
             'success' => true,
-            'wizardDisabledByUser' => $wizardDisabledByUser
+            'wizardDisabledByUser' => $wizardDisabledByUser,
+            'toursDisabled' => $this->tourState->toursDisabled($userId),
+            'tours' => $tours,
         ]);
     }
 
@@ -66,6 +99,10 @@ class PersonalController extends Controller {
             if (isset($data['wizardDisabled'])) {
                 $wizardDisabled = $data['wizardDisabled'] === true || $data['wizardDisabled'] === 'true';
                 $this->config->setUserValue($userId, $this->appName, 'wizard_disabled', $wizardDisabled ? 'true' : 'false');
+            }
+            // "Start tours by themselves", the other way round
+            if (isset($data['toursDisabled'])) {
+                $this->tourState->setToursDisabled($userId, $data['toursDisabled'] === true || $data['toursDisabled'] === 'true');
             }
 
             return new JSONResponse([

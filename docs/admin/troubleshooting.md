@@ -2,28 +2,48 @@
 
 Common issues and resolutions for IntroVox administrators. For user-facing issues, see [User Troubleshooting](../user/troubleshooting.md).
 
-## Wizard Not Showing
+## Welcome Tour Not Showing
 
-**Symptom:** Users don't see the wizard on first login.
+**Symptom:** Users don't get the welcome tour on first login.
 
 | Possible cause | Solution |
 |---|---|
-| Wizard globally disabled | Enable in **Settings → Administration → IntroVox** |
-| User previously disabled the wizard | Use **Show wizard to all users** to reset preferences |
+| Tours switched off for everyone | Switch on **Tours for everyone** in **Settings → Administration → IntroVox** |
+| The welcome tour is switched off | Switch it on in the **Tours** list |
+| No step of the welcome tour is for this user | Every step is switched off, or limited to groups the user isn't in. Check **Visible to groups**, or use **Preview as** in **Preview tour** |
+| User finished or skipped the welcome tour, or closed it in this browser | Use **Show again to everyone** in the welcome tour's ⋯ menu under **Tours** to give it to everyone again |
+| User switched off **Start tours by themselves** | Only the user can switch it back on, in **Personal Settings → IntroVox**; **Show again to everyone** does not change it. They can still start tours by hand there |
 | JavaScript errors | Check the browser console (F12); verify IntroVox version is compatible with your Nextcloud version |
 | App-menu readiness timeout | Pre-v1.4.2 versions could hang on some NC versions; upgrade to v1.4.2+ which adds fallback selectors and a 10s timeout |
 
-## Steps Being Skipped
+## Tour for an App Not Starting
 
-**Symptom:** Some steps don't appear during the tour.
+**Symptom:** Users open an app that has a tour, but the tour doesn't start.
+
+| Possible cause | Solution |
+|---|---|
+| The tour is switched off | Switch it on under **Tours**; that works once it has a step in its main language |
+| **Tours for everyone** is off | Switch it on under **Settings** |
+| User is not in the tour's groups, or can't open the app | Check **Visible to** under **Tour settings**, and the app's own group limits |
+| User saw the tour already, in any browser | Expected: it starts by itself once. Use **Show again to everyone** on the tour, or the user clicks **Start again** in **Personal Settings → IntroVox** |
+| User hasn't had the welcome tour yet | Expected: the welcome tour comes first, the app tour on a later visit |
+| **Who gets it** is **New accounts only**, and the user's first login was before the tour was first switched on | Set **Who gets it** to **Everyone** under **Tour settings** |
+| User switched off **Start tours by themselves** | The user can still start the tour with **Start** in **Personal Settings → IntroVox** |
+
+See [Tours](tours.md) for when a tour starts.
+
+## Steps Missing or Waiting in the Corner
+
+**Symptom:** Some steps don't appear during the tour, or a step stands in the bottom right corner instead of at its element.
 
 | Possible cause | Solution |
 |---|---|
 | Step disabled in admin panel | Toggle the step to **✅** enabled |
-| Element doesn't exist | Console shows `Wizard: Skipping step 'X' - element not found`. Update the CSS selector or remove `attachTo` to make it centered |
-| App not installed | If a Calendar step targets an element that only exists when Calendar is enabled, either add a fallback selector or only enable the step when Calendar is installed |
-| Selector broke after a Nextcloud upgrade | Inspect the new DOM and update the selector. Use multiple comma-separated fallbacks |
-| Pre-v1.4.1 timing issue | Steps could be skipped if Vue hadn't rendered yet; v1.4.1+ falls back to centered display instead |
+| Element isn't on the page | The step waits aside in the bottom right corner (bottom left while a dialog is open) with its text, and moves to the element once it appears; **Next** still goes on. Check the selector with **Test this step**, pick it again with **Pick element**, or use **Remove element** for a centered step |
+| Element only appears after the user does something | Expected: the step waits until it is there. Lead the way with one step per click, see [Steps that wait for the user](managing-steps.md#steps-that-wait-for-the-user) |
+| The step's **Page** is an app the user can't open | The step is left out for that user. Limit it with **Visible to groups** to people who have the app |
+| Selector broke after a Nextcloud upgrade | Inspect the new DOM and update the selector. Use multiple comma-separated fallbacks; the tour tries them in the order written |
+| Pre-v1.4.1 timing issue | Steps could be skipped if Vue hadn't rendered yet; now a step waits for its element instead |
 | User not in required groups | Check the step's **Visible to groups** — empty means visible to all |
 
 ## Translations Not Working
@@ -91,18 +111,14 @@ Common issues and resolutions for IntroVox administrators. For user-facing issue
 
 **Fix:** Ensure your admin panel session is fresh and you're using the latest IntroVox version. If you've built custom tooling that calls these endpoints directly, include the CSRF token.
 
-## Debug Logging
+## Checking a Step
 
-To diagnose issues:
+IntroVox writes nothing to the browser console. To see what a step does:
 
-1. Open the browser console (F12 → Console tab)
-2. Look for:
-
-| Log | Meaning |
-|---|---|
-| `🎨 Nextcloud First Use Wizard (Vue 3) initialized` | App loaded successfully |
-| `✅ Wizard initialized with X active steps` | Steps loaded for this user/language |
-| `⚠️ Wizard: Skipping step 'X' - element not found` | CSS selector didn't match (pre-v1.4.1) or step fell back to centered (v1.4.1+) |
+- **Test this step** in the step editor shows that one step, unsaved changes included. **Preview tour** runs the whole tour; **Preview as** shows what members of one group get.
+- A step that stands in the bottom right corner instead of at its element has not found that element. It waits there until the element appears.
+- To check a selector by hand, open the browser console (F12 → Console) and test each selector of the list on its own with `document.querySelector('…')`.
+- Errors, such as a request that failed, still show in the console and under F12 → Network.
 
 ## See Also
 

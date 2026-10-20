@@ -92,6 +92,8 @@ Before submitting a pull request:
 4. Verify the app works on different browsers
 5. Check console for errors (F12)
 
+The automated tests: `npm run test:js` and `php tests-php/run.php` run without a server. `tests-e2e/` has browser tests against a real (test) Nextcloud; its [README](tests-e2e/README.md) explains the setup.
+
 ## 📝 Pull Request Process
 
 1. **Update documentation**: If you've added features, update the README.md

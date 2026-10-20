@@ -1,0 +1,13 @@
+{
+  "name": "introvox-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Browser tests for IntroVox against a real Nextcloud, see README.md",
+  "scripts": {
+    "users": "node setup-users.mjs",
+    "all": "node all.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.64.1"
+  }
+}

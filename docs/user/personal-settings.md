@@ -1,21 +1,23 @@
 # Personal Settings
 
-You can manage your IntroVox tour preferences at any time from your personal settings.
+You can manage your IntroVox tour preferences at any time from your personal settings: the welcome tour you get after your first login, and any tours your administrator made for apps.
 
 ![IntroVox personal settings panel](../screenshots/personal-settings.png)
 
 ## Accessing Your IntroVox Settings
 
 1. Click your **profile picture** or **username** in the top right
-2. Select **Personal Settings**
-3. Scroll down the left sidebar and click **IntroVox**
+2. Select **Tours**, just above **Help**
+
+Or: **Personal Settings**, then **IntroVox** in the left sidebar. Your administrator can hide the **Tours** entry; the page is always there.
 
 ## Available Options
 
 In your personal settings you can:
 
-- **Restart the tour** — see the guided tour again
-- **Permanently disable the tour** — never show it again, even after updates
+- **Start tours by themselves** — switch this off and no tour starts automatically any more
+- **Restart the tour** — see the welcome tour again
+- **Start a tour for an app** — under **Tours**, when your administrator has made any
 
 ## Restarting the Tour
 
@@ -36,7 +38,7 @@ In your personal settings you can:
    ```
 4. Press **Enter**
 
-This works only when you're already logged in and on a Nextcloud page.
+This starts the welcome tour. It works only when you're already logged in and on a Nextcloud page.
 
 ### When to Restart
 
@@ -45,35 +47,44 @@ This works only when you're already logged in and on a Nextcloud page.
 - To refresh your knowledge after not using Nextcloud for a while
 - To show Nextcloud to a colleague or friend
 
-## Permanently Disabling the Tour
+## Tours for Apps
 
-If you never want to see the tour automatically again, you have three options:
+Besides the welcome tour, your administrator can make a short tour for an app, such as Talk, or for another page of Nextcloud. Such a tour starts by itself the first time you open that app, once; it doesn't start again on another browser or device. It never starts on top of the welcome tour: if you haven't had the welcome tour yet, you get that first, and the app's tour on a later visit.
 
-### From the Welcome Step
+When there are tours like this for you, **Personal Settings → IntroVox** lists them under **Tours**. Each one shows the app's icon, its name, and **Seen** or **Not seen yet**. Click **Start** (or **Start again**) to open the app and start its tour. This works even when **Start tours by themselves** is off.
 
-- On the first step, click **Skip and don't show again**
-- The tour permanently disables and closes immediately
+## Stopping Tours from Starting by Themselves
 
-### From Personal Settings
+### All Tours
 
 1. **Personal Settings → IntroVox**
-2. Check **"Permanently disable the introduction tour"**
-3. Click **💾 Save settings**
+2. Switch off **Start tours by themselves**; the setting is saved straight away
 
-### By Completing the Tour
+When it is off, no tour starts by itself: not the welcome tour, and not the tours for apps. You can still start each tour by hand from the same page. The switch is on by default.
 
-Clicking **Done** on the final step also sets the permanent-disable preference.
+> If you had switched the tour off in your personal settings before IntroVox had tours for apps, **Start tours by themselves** is off for you after that update. Switch it on if you do want tours for apps.
 
-> **Note:** Even after permanently disabling, you can still restart the tour manually from **Personal Settings → IntroVox**. The "permanent disable" only affects automatic startup. Your administrator can also force-show the tour to everyone, including users who disabled it.
+### Only the Welcome Tour
+
+- On the first step, click **Skip and don't show again**, or
+- On the last step, click **Done**
+
+Both mark the welcome tour as done for you. They don't switch off other tours: tours for apps still start the first time you open their app.
+
+In a tour for an app, the first step has a **Skip** button instead. That tour won't start by itself again.
+
+> **Note:** You can still restart the welcome tour from **Personal Settings → IntroVox** at any time. Your administrator can also show the welcome tour to everyone again; you then get it on your next login, unless you switched off **Start tours by themselves**.
 
 ## Temporary Dismissal
 
-If you're busy and want to skip the tour for now without permanently disabling it:
+If you're busy and want to skip the welcome tour for now:
 
 - Click **✕** in the top-right corner
-- The tour closes, but will appear again next login
+- The tour closes and counts as seen in this browser; it starts again in another browser, and you can start it yourself from these settings
 
 This is useful if you're interrupted and want to complete it later.
+
+A tour for an app doesn't come back by itself once it has started, also not after **✕**. Start it again from **Tours** in your personal settings.
 
 ## "Tour Unavailable" Message
 
@@ -81,7 +92,7 @@ You might see this message in personal settings instead of the restart button:
 
 ### "The introduction tour is currently disabled by your administrator"
 
-Your Nextcloud administrator turned off the tour for all users. Contact your administrator if you'd like to see it.
+Your Nextcloud administrator turned off tours for all users. No tour starts, neither the welcome tour nor a tour for an app, and you can't start one by hand. Contact your administrator if you'd like to see it.
 
 > Earlier IntroVox versions also showed a "not available in your language" message when an admin had restricted languages. Since v1.7.0 the tour is available in every Nextcloud-supported language automatically (via Transifex), so this message no longer exists.
 

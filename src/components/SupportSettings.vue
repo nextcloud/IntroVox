@@ -1,22 +1,22 @@
 <template>
 	<div class="support-settings">
 		<!-- Section 1: About IntroVox -->
-		<div class="settings-section">
+		<div class="support-settings__section">
 			<!-- TRANSLATORS: Section heading. "IntroVox" is the app name -->
 			<h2>{{ t('introvox', 'About IntroVox') }}</h2>
-			<p class="settings-section-desc">
+			<p class="support-settings__desc">
 				{{ t('introvox', 'IntroVox is free and open source (AGPL-3.0), with no user limit and no paid features. Everything the app does is available to everyone.') }}
 			</p>
 		</div>
 
 		<!-- Section 2: Discover the other apps -->
-		<div class="settings-section">
+		<div class="support-settings__section">
 			<h2>{{ t('introvox', 'Do you value this app?') }}</h2>
-			<p class="settings-section-desc">
+			<p class="support-settings__desc">
 				{{ t('introvox', 'IntroVox is part of a range of apps that extend Nextcloud — from intranet and metadata to room booking and forms. One coherent experience, all open source.') }}
 			</p>
 			<div class="cta-block">
-				<NcButton type="primary"
+				<NcButton variant="primary"
 					:href="appsUrl"
 					target="_blank"
 					rel="noopener noreferrer">
@@ -27,26 +27,29 @@
 		</div>
 
 		<!-- Section 3: Help -->
-		<div class="settings-section">
+		<div class="support-settings__section">
 			<!-- TRANSLATORS: Section heading -->
 			<h2>{{ t('introvox', 'Need help?') }}</h2>
-			<p class="settings-section-desc">
+			<p class="support-settings__desc">
 				{{ t('introvox', 'Run into a problem or missing something? Report it on GitHub and we will take a look.') }}
 			</p>
 			<div class="cta-block">
-				<NcButton type="secondary"
+				<NcButton variant="secondary"
 					href="https://github.com/nextcloud/IntroVox/issues"
 					target="_blank"
 					rel="noopener noreferrer">
 					<!-- TRANSLATORS: Button: opens the issue tracker of the app on GitHub -->
 					{{ t('introvox', 'Report an issue') }}
 				</NcButton>
-				<NcButton type="tertiary"
+				<NcButton variant="tertiary"
 					href="https://github.com/nextcloud/IntroVox"
 					target="_blank"
 					rel="noopener noreferrer">
 					<!-- TRANSLATORS: Button: opens the source code of the app on GitHub -->
 					{{ t('introvox', 'Source code') }}
+				</NcButton>
+				<NcButton variant="tertiary" @click="$emit('show-intro')">
+					{{ t('introvox', 'Show the admin tour again') }}
 				</NcButton>
 				<p class="cta-contact">
 					<!-- TRANSLATORS: Followed by an email address to write to -->
@@ -67,6 +70,9 @@ export default {
 	components: {
 		NcButton,
 	},
+
+	// show-intro: AdminApp runs the admin intro (src/admin/adminIntro.js)
+	emits: ['show-intro'],
 
 	computed: {
 		appsUrl() {
@@ -92,21 +98,25 @@ export default {
 </script>
 
 <style scoped>
+/* This pane hand-builds its sections rather than using NcSettingsSection, so
+   it does not get that component's 28px inset and would be the one pane on
+   the page with a different left edge -- measured 339px against 367px. */
 .support-settings {
-	max-width: 800px;
+	margin: 0 28px 28px;
+	max-width: 900px;
 }
 
-.settings-section {
+.support-settings__section {
 	margin-bottom: 32px;
 }
 
-.settings-section h2 {
+.support-settings__section h2 {
 	font-size: 20px;
-	font-weight: bold;
+	font-weight: var(--font-weight-heading);
 	margin-bottom: 8px;
 }
 
-.settings-section-desc {
+.support-settings__desc {
 	color: var(--color-text-maxcontrast);
 	margin-bottom: 20px;
 }
@@ -122,12 +132,12 @@ export default {
 .cta-contact {
 	margin: 0;
 	color: var(--color-text-maxcontrast);
-	font-size: 14px;
+	font-size: var(--default-font-size);
 }
 
 .cta-contact a {
 	color: var(--color-primary-element);
-	font-weight: 500;
+	font-weight: var(--font-weight-element);
 	text-decoration: none;
 }
 

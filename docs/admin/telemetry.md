@@ -1,38 +1,45 @@
 # Telemetry
 
-IntroVox includes optional, anonymous usage reporting to help improve the application. Telemetry is an **opt-out** feature — it is enabled by default and can be disabled at any time.
+IntroVox includes optional, anonymous usage reporting to help improve the application. The first time an admin opens IntroVox's settings, the [admin tour](settings.md#admin-tour) ends with the question whether to share it, with the list below. Nothing is sent before an admin has been asked. After that it is on unless an admin chose **Do not share**, and it can be switched off at any time.
+
+![The Statistics pane, with tour usage, instance information and the telemetry switch](../screenshots/statistics.png)
+
+The full list of what is and is not sent sits behind **Exactly what is and is
+not sent** at the bottom of the pane.
 
 ## What Data Is Collected
 
-IntroVox sends the following anonymous data periodically:
+IntroVox sends the following anonymous data periodically, exactly these fields (`TelemetryService::collectData()`):
 
-| Data | Description |
-|------|-------------|
-| Instance hash | SHA-256 hash derived from your Nextcloud instance ID (not the URL itself) |
-| IntroVox version | Installed IntroVox version |
-| Nextcloud version | Server version for compatibility tracking |
-| PHP version | Server PHP version |
-| Total users | Total Nextcloud user count |
-| Active users (30d) | Users active in the last 30 days |
-| Wizard enabled | Whether the wizard is currently enabled globally |
-| Enabled languages | Which languages the admin has enabled (e.g., `["en", "nl"]`) |
-| Total steps per language | Step count per enabled language (numbers only) |
-| Wizard-start count | Total times users started the wizard |
-| Wizard-complete count | Total `Done`-button clicks |
-| Wizard-skip count | Total `Skip and don't show again` clicks |
-| Unique users who started | Distinct user count that ever started the tour |
-| Unique users who completed | Distinct user count that ever completed/skipped |
-| Total groups | Number of Nextcloud groups on the instance |
-| Group visibility used | Whether any step uses `visibleToGroups` restrictions (boolean) |
-| Server region | From Nextcloud's `default_phone_region` setting |
-| Default language | Nextcloud default language code |
-| Default timezone | Server timezone |
-| Database type | MySQL, PostgreSQL, or SQLite |
-| OS family | Linux, Windows, or macOS |
-| Web server | Apache or nginx |
-| Docker | Whether the server runs inside a Docker container (boolean) |
-| Extended Support / Enterprise | Boolean indicating whether the host Nextcloud has an Extended Support / Enterprise subscription. Sourced from `OCP\Util::hasExtendedSupport`. Falls back to `false` for Community |
-| Subscription key | The IntroVox subscription key (when one is configured). Sent so the license server can verify the Enterprise claim above — the boolean alone could otherwise be spoofed. Empty string for community instances |
+| Data | Field | Description |
+|------|-------|-------------|
+| Instance hash | `instanceHash` | SHA-256 hash of the instance URL (`overwrite.cli.url`, else the first trusted domain). The URL itself is not sent |
+| Total users | `totalUsers` | Number of accounts |
+| Active users (30d) | `activeUsers30d` | Accounts that logged in in the last 30 days |
+| Disabled users | `disabledUsers` | Number of accounts that exist but are disabled; empty when they could not be counted |
+| IntroVox version | `introvoxVersion` | Installed IntroVox version |
+| Nextcloud version | `nextcloudVersion` | Server version for compatibility tracking |
+| PHP version | `phpVersion` | Server PHP version |
+| Steps per language | `totalSteps` | For each language in `languagesWithOverrides`: the number of steps of the welcome tour's override (numbers only; 0 for English without an override) |
+| Languages with overrides | `languagesWithOverrides` | Languages with an override of the welcome tour, plus `en` always (e.g., `["en", "nl"]`) |
+| Tours for everyone | `wizardEnabled` | Whether **Tours for everyone** is on |
+| Welcome tour started | `wizardStartedCount` | How many people started the welcome tour; each person counts once |
+| Welcome tour completed | `wizardCompletedCount` | How many people clicked **Done** on its last step; each person counts once |
+| Welcome tour skipped | `wizardSkippedCount` | How many people clicked **Skip and don't show again**; each person counts once |
+| Users who started | `usersStartedWizard` | Distinct accounts that ever started the welcome tour |
+| Users who completed | `usersCompletedWizard` | Distinct accounts that ever completed it with **Done** (skips not included) |
+| Server region | `serverRegion` | From Nextcloud's `default_phone_region` setting |
+| Default language | `defaultLanguage` | Nextcloud default language code |
+| Default timezone | `defaultTimezone` | Nextcloud's `default_timezone`, else PHP's timezone, else UTC |
+| Database type | `databaseType` | Nextcloud's `dbtype`, such as `mysql`, `pgsql` or `sqlite` |
+| Total groups | `totalGroups` | Number of Nextcloud groups on the instance |
+| Group visibility used | `groupVisibilityUsed` | Whether any step of the welcome tour's overrides is limited to groups (boolean) |
+| OS family | `osFamily` | PHP's `PHP_OS_FAMILY`, such as Linux |
+| Web server | `webServer` | Apache, nginx, or the name the server software gives |
+| Docker | `isDocker` | Whether the server runs inside a Docker container (boolean) |
+| License key | `licenseKey` | The IntroVox license key, when one is configured; empty otherwise. Sent so the license server can verify the Enterprise claim below — the booleans alone could otherwise be spoofed |
+| Enterprise subscription | `hasValidSubscription` | Whether this Nextcloud has a valid Enterprise subscription (`IRegistry::delegateHasValidSubscription()`). `false` for Community and on any error |
+| Extended Support | `hasExtendedSupport` | Whether that subscription also has the Extended Support add-on (`IRegistry::delegateHasExtendedSupport()`). `false` for Community and on any error |
 
 ## What Is NOT Collected
 
@@ -42,6 +49,7 @@ IntroVox sends the following anonymous data periodically:
 - No URLs or domain names (only the instance-hash)
 - No passwords or API tokens
 - No per-user behavior — only aggregate counts
+- Nothing about tours for apps or pages, and nothing of the per-tour statistics (**How far people get**): those stay on your server, on the [Statistics](tours.md#statistics) pane
 
 ## Where Data Is Sent
 
@@ -54,8 +62,8 @@ The endpoint is administrator-configurable via the `telemetry_url` app-config ke
 ### Via Admin Panel
 
 1. Go to **Settings → Administration → IntroVox**
-2. Open the **Support** tab
-3. Disable the **Send anonymous usage statistics** toggle
+2. Open the **Statistics** tab
+3. Switch off **Share anonymous usage statistics**
 
 ### Via Command Line
 
@@ -97,7 +105,7 @@ These update the per-user `markUserStarted/Completed/Skipped` timestamps in `oc_
 - Telemetry runs as a Nextcloud background job (`TelemetryJob`)
 - Reports are sent daily; failures are silently retried on the next interval
 - Timeout: 15 seconds per request
-- The instance hash is derived from your Nextcloud `instanceid` config value, so different Nextcloud installations produce different hashes — even if hosted at the same domain
+- The instance hash is the SHA-256 of the instance URL, lower-cased and without a trailing slash, the same hash the license server knows the instance by; the URL itself never leaves the server
 - No data is sent when telemetry is disabled and no external connections are made
 
 ## See Also

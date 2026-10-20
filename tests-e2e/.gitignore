@@ -1,0 +1,10 @@
+# Where the suites run and the test users' password: local only
+config.local.json
+.pw
+node_modules/
+shots/
+backup/
+# Made by media/make.php
+media/*
+!media/make.php
+!media/square.png

@@ -28,14 +28,12 @@ Volgende IntroVox-release
     ▼
 Nextcloud-instantie van beheerder
     │
-    │ (5) IntroVox auto-detecteert de taal
+    │ (5) Gebruikers met die NC-taal zien de wizard vanzelf vertaald, de beheerder hoeft niets te doen
     ▼
-"Beschikbare talen"-checklist
-    │
-    │ (6) beheerder schakelt de taal in
-    ▼
-Gebruikers met die NC-taal-instelling zien de wizard in hun taal
+Gebruiker ziet de tour in zijn taal
 ```
+
+Sinds v1.7.0 zet een beheerder geen talen meer aan: elke vertaling die in `l10n/` meekomt, werkt meteen. Een beheerder doet alleen iets als hij een **override** voor een taal wil: eigen tekst die de automatisch vertaalde standaardtekst voor die ene taal vervangt.
 
 ## Vereiste bestanden
 
@@ -49,22 +47,21 @@ Deze bestanden zijn aanwezig in de IntroVox-repository en configureren Transifex
 
 ## Auto-discovery
 
-- **Taal-code-discovery**: `scandir('l10n/')` matched `<lang>.json`-bestanden
-- **Taal-display-namen**: via `OCP\L10N\IFactory::getLanguages()` (v1.6.0+)
+- **Taal-display-namen** (v1.6.0+): de keuzelijst van **Add language override** haalt de namen uit `OCP\L10N\IFactory::getLanguages()`. Elke taal die Nextcloud kent, is te kiezen, ook een taal die IntroVox nog niet vertaald heeft.
+- **Welke vertaling**: `ApiController::getWizardSteps()` neemt de taal van de gebruiker met `IFactory::findLanguage(null)` (bewust niet `findLanguage('introvox')`). `DefaultStepsService::getForLanguage()` maakt de acht standaardstappen in die taal, en in het Engels als er geen vertaalbestand voor is, nooit in de standaardtaal van het systeem.
 
 ## Voor de complete referentie
 
-Zie [transifex-integration.en.md](transifex-integration.md) voor:
+Zie de [Engelse Transifex-integratie](transifex-integration.md) voor:
 
-- Volledige `.tx/config`-syntax en resource-mapping
-- Python regenerate-script (`regenerate_js_translations.py`)
-- Sync-bot-PR-conventies
-- l10n-bestand-formaat (JSON/JS-key-conventies)
-- Default-stap-vertaal-flow (msgid-conventies sinds v1.6.0)
-- Edge-cases bij regio-varianten (`en_US`, `pt_BR`)
+- Engelse bronteksten als Transifex-msgids (sinds v1.6.0)
+- De vertaalde instructies voor het installeren als app (PWA)
+- Vertalingen lokaal bijwerken met `regenerate_js_translations.py`
+- `DefaultStepsService` (sinds v1.7.0) en waarom de browser de standaardstappen niet meer zelf vertaalt
+- Een nieuwe taal toevoegen: via Transifex, of als override van een beheerder
 
 ## Zie ook
 
-- [Meertaligheid](../features/multi-language.md) — admin-perspectief
-- [Talenbeheer](../admin/language-management.md) — talen in-/uitschakelen
-- [Architectuur-overzicht](overview.md) — systeem-design
+- [Meertaligheid](../features/multi-language.nl.md): hoe de talen werken
+- [Talenbeheer](../admin/language-management.nl.md): overrides beheren
+- [Frontend-architectuur](frontend-architecture.nl.md): hoe vertalingen in de browser laden

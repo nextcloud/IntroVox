@@ -1,0 +1,2443 @@
+# IntroVox translation template.
+# Copyright (C) 2026 VoxCloud
+# This file is distributed under the AGPL-3.0 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IntroVox 2.0.0\n"
+"Report-Msgid-Bugs-To: translations@nextcloud.com\n"
+"POT-Creation-Date: 2026-10-20 12:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Confirmation text; {task} is the title of a checklist task, such as
+#. "Open Talk"
+msgid "\"{task}\" goes from everyone's list."
+msgstr ""
+
+#. {from} and {until} are dates, such as "Oct 9, 2026"; the period in which
+#. a tour starts by itself
+msgid "{from} to {until}"
+msgstr ""
+
+#. {tour} is the name of a tour, such as "Talk"
+msgid "{tour} will be shown again"
+msgstr ""
+
+#. Text of a step in the tour of the IntroVox administration page. Words in
+#. bold are names of tabs and buttons on that page: use the same
+#. translation
+msgid "<ol><li><strong>Add step</strong>, and give it a title and a text.</li><li><strong>Pick element</strong>: click what the step should point at, anywhere in Nextcloud.</li><li><strong>Test this step</strong> to see it as others will.</li><li><strong>Save</strong>. It is live straight away.</li></ol>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Calendar settings</strong> has the CalDAV address for your phone or Thunderbird, and a separate one for iPhone and Mac. On Android, use the DAVx⁵ app.</p><p>Sign in there with an app password, made in your personal settings under <strong>Security</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the welcome tour. Words in bold are names in
+#. Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>"
+msgstr ""
+
+#. Text of a step in the welcome tour. Words in bold are names in
+#. Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Finding your way around:</strong></p><ul><li>Use the <strong>apps menu</strong> (top left) to switch between apps</li><li>Open your <strong>avatar</strong> (top right) for your account and settings</li><li>Use the <strong>search bar</strong> to quickly find files and more</li></ul>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Home</strong> shows your upcoming meetings, unread mentions and message reminders.</p><p>Search your phone's app store for Nextcloud Talk, so calls and messages reach you when this tab is closed.</p>"
+msgstr ""
+
+#. Text of a step in the welcome tour. Words in bold are names in
+#. Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>"
+msgstr ""
+
+#. Text of a step in the tour of the IntroVox administration page. Words in
+#. bold are names of tabs and buttons on that page: use the same
+#. translation
+msgid "<p><strong>Preview tour</strong> runs the whole tour as people get it, as a member of a group if you like. A preview is not counted in the statistics.</p>"
+msgstr ""
+
+#. Text of a step in the tour of the IntroVox administration page. Words in
+#. bold are names of tabs and buttons on that page: use the same
+#. translation
+msgid "<p><strong>Settings</strong> switches tours on for everyone, <strong>Tours</strong> is where you write them, <strong>Statistics</strong> shows how many people start and finish the welcome tour, and <strong>Support</strong> is where to find help.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>A group conversation keeps a team's messages, files and calls in one place, instead of long email threads.</p><p>Let's make one: click the highlighted button. If it is not there, click <strong>Home</strong> at the top left.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Add colleagues, or anyone by email, under <strong>Attendees</strong>. Once they are added, <strong>Find a time</strong> in <strong>More details</strong> shows when they are free. Reminders are there too.</p><p>To invite people, your account needs an email address. First, the basics.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Changed a file by mistake? In its details, <strong>Versions</strong> brings back an earlier one. Deleted something? It stays in <strong>Deleted files</strong> for a while.</p><p>That's it. Now drag your files into your folder, and send links instead of attachments.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Chat, calls and video meetings with your colleagues, right next to your files.</p><p>In this tour you set up a conversation for your team, add colleagues and see how calls, meetings and notifications work.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click <strong>Save</strong>, and your event is in your calendar. Later, click it to see or edit it, or drag it to another day or time.</p><p>Rather not keep it? Close it with ✕, then click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click a calendar to show or hide its events. You may also see birthdays, Deck cards with a due date and calendars shared with you.</p><p>To share one, hover over it and choose <strong>Edit and share calendar</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click in the field, type a real task, such as <em>Set up a board for my project</em>, and press <strong>Enter</strong>. Your card appears in the list and the field empties.</p><p>Only Enter saves it, so press Enter first, then click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click the <strong>+</strong> here and pick a date. Cards with a due date come back in <strong>Upcoming cards</strong> and, if you use Calendar, in your calendar.</p><p>On a shared board, you can assign the card to someone in the field above; they get a notification.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click the highlighted button to create the conversation.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Copy the <strong>Internal link</strong> into a chat or an email instead of attaching the file. Colleagues with access open this very folder, so nobody works on an old copy.</p><p>The link itself does not give anyone access.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Deck keeps track of tasks, your own or your team's, so everyone sees who does what and what is due.</p><p>In this tour you add a task, give it a due date and see where it comes back.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Deleted an event by mistake? It stays in the <strong>Trash bin</strong> for a while, so you can restore it.</p><p>That's it. Now plan your next real meeting here, and invite the people involved.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Each column is a list, such as To do or Done, and each card is a task. Click the highlighted button to add one.</p><p>No button? You can only view this board, or it has no lists yet. Click <strong>Back</strong> and open another.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Each conversation has its own setting: hover over it, click the three dots and open <strong>Notifications</strong>. Put your team's conversation on <strong>All messages</strong>.</p><p>Someone chose <strong>@-mentions only</strong>? Type <strong>@</strong> and their name to reach them.</p>"
+msgstr ""
+
+msgid "<p>Everyone gets the tour in their own language: the built-in steps are translated. To write your own text for a language, add a language override and edit its steps.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Everything shared with you or by you is under <strong>Shares</strong>. Folders shared with your group or project also show up in <strong>All files</strong>.</p><p>A share from another Nextcloud server may wait in <strong>Pending shares</strong>: open Shares with its arrow to accept it.</p>"
+msgstr ""
+
+msgid "<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Files is where your work lives. Share a link instead of emailing attachments, so everyone works in the same copy.</p><p>In this tour you make a folder, see how to share it and learn how to undo mistakes.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>For office hours, supervision or study participants: an appointment schedule gives people a link to book a free slot with you, no account needed.</p><p>See a warning here? Your account needs an email address; ask your IT team if you cannot add one.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Here you upload files, or a whole folder at once, and create new documents to work on together.</p><p>For now, choose <strong>New folder</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>In <strong>Participants</strong> on the right (open the sidebar if needed), type a colleague's or group's name and pick them. They get a notification.</p><p>External partners? Invite them by email in a separate conversation, if your organization allows guests.</p>"
+msgstr ""
+
+msgid "<p>IntroVox gives newcomers a short tour of Nextcloud, like this one. In a minute you know how to make your own.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Keep everything about a task on its card: notes and checklists in the description, discussion in the comments, files as attachments for everyone on the board. Type @ in a comment to mention someone.</p><p>Now close the card with ✕, then click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Let's plan something: click the highlighted button to start a new event.</p><p>Later you can also click a day in the calendar, or drag across a few hours in the week view.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Let's start with a folder of your own: click <strong>New</strong>.</p><p>No New button? Open a folder you can add to, such as a project folder.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Make a separate calendar for a project or team, and share it with them.</p><p>If your organization allows it, you can also subscribe to a read-only calendar by link, such as a course timetable, or add public holidays.</p>"
+msgstr ""
+
+#. {manual} is a link with the text "the IntroVox manual". "Support" is the
+#. name of a tab on this page: use the same translation
+msgid "<p>More, such as tours across apps and steps that continue on a click, is in {manual}. This tour is under <strong>Support</strong> if you want to see it again.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Name it after something you're working on now, so it's useful right away and others see what's inside.</p><p>Click <strong>Create</strong> first, then click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Need to talk? <strong>Start call</strong> notifies everyone in the conversation, and they join with one click. You can share your screen too.</p><p>No need to try it now: it would ring them all.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Next time you have a quick question, type a colleague's name here to start a one-to-one chat. It also finds your conversations.</p><p>That's it. Send your next team update in your team conversation instead of an email.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Next to <strong>Start call</strong>, the calendar button lists upcoming meetings. <strong>Schedule a meeting</strong> puts one in your calendar and invites everyone here.</p><p>At meeting time, everyone opens this conversation and joins the call.</p>"
+msgstr ""
+
+msgid "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Now click the share icon next to your new folder. Could not make one? Any folder you can share will do.</p><p>The icon opens a panel that shows who has access. Nothing gets shared yet.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Now see your task come back: click <strong>Upcoming cards</strong>. It gathers the open cards from all your boards in one view.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Plan meetings and time for your own work, and see when colleagues are free.</p><p>In this tour you plan an event, then see how to invite colleagues, share calendars and have them on your phone too.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Plan something real: type what it is, such as <em>Project meeting</em> or <em>Writing time</em>.</p><p>Then set the day and time just below it, and click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Calendar app. Words in bold
+#. are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Planned it for another week or month? The arrows above take you there; click the date between them to jump to any day. <strong>Today</strong> brings you back.</p><p>This menu switches between day, week, month, year and a list.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Someone at another organization? Type their email address above, or their federated cloud ID if they use Nextcloud too.</p><p>Or create a public link: its <strong>⋯</strong> menu › <strong>Customize link</strong> adds a password and an expiration date. Your organization may limit public links.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>That's it. Ready for real work? Add a board for each project or team, give it your own lists and share it with the people involved.</p><p>The cards on the Welcome board have more tips.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>The <strong>Activity</strong> tab shows what happened to this item, such as who created, renamed or shared it.</p><p>You can also leave a comment there for everyone with access.</p>"
+msgstr ""
+
+#. Text of a step in the tour of the IntroVox administration page. Words in
+#. bold are names of tabs and buttons on that page: use the same
+#. translation
+msgid "<p>The <strong>welcome tour</strong> shows Nextcloud to newcomers. Add a <strong>New tour</strong> for an app, such as Talk: it starts the first time someone opens that app.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>This button opens the board's details: share the board with colleagues, groups or teams, and see who changed what.</p><p>People you add can only view at first. Turn on <strong>Can edit</strong> for those who work on the cards.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Files app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Type a colleague's name, a group or a team. Choose <strong>View only</strong> or <strong>Allow upload and editing</strong>, then click <strong>Save share</strong>.</p><p>Anything you add to the folder later is shared too. You do not have to share anything now.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Type the name of a team, project or research group you work with, then click <strong>Next</strong>. Leave the other options as they are.</p><p>Already have a team conversation? Close this with ✕, then click <strong>Next</strong>.</p>"
+msgstr ""
+
+#. Text of a step in the tour of the IntroVox administration page. Words in
+#. bold are names of tabs and buttons on that page: use the same
+#. translation
+msgid "<p>While this is on, tours start by themselves: the welcome tour for everyone who is new, and a tour for an app when someone first opens it. <strong>Show again to everyone</strong>, in the menu of a tour under <strong>Tours</strong>, shows it once more, for instance after a big change.</p>"
+msgstr ""
+
+msgid "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Talk app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Write a first message, for example what this conversation is for, and send it.</p><p>The <strong>+</strong> button shares one of your files, so everyone works in the same copy.</p>"
+msgstr ""
+
+msgid "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your boards are listed here, together with boards colleagues share with you.</p><p>Click your <strong>Welcome</strong> board to practice: only you can see it. No Welcome board? Open a board of your own.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your new card is at the bottom of the list. Click it to open it.</p><p>Later on, drag cards to the next list as the work moves on, and up or down to change their order.</p>"
+msgstr ""
+
+#. Text of a step in the built-in tour of the Deck app. Words in bold are
+#. labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your open cards from every board, assigned to you or to no one, sorted by due date. Find your new card under the day you picked, or under <strong>No due</strong>.</p><p>Finished? Click <strong>Mark as done</strong> on its card, and it leaves this list.</p>"
+msgstr ""
+
+msgid "<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "⏰ What's due when"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "☑️ Your calendars"
+msgstr ""
+
+msgid "⚙️ Your account & settings"
+msgstr ""
+
+msgid "⚡ Faster to open (no browser needed)"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✅ Create it"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✍️ Say what it is for"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "✏️ Give it a name"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✏️ Name it after real work"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "✏️ What and when"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "✏️ What needs doing?"
+msgstr ""
+
+#. Title of a step of the welcome tour; keep the emoji
+msgid "✨ Important features"
+msgstr ""
+
+msgid "✨ Own app icon on your home screen/dock"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "➕ Add a card"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "➕ Make a place for your work"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "➕ Plan your first event"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🌐 People outside your organization"
+msgstr ""
+
+#. Title of the last step of the welcome tour; keep the emoji
+msgid "🎉 Done!"
+msgstr ""
+
+msgid "🎯 Full focus without browser tabs"
+msgstr ""
+
+#. Title of a step of the welcome tour; keep the emoji
+msgid "🎯 Getting started"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🏠 Start your day at Home"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "👆 Open your card"
+msgstr ""
+
+#. Title of the first step of the welcome tour; keep the emoji
+msgid "👋 Welcome to Nextcloud"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "👥 Add your colleagues"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "👥 Colleagues and teams"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "👥 Meeting with others?"
+msgstr ""
+
+#. Title of a step of the welcome tour; keep the emoji
+msgid "💡 Useful tips"
+msgstr ""
+
+msgid "💡 You can also skip this step and install later whenever you want."
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "💬 Activity and comments"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "💬 Notes, comments and files"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "💬 Welcome to Talk"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "💾 Save it"
+msgstr ""
+
+#. Title of a step of the welcome tour; keep the emoji
+msgid "📁 Files & apps"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📁 Welcome to Files"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📅 Give it a due date"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "📅 Plan a meeting"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📅 Welcome to Calendar"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📆 Calendars for projects and teams"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📆 Upcoming cards"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📋 Open a board"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "📞 Call with one click"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📤 Upload or create"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📥 Shared with you"
+msgstr ""
+
+msgid "📱 Also works offline for some features"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📱 On your phone too"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🔍 A quick question?"
+msgstr ""
+
+#. Noun: title of a step of the welcome tour about the search; keep the
+#. emoji
+msgid "🔍 Search"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🔔 Choose what you hear"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🔗 Send a link, not a file"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "🕓 Let others book time with you"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🗂️ Welcome to Deck"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🗑️ Nothing is lost right away"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🤝 Share a folder"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🤝 Work together"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "🧭 Day, week or month"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🚀 A conversation for your team"
+msgstr ""
+
+#. Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🚀 Make it yours"
+msgstr ""
+
+msgid "0 starts it straight away."
+msgstr ""
+
+msgid "A list of first things to do in Nextcloud, ticked off by itself as people do them."
+msgstr ""
+
+msgid "A page of this Nextcloud to open, such as Talk or the folder with the handbook. It is ticked off once someone opens it from the list, and comes after the tasks above."
+msgstr ""
+
+#. Help text under a field; {example} is a path, such as "/apps/spreed/"
+msgid "A page of this Nextcloud, such as {example}"
+msgstr ""
+
+msgid "A short tour of Nextcloud"
+msgstr ""
+
+msgid "A step in four moves"
+msgstr ""
+
+msgid "A task needs a title of at most 60 characters."
+msgstr ""
+
+msgid "A unique hash of your instance URL (privacy-friendly identifier)"
+msgstr ""
+
+#. Section heading. "IntroVox" is the app name
+msgid "About IntroVox"
+msgstr ""
+
+#. Label under a number: accounts that logged in during the last 30 days.
+#. "30d" means 30 days
+msgid "Active users (30d)"
+msgstr ""
+
+#. Checklist task on the Dashboard; the Dashboard cuts off text longer than
+#. one line
+msgid "Add a profile picture"
+msgstr ""
+
+msgid "Add a step in the main language before you switch this tour on."
+msgstr ""
+
+#. Button: add a captions file for the video. ".vtt" is the file extension,
+#. keep it
+msgid "Add captions (.vtt)"
+msgstr ""
+
+#. Button: adds the first step to an empty tour
+msgid "Add first step"
+msgstr ""
+
+#. Button and dialog title: write your own steps for one language instead
+#. of the translated ones
+msgid "Add language override"
+msgstr ""
+
+#. Button: confirms adding a language override
+msgid "Add override"
+msgstr ""
+
+#. Button: adds a step to the tour
+msgid "Add step"
+msgstr ""
+
+#. Button: adds the steps the AI wrote, after you checked them
+msgid "Add steps"
+msgstr ""
+
+#. Button: adds a task of your own to the checklist
+msgid "Add task"
+msgstr ""
+
+#. Error message: only administrators may do this
+msgid "Administrator privileges required"
+msgstr ""
+
+msgid "All done. You can remove this list under Customize."
+msgstr ""
+
+#. The first choice in the "Preview as" list: show every step, whatever the
+#. group
+msgid "All steps"
+msgstr ""
+
+#. Button: back to the list of all tours
+msgid "All tours"
+msgstr ""
+
+#. Shown instead of a list of groups when a step is for everyone
+msgid "All users"
+msgstr ""
+
+#. Placeholder of the list of groups: when no group is chosen, everyone
+#. gets it
+msgid "All users (no restriction)"
+msgstr ""
+
+msgid "An entry above Help leads everyone to their tours, to start one again."
+msgstr ""
+
+#. Section heading
+msgid "Anonymous usage statistics"
+msgstr ""
+
+#. Choice: the tour starts on any page someone opens next; keep it short
+msgid "Anywhere"
+msgstr ""
+
+#. Noun: label of a list of apps
+msgid "App"
+msgstr ""
+
+#. Button (verb): applies the link address
+msgid "Apply"
+msgstr ""
+
+msgid "Are you sure you want to delete this step?"
+msgstr ""
+
+msgid "Attach to element (CSS selector)"
+msgstr ""
+
+#. Button: goes to the previous page or step; keep it short
+msgid "Back"
+msgstr ""
+
+msgid "Basic server configuration (database, OS, web server, Docker, country, language, timezone)"
+msgstr ""
+
+#. Noun: name of the page of the step dialog with where the step shows and
+#. how users continue; keep it short
+msgid "Behavior"
+msgstr ""
+
+#. Invisible label and tooltip of the bold button in the text editor
+msgid "Bold"
+msgstr ""
+
+#. Choice: the step shows below its element; keep it short
+msgid "Bottom"
+msgstr ""
+
+#. Choice (verb): use the page normally, clicking does not pick; keep it
+#. short
+msgid "Browse"
+msgstr ""
+
+#. Badge next to a tour that comes with IntroVox; keep it short
+msgid "Built-in"
+msgstr ""
+
+#. Invisible label and tooltip of the bulleted list button in the text
+#. editor
+msgid "Bulleted list"
+msgstr ""
+
+#. Name of the Calendar app, as Nextcloud shows it in your language
+msgid "Calendar"
+msgstr ""
+
+#. Button: closes a dialog without saving
+msgid "Cancel"
+msgstr ""
+
+#. Noun: name of the subtitles track of a video
+msgid "Captions"
+msgstr ""
+
+#. Status: the video has a captions file
+msgid "Captions added"
+msgstr ""
+
+#. Status: the step shows in the middle of the screen, not next to an
+#. element
+msgid "Centered step"
+msgstr ""
+
+msgid "Chat and call with your team"
+msgstr ""
+
+#. Section heading. "Dashboard" is the Nextcloud Dashboard app
+msgid "Checklist on the Dashboard"
+msgstr ""
+
+#. Button (verb) in a file picker: picks the selected file
+msgid "Choose"
+msgstr ""
+
+#. Title of a file picker for a tour file (.zip)
+msgid "Choose a tour"
+msgstr ""
+
+#. Placeholder of the list of apps
+msgid "Choose an app"
+msgstr ""
+
+msgid "Choose an image or video"
+msgstr ""
+
+#. Button: pick a file from the Nextcloud Files app. "Files" is the app
+#. name
+msgid "Choose from Files"
+msgstr ""
+
+#. Placeholder of the list of languages to translate into
+msgid "Choose languages"
+msgstr ""
+
+msgid "Click <strong>File</strong> in the menu bar"
+msgstr ""
+
+#. "Install" is a button in the browser: use the name the browser shows in
+#. your language
+msgid "Click <strong>Install</strong>"
+msgstr ""
+
+#. Choice: the user clicks the highlighted element; keep it short
+msgid "Click on the element"
+msgstr ""
+
+msgid "Click the <strong>install icon</strong> in the address bar (right)"
+msgstr ""
+
+msgid "Click the element this step should point at."
+msgstr ""
+
+msgid "Click the highlighted element to continue."
+msgstr ""
+
+#. "Install" is a button in the browser: use the name it shows in your
+#. language
+msgid "Click/tap <strong>Install</strong>"
+msgstr ""
+
+#. Instruction in Opera, a web browser
+msgid "Click/tap the menu icon"
+msgstr ""
+
+#. Invisible label of the X button that closes a tour step or a preview
+msgid "Close"
+msgstr ""
+
+#. Noun: invisible label and tooltip of the button that formats text as
+#. program code
+msgid "Code"
+msgstr ""
+
+#. Status (adjective): a task is finished, such as an AI translation or a
+#. checklist task
+msgid "Completed"
+msgstr ""
+
+#. Label under a percentage: how many of the people who started the tour
+#. finished it
+msgid "Completion rate"
+msgstr ""
+
+msgid "Contact your administrator if you would like to see the guided tour."
+msgstr ""
+
+#. Noun: name of the first page of the step dialog (title, image and text);
+#. keep it short
+msgid "Content"
+msgstr ""
+
+#. Label of three choices for how the user goes to the next step, as in
+#. "continue with the Next button"
+msgid "Continue with"
+msgstr ""
+
+#. Status: users go on by clicking the element instead of pressing Next
+msgid "Continues on click"
+msgstr ""
+
+#. Menu entry: copies a link that starts the tour
+msgid "Copy link"
+msgstr ""
+
+msgid "Could not load available languages, using English only"
+msgstr ""
+
+#. Button (verb): creates the new tour
+msgid "Create"
+msgstr ""
+
+msgid "Create a shortcut in Firefox"
+msgstr ""
+
+msgid "Days after someone's first login"
+msgstr ""
+
+#. Name of the Deck app, as Nextcloud shows it in your language
+msgid "Deck"
+msgstr ""
+
+#. Checkbox: the image is only decoration, so it needs no description
+msgid "Decorative, no description needed"
+msgstr ""
+
+#. Button (verb): deletes a step or a tour
+msgid "Delete"
+msgstr ""
+
+#. Invisible label (for screen readers) of a trash button; {task} is the
+#. title of a checklist task, such as "Open Talk"
+msgid "Delete {task}"
+msgstr ""
+
+#. Dialog title; {tour} is the name of a tour, such as "Talk"
+msgid "Delete {tour}"
+msgstr ""
+
+#. Title of the dialog that asks whether to delete a step
+msgid "Delete step"
+msgstr ""
+
+#. Title of the dialog that asks whether to delete a checklist task
+msgid "Delete task"
+msgstr ""
+
+msgid "Describe what it shows, for people who cannot see it."
+msgstr ""
+
+#. {language} is a language name, such as "German". "The Assistant" is the
+#. Nextcloud Assistant app (AI)
+msgid "Describe what the tour should explain. The Assistant writes the steps in {language}; you check them before they are added."
+msgstr ""
+
+#. Label of a text field: a description of the image for people who cannot
+#. see it ("alt text" is the HTML term)
+msgid "Description (alt text)"
+msgstr ""
+
+#. Status: invisible label (for screen readers) of the switch of a step
+#. that is off
+msgid "Disabled"
+msgstr ""
+
+#. Title of the dialog that asks whether to delete the steps written for
+#. this language
+msgid "Discard override"
+msgstr ""
+
+msgid "Discard the custom steps for this language and fall back to the auto-translated defaults?"
+msgstr ""
+
+#. Button: do not send anonymous usage statistics
+msgid "Do not share"
+msgstr ""
+
+msgid "Do you value this app?"
+msgstr ""
+
+#. Button: ends the tour
+msgid "Done"
+msgstr ""
+
+msgid "Drag a file into Files, or use New"
+msgstr ""
+
+#. Invisible label (for screen readers) of the drag handle of a step
+msgid "Drag to reorder"
+msgstr ""
+
+#. Button (verb): opens the step for editing
+msgid "Edit"
+msgstr ""
+
+#. Invisible label (for screen readers) of a pencil button; {task} is the
+#. title of a checklist task, such as "Open Talk"
+msgid "Edit {task}"
+msgstr ""
+
+#. Invisible label and tooltip of a button that shows the text as HTML code
+msgid "Edit as HTML"
+msgstr ""
+
+#. Heading of a section that can be expanded, with the technical fields of
+#. a step
+msgid "Edit by hand"
+msgstr ""
+
+#. Dialog title: change a step
+msgid "Edit step"
+msgstr ""
+
+#. Button: opens the steps of a tour
+msgid "Edit steps"
+msgstr ""
+
+#. Dialog title: change a checklist task
+msgid "Edit task"
+msgstr ""
+
+#. Button: opens the editor for the text of a step
+msgid "Edit text"
+msgstr ""
+
+#. Noun: name of the page of the step dialog where you choose the element
+#. on the screen the step points at; keep it short
+msgid "Element"
+msgstr ""
+
+#. Label, followed by the CSS selector of the element the step points at,
+#. such as "#user-menu"
+msgid "Element:"
+msgstr ""
+
+#. Status: invisible label (for screen readers) of the switch of a step
+#. that is on
+msgid "Enabled"
+msgstr ""
+
+#. The language name, shown in a language list when the list of languages
+#. could not be loaded
+msgid "English"
+msgstr ""
+
+#. Error message; {error} is the reason, from the server, in English or in
+#. the user's language
+msgid "Error exporting steps: {error}"
+msgstr ""
+
+#. Error message; {error} is the reason, from the server, in English or in
+#. the user's language
+msgid "Error importing steps: {error}"
+msgstr ""
+
+#. Error message
+msgid "Error loading statistics"
+msgstr ""
+
+#. Error message; {error} is the technical reason, in English
+msgid "Error loading steps: {error}"
+msgstr ""
+
+#. Error message; {error} is the reason, from the server, in English or in
+#. the user's language
+msgid "Error resetting: {error}"
+msgstr ""
+
+#. Error message
+msgid "Error restarting tour"
+msgstr ""
+
+#. Error message after saving a setting failed
+msgid "Error saving settings"
+msgstr ""
+
+#. Error message
+msgid "Error saving telemetry setting"
+msgstr ""
+
+#. Error message; {error} is the technical reason, in English
+msgid "Error saving: {error}"
+msgstr ""
+
+#. Error message; {error} is the reason, from the server, in English or in
+#. the user's language
+msgid "Error sending statistics: {error}"
+msgstr ""
+
+#. Choice: everyone gets the tour; keep it short
+msgid "Everyone"
+msgstr ""
+
+msgid "Everyone can add it under Customize on their Dashboard, and remove it there again."
+msgstr ""
+
+msgid "Everyone who gets this step can see it. IntroVox keeps its own copy: changing or deleting the original in Files does not change the step."
+msgstr ""
+
+msgid "Everyone who opens it and has not seen the tour, also people who have used it for a long time."
+msgstr ""
+
+#. {tour} is the name of a tour, such as "Talk"
+msgid "Everyone who saw {tour} gets it again the next time, except people who switched tours off."
+msgstr ""
+
+msgid "Exactly what is and is not sent"
+msgstr ""
+
+#. Button (verb): downloads the steps of this language as a file
+msgid "Export"
+msgstr ""
+
+#. Menu entry: downloads the tour as a file
+msgid "Export tour"
+msgstr ""
+
+#. Status (adjective) of one language whose AI translation failed
+msgid "Failed"
+msgstr ""
+
+msgid "Failed to send telemetry report"
+msgstr ""
+
+#. Name of the Files app, as Nextcloud shows it in your language
+msgid "Files"
+msgstr ""
+
+msgid "Fill in the highlighted field to continue."
+msgstr ""
+
+#. Choice: the user types something into the highlighted field; keep it
+#. short
+msgid "Filling in the field"
+msgstr ""
+
+msgid "Firefox currently does not support PWA installation"
+msgstr ""
+
+#. {groups} is a comma-separated list of group names, such as "Sales,
+#. Support"
+msgid "For {groups}"
+msgstr ""
+
+msgid "For an element inside a menu: the button the tour clicks to open that menu before showing this step. Pick element fills this in when you pick inside a menu."
+msgstr ""
+
+msgid "For each step, how many people got at least that far the last time the tour started by itself for them. Starts by hand and previews are not counted, and neither are runs from before this version of IntroVox."
+msgstr ""
+
+#. The tour is for everyone, not limited to groups
+msgid "For everyone"
+msgstr ""
+
+#. Placeholder of a text field; {example} is an example value, such as
+#. "/apps/spreed/" or a step title
+msgid "For example: {example}"
+msgstr ""
+
+msgid "For example: how to make a board, add cards to it and share it with your team"
+msgstr ""
+
+msgid "For new accounts and everyone who never arranged their Dashboard. People who did can add it under Customize."
+msgstr ""
+
+msgid "For people who can use Talk"
+msgstr ""
+
+msgid "For the best experience: use Chrome, Edge or Safari"
+msgstr ""
+
+#. Invisible label (for screen readers) of the toolbar with the formatting
+#. buttons of the text editor
+msgid "Formatting"
+msgstr ""
+
+#. Title of a tour step about the four tabs of the administration page
+msgid "Four parts"
+msgstr ""
+
+#. Label of a date field: the first day a tour may start by itself
+msgid "From"
+msgstr ""
+
+#. {date} is a date, such as "Oct 9, 2026": the first day a tour starts by
+#. itself
+msgid "From {date}"
+msgstr ""
+
+#. Choice for the size of an image: as wide as the step; keep it short
+msgid "Full width"
+msgstr ""
+
+#. Title of the checklist widget on the Dashboard
+msgid "Getting started"
+msgstr ""
+
+#. Section heading on the administration page
+msgid "Global settings"
+msgstr ""
+
+#. Message after a setting was saved
+msgid "Global settings saved"
+msgstr ""
+
+#. Button: closes the step about installing Nextcloud as an app and goes on
+msgid "Got it"
+msgstr ""
+
+#. Invisible label and tooltip of the heading button in the text editor
+msgid "Heading"
+msgstr ""
+
+#. Dialog title: a question about sharing anonymous usage statistics.
+#. "IntroVox" is the app name
+msgid "Help improve IntroVox"
+msgstr ""
+
+msgid "Help improve IntroVox by sharing anonymous usage statistics."
+msgstr ""
+
+#. Heading of a chart with how many people reached each step
+msgid "How far people get"
+msgstr ""
+
+msgid "How often the tour was started, finished and skipped"
+msgstr ""
+
+msgid "How the tours are used, and telemetry settings"
+msgstr ""
+
+msgid "How to install the app:"
+msgstr ""
+
+#. {id} is the technical identifier of a step, such as "files" or
+#. "new_1728470000000"
+msgid "ID: {id}"
+msgstr ""
+
+#. Label of the part of a step where you add one image or video
+msgid "Image or video"
+msgstr ""
+
+#. Button (verb): loads steps from a file
+msgid "Import"
+msgstr ""
+
+msgid "Import file is too large (at most 1 MB)"
+msgstr ""
+
+#. Invisible label of a menu button with two ways to import a tour
+msgid "Import tour"
+msgstr ""
+
+#. {tour} is the name of a tour, such as "Talk"
+msgid "Imported {tour}. It stays switched off until you switch it on."
+msgstr ""
+
+#. Choice: the tour starts in an app, such as Talk; keep it short
+msgid "In an app"
+msgstr ""
+
+#. Invisible label and tooltip of the emoji button
+msgid "Insert emoji"
+msgstr ""
+
+#. Title of a tour step. "Opera" is a web browser
+msgid "Install Nextcloud in Opera"
+msgstr ""
+
+msgid "Install Nextcloud on your Android"
+msgstr ""
+
+msgid "Install Nextcloud on your computer"
+msgstr ""
+
+msgid "Install Nextcloud on your iPhone/iPad"
+msgstr ""
+
+msgid "Install Nextcloud on your Mac"
+msgstr ""
+
+#. Checklist task on the Dashboard: install the Nextcloud desktop or mobile
+#. app; keep it short
+msgid "Install the app"
+msgstr ""
+
+#. Heading of figures about this Nextcloud server
+msgid "Instance information"
+msgstr ""
+
+#. Label of a list where you choose the languages to translate into, as in
+#. "translate into"
+msgid "Into"
+msgstr ""
+
+msgid "IntroVox"
+msgstr ""
+
+msgid "IntroVox can send anonymous usage statistics once a day, so its makers see which versions and features are in use. It is on unless you choose not to share, and you can change it at any time under Statistics."
+msgstr ""
+
+msgid "IntroVox has no room for more media. Remove images and videos from steps that no longer need them."
+msgstr ""
+
+msgid "IntroVox is free and open source (AGPL-3.0), with no user limit and no paid features. Everything the app does is available to everyone."
+msgstr ""
+
+msgid "IntroVox is part of a range of apps that extend Nextcloud — from intranet and metadata to room booking and forms. One coherent experience, all open source."
+msgstr ""
+
+msgid "IntroVox, Nextcloud, and PHP version numbers"
+msgstr ""
+
+msgid "Invalid import format: missing language or steps"
+msgstr ""
+
+#. %s is PHP's own description of the JSON error, in English, such as
+#. "Syntax error"
+msgid "Invalid JSON format: %s"
+msgstr ""
+
+#. Error message; %s is the language code that was refused, such as
+#. "en-US!"
+msgid "Invalid language code: %s"
+msgstr ""
+
+#. %s is a technical description of the problem, in English, such as "Step
+#. 2: title must be text"
+msgid "Invalid step data: %s"
+msgstr ""
+
+#. %s is a technical description of the problem, in English, such as
+#. "audience must be everyone or new"
+msgid "Invalid tour: %s"
+msgstr ""
+
+#. Invisible label and tooltip of the italic button in the text editor
+msgid "Italic"
+msgstr ""
+
+#. Noun: label of the list of languages
+msgid "Language"
+msgstr ""
+
+#. Label under a number: languages for which an administrator wrote steps
+#. of their own
+msgid "Languages with overrides"
+msgstr ""
+
+#. {date} is a date and time, such as "10/9/2026, 11:30:00 AM", or the word
+#. "Never"
+msgid "Last report sent: {date}"
+msgstr ""
+
+msgid "Leave empty for a centered step."
+msgstr ""
+
+msgid "Leave empty to show this step on any page. With a page, the tour opens it first. Pick element fills this in."
+msgstr ""
+
+msgid "Leave empty to show to all users, or select groups to restrict visibility"
+msgstr ""
+
+msgid "Leave the dates empty for no limit. Starting the tour by hand or with a link always works."
+msgstr ""
+
+#. Choice: the step shows to the left of its element; keep it short
+msgid "Left"
+msgstr ""
+
+#. Noun: invisible label and tooltip of the link button in the text editor
+msgid "Link"
+msgstr ""
+
+#. Label of the text field for the address (URL) of a link
+msgid "Link address"
+msgstr ""
+
+#. {tour} is the name of a tour, such as "Talk"
+msgid "Link to {tour} copied"
+msgstr ""
+
+#. {tour} is the name of a tour, such as "Talk". "Switched off" is the
+#. tour's switch in the list of tours
+msgid "Link to {tour} copied. The tour is switched off: the link starts it once you switch it on."
+msgstr ""
+
+#. Shown while data is loading
+msgid "Loading …"
+msgstr ""
+
+msgid "Look in the menu for options like \"Install\" or \"Add to home screen\""
+msgstr ""
+
+#. Label of a list: the language the steps of a tour are written in
+msgid "Main language"
+msgstr ""
+
+msgid "Manage the steps of this tour for each language"
+msgstr ""
+
+#. Invisible label of a menu button with more actions; {tour} is the name
+#. of a tour, such as "Talk"
+msgid "More for {tour}"
+msgstr ""
+
+#. Invisible label (for screen readers) of an arrow button that moves the
+#. step one place down
+msgid "Move step down"
+msgstr ""
+
+#. Invisible label (for screen readers) of an arrow button that moves the
+#. step one place up
+msgid "Move step up"
+msgstr ""
+
+#. Noun: label of the text field for the name of a tour
+msgid "Name"
+msgstr ""
+
+#. Section heading
+msgid "Need help?"
+msgstr ""
+
+#. Shown instead of a date when no report was sent yet
+msgid "Never"
+msgstr ""
+
+#. Choice: only accounts whose first login comes after the tour is switched
+#. on get it; keep it short
+msgid "New accounts only"
+msgstr ""
+
+#. Dialog title, and the title a new step gets until you change it
+msgid "New step"
+msgstr ""
+
+#. Dialog title: add a checklist task of your own
+msgid "New task"
+msgstr ""
+
+#. Dialog title and button: make a new tour
+msgid "New tour"
+msgstr ""
+
+#. Button: goes to the next page or step; keep it short
+msgid "Next"
+msgstr ""
+
+#. Choice: the user presses the Next button; keep it short
+msgid "Next button"
+msgstr ""
+
+msgid "Next only works once the field the step points at has text, such as the name of a new conversation. If the field is missing, Next works as usual."
+msgstr ""
+
+msgid "Nextcloud could not be shown here. Check your connection and try again. If this keeps happening, your server probably does not allow Nextcloud to be embedded in a frame."
+msgstr ""
+
+msgid "Nextcloud is now available as an app!"
+msgstr ""
+
+msgid "Nextcloud now appears as an app on your home screen!"
+msgstr ""
+
+msgid "Nextcloud now appears in your Dock as an app!"
+msgstr ""
+
+msgid "Nextcloud now opens as an app in its own window!"
+msgstr ""
+
+#. Invisible title (for screen readers) of the frame that shows a page of
+#. Nextcloud in a preview
+msgid "Nextcloud page"
+msgstr ""
+
+#. Status: the video has no captions file
+msgid "No captions"
+msgstr ""
+
+#. Shown when a tour has no steps in this language
+msgid "No steps defined yet."
+msgstr ""
+
+msgid "No steps to show for this selection."
+msgstr ""
+
+msgid "Nobody has been counted yet"
+msgstr ""
+
+#. Status: the user has not seen this tour yet
+msgid "Not seen yet"
+msgstr ""
+
+msgid "Not tied to an app: the tour starts on whatever page someone opens next. After Next, set a number of days to make it a tip that comes later, for example after a week."
+msgstr ""
+
+msgid "Nothing was changed. Check the connection and try again."
+msgstr ""
+
+#. Invisible label and tooltip of the numbered list button in the text
+#. editor
+msgid "Numbered list"
+msgstr ""
+
+#. Choice: the tour starts on a page of Nextcloud that is not an app; keep
+#. it short
+msgid "On another page"
+msgstr ""
+
+#. Title of a tour step about the main switch that turns tours on for
+#. everyone
+msgid "On for everyone"
+msgstr ""
+
+#. {page} is a path of this Nextcloud, such as "/apps/spreed/"
+msgid "On page {page}"
+msgstr ""
+
+msgid "On your computer or phone"
+msgstr ""
+
+#. Title of a tour step about languages
+msgid "One tour, every language"
+msgstr ""
+
+msgid "Only people whose first login comes after the tour is switched on."
+msgstr ""
+
+#. Label of a technical text field. "CSS selector" is a web development
+#. term
+msgid "Open first (CSS selector)"
+msgstr ""
+
+#. {element} is a CSS selector of the menu button the tour clicks first,
+#. such as ".app-menu__waffle"
+msgid "Opens {element} first"
+msgstr ""
+
+#. Label, followed by the CSS selector of the menu button the tour clicks
+#. before the step
+msgid "Opens first:"
+msgstr ""
+
+msgid "Or paste a screenshot here"
+msgstr ""
+
+msgid "Or use Chrome/Edge for the full app experience"
+msgstr ""
+
+msgid "Or: click the menu (three dots) → <strong>\"Install Nextcloud\"</strong>"
+msgstr ""
+
+msgid "Or: click the menu (three dots) → <strong>\"More tools\"</strong> → <strong>\"Apps\"</strong> → <strong>\"Install this site as an app\"</strong>"
+msgstr ""
+
+msgid "Override discarded — language now uses auto-translated defaults"
+msgstr ""
+
+#. Noun: label of a field for a page (an address) of this Nextcloud
+msgid "Page"
+msgstr ""
+
+#. Label, followed by the address of the page the step is on, such as
+#. "/apps/spreed/"
+msgid "Page:"
+msgstr ""
+
+#. Button: selects the element that contains the selected one
+msgid "Parent element"
+msgstr ""
+
+#. Invisible label of a button that pauses a GIF or video in a tour step
+msgid "Pause animation"
+msgstr ""
+
+msgid "Personal data of the people who use your Nextcloud"
+msgstr ""
+
+msgid "Pick a language to customize. Until you save, no data is written."
+msgstr ""
+
+#. Title of the screen where you click the element a step points at
+msgid "Pick an element"
+msgstr ""
+
+#. Button: opens Nextcloud so you can click the element the step points at
+msgid "Pick element"
+msgstr ""
+
+#. Invisible group label of two choices: Select or Browse
+msgid "Picker mode"
+msgstr ""
+
+#. Invisible label of a button that plays a GIF or video in a tour step
+msgid "Play animation"
+msgstr ""
+
+#. Noun: label of two choices for how a video plays
+msgid "Playback"
+msgstr ""
+
+#. Choice: the video plays silently and repeats, like an animated GIF
+#. image; keep it short
+msgid "Plays like a GIF"
+msgstr ""
+
+#. Noun: label of four choices for where the step shows next to its element
+msgid "Position"
+msgstr ""
+
+#. Label, followed by where the step shows next to its element: Right,
+#. Left, Top or Bottom
+msgid "Position:"
+msgstr ""
+
+#. Menu entry (verb): shows the tour as users get it
+msgid "Preview"
+msgstr ""
+
+#. Label of a list of groups: show the tour as a member of that group gets
+#. it
+msgid "Preview as"
+msgstr ""
+
+#. Button: shows the whole tour as users get it
+msgid "Preview tour"
+msgstr ""
+
+msgid "Put it on every Dashboard"
+msgstr ""
+
+#. Followed by an email address to write to
+msgid "Questions?"
+msgstr ""
+
+#. Button (verb): removes the image or video from the step
+msgid "Remove"
+msgstr ""
+
+#. Button: removes the captions file from the video
+msgid "Remove captions"
+msgstr ""
+
+#. Button: the step no longer points at an element
+msgid "Remove element"
+msgstr ""
+
+#. Button: removes the link from the text
+msgid "Remove link"
+msgstr ""
+
+#. Button (verb): replace the image or video by another file
+msgid "Replace"
+msgstr ""
+
+#. Dialog title
+msgid "Replace the welcome tour?"
+msgstr ""
+
+#. Button: opens the issue tracker of the app on GitHub
+msgid "Report an issue"
+msgstr ""
+
+#. Button (verb): deletes the steps written for this language, so the
+#. translated default steps come back
+msgid "Reset"
+msgstr ""
+
+#. Button (verb): starts the preview again
+msgid "Restart"
+msgstr ""
+
+#. Button: starts the welcome tour again
+msgid "Restart tour now"
+msgstr ""
+
+#. Button label while the tour is being restarted
+msgid "Restarting tour …"
+msgstr ""
+
+#. Choice: the step shows to the right of its element; keep it short
+msgid "Right"
+msgstr ""
+
+msgid "Run into a problem or missing something? Report it on GitHub and we will take a look."
+msgstr ""
+
+#. Button (verb): saves the changes
+msgid "Save"
+msgstr ""
+
+#. Button: saves the changes that could not be saved before
+msgid "Save changes"
+msgstr ""
+
+#. Button: saves the AI translations after you checked them
+msgid "Save translations"
+msgstr ""
+
+#. Status: tooltip of a check mark next to a language whose translation was
+#. saved
+msgid "Saved"
+msgstr ""
+
+#. {languages} is a comma-separated list of language names, such as
+#. "German, French"
+msgid "Saving replaces the steps there are now in {languages}."
+msgstr ""
+
+msgid "Scroll down and tap <strong>\"Add to Home Screen\"</strong>"
+msgstr ""
+
+#. Placeholder of a search field in a list of languages
+msgid "Search language …"
+msgstr ""
+
+#. Checklist task on the Dashboard; the Dashboard cuts off text longer than
+#. one line
+msgid "Secure your account"
+msgstr ""
+
+msgid "See it as others do"
+msgstr ""
+
+#. Button: opens the website with the other apps of the same makers
+msgid "See the other apps"
+msgstr ""
+
+#. Status: the user has seen this tour
+msgid "Seen"
+msgstr ""
+
+#. Choice (verb): clicking picks the element; keep it short
+msgid "Select"
+msgstr ""
+
+#. "Add to Dock" is a menu entry in Safari on a Mac: use the name Safari
+#. shows in your language
+msgid "Select <strong>\"Add to Dock\"</strong>"
+msgstr ""
+
+#. "Install Nextcloud" is a menu entry in the browser: use the words it
+#. shows in your language
+msgid "Select <strong>\"Install Nextcloud\"</strong>"
+msgstr ""
+
+#. Heading of a panel about the element you picked
+msgid "Selected element"
+msgstr ""
+
+#. Noun: invisible label of a list of CSS selectors (a web development
+#. term)
+msgid "Selector"
+msgstr ""
+
+msgid "Send a message in Talk"
+msgstr ""
+
+#. Button: sends the anonymous usage report now
+msgid "Send report now"
+msgstr ""
+
+#. Button label while the report is being sent
+msgid "Sending …"
+msgstr ""
+
+#. Noun: tab on the administration page with the global settings; keep it
+#. short
+msgid "Settings"
+msgstr ""
+
+#. Message after a setting was saved
+msgid "Settings saved"
+msgstr ""
+
+#. Invisible group label (for screen readers) of the row of tabs on the
+#. administration page: Settings, Tours, Statistics, Support
+msgid "Settings section"
+msgstr ""
+
+#. Button (verb): send anonymous usage statistics
+msgid "Share"
+msgstr ""
+
+#. Label of a switch that turns the anonymous usage statistics on or off
+msgid "Share anonymous usage statistics"
+msgstr ""
+
+#. Label of a text field for a short explanation under a checklist task
+msgid "Short text"
+msgstr ""
+
+msgid "Show \"Getting started\" on the Dashboard"
+msgstr ""
+
+#. Menu entry and dialog title: everyone who saw the tour gets it once more
+msgid "Show again to everyone"
+msgstr ""
+
+#. Button: starts the tour of the administration page
+msgid "Show me"
+msgstr ""
+
+msgid "Show the admin tour again"
+msgstr ""
+
+msgid "Show Tours in the user menu"
+msgstr ""
+
+#. Noun: label of three choices for the size of an image
+msgid "Size"
+msgstr ""
+
+#. Button (verb): ends the tour now
+msgid "Skip"
+msgstr ""
+
+msgid "Skip and don't show again"
+msgstr ""
+
+#. Choice for the size of an image; keep it short
+msgid "Small"
+msgstr ""
+
+#. Short explanation under the task "Add a profile picture"; keep it short
+msgid "So others recognize you"
+msgstr ""
+
+#. Button: opens the source code of the app on GitHub
+msgid "Source code"
+msgstr ""
+
+#. Button (verb): starts a tour the user has not seen yet
+msgid "Start"
+msgstr ""
+
+msgid "Start a tour again, or stop tours from starting by themselves."
+msgstr ""
+
+#. Button: starts a tour the user has seen before
+msgid "Start again"
+msgstr ""
+
+#. Button on the first step: starts the tour
+msgid "Start tour"
+msgstr ""
+
+#. Label of a switch in the personal settings: tours may start without the
+#. user asking
+msgid "Start tours by themselves"
+msgstr ""
+
+msgid "Starts after the first login"
+msgstr ""
+
+msgid "Starts on whichever page someone opens next"
+msgstr ""
+
+#. {app} is the name of an app, such as "Talk"
+msgid "Starts the first time someone opens {app}"
+msgstr ""
+
+#. {page} is an address of this Nextcloud, such as "/settings/user"
+msgid "Starts the first time someone opens {page}"
+msgstr ""
+
+#. Noun: tab and section heading on the administration page; keep it short
+msgid "Statistics"
+msgstr ""
+
+#. Message after the usage report was sent
+msgid "Statistics sent"
+msgstr ""
+
+#. {number} is the position of the step in the tour: 1, 2, 3
+msgid "Step {number}"
+msgstr ""
+
+#. Item in a list of data the usage statistics never contain
+msgid "Step content or titles"
+msgstr ""
+
+msgid "Step counts per language (e.g., EN: 8, NL: 5)"
+msgstr ""
+
+#. Invisible label (for screen readers) of the list of pages in the step
+#. dialog
+msgid "Step settings"
+msgstr ""
+
+#. Message after the steps written by the AI were added to the tour
+msgid "Steps added"
+msgstr ""
+
+#. Message after the steps were downloaded as a file
+msgid "Steps exported"
+msgstr ""
+
+#. Label of a list of languages, as in "steps in German"
+msgid "Steps in"
+msgstr ""
+
+#. Message after the steps were saved
+msgid "Steps saved"
+msgstr ""
+
+#. Noun: tab on the administration page with help and contact information;
+#. keep it short
+msgid "Support"
+msgstr ""
+
+#. Invisible label (for screen readers) of a switch; {tour} is the name of
+#. a tour, such as "Welcome tour" or "Talk"
+msgid "Switch {tour} on or off"
+msgstr ""
+
+#. Status: this step is switched off
+msgid "Switched off"
+msgstr ""
+
+#. Checklist task on the Dashboard; the Dashboard cuts off text longer than
+#. one line
+msgid "Take the welcome tour"
+msgstr ""
+
+#. Name of the Talk app, as Nextcloud shows it in your language
+msgid "Talk"
+msgstr ""
+
+msgid "Tap <strong>\"Install app\"</strong> or <strong>\"Add to home screen\"</strong>"
+msgstr ""
+
+#. "Install" is a menu entry in Samsung Internet: use the name it shows in
+#. your language
+msgid "Tap <strong>\"Install\"</strong>"
+msgstr ""
+
+msgid "Tap <strong>Add to Home Screen</strong>"
+msgstr ""
+
+msgid "Tap <strong>Add</strong> in the top right"
+msgstr ""
+
+#. "Install" is a button in Chrome on Android: use the name Chrome shows in
+#. your language
+msgid "Tap <strong>Install</strong>"
+msgstr ""
+
+msgid "Tap the <strong>Share</strong> icon (square with up arrow) at the bottom"
+msgstr ""
+
+msgid "Tap the menu icon (three dots) in the top right"
+msgstr ""
+
+#. Noun: heading of the list of tasks in the checklist
+msgid "Tasks"
+msgstr ""
+
+#. Message after the anonymous usage statistics were switched off
+msgid "Telemetry disabled"
+msgstr ""
+
+#. Message after the anonymous usage statistics were switched on
+msgid "Telemetry enabled"
+msgstr ""
+
+#. Button: shows this one step as users will see it
+msgid "Test this step"
+msgstr ""
+
+#. Noun: label of the editor for the text of a step
+msgid "Text"
+msgstr ""
+
+#. Label of a text editor; {number} is the position of the step in the
+#. tour: 1, 2, 3
+msgid "Text of step {number}"
+msgstr ""
+
+msgid "Thank you for helping improve IntroVox!"
+msgstr ""
+
+#. Title of the last step of the tour of the administration page
+msgid "That is all"
+msgstr ""
+
+msgid "The answer could not be used. Try again."
+msgstr ""
+
+msgid "The answer was cut off: the AI provider allows shorter answers than a tour needs. Raise that limit in its settings, for the OpenAI integration \"Max output tokens per request\", and try again."
+msgstr ""
+
+#. {app} is the technical ID of an app, such as "spreed"
+msgid "The app {app} is not installed here. The tour can only start once it is."
+msgstr ""
+
+msgid "The Assistant could not do this. Try again later."
+msgstr ""
+
+msgid "The Assistant did not answer in time. Try again later."
+msgstr ""
+
+msgid "The Assistant is not set up on this Nextcloud."
+msgstr ""
+
+msgid "The Assistant was asked too often. Try again in an hour."
+msgstr ""
+
+msgid "The file could not be added."
+msgstr ""
+
+msgid "The file could not be found."
+msgstr ""
+
+msgid "The file could not be read. It may be damaged."
+msgstr ""
+
+msgid "The file is larger than this server accepts for uploads. Put it in your Files and choose it from there."
+msgstr ""
+
+msgid "The file is too large to import."
+msgstr ""
+
+#. {size} is a file size with its unit, such as "10 MB"
+msgid "The file is too large. The limit is {size}."
+msgstr ""
+
+#. {megapixels} is a number, such as 40
+msgid "The image is too large: at most {megapixels} megapixels."
+msgstr ""
+
+msgid "The introduction tour is currently disabled by your administrator."
+msgstr ""
+
+#. Link text inside a sentence: "… is in the IntroVox manual."
+msgid "the IntroVox manual"
+msgstr ""
+
+msgid "The new steps show in the middle of the screen. Pick an element for each of them in the editor afterwards."
+msgstr ""
+
+msgid "The settings could not be loaded. Reload the page to try again."
+msgstr ""
+
+msgid "The short text can be at most 120 characters."
+msgstr ""
+
+msgid "The statistics could not be loaded."
+msgstr ""
+
+msgid "The steps could not be loaded."
+msgstr ""
+
+#. {language} is a language name, such as "German". "the Assistant" is the
+#. Nextcloud Assistant app (AI)
+msgid "The steps in {language} are translated by the Assistant. Only the words change: elements, pages and images stay as they are. You check the translation before it is saved."
+msgstr ""
+
+msgid "The steps were changed meanwhile. Try again."
+msgstr ""
+
+msgid "The task is ticked off once someone opens this page from the list."
+msgstr ""
+
+msgid "The tour and its steps in every language are deleted. Export it first if you may want it back."
+msgstr ""
+
+msgid "The tour could not be deleted."
+msgstr ""
+
+msgid "The tour could not be exported."
+msgstr ""
+
+msgid "The tour could not be loaded."
+msgstr ""
+
+msgid "The tour could not be saved."
+msgstr ""
+
+msgid "The tour could not be shown again."
+msgstr ""
+
+msgid "The tour could not be started on this page."
+msgstr ""
+
+msgid "The tour could not be started."
+msgstr ""
+
+msgid "The tour could not be switched on or off."
+msgstr ""
+
+#. {detail} is a technical description of the problem, in English
+msgid "The tour in the file is not valid: {detail}"
+msgstr ""
+
+#. {parts} is a comma-separated list of HTML code, such as "<script>,
+#. onclick"
+msgid "The tour removes this HTML, so nobody sees it: {parts}."
+msgstr ""
+
+msgid "The tour starts by itself the first time someone opens it, once you switch the tour on."
+msgstr ""
+
+msgid "The tours could not be loaded."
+msgstr ""
+
+msgid "The welcome tour has no steps of your own to export: it uses the translated default steps every Nextcloud has."
+msgstr ""
+
+msgid "The welcome tour shows Nextcloud to newcomers. A tour for an app starts the first time someone opens that app."
+msgstr ""
+
+#. {languages} is a comma-separated list of language codes, such as "de,
+#. fr"
+msgid "The welcome tour's own steps in {languages} are replaced by the ones in the file."
+msgstr ""
+
+#. {languages} is a comma-separated list of language codes, such as "de,
+#. fr"
+msgid "The welcome tour's steps were imported for {languages}"
+msgstr ""
+
+msgid "There are no steps to translate in this language."
+msgstr ""
+
+#. {groups} is a comma-separated list of group names
+msgid "These groups do not exist here and were left out: {groups}"
+msgstr ""
+
+msgid "This element is in the header, so the step works on every page."
+msgstr ""
+
+msgid "This element is inside a menu or pop-up that only exists while it is open. Open it in Browse mode, then hold Shift and click the element, so the tour knows which button opens it."
+msgstr ""
+
+msgid "This element is inside a menu. During the tour, the menu is opened first with:"
+msgstr ""
+
+#. {page} is an address of this Nextcloud, such as "/apps/spreed/"
+msgid "This element is on {page}. The tour opens that page first."
+msgstr ""
+
+msgid "This file is shared with you for viewing only, so it cannot be imported."
+msgstr ""
+
+msgid "This file is shared with you for viewing only, so it cannot be used in a step."
+msgstr ""
+
+msgid "This file type is not supported. Use a PNG, JPEG or GIF image, or an MP4 or WebM video."
+msgstr ""
+
+msgid "This fills in as people get the tour."
+msgstr ""
+
+msgid "This is not a tour exported from IntroVox."
+msgstr ""
+
+msgid "This selector depends on where the element sits in the page and may stop working after a Nextcloud update."
+msgstr ""
+
+#. {size} is a file size with its unit, such as "10 MB"
+msgid "This server accepts uploads up to {size}. Put larger files in your Files and choose them from there."
+msgstr ""
+
+#. {parts} is a comma-separated list of HTML code, such as "<script>,
+#. onclick"
+msgid "This text has HTML that the tour never shows: {parts}. The editor leaves it out, and it goes once you change the text."
+msgstr ""
+
+msgid "This tour comes from a newer IntroVox. Update IntroVox here first."
+msgstr ""
+
+msgid "This video has a track with extra data, such as a location. Export the video without metadata and try again."
+msgstr ""
+
+msgid "This video has sound but no captions. People who cannot hear it will miss what is said."
+msgstr ""
+
+#. Noun: label of the text field for the title of a checklist task or a
+#. step
+msgid "Title"
+msgstr ""
+
+#. Label of a text field; {number} is the position of the step in the tour:
+#. 1, 2, 3
+msgid "Title of step {number}"
+msgstr ""
+
+#. Choice: the step shows above its element; keep it short
+msgid "Top"
+msgstr ""
+
+#. Label under a number: how many steps all tours have together
+msgid "Total steps"
+msgstr ""
+
+msgid "Total user count and active users"
+msgstr ""
+
+#. Label under a number: how many accounts this Nextcloud has
+msgid "Total users"
+msgstr ""
+
+#. Noun: label of the list of tours
+msgid "Tour"
+msgstr ""
+
+#. Title of the screen that shows a tour as users get it
+msgid "Tour preview"
+msgstr ""
+
+#. Dialog title and button: the settings of one tour
+msgid "Tour settings"
+msgstr ""
+
+#. Section heading of the statistics per tour
+msgid "Tour usage"
+msgstr ""
+
+#. Noun: tab on the administration page, the heading of the list of tours,
+#. and the entry in the user menu; keep it short
+msgid "Tours"
+msgstr ""
+
+msgid "Tours are switched off for everyone. Switch them on under Settings."
+msgstr ""
+
+#. Label of the main switch: when it is off, no tour starts for anyone
+msgid "Tours for everyone"
+msgstr ""
+
+msgid "Tours that show people around Nextcloud and its apps: when they start, for whom, and their steps."
+msgstr ""
+
+#. Button (verb): starts the AI translation
+msgid "Translate"
+msgstr ""
+
+#. Dialog title and button: let the Nextcloud Assistant (AI) translate the
+#. steps of a tour
+msgid "Translate with AI"
+msgstr ""
+
+#. Description of the welcome tour: it has no steps written for a language
+#. of its own
+msgid "Translated into every language"
+msgstr ""
+
+#. Status of one language while the AI is translating it
+msgid "Translating …"
+msgstr ""
+
+#. "Language" is the label of the list of languages in the step editor
+msgid "Translations saved. Choose a language under Language to see them."
+msgstr ""
+
+#. Button: loads the steps again
+msgid "Try again"
+msgstr ""
+
+#. Error message; {error} is the reason, from the server, in English or in
+#. the user's language
+msgid "Unknown error"
+msgstr ""
+
+#. Error message: no tour with that ID exists
+msgid "Unknown tour"
+msgstr ""
+
+#. Title of a dialog that asks whether to discard changes
+msgid "Unsaved changes"
+msgstr ""
+
+#. Label of a date field: the last day a tour may start by itself
+msgid "Until"
+msgstr ""
+
+#. {date} is a date, such as "Oct 9, 2026": the last day a tour starts by
+#. itself
+msgid "Until {date}"
+msgstr ""
+
+#. Button (verb): upload a file from your computer
+msgid "Upload"
+msgstr ""
+
+#. Menu entry and checklist task: upload a file from your computer
+msgid "Upload a file"
+msgstr ""
+
+#. Error message; {example} is a path, such as "/apps/spreed/"
+msgid "Use a page of this Nextcloud, such as {example}."
+msgstr ""
+
+#. Error message; {address} is "nextcloud.com" and {path} is "/apps/files/"
+msgid "Use a web address such as {address}, or a path on this Nextcloud such as {path}."
+msgstr ""
+
+msgid "Use a WebVTT (.vtt) captions file."
+msgstr ""
+
+msgid "Use Nextcloud as a real app!"
+msgstr ""
+
+msgid "Use Nextcloud as an app"
+msgstr ""
+
+msgid "Use the page as usual, for example to open a menu. To pick something inside it, hold Shift and click."
+msgstr ""
+
+#. Button: the step points at the selected element
+msgid "Use this element"
+msgstr ""
+
+msgid "User names or email addresses"
+msgstr ""
+
+#. Label under a number: how many people finished the tour
+msgid "Users completed"
+msgstr ""
+
+#. Label under a number: how many people skipped the tour
+msgid "Users skipped"
+msgstr ""
+
+#. Label under a number: how many people started the tour
+msgid "Users started"
+msgstr ""
+
+#. Label of a list of groups that may get a tour or a step
+msgid "Visible to"
+msgstr ""
+
+#. Label of a list of groups that get this step
+msgid "Visible to groups"
+msgstr ""
+
+#. Label, followed by a comma-separated list of groups, or "All users"
+msgid "Visible to:"
+msgstr ""
+
+#. Status of a language whose AI translation has not started yet
+msgid "Waiting"
+msgstr ""
+
+msgid "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared."
+msgstr ""
+
+#. Title of the first step of the tour of the administration page.
+#. "IntroVox" is the app name
+msgid "Welcome to IntroVox"
+msgstr ""
+
+#. An example title of a step, shown in a placeholder: "For example: 👋
+#. Welcome to Nextcloud"
+msgid "Welcome to Nextcloud"
+msgstr ""
+
+#. Name of the tour new users get after their first login
+msgid "Welcome tour"
+msgstr ""
+
+msgid "What should people know at this step?"
+msgstr ""
+
+msgid "What should the tour explain?"
+msgstr ""
+
+#. Heading of a list of the data the anonymous usage statistics contain
+msgid "What we collect:"
+msgstr ""
+
+#. Heading of a list of data the anonymous usage statistics never contain
+msgid "What we never collect:"
+msgstr ""
+
+msgid "When an app for two-factor authentication is installed"
+msgstr ""
+
+msgid "When it starts by itself"
+msgstr ""
+
+msgid "When this is off, no tour starts by itself. You can still start each tour here."
+msgstr ""
+
+msgid "When this is off, no tour starts, and nobody can start one themselves."
+msgstr ""
+
+#. Label of three choices: where a new tour starts
+msgid "Where does it start?"
+msgstr ""
+
+msgid "Whether this Nextcloud has an Enterprise subscription, and your IntroVox license key if you entered one"
+msgstr ""
+
+msgid "Whether tours start, and where people find them again"
+msgstr ""
+
+msgid "While the welcome tour is on"
+msgstr ""
+
+#. Label of two choices: who gets the tour
+msgid "Who gets it"
+msgstr ""
+
+#. Choice for the size of an image: the whole step becomes wider; keep it
+#. short
+msgid "Wide step"
+msgstr ""
+
+msgid "With a click on the element, people do what the step asks instead of pressing Next, and the step tells them so. If the element is missing, a Next button appears instead."
+msgstr ""
+
+#. Choice: the video plays when the user presses play; keep it short
+msgid "With a play button"
+msgstr ""
+
+#. Short explanation under the task "Secure your account"; keep it short
+msgid "With two-factor authentication"
+msgstr ""
+
+#. Button: lets the AI write the steps
+msgid "Write steps"
+msgstr ""
+
+#. Dialog title and button: let the Nextcloud Assistant (AI) write steps
+#. from a description
+msgid "Write steps with AI"
+msgstr ""
+
+#. Status while the AI is writing the steps
+msgid "Writing …"
+msgstr ""
+
+msgid "You can however create a bookmark for quick access"
+msgstr ""
+
+msgid "You can install Nextcloud as an app on your device. It then works just like any other app:"
+msgstr ""
+
+msgid "You got here by using the page. The tour cannot do that for someone, but the step waits until this element is there. So let the steps before it lead the way: one step for each click, with Continue with: Click on the element."
+msgstr ""
+
+msgid "You have unsaved changes. Do you want to discard them?"
+msgstr ""
+
+#. Item in a list of data the usage statistics never contain
+msgid "Your actual server URL"
+msgstr ""
+
+msgid "Your browser may support app installation"
+msgstr ""
+
+#. Heading of the list of checklist tasks an administrator added
+msgid "Your own tasks"
+msgstr ""
+
+#. %n is the number of images and videos that were left out of the import
+msgid "%n image or video was left out: missing from the file, or over this server's limits."
+msgid_plural "%n images or videos were left out: missing from the file, or over this server's limits."
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is a number of people, shown next to a bar in a chart
+msgid "%n person"
+msgid_plural "%n people"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is a number of people
+msgid "%n person got to a step that is not in this list: deleted since, or a step of another language."
+msgid_plural "%n people got to a step that is not in this list: deleted since, or a step of another language."
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the number of steps in a tour
+msgid "%n step"
+msgid_plural "%n steps"
+msgstr[0] ""
+msgstr[1] ""
+
+#. In a tour's summary. %n is a number of days after someone's first login;
+#. the tour does not start by itself before then
+msgid "After %n day"
+msgid_plural "After %n days"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the number of images and videos that were left out of the import
+msgid "An image or video in the file is not on this server and was left out."
+msgid_plural "%n images or videos in the file are not on this server and were left out."
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the number of imported steps; {language} is a language code, such
+#. as "de" or "pt_BR"
+msgid "Imported %n step ({language})"
+msgid_plural "Imported %n steps ({language})"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the number of languages for which an administrator wrote steps of
+#. their own of the welcome tour
+msgid "The tour is auto-translated into every Nextcloud-supported language. %n language currently has an override."
+msgid_plural "The tour is auto-translated into every Nextcloud-supported language. %n languages currently have an override."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Error message; %n is the maximum number of tasks of your own in the
+#. checklist, currently 10
+msgid "There can be at most %n own task."
+msgid_plural "There can be at most %n own tasks."
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the maximum number of tours, currently 50
+msgid "There is already %n tour, the most there can be."
+msgid_plural "There are already %n tours, the most there can be."
+msgstr[0] ""
+msgstr[1] ""
+
+#. %n is the number of languages for which an administrator wrote steps of
+#. their own
+msgid "Translated, with its own steps in %n language"
+msgid_plural "Translated, with its own steps in %n languages"
+msgstr[0] ""
+msgstr[1] ""

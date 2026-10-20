@@ -4,7 +4,7 @@ Deze gids beschrijft hoe je IntroVox installeert op een Nextcloud-instantie.
 
 ## Vereisten
 
-- **Nextcloud 32 of later** (32–34 expliciet ondersteund vanaf v1.5.0)
+- **Nextcloud 32 tot en met 35** (35 sinds v1.7.7)
 - **PHP 8.1 of later**
 
 Verifieer de gezaghebbende vereisten in [appinfo/info.xml](https://github.com/nextcloud/IntroVox/blob/main/appinfo/info.xml).
@@ -60,9 +60,10 @@ sudo -u www-data php occ app:enable introvox
 Na het inschakelen van de app:
 
 1. Ga naar **Instellingen → Beheer → IntroVox**
-2. Toggle **Wizard inschakelen voor alle gebruikers**
-3. Vink onder **Beschikbare talen** de talen aan die je wilt ondersteunen (default: alleen Engels)
-4. Pas optioneel wizard-stappen per taal aan via de taal-dropdown
+2. Zet **Tours for everyone** aan — de tour werkt nu automatisch in elke taal die Nextcloud ondersteunt (vertaald via Transifex; Engels voor talen zonder vertaling)
+3. Open eventueel **Tours**, klik bij de **Welcome tour** op **Edit steps** en klik op **Add language override** om voor een bepaalde taal eigen tekst te schrijven
+4. Beperk eventueel stappen tot bepaalde gebruikersgroepen voor rol-gebaseerde onboarding
+5. Voeg eventueel een tour voor een app toe met **Tours** → **New tour** ([Tours](../admin/tours.nl.md))
 
 Zie [Beheerdersgids](../admin/guide.md) voor de volledige configuratie-walkthrough.
 
@@ -102,11 +103,13 @@ Upgrades verschijnen in **Instellingen → Apps → Updates** wanneer een nieuwe
 
 ### Migratie-opmerkingen
 
-IntroVox maakt of migreert geen custom database-tabellen — alle staat leeft in `oc_appconfig` en `oc_preferences`. Upgrades zijn niet-destructief: custom-stap-configuraties, ingeschakelde talen en gebruikers-voorkeuren blijven behouden.
+IntroVox maakt of migreert geen eigen database-tabellen. Instellingen, tours en hun stappen staan in `oc_appconfig`, gebruikers-voorkeuren in `oc_preferences`. De afbeeldingen en video's van stappen, en de back-ups van de laatste tien verwijderde tours, staan in de app-datamap van IntroVox (`appdata_<instanceid>/introvox` in de datamap van Nextcloud). Upgrades zijn niet-destructief: tours, stappen, overrides per taal, media en gebruikers-voorkeuren blijven behouden.
 
 De defensieve `is_array()`-guard in `ApiController::getWizardSteps()` (v1.4.3+) betekent dat zelfs als een oudere corrupte stap-blob bestaat, de wizard terugvalt op defaults in plaats van crashen.
 
 ## Deïnstallatie
+
+Staat **Put it on every Dashboard** aan voor de checklist, zet het dan eerst uit: tot dan noemt de standaardindeling van het Dashboard (app-config `dashboard` / `layout`) `introvox-checklist`.
 
 ```bash
 sudo -u www-data php occ app:disable introvox
@@ -120,13 +123,29 @@ DELETE FROM oc_appconfig WHERE appid = 'introvox';
 DELETE FROM oc_preferences WHERE appid = 'introvox';
 ```
 
+De afbeeldingen en video's van stappen en de back-ups van verwijderde tours blijven in de app-datamap staan. Wil je die ook kwijt, verwijder hem dan en laat Nextcloud de bestanden vergeten:
+
+```bash
+sudo rm -rf /var/www/nextcloud/data/appdata_<instanceid>/introvox
+sudo -u www-data php occ files:scan-app-data
+```
+
+`<instanceid>` is de `instanceid` in `config/config.php`; de datamap kan ergens anders staan dan `/var/www/nextcloud/data`.
+
+De app uitgeschakeld terwijl **Put it on every Dashboard** nog aan stond? Haal `introvox-checklist` dan met de hand uit de indeling:
+
+```bash
+sudo -u www-data php occ config:app:get dashboard layout
+sudo -u www-data php occ config:app:set dashboard layout --value="<dezelfde lijst zonder introvox-checklist>"
+```
+
 ## Verificatie
 
 Na installatie:
 
-1. Log in als reguliere gebruiker met een ingeschakelde taal
-2. De wizard zou automatisch moeten starten op het dashboard na een paar seconden
-3. Check **Instellingen → Persoonlijk → IntroVox** — de **Tour nu herstarten**-knop zou zichtbaar moeten zijn
+1. Log in als reguliere gebruiker die de welkomsttour nog niet had
+2. De welkomsttour zou vanzelf moeten starten op de eerste pagina die je opent, in je eigen taal, zodra de pagina geladen is
+3. Check **Instellingen → Persoonlijk → IntroVox** — de knop **Restart tour now** zou zichtbaar moeten zijn
 
 Als de wizard niet verschijnt, zie [Beheer-troubleshooting](../admin/troubleshooting.md).
 

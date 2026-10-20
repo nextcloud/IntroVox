@@ -10,33 +10,58 @@ Veelvoorkomende problemen die gebruikers met IntroVox ervaren en hoe je ze oplos
 
 1. Wacht 2–3 seconden — de tour start automatisch na een korte vertraging
 2. Ververs de pagina (`Ctrl+R` / `Cmd+R`)
-3. Zorg dat je op de **dashboard**-pagina staat (daar start de tour)
-4. Probeer handmatig starten via **Persoonlijke instellingen → IntroVox → Tour nu herstarten**
+3. Open een andere pagina, zoals Files: de welkomsttour start op de eerste pagina die je na het inloggen opent, welke app dat ook is
+4. Controleer of **Start tours by themselves** aan staat in **Persoonlijke instellingen → IntroVox**
+5. Probeer handmatig starten via **Persoonlijke instellingen → IntroVox → Restart tour now**
 
-Als de tour nog steeds niet verschijnt, heeft je beheerder hem mogelijk uitgeschakeld of jouw taal niet ingeschakeld. Neem contact op.
+Als de tour nog steeds niet verschijnt, heeft je beheerder hem mogelijk voor iedereen uitgeschakeld. Neem contact op.
 
-## Stappen ontbreken of worden overgeslagen
+## Tour voor een app start niet
+
+**Probleem:** je opent een app die een tour heeft, maar de tour verschijnt niet.
+
+Een tour voor een app start alleen vanzelf de eerste keer dat je die app opent, en nooit bovenop de welkomsttour: heb je de welkomsttour nog niet gehad, dan krijg je die eerst, en de tour van de app bij een later bezoek. Wil je hem (opnieuw) zien, ga dan naar **Persoonlijke instellingen → IntroVox**, zoek hem onder **Tours** en klik op **Start** of **Start again**. Staat de tour van de app daar niet, dan is hij niet voor jou bedoeld of heeft je beheerder hem niet aangezet.
+
+## Stappen ontbreken
 
 **Probleem:** sommige stappen verschijnen niet tijdens de tour.
 
 **Dit is meestal normaal.** Mogelijke redenen:
 
-- De Nextcloud-app voor die stap is niet geïnstalleerd
+- De stap hoort bij een app die je niet kunt openen, of die niet geïnstalleerd is
 - Je beheerder heeft bepaalde stappen uitgeschakeld
-- Sommige UI-elementen zijn niet zichtbaar in jouw weergave
 - De stap is beperkt tot specifieke gebruikersgroepen, en je zit niet in een daarvan
 
 De tour toont automatisch alleen de stappen die relevant zijn voor jouw setup en rol.
+
+## Een stap wacht in de hoek
+
+**Probleem:** een stap staat rechtsonder (linksonder zolang er een venster open is) in plaats van ergens naar te wijzen.
+
+De stap wacht op het deel van de pagina waar hij over gaat. Vaak verschijnt dat pas als je iets gedaan hebt, zoals een gesprek aanmaken of de details van een bestand openen. De pagina blijft bruikbaar: doe wat de stap zegt, en de stap schuift erheen zodra het verschijnt. **Next** gaat ook zonder het element verder.
+
+## Geen Next-knop, of Next werkt niet
+
+**Probleem:** een stap heeft geen knop **Next**, of je kunt er niet op klikken.
+
+De stap vraagt je iets te doen:
+
+- "Click the highlighted element to continue.": klik op het deel van de pagina met de rand en het knipperende pijltje. De tour gaat dan vanzelf verder.
+- "Fill in the highlighted field to continue.": typ iets in het veld. **Next** werkt zodra het veld tekst heeft.
+
+Staat het element niet op de pagina, dan werkt **Next** gewoon, zodat je nooit vastloopt.
 
 ## Tekst niet in mijn taal
 
 **Probleem:** de tour toont Engelse tekst maar je hebt een andere Nextcloud-taal geselecteerd.
 
-**Probeer:**
+**Meest waarschijnlijke oorzaak:** de tekst van de tour is voor jouw taal nog niet vertaald op [Transifex](https://www.transifex.com/nextcloud/nextcloud/). IntroVox valt dan terug op Engels, zodat je altijd leesbare tekst krijgt. Iedereen kan op Transifex meevertalen; zodra jouw taal daar vertaald is, brengt de volgende Nextcloud-sync de vertaling vanzelf naar IntroVox.
+
+**Andere dingen om te proberen:**
 
 1. Check je Nextcloud-taal: **Persoonlijke instellingen → Taal**
 2. Hard-refresh de pagina: `Ctrl+Shift+R` (Windows) of `Cmd+Shift+R` (Mac)
-3. Neem contact op met je beheerder — die moet mogelijk jouw taal inschakelen
+3. Heeft je beheerder eigen stappen voor jouw taal geschreven, vraag dan of die opgeslagen zijn
 
 ## Tour-venster te klein of te groot
 
@@ -62,13 +87,13 @@ De tour toont automatisch alleen de stappen die relevant zijn voor jouw setup en
 
 **Probleem:** je hebt de tour al doorlopen, maar hij blijft verschijnen.
 
-Dit is verwacht als je de tour hebt gesloten met de **✕**-knop in plaats van hem te voltooien, of als je browser localStorage wist tussen sessies.
+Sluit je de welkomsttour met **✕** of Escape, dan onthoudt alleen deze browser dat. De tour komt terug in een andere browser of op een ander apparaat, en ook in deze browser als die zijn sitegegevens wist tussen sessies, zoals een privévenster doet.
 
 **Oplossingen:**
 
 - Voltooi de tour volledig (klik op **Klaar** in de laatste stap), of
 - Klik in de eerste stap op **Overslaan en niet meer tonen**, of
-- Vink **"Introductie-tour permanent uitschakelen"** aan in **Persoonlijke instellingen → IntroVox**
+- Zet **Start tours by themselves** uit in **Persoonlijke instellingen → IntroVox** (dan start er geen tour meer vanzelf, ook geen tour voor een app)
 
 ## Eerder getoonde stappen blijven achter de huidige stap zichtbaar (v1.6.1-fix)
 
@@ -79,5 +104,5 @@ Dit was een bug die in v1.4.0 werd geïntroduceerd en in v1.6.1 is opgelost. Als
 ## Zie ook
 
 - [FAQ](faq.md) — veelgestelde vragen
-- [Persoonlijke instellingen](personal-settings.md) — herstarten en uitschakelen
+- [Persoonlijke instellingen](personal-settings.md) — herstarten, tours voor apps starten, tours niet meer vanzelf laten starten
 - [Beheer-troubleshooting](../admin/troubleshooting.md) — als je beheerder bent

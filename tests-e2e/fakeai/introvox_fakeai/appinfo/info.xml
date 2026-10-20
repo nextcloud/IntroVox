@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>introvox_fakeai</id>
+    <name>IntroVox fake AI (tests)</name>
+    <summary>Canned free-prompt answers for the IntroVox E2E tests</summary>
+    <description>Test only</description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author>test</author>
+    <namespace>IntroVoxFakeAi</namespace>
+    <category>tools</category>
+    <bugs>https://example.com</bugs>
+    <dependencies>
+        <nextcloud min-version="32" max-version="35"/>
+    </dependencies>
+</info>

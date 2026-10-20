@@ -1,6 +1,9 @@
 node_modules/
 js/
 tests/
+tests-js/
+tests-php/
+tests-e2e/
 docs/
 vendor/
 vendor-bin/

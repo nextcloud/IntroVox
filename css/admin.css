@@ -1,7 +1,13 @@
-/* Admin styles for IntroVox - matches Nextcloud standard layout */
+/* Admin styles for IntroVox. Only the template in templates/admin.php is
+   styled here -- the app itself is Vue with scoped styles.
+
+   The pre-1.7.0 rules for a hand-built checkbox (.global-settings,
+   .setting-item, .toggle-label, .setting-hint) were removed in 2.0.0: that
+   markup is NcSettingsSection and NcCheckboxRadioSwitch now, and all four
+   selectors matched zero elements on dev. */
 #introvox-admin h2 {
   font-size: 20px;
-  font-weight: bold;
+  font-weight: var(--font-weight-heading);
   margin-bottom: 12px;
   margin-top: 0;
 }
@@ -13,43 +19,4 @@
 
 #introvox-admin-app {
   margin-top: 0;
-}
-
-/* Global settings section */
-.introvox-admin .global-settings {
-  background: transparent;
-  padding: 0;
-  border-radius: 0;
-  margin-bottom: 20px;
-  box-shadow: none;
-}
-
-.introvox-admin .global-settings h3 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  margin-top: 0;
-  color: var(--color-main-text);
-}
-
-.introvox-admin .setting-item {
-  margin-bottom: 12px;
-}
-
-.introvox-admin .toggle-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: normal;
-}
-
-.introvox-admin .toggle-label input[type="checkbox"] {
-  margin-right: 8px;
-  cursor: pointer;
-}
-
-.introvox-admin .setting-hint {
-  margin-top: 4px;
-  margin-left: 28px;
-  color: var(--color-text-maxcontrast);
 }

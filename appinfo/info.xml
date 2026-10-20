@@ -3,39 +3,40 @@
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>introvox</id>
     <name>IntroVox</name>
-    <summary>Interactive onboarding tour for new Nextcloud users</summary>
-    <description><![CDATA[IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud.
+    <summary>Guided tours for Nextcloud and its apps</summary>
+    <description><![CDATA[IntroVox shows people around Nextcloud. New users get a welcome tour after their first login, and a short tour the first time they open an app such as Files, Talk, Deck or Calendar.
 
-**Features:**
-* Interactive step-by-step tour through Nextcloud's main features
-* Full admin interface for customizing tour steps per language
-* Multi-language support via Transifex (every translated language is automatically available)
-* Import/export functionality for easy tour configuration sharing
-* Global enable/disable control for administrators
-* Per-language admin overrides for custom tour copy
-* Group-based visibility for individual steps
-* Personal settings for users to restart or permanently disable the tour
-* Admin statistics dashboard with wizard usage metrics
+**For users:**
+* A welcome tour after the first login, in their own language
+* Short tours the first time they open an app or a page, or a tip on any page after a few days
+* Steps that go on when they click the element or fill in a field; a step whose element is not there yet waits aside until it appears
+* Images, GIFs and videos in steps, with descriptions and captions
+* Every tour can be started again from the personal settings, also through Tours in the user menu, and tours that start by themselves can be switched off
+* An optional "Getting started" checklist on the Dashboard that ticks itself off
+
+**For administrators:**
+* Built-in tours for Files, Talk, Deck and Calendar, and tours of your own for an app, a page, or anywhere
+* Translated default steps via Transifex (every translated language is available automatically), with your own steps per language where you want them
+* Groups per step and per tour
+* Who gets a tour and when: everyone or new accounts only, a number of days after the first login, between two dates
+* Share links that start a tour, for a welcome mail or a message to a team
+* Statistics per tour: how many people started, completed and skipped it, and how far people get
+* Export and import of a whole tour, with its steps in every language and its images and videos
+* Translate a tour or write its steps with AI, through the Nextcloud Assistant; you check every step before it is saved
 * Optional anonymous telemetry reporting
 * Automatically adapts to your Nextcloud theme (light, dark, high contrast)
-* Privacy-focused: tour completion status stored locally
 
-**Perfect for:**
-* Nextcloud administrators who want to improve user onboarding
-* Organizations deploying Nextcloud to new users
-* Multi-language organizations with diverse user bases
-* Anyone who wants to help users discover Nextcloud features
-
-Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
+Built with Vue 3 and Shepherd.js.
     ]]></description>
-    <version>1.7.9</version>
+    <version>2.0.0</version>
     <licence>agpl</licence>
     <author mail="info@voxcloud.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>
     <category>tools</category>
     <category>integration</category>
+    <category>dashboard</category>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png</screenshot>
-    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-settings.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/personal-settings.png</screenshot>
     <website>https://voxcloud.nl</website>
     <bugs>https://github.com/nextcloud/IntroVox/issues</bugs>
@@ -57,6 +58,7 @@ Built with Vue 3 and Shepherd.js for a smooth, modern user experience.
         <post-migration>
             <step>OCA\IntroVox\Migration\RemoveStaleDefaultWizardSteps</step>
             <step>OCA\IntroVox\Migration\UnescapeLegacyWizardStepHtml</step>
+            <step>OCA\IntroVox\Migration\IntroduceTours</step>
         </post-migration>
     </repair-steps>
     <settings>

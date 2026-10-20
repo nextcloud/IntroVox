@@ -6,11 +6,13 @@ IntroVox is volledig toegankelijk via het toetsenbord.
 
 | Toets | Actie |
 |---|---|
-| `Enter` | Naar volgende stap |
-| `Backspace` | Naar vorige stap |
+| `→` (pijltje naar rechts) | Naar de volgende stap |
+| `←` (pijltje naar links) | Naar de vorige stap |
 | `Escape` | Tour sluiten |
-| `Tab` | Focus verplaatsen tussen knoppen |
-| `Spatie` | Geselecteerde knop activeren |
+| `Tab` | Focus verplaatsen tussen de knoppen en links van de stap |
+| `Enter` of `Spatie` | Geselecteerde knop activeren |
+
+De toetsen werken zolang de stap de focus heeft, en die krijgt hij als hij verschijnt. Op een video of zijn pauzeknop bedienen de pijltjestoetsen en `Spatie` de video.
 
 ## Toegankelijkheids-features
 
@@ -31,7 +33,7 @@ De tour past zich automatisch aan aan je systeem-hoog-contrast-instellingen, met
 
 ### Beperkte beweging
 
-Als je systeem de "reduce motion"-toegankelijkheidsvoorkeur heeft ingeschakeld, schakelt IntroVox zijn animaties uit om motion sensitivity te voorkomen.
+Als je systeem de "reduce motion"-toegankelijkheidsvoorkeur heeft ingeschakeld, schakelt IntroVox zijn animaties uit om motion sensitivity te voorkomen. Het pijltje dat naar een element wijst knippert niet meer, en GIF's en video's die vanzelf spelen staan stil: speel ze af met hun afspeelknop.
 
 ## Zie ook
 

@@ -1,16 +1,16 @@
 # Geleide tours
 
-De tour-engine van IntroVox is gebouwd op [Shepherd.js](https://shepherdjs.dev/), gewrapped in een Vue-3-frontend. Dit document beschrijft hoe stappen worden gerenderd, welke types er zijn en hoe ze worden gesequenced.
+De tour-engine van IntroVox is gebouwd op [Shepherd.js](https://shepherdjs.dev/), gewrapped in een Vue-3-frontend. Dit document beschrijft hoe een tour gekozen en gestart wordt, hoe stappen worden gerenderd, welke types er zijn en in welke volgorde ze komen.
 
 ## Tour-levenscyclus
 
-1. **App-initialisatie** — `main.js` mount de IntroVox-Vue-app op elke Nextcloud-pagina
-2. **Server-request** — frontend roept `GET /apps/introvox/api/steps` aan om de geconfigureerde stap-lijst op te halen voor de huidige gebruikers-taal en groep-lidmaatschappen
-3. **App-menu-readiness-check** — wacht tot het Nextcloud-app-menu is gerenderd (sinds v1.4.1, met meerdere fallback-selectors en een 10-seconden-timeout)
-4. **Shepherd-instantiatie** — maakt een Shepherd-`Tour` met de geladen stappen
-5. **Auto-start** — als de gebruiker de tour niet heeft voltooid/uitgeschakeld, start hij na een korte vertraging
-6. **Gebruikers-navigatie** — Volgende-/Terug-/Sluiten-/Klaar-knoppen vuren Shepherd-acties en telemetrie-events
-7. **Voltooiing** — zet localStorage en (bij Klaar/Overslaan) de permanent-uitschakelen-voorkeur
+1. **Bootstrap** — elke Nextcloud-pagina laadt `main.js`, een kleine bootstrap (ongeveer 20 KB). Die leest de initial state `introvox/runtime` die de listener `LoadScripts` aan de pagina meegeeft, plus de opslag van de browser, en beslist met `src/runtime/chooseTour.mjs` of er op deze pagina een tour start, en welke (zie [Welke tour start](#welke-tour-start)). Daar is geen request voor nodig. Op een pagina zonder tour laadt er verder niets
+2. **Tour-code** — pas als er een tour start, laadt de bootstrap het tour-chunk (`src/runtime/tour.js`: WizardManager, Shepherd.js, Vue en `css/wizard.css`)
+3. **Stappen** — WizardManager haalt de stappen op voor de taal en de groepen van de gebruiker: `GET /apps/introvox/api/steps` voor de welkomsttour, `GET /apps/introvox/api/steps?tour=<id>` voor een andere tour
+4. **Readiness-check** — wacht op de header en het app-menu van Nextcloud: de apps-"wafel" op Nextcloud 34+, de inline app-balk op oudere versies (10-seconden-timeout), en dan nog één seconde. Een tour voor een app wacht ook op de app zelf: het element van de eerste stap of de inhoud van de app, geen dialoog van de app open, en het tabblad in beeld (15-seconden-timeout)
+5. **Start** — maakt een Shepherd-`Tour` met de stappen en toont de eerste. Een tour voor een app meldt eerst aan de server dat hij start; de server antwoordt of dit de eerste start bij deze versie is, en alleen dan verschijnt hij (of als hij met de hand gestart is), zodat twee open tabbladen hem nooit allebei draaien
+6. **Gebruikers-navigatie** — de knoppen Next/Back/Sluiten/Done, de pijltjestoetsen, of de eigen manier van de stap om verder te gaan (zie [Hoe een stap verdergaat](#hoe-een-stap-verdergaat)). In een run die vanzelf startte, wordt elke stap die verder is dan de run eerder kwam gemeld voor **How far people get**
+7. **Voltooiing** — de welkomsttour zet localStorage en (bij Done/Skip) de markering dat hij klaar is (`wizard_disabled`); een andere tour meldt `complete` of `skip`. Een tour die naar andere apps ging, keert daarna terug naar de ingestelde startpagina (zie [Tours over meerdere apps](#tours-over-meerdere-apps))
 
 ## Stap-types
 
@@ -23,86 +23,130 @@ De tour-engine van IntroVox is gebouwd op [Shepherd.js](https://shepherdjs.dev/)
 ### Gekoppelde stappen
 
 - `attachTo: "<css-selector>"` met `position` ingesteld op `right`, `left`, `top` of `bottom`
-- Het doel-element krijgt een glimmende rand via Shepherd's overlay
+- Het doel-element krijgt een omlijning in de kleur van het thema, en een knipperende pijl wijst vanaf de stap naar het element, ook in dialogen. Beide staan stil voor wie liever minder beweging ziet
 - De stap-tooltip wordt naast het element geplaatst
 
-### Fallback-gedrag (v1.4.1+)
+### Stappen die op hun element wachten
 
-Als het doel-element van een gekoppelde stap niet wordt gevonden bij tour-start (bv. Vue heeft het nog niet gerenderd, of de app is niet geïnstalleerd), **valt de stap terug op een gecentreerde weergave** in plaats van stil te worden overgeslagen. Dit is gewijzigd in v1.4.1 om geen belangrijke content te verliezen wanneer timing of DOM-beschikbaarheid varieert.
+Staat het element van een gekoppelde stap niet op de pagina als de stap verschijnt, dan wacht de stap erop. Hij staat opzij in de hoek rechtsonder met zijn tekst, of linksonder zolang er een dialoog open is, uit de buurt van de knoppen van die dialoog. De donkere laag van de tour verdwijnt, zodat de pagina bruikbaar blijft. Zodra het element verschijnt, hoe lang de gebruiker er ook over doet, gaat de stap ernaartoe. **Next** gaat ook zonder het element verder.
 
-Vóór v1.4.1 zorgden ontbrekende elementen ervoor dat de stap volledig werd overgeslagen met een console-waarschuwing:
+Zo kan een tour iemand door zijn eigen werk leiden: de stap over de deelnemers van een nieuw gesprek wacht tot de gebruiker het gesprek heeft gemaakt. Zie [Stappen die op de gebruiker wachten](../admin/managing-steps.nl.md#stappen-die-op-de-gebruiker-wachten).
 
-```
-⚠️ Wizard: Skipping step 'X' - element not found
-```
+Oudere versies sloegen zo'n stap over (vóór 1.4.1) of toonden hem in het midden.
+
+### Stappen in een menu
+
+Een stap met **Open first** klikt eerst op die knop (meestal een menuknop), zodat een doel in het menu bestaat, en sluit het menu daarna weer. Het gemarkeerde item is tijdens de stap niet klikbaar, zodat het menu blijft staan.
+
+Zolang een stap iets in een menu aanwijst, houdt de tour dat menu open. Het apps-menu van Nextcloud 35 sluit anders 180 ms nadat de muis het menu of de knop verlaat, en dat gebeurde zodra de gebruiker de muis naar het tour-venster bewoog.
+
+### Hoe een stap verdergaat
+
+**Continue with** in de stappen-editor zet de `advance` van de stap:
+
+| `advance` | Continue with | Wat de gebruiker doet |
+|---|---|---|
+| `button` (standaard) | **Next button** | Klikt op **Next** |
+| `click` | **Click on the element** | Klikt op het element van de stap. De stap zegt "Click the highlighted element to continue." en heeft geen Next-knop zolang het element er is |
+| `input` | **Filling in the field** | Typt in het veld dat de stap aanwijst. **Next** blijft uit tot het veld tekst heeft; de stap zegt "Fill in the highlighted field to continue." |
+
+Bij `click` doet de klik eerst zijn eigen werk: een menu of dialoog opent en de volgende stap volgt; een link naar een andere app laadt die app en de tour gaat daar verder bij de volgende stap (zie [Tours over meerdere apps](#tours-over-meerdere-apps)). Bij de laatste stap rondt de klik de tour af. Ontbreekt het element, of verdwijnt het zonder de klik (de dialoog ging dicht met ✕ of Escape), dan krijgt de stap een Next-knop en wacht hij opzij.
+
+Bij `input` kijkt een stap op een blok rond een veld naar het veld daarin. Zonder veld, of zodra het veld weg is, werkt Next zoals gewoonlijk.
+
+## Tours over meerdere apps
+
+Een stap met een **pagina** (bijvoorbeeld `/apps/spreed/` voor Talk) hoort bij die app. Komt de tour er op een andere pagina aan, dan opent hij die app en gaat daar verder:
+
+- **Navigatie** — vóór de stap bewaart de tour zijn voortgang in `sessionStorage` (per browsertabblad, 10 minuten geldig) en laadt de app. De nieuwe pagina pakt de tour op bij die stap, in dezelfde richting (Next of Back).
+- **Wachten op het doel** — apps als Talk renderen na het laden van de pagina, dus de stap wacht tot 5 seconden op zijn element voordat hij verschijnt. Is het element er dan nog niet, dan wacht de stap er opzij op (zie [Stappen die op hun element wachten](#stappen-die-op-hun-element-wachten)).
+- **Onbereikbare apps** — komt de gebruiker ergens anders uit (de app staat niet voor hem aan en Nextcloud stuurt door), dan wordt de stap overgeslagen, nooit opnieuw geprobeerd.
+- **Routes van Talk en Files** — een geopend Talk-gesprek (`/call/…`) telt als Talk, een bestandslink (`/f/…`) als Files.
+- **Stappen zonder pagina** verschijnen waar de tour op dat moment is. Geef een stap een pagina om de tour terug te brengen naar bijvoorbeeld het dashboard.
+- **Einde van de tour** — bij **Done** gaat een tour die niet meer op zijn beginpagina is naar de ingestelde startpagina (de standaard-app waar `/` naartoe stuurt), nadat de voltooiing is vastgelegd. Sluiten met **✕** laat de gebruiker waar hij is.
+- **Telemetrie** — een tour over meerdere pagina's telt nog steeds als één start.
 
 ## Stap-filtering
 
 Stappen worden server-side gefilterd voor ze de frontend bereiken:
 
-1. **Globale enable-check** — als `wizard_enabled` `false` is, geeft de API een lege stap-lijst terug
-2. **Taal-check** — de base-taal van de gebruiker moet in `enabled_languages` zitten
+1. **Aan-check** — voor de welkomsttour: staat **Tours for everyone** (`wizard_enabled`) of de welkomsttour zelf uit, dan geeft de API een lege stap-lijst terug. Voor een andere tour krijgt iedereen die hem niet mag krijgen (tours of de tour staan uit, de tour bestaat niet, hij zit niet in de groepen of kan de app niet openen) een 404, in elk van die gevallen hetzelfde antwoord
+2. **Taal** — `IFactory::findLanguage(null)` bepaalt de taal van de gebruiker. De welkomsttour geeft de override `wizard_steps_<lang>` van de basistaal, of de op Transifex vertaalde standaardstappen (met Engels als die taal geen vertaling heeft). Een andere tour geeft de stappen van de taal van de gebruiker, anders van de basistaal, anders van de hoofdtaal van de tour; een ingebouwde tour zonder eigen stappen van de beheerder geeft zijn vertaalde standaardstappen
 3. **Groep-check** — stappen met niet-lege `visibleToGroups` moeten overlappen met de groepen van de gebruiker (via `IGroupManager::getUserGroupIds()`)
 
 Uitgeschakelde stappen (`enabled: false`) worden ook uitgefilterd voor ze naar de frontend gaan.
 
-Zie [API-referentie](../architecture/api-reference.md) voor het request-/response-formaat.
+Zie [API-referentie](../architecture/api-reference.nl.md) voor het request-/response-formaat.
 
-## Auto-start-condities
+## Welke tour start
 
-De tour start automatisch wanneer **al** deze waar zijn:
+De bootstrap vraagt het aan `chooseTour()`; de eerste regel die geldt, beslist:
 
-- `wizard_enabled` is `true` (admin-instelling)
-- De taal van de gebruiker zit in `enabled_languages`
-- De gebruiker heeft de `permanent_disable`-voorkeur niet gezet
-- De gebruiker heeft de wizard niet voltooid (volgens localStorage)
-- De huidige `wizard_version` is nieuwer dan wat de gebruiker voor het laatst zag (gebruikt door **Wizard tonen aan alle gebruikers**)
-- De huidige pagina is het dashboard
+1. In de element-kiezer van de beheerder, of in een same-origin-frame van iemand anders: geen tour
+2. Een deellink (**Copy link**) start zijn tour op de pagina die hij opende
+3. Een tour die bezig is (een stap opende een andere pagina) gaat verder; een start met de hand vanuit de persoonlijke instellingen start die tour
+4. Op de beheerpagina van IntroVox zelf: geen tour (daar loopt de beheerderstour)
+5. **Tours for everyone** uit (`wizard_enabled`), of **Start tours by themselves** uit voor deze gebruiker (`tours_disabled`): geen tour
+6. De welkomsttour gaat voor, op welke pagina de gebruiker ook opent: tenzij hij uit staat, of de gebruiker hem afmaakte of oversloeg (`wizard_disabled`), start hij als deze browser hem niet als voltooid heeft gemarkeerd, of gemarkeerd bij een andere `wizard_version` (die **Show again to everyone** ophoogt)
+7. Er eindigde minder dan 2 minuten geleden een tour in dit tabblad: geen tour, zodat er nooit twee tours vlak na elkaar lopen
+8. De eerste tour voor een app of pagina die op deze pagina aan de beurt is; een tour die overal start, is op elke pagina aan de beurt. Aan de beurt betekent: de gebruiker mag hem krijgen, heeft deze versie nog niet gezien (`tour_<id>_seen`), past bij **Who gets it**, en het is zijn tijd (dagen na de eerste login, datums)
+
+Een start met de hand en een deellink werken ook als **Start tours by themselves** uit staat en buiten de datums van een tour; de server controleert wel of de gebruiker de tour mag krijgen. Zie [Tours](../admin/tours.nl.md#wanneer-een-tour-start) en [Frontend-architectuur](../architecture/frontend-architecture.nl.md#tour-runtime).
 
 ## Telemetrie-events
 
-De frontend rapporteert drie levenscyclus-events:
+De frontend meldt deze events:
 
 | Event | Endpoint | Wanneer |
 |---|---|---|
-| `start` | `POST /apps/introvox/api/track/start` | Tour begint voor een gebruiker |
-| `complete` | `POST /apps/introvox/api/track/complete` | Gebruiker klikt op **Klaar** in laatste stap |
-| `skip` | `POST /apps/introvox/api/track/skip` | Gebruiker klikt op **Overslaan en niet meer tonen** |
+| Welkomsttour `start` | `POST /apps/introvox/api/wizard/start` | De welkomsttour begint voor een gebruiker |
+| Welkomsttour `complete` | `POST /apps/introvox/api/wizard/complete` | Gebruiker klikt op **Done** in de laatste stap, of op het element van een laatste stap die verdergaat met een klik |
+| Welkomsttour `skip` | `POST /apps/introvox/api/wizard/skip` | Gebruiker klikt op **Skip and don't show again** |
+| Andere tours | `POST /apps/introvox/api/tours/{id}/event` met `start`, `complete` of `skip` | Op dezelfde momenten; `start` markeert de tour ook als gezien |
+| Stap bereikt | `POST /apps/introvox/api/tours/{id}/reached` | Een stap die verder is dan de run eerder kwam, voor elke tour, in een run die vanzelf startte |
 
-Deze worden anoniem opgeslagen via `TelemetryService` en dragen bij aan aggregate admin-statistieken.
+De server bewaart per gebruiker een tijdstip (`wizard_started`, `wizard_completed`, `wizard_skipped`; `tour_<id>_completed`, `tour_<id>_skipped`) en hoe ver hun laatste run kwam (`tour_<id>_reached`). Het paneel **Statistics** toont dat als totalen per tour, en telt mensen, geen klikken. Een start met de hand en een voorbeeld tellen niet mee voor **How far people get**.
 
-Zie [Backend-architectuur](../architecture/backend-architecture.md) voor telemetrie-service-details.
+Zie [Backend-architectuur](../architecture/backend-architecture.nl.md) voor telemetrie-service-details, en [Telemetrie](../admin/telemetry.nl.md) voor wat de anonieme gebruiksstatistieken versturen.
 
 ## Theming
 
-De tour erft Nextcloud's CSS-variabelen, zodat light-/dark-/hoog-contrast-modi automatisch werken. Zie [Thema-ondersteuning](theme-support.md).
+De tour erft Nextcloud's CSS-variabelen, zodat light-/dark-/hoog-contrast-modi automatisch werken. Zie [Thema-ondersteuning](theme-support.nl.md).
 
 ## Sluit-gedrag
 
-| Actie | localStorage | Server-voorkeur | Opnieuw getoond? |
+| Actie | localStorage | Server-voorkeur | Start hij weer vanzelf? |
 |---|---|---|---|
-| **✕ Sluiten** | `seen` | ongewijzigd | Ja |
-| **Klaar** | `completed` | `permanent_disable: true` | Nee, tenzij admin forceer-toont |
-| **Overslaan en niet meer tonen** | `completed` | `permanent_disable: true` | Nee, tenzij admin forceer-toont |
+| **✕ Sluiten** of Esc | `introvox_completed`: `true` | ongewijzigd | Niet in deze browser; in een andere browser wel |
+| **Done** | `introvox_completed`: `true` | `wizard_disabled: true` | Nee, tot **Show again to everyone** |
+| **Skip and don't show again** | `introvox_completed`: `true` | `wizard_disabled: true` | Nee, tot **Show again to everyone** |
+
+Dit is de welkomsttour. Een tour voor een app telt als gezien zodra hij start, dus hij start niet meer vanzelf, hoe hij ook eindigt; de eerste stap heeft daar **Skip** in plaats van **Skip and don't show again**.
 
 ## Customization-oppervlak
 
-Beheerders kunnen configureren:
+Beheerders kunnen per stap configureren:
 
 - Stap-titel (platte tekst + emoji)
 - Stap-content (HTML, server-side gesanitized sinds v1.5.0)
-- CSS-selector voor element-markering
+- Een afbeelding, GIF of video boven de tekst, met een beschrijving en ondertitels
+- CSS-selector voor element-markering, gekozen met **Pick element**
+- Een menuknop om eerst te openen, voor elementen in een menu
+- De pagina (app) waar een stap bij hoort
 - Positie t.o.v. het gemarkeerde element
+- Hoe hij verdergaat: **Next button**, **Click on the element** of **Filling in the field**
 - In-/uitschakelen per stap
 - Groep-zichtbaarheid per stap (v1.2.0+)
 - Stap-volgorde via drag-and-drop
 
-Zie [Customization](customization.md) en [Wizard-stappen beheren](../admin/managing-steps.md).
+En per tour: waar hij start (een app, een pagina of overal), zijn naam en hoofdtaal, zijn groepen, **Who gets it**, en wanneer hij vanzelf start (dagen na de eerste login, datums).
+
+Zie [Customization](customization.nl.md) en [Tourstappen beheren](../admin/managing-steps.nl.md).
 
 ## Zie ook
 
-- [Customization](customization.md) — HTML, CSS-selectors, positionering
-- [Stap-zichtbaarheid](step-visibility.md) — groep-filters en gebruikers-voorkeuren
-- [Meertaligheid](multi-language.md) — per-taal stap-content
-- [Thema-ondersteuning](theme-support.md) — light-/dark-/hoog-contrast
-- [Architectuur-overzicht](../architecture/overview.md) — systeem-design
+- [Customization](customization.nl.md) — HTML, CSS-selectors, positionering
+- [Stap-zichtbaarheid](step-visibility.nl.md) — groep-filters en gebruikers-voorkeuren
+- [Meertaligheid](multi-language.nl.md) — per-taal stap-content
+- [Thema-ondersteuning](theme-support.nl.md) — light-/dark-/hoog-contrast
+- [Architectuur-overzicht](../architecture/overview.nl.md) — systeem-design

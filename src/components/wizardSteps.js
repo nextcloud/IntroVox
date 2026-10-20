@@ -1,5 +1,9 @@
 import { getPWAInstructions } from '../utils/deviceDetection.js'
 import { translate as t } from '@nextcloud/l10n'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+import { openTriggerFor, popupOf } from '../utils/popups.mjs'
+import { splitSelectorList } from '../utils/selectorList.mjs'
 
 // --- Header navigation helpers ----------------------------------------------
 // Nextcloud 34 ("Hub 26 Spring") moved the app navigation behind the "waffle"
@@ -35,15 +39,85 @@ const NC33_FILES_ENTRY = '.app-menu-entry a[href*="/apps/files"], #appmenu a[hre
 // NC <=33 search is an icon button (#unified-search), not the NC 34 searchbar.
 const NC33_SEARCH_TRIGGER = '#unified-search, [aria-label="Unified search"]'
 
-// Track the trigger we opened ourselves, so cleanup never closes a menu the
-// user opened on their own.
+// Track the trigger we opened ourselves (and an item that shows the menu is
+// open), so cleanup never closes a menu the user opened on their own.
 let _openedTrigger = null
+let _openedItemSel = null
+
+// Admin-entered selectors can be invalid; that must degrade to "not found"
+// (the step waits aside for its element), not throw inside a tour step.
+function safeQueryAll(selector) {
+  try {
+    return [...document.querySelectorAll(selector)]
+  } catch (e) {
+    return []
+  }
+}
+
+// Page content comes from users too: a link in a Talk message or a shared
+// README can match a selector like a[href*="/apps/spreed/"]. The tour never
+// points at, let alone clicks, a link that leaves this Nextcloud.
+function isForeignLink(el) {
+  const link = el.closest('a[href]')
+  if (!link) {
+    return false
+  }
+  try {
+    return new URL(link.href, window.location.href).origin !== window.location.origin
+  } catch (e) {
+    return true
+  }
+}
+
+/**
+ * The first element, trying a selector list in its written order, that
+ * passes the test.
+ *
+ * @param {string} selector CSS selector list
+ * @param {Function} usable Test for a matched element
+ * @return {Element|undefined}
+ */
+function firstUsable(selector, usable) {
+  for (const part of splitSelectorList(selector)) {
+    const el = safeQueryAll(part).find(usable)
+    if (el) {
+      return el
+    }
+  }
+  return undefined
+}
+
+/**
+ * The element a step points at: the first match that is not a link to
+ * another site. In a list, an earlier selector goes before a later one,
+ * wherever their elements are in the page.
+ *
+ * @param {string} selector CSS selector list
+ * @return {Element|undefined}
+ */
+export function findTarget(selector) {
+  // An element without a box (display: none, or a menu entry hidden on a
+  // narrow screen) has nothing to point at: the step waits aside instead.
+  return firstUsable(selector, el => !isForeignLink(el) && el.getClientRects().length > 0)
+}
+
+function safeQuery(selector) {
+  return findTarget(selector) || null
+}
+
+// "Open first" is for menus. Clicking whatever else a selector matches (a
+// log-out link, a delete button) on every user's page at tour start is not
+// something a tour step should be able to do, however it got configured.
+function findMenuButton(selector) {
+  return firstUsable(selector, el => !isForeignLink(el)
+    && el.matches('[aria-haspopup]:not([aria-haspopup="false"]), [aria-expanded]'))
+}
 
 /**
  * Open a header menu (if not already open) and resolve once an item inside it
  * has rendered. Uses requestAnimationFrame polling so it works whether the menu
  * animates open or appears instantly (reduced motion), capped by a timeout so a
- * future DOM change degrades to a centered step instead of hanging.
+ * future DOM change degrades to a step waiting aside instead of hanging.
  *
  * @param {string} triggerSel CSS selector for the menu trigger button
  * @param {string} itemSel CSS selector for an item that appears once open
@@ -52,19 +126,20 @@ let _openedTrigger = null
  */
 function openMenuAndWait(triggerSel, itemSel, timeout = 1500) {
   return new Promise((resolve) => {
-    const trigger = document.querySelector(triggerSel)
+    const trigger = findMenuButton(triggerSel)
     if (!trigger) {
       resolve()
       return
     }
     // Only click (and remember) if the menu isn't already open.
-    if (!document.querySelector(itemSel)) {
+    if (!safeQuery(itemSel)) {
       trigger.click()
       _openedTrigger = trigger
+      _openedItemSel = itemSel
     }
     const start = Date.now()
     const tick = () => {
-      if (document.querySelector(itemSel) || Date.now() - start > timeout) {
+      if (safeQuery(itemSel) || Date.now() - start > timeout) {
         resolve()
         return
       }
@@ -75,14 +150,210 @@ function openMenuAndWait(triggerSel, itemSel, timeout = 1500) {
 }
 
 /**
+ * Resolve once an element matching the selector exists, or after the
+ * timeout (the step then waits aside for it). Apps like Talk render their
+ * interface after the page load, so right after navigating to one the
+ * target is often not there yet.
+ *
+ * @param {string} selector CSS selector
+ * @param {number} timeout Max wait in ms
+ * @return {Promise<void>}
+ */
+export function waitForElement(selector, timeout = 5000) {
+  return new Promise((resolve) => {
+    const start = Date.now()
+    const tick = () => {
+      if (safeQuery(selector) || Date.now() - start > timeout) {
+        resolve()
+        return
+      }
+      setTimeout(tick, 100)
+    }
+    tick()
+  })
+}
+
+/**
+ * A blinking arrow next to a step's element, on the side the step is on,
+ * pointing at it (css/wizard.css). It follows the element while the step
+ * shows, through scrolling and the page moving.
+ *
+ * @param {HTMLElement} target The step's element
+ * @param {HTMLElement} stepElement The step itself, with Shepherd's placement
+ * @return {Function} Takes it away
+ */
+export function showPointer(target, stepElement) {
+  const pointer = document.createElement('div')
+  pointer.className = 'introvox-pointer'
+  pointer.setAttribute('aria-hidden', 'true')
+  document.body.appendChild(pointer)
+  // Clear of the element's outline, in the room the step leaves
+  const gap = 4
+  let frame = 0
+  const place = () => {
+    const rect = target.getBoundingClientRect()
+    const side = (stepElement.getAttribute('data-popper-placement') || 'bottom').split('-')[0]
+    const [x, y] = {
+      top: [rect.left + rect.width / 2, rect.top - gap],
+      left: [rect.left - gap, rect.top + rect.height / 2],
+      right: [rect.right + gap, rect.top + rect.height / 2],
+    }[side] || [rect.left + rect.width / 2, rect.bottom + gap]
+    pointer.dataset.side = side
+    pointer.style.left = x + 'px'
+    pointer.style.top = y + 'px'
+    frame = requestAnimationFrame(place)
+  }
+  place()
+  return () => {
+    cancelAnimationFrame(frame)
+    pointer.remove()
+  }
+}
+
+// What counts as a field to fill in
+const FIELD = 'input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="hidden"]), textarea, [contenteditable=""], [contenteditable="true"]'
+
+/**
+ * Keep a step's forward button off until the field it points at has text,
+ * for "Continue with: Filling in the field" (a conversation's name, say). A
+ * step on a wrapper looks at the field inside it. One without a field, or
+ * whose field went away (its dialog closed), lets the user on.
+ *
+ * @param {HTMLElement} target The step's element
+ * @param {NodeList} buttons The step's forward button
+ * @return {Function} Stops watching
+ */
+export function holdUntilFilled(target, buttons) {
+  const field = target.matches(FIELD) ? target : target.querySelector(FIELD)
+  const update = () => {
+    const filled = !field || !field.isConnected || (field.value ?? field.textContent ?? '').trim() !== ''
+    buttons.forEach(button => {
+      button.disabled = !filled
+    })
+  }
+  update()
+  field?.addEventListener('input', update)
+  // A field filled by the page itself, or taken away, sends no input event
+  const timer = setInterval(update, 500)
+  return () => {
+    clearInterval(timer)
+    field?.removeEventListener('input', update)
+  }
+}
+
+// Nextcloud's dialogs sit in a .modal-mask (NcModal, NcDialog, the file
+// picker); some apps use a native <dialog>
+const DIALOG = '.modal-mask, dialog[open]'
+
+/**
+ * @return {boolean} Whether one of the page's dialogs is open. Their masks
+ *   are position: fixed, so offsetParent is always null; a box says it shows.
+ */
+export function dialogOpen() {
+  return safeQueryAll(DIALOG).some(dialog => dialog.getClientRects().length > 0)
+}
+
+/**
+ * Keep a class on the body while a dialog is open, so a step waiting aside
+ * moves out of the way of the dialog's buttons, which Nextcloud puts on the
+ * right (css/wizard.css).
+ *
+ * @param {number} interval How often to look, in ms
+ * @return {Function} Stops looking, and takes the class off
+ */
+export function followDialogs(interval = 300) {
+  const update = () => document.body.classList.toggle('introvox-dialog-open', dialogOpen())
+  update()
+  const timer = setInterval(update, interval)
+  return () => {
+    clearInterval(timer)
+    document.body.classList.remove('introvox-dialog-open')
+  }
+}
+
+/**
+ * Call back once a step's element is there. For an element that only appears
+ * after the user does something the steps before asked for, such as a button
+ * in the conversation they are creating or in a file's details they open:
+ * that can take longer than any wait before the step shows.
+ *
+ * @param {Function} resolveTarget The step's attachTo.element
+ * @param {Function} found Called once, when it resolves
+ * @param {number} interval How often to look, in ms
+ * @return {Function} Stops looking
+ */
+export function whenTargetAppears(resolveTarget, found, interval = 300) {
+  const timer = setInterval(() => {
+    if (resolveTarget()) {
+      clearInterval(timer)
+      found()
+    }
+  }, interval)
+  return () => clearInterval(timer)
+}
+
+/**
+ * Call back once a click step's element is gone without the click: the
+ * dialog it was in closed some other way, with its ✕, Escape or a shortcut
+ * that saves. Shown again, the step waits aside with Next, like one whose
+ * element is not there yet, instead of leaving only Back or ending the tour.
+ *
+ * @param {HTMLElement} target The step's element
+ * @param {Function} gone Called once, when it is no longer on the page
+ * @param {number} interval How often to look, in ms
+ * @return {Function} Stops looking
+ */
+export function whenTargetGone(target, gone, interval = 500) {
+  const timer = setInterval(() => {
+    if (!target.isConnected || !target.getClientRects().length) {
+      clearInterval(timer)
+      gone()
+    }
+  }, interval)
+  return () => clearInterval(timer)
+}
+
+/**
+ * Keep the menu a step points into open while the step shows. Nextcloud
+ * 35's apps menu closes 180 ms after the pointer leaves it or its button
+ * (AppMenu's scheduleClose), so moving the mouse to the tour's own tooltip
+ * closed the very menu the step was about. The leave events are stopped on
+ * their way to the menu (capture phase, which non-bubbling events have too).
+ *
+ * @param {Element} target The step's element
+ * @param {string} triggerSelector The step's "open first" button, if any
+ * @return {function(): void|null} Releases the menu again; null when the
+ *   target is not in a menu
+ */
+export function holdMenuOpen(target, triggerSelector) {
+  const popup = popupOf(target)
+  if (!popup && !triggerSelector) {
+    return null
+  }
+  const trigger = (triggerSelector && findMenuButton(triggerSelector)) || (popup && openTriggerFor(popup))
+  const kept = [popup, trigger].filter(Boolean)
+  const onLeave = (event) => {
+    const el = event.target
+    // el.contains(): the leave on a wrapper around the menu button counts too
+    if (el?.nodeType === 1 && kept.some(k => k === el || k.contains(el) || el.contains(k))) {
+      event.stopImmediatePropagation()
+    }
+  }
+  const types = ['pointerleave', 'mouseleave']
+  types.forEach(type => window.addEventListener(type, onLeave, true))
+  return () => types.forEach(type => window.removeEventListener(type, onLeave, true))
+}
+
+/**
  * Close the menu we opened in openMenuAndWait, if it's still open. No-op when
  * the user opened the menu themselves (we never stored a trigger then).
  */
 export function closeOpenedMenu() {
-  if (_openedTrigger && document.querySelector(APPS_MENU_ITEM)) {
+  if (_openedTrigger && safeQuery(_openedItemSel)) {
     _openedTrigger.click() // toggle closed
   }
   _openedTrigger = null
+  _openedItemSel = null
 }
 
 /**
@@ -95,7 +366,7 @@ export function closeOpenedMenu() {
 function firstMatch(...selectors) {
   return () => {
     for (const sel of selectors) {
-      const el = document.querySelector(sel)
+      const el = findTarget(sel)
       if (el) {
         return el
       }
@@ -351,6 +622,45 @@ export function getWizardSteps() {
 // provides the default set inline, we re-attach these by step id.
 const BEHAVIORAL_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'showOn', 'canClickTarget', 'advanceOn']
 
+// The subset that decides what a step points at. The admin UI sets
+// customTarget on a step once its target is edited; from then on the admin's
+// selector wins over the bundled one.
+const TARGETING_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'canClickTarget']
+
+/**
+ * Give a step with a string selector and an openFirst selector the same
+ * treatment the bundled Files step has: click openFirst (a menu button)
+ * before showing, so a target inside that menu exists, and close it again
+ * afterwards. The target itself is not clickable, so the menu stays put.
+ *
+ * @param {object} step A step with openFirst set
+ * @return {object}
+ */
+function withOpenFirst(step) {
+  if (step.beforeShowPromise || typeof step.attachTo !== 'string' || !step.attachTo) {
+    return step
+  }
+  const trigger = step.openFirst
+  const target = step.attachTo
+  const userWhen = step.when || {}
+  return {
+    ...step,
+    beforeShowPromise: () => openMenuAndWait(trigger, target),
+    canClickTarget: false,
+    when: {
+      ...userWhen,
+      hide() {
+        closeOpenedMenu()
+        userWhen.hide?.call(this)
+      },
+      cancel() {
+        closeOpenedMenu()
+        userWhen.cancel?.call(this)
+      }
+    }
+  }
+}
+
 /**
  * Layer the client-side behavioral fields (function attachTo, beforeShowPromise,
  * when, showOn, …) of the bundled default steps onto server-provided steps,
@@ -365,8 +675,10 @@ const BEHAVIORAL_FIELDS = ['attachTo', 'beforeShowPromise', 'when', 'showOn', 'c
  * as the source of the behavioral fields below.
  *
  * Server steps carry attachTo as a plain string selector. When a matching base
- * step exists, its richer function attachTo wins; otherwise the string is kept
- * (WizardManager wraps any string selector in a lazy function).
+ * step exists, its richer function attachTo wins, unless the admin changed the
+ * target (customTarget); otherwise the string is kept (WizardManager wraps any
+ * string selector in a lazy function). Steps with openFirst get a menu-opening
+ * beforeShowPromise, see withOpenFirst().
  *
  * @param {Array<object>} serverSteps Steps returned by the API
  * @return {Array<object>} Enriched steps
@@ -376,36 +688,36 @@ export function enrichSteps(serverSteps) {
 
   return serverSteps.map((step) => {
     const baseStep = baseById.get(step.id)
-    if (!baseStep) {
-      return step
-    }
     const merged = { ...step }
-    for (const field of BEHAVIORAL_FIELDS) {
-      if (field in baseStep) {
-        merged[field] = baseStep[field]
+    if (baseStep) {
+      for (const field of BEHAVIORAL_FIELDS) {
+        if (step.customTarget && TARGETING_FIELDS.includes(field)) {
+          continue
+        }
+        if (field in baseStep) {
+          merged[field] = baseStep[field]
+        }
       }
     }
-    return merged
+    return step.openFirst ? withOpenFirst(merged) : merged
   })
 }
 
 export async function loadCustomSteps() {
   try {
-    const apiUrl = `${window.location.origin}/apps/introvox/api/steps`
-
-    const response = await fetch(apiUrl)
-    const data = await response.json()
+    // @nextcloud/axios sends the CSRF request token the route requires, and
+    // generateUrl() respects a webroot and instances without pretty URLs.
+    const { data } = await axios.get(generateUrl('/apps/introvox/api/steps'))
 
     if (data.success) {
       // Trust whatever the server sends. Since 1.7.0 the API returns the full
       // Transifex-translated default set inline when no admin override exists,
       // so falling back to the client-side bundled defaults (which would re-
       // translate via the Vue translation bundle and pick e.g. NL for an IT
-      // user without an IT bundle) is wrong.
-      const hasSteps = Array.isArray(data.steps) && data.steps.length > 0
-
+      // user without an IT bundle) is wrong. No steps (every step switched off,
+      // or for other groups) means no tour, not the bundled one.
       return {
-        steps: hasSteps ? data.steps : null,
+        steps: Array.isArray(data.steps) ? data.steps : null,
         enabled: data.enabled !== false,
         version: data.version || '1'
       }

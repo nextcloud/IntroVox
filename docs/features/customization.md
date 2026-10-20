@@ -4,7 +4,7 @@ Administrators can customize wizard step appearance and behavior via three prima
 
 ## HTML in Step Content
 
-The **Text (HTML)** field supports a curated set of HTML tags. Step content is sanitized server-side via `OCP\Util::sanitizeHTML` on save and import (since v1.5.0) to prevent stored XSS.
+The **Text** field is a formatting editor (see [Managing steps](../admin/managing-steps.md#text)); under **Edit as HTML** it takes a curated set of HTML tags. The text is stored as written and cleaned where it is shown: in the tour and in the step list only the tags below survive, links keep only their target, and everything else (scripts, styles, forms, images, event handlers) is removed. Titles and button labels are plain text. This also covers imported tours and translations of the default steps, which nobody reviews for markup.
 
 ### Supported Tags
 
@@ -15,7 +15,9 @@ The **Text (HTML)** field supports a curated set of HTML tags. Step content is s
 | `<em>`, `<i>` | Italic text |
 | `<ul>`, `<ol>`, `<li>` | Lists |
 | `<br>` | Line break |
-| `<a href="...">` | Links |
+| `<small>`, `<code>`, `<u>` | Small print, code, underline |
+| `<h3>`, `<h4>` | Headings |
+| `<a href="...">` | Links; `target="_blank"` opens a new tab |
 
 ### Example
 
@@ -33,7 +35,7 @@ The **Text (HTML)** field supports a curated set of HTML tags. Step content is s
 
 ### Inline Styles
 
-Inline styles (`style="..."`) are not recommended — the wizard inherits Nextcloud's theme variables automatically, and custom styles will break under dark mode and high-contrast themes. See [Theme Support](theme-support.md).
+Inline styles (`style="..."`) are removed when the step is shown. The tour inherits Nextcloud's theme variables automatically, so it follows dark mode and high-contrast themes without them. See [Theme Support](theme-support.md).
 
 ### Emoji
 
@@ -41,7 +43,7 @@ Fully supported in titles and content. Make sure your Nextcloud server uses UTF-
 
 ## CSS Selectors
 
-The **Element (CSS selector)** field determines which UI element a step highlights. Leave it empty for a centered modal.
+The **Attach to element (CSS selector)** field determines which UI element a step highlights. Leave it empty for a centered step.
 
 ### Reliable Selectors
 
@@ -83,16 +85,22 @@ Default steps use comma-separated selectors so that if one fails (e.g., after a 
 [data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
 ```
 
+The tour tries them in the order written: the step points at the first selector that finds a visible element, wherever the others are in the page. Put the one you want most first.
+
 This significantly reduces the rate of "element not found" failures.
 
 ### Finding the Right Selector
+
+The quickest way is **🎯 Pick element** in the step editor: point at the element and the selector is filled in. See [Pick an element](../admin/managing-steps.md#pick-an-element).
+
+To find one by hand, for example to add comma-separated fallbacks:
 
 1. Open Nextcloud in your browser
 2. Press **F12** to open Developer Tools
 3. Click the "Inspect element" icon
 4. Click the target element
 5. Read its `class`, `id`, `data-*` attributes
-6. Test your selector in the Console: `document.querySelector('your-selector')` should return the element
+6. Test each selector on its own in the Console: `document.querySelector('your-selector')` should return the element. Don't test a whole comma-separated list this way: the browser then returns whichever match comes first in the page, which need not be the one the tour picks
 
 ## Position
 
@@ -112,7 +120,7 @@ The position only applies to **attached** steps (where `attachTo` is set). Cente
 - **Centered step** — leave `attachTo` empty. Step appears in the middle of the screen.
 - **Attached step** — set `attachTo` to a CSS selector and choose a `position`. Step appears next to the highlighted element.
 
-If an attached step's element doesn't exist at tour time, the step falls back to centered display (since v1.4.1), so users still see the content.
+If an attached step's element isn't there when the step shows, the step waits aside in the bottom right corner with its text (bottom left while a dialog is open). The page stays usable, and the step moves to the element as soon as it appears; **Next** still goes on. See [Steps that wait for the user](../admin/managing-steps.md#steps-that-wait-for-the-user).
 
 ## Step Identifier
 
@@ -124,7 +132,7 @@ The **ID** field is auto-generated for new steps (timestamp-based, e.g., `new_17
 
 ## See Also
 
-- [Managing Wizard Steps](../admin/managing-steps.md) — Step CRUD
+- [Managing Tour Steps](../admin/managing-steps.md) — Step CRUD
 - [Guided Tours](guided-tours.md) — How steps render
 - [Theme Support](theme-support.md) — CSS variable inheritance
 - [Best Practices](../admin/best-practices.md) — Content design recommendations

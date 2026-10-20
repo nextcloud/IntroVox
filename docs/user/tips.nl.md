@@ -38,17 +38,18 @@ Na het voltooien (of overslaan) van de tour, hier wat tips om te blijven verkenn
 
 - **Automatisch** — wacht een paar seconden bij eerste login
 - **Handmatig** — **Persoonlijke instellingen → IntroVox → Tour nu herstarten**
+- **Tour voor een app** — start de eerste keer dat je die app opent; start hem opnieuw via **Persoonlijke instellingen → IntroVox → Tours**
 
 ### Tijdens de tour
 
-- **Volgende** — klik op knop of druk op `Enter`
-- **Terug** — klik op knop of druk op `Backspace`
+- **Next** — klik op de knop of druk op `→`
+- **Back** — klik op de knop of druk op `←`
 - **Sluiten** — klik op **✕** of druk op `Escape`
 
 ### De tour beheren
 
 - **Permanent overslaan** — klik op **Overslaan en niet meer tonen** in de welkom-stap
-- **Later uitschakelen** — **Persoonlijke instellingen → IntroVox** → vink **Permanent uitschakelen** aan
+- **Geen enkele tour meer vanzelf laten starten** — **Persoonlijke instellingen → IntroVox** → zet **Start tours by themselves** uit
 - **Op elk moment herstarten** — **Persoonlijke instellingen → IntroVox → Tour nu herstarten**
 
 ### Hulp krijgen

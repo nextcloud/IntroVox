@@ -66,5 +66,5 @@ multipart; zie axios hierboven.
 
 Niets voor 1.7.7. Bij de **volgende** release opnieuw `npm audit` draaien: zodra
 `axios > 1.19.0` of `dompurify > 3.4.14` verschijnt, gewoon meenemen via een
-normale `npm update` — en daarna **rebuilden én opnieuw deployen naar nc-dev
+normale `npm update` — en daarna **rebuilden én opnieuw deployen naar de testserver
 vóór het taggen**, precies zoals de checklist voorschrijft.

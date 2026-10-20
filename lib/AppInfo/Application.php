@@ -5,9 +5,8 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\EventDispatcher\IEventDispatcher;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
-use OCP\Util;
+use OCP\Navigation\Events\LoadAdditionalEntriesEvent;
 
 class Application extends App implements IBootstrap {
     public const APP_ID = 'introvox';
@@ -23,10 +22,14 @@ class Application extends App implements IBootstrap {
             \OCA\IntroVox\Listener\LoadScripts::class
         );
 
-        // Register admin settings
-        $context->registerService('AdminSettings', function() {
-            return new \OCA\IntroVox\Settings\AdminSettings();
-        });
+        // "Tours" in the user menu
+        $context->registerEventListener(
+            LoadAdditionalEntriesEvent::class,
+            \OCA\IntroVox\Listener\UserMenuEntry::class
+        );
+
+        // "Getting started" on the Dashboard, while an admin has it on
+        $context->registerDashboardWidget(\OCA\IntroVox\Dashboard\ChecklistWidget::class);
     }
 
     public function boot(IBootContext $context): void {

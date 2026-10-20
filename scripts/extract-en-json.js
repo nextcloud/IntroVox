@@ -200,7 +200,7 @@ function computeSourceStrings() {
 	// admin.php carry 10 user-visible $l->t() strings. Scanning only lib/ would
 	// silently drop them from the POT.
 	const files = [
-		...walk(path.join(ROOT, 'src'), ['.vue', '.js']),
+		...walk(path.join(ROOT, 'src'), ['.vue', '.js', '.mjs']),
 		...walk(path.join(ROOT, 'lib'), ['.php']),
 		...walk(path.join(ROOT, 'templates'), ['.php']),
 	];

@@ -42,13 +42,13 @@ describe('l10n extraction', () => {
 		// the user's language.
 		const adminStrings = [
 			'Global settings',
-			'Configure wizard availability and languages',
-			'Enable wizard for all users',
-			'When disabled, the wizard will not automatically start for new users.',
-			'Show wizard to all users',
-			'Wizard will be shown to all users on their next login',
+			'Whether tours start, and where people find them again',
+			'Tours for everyone',
+			'When this is off, no tour starts, and nobody can start one themselves.',
+			'Show Tours in the user menu',
+			'Show again to everyone',
 			'Settings',
-			'Steps',
+			'Tours',
 			'Statistics',
 			'Support',
 		];
@@ -57,16 +57,21 @@ describe('l10n extraction', () => {
 	});
 
 	test('covers PHP strings in templates/, not just lib/', () => {
-		// $l->t() in templates/personal.php and templates/admin.php.
+		// $l->t() in templates/admin.php. templates/personal.php used to carry
+		// five more; the personal page is a Vue app now (src/personal/).
 		const templateStrings = [
-			'Manage the introduction tour steps shown to new users.',
-			'Manage your introduction tour preferences.',
-			'Permanently disable the introduction tour',
-			'Restart tour now',
-			'Save settings',
+			'Tours that show people around Nextcloud and its apps: when they start, for whom, and their steps.',
 		];
 		const missing = templateStrings.filter((s) => !msgids.has(s));
 		assert.deepEqual(missing, [], `templates/ strings not extracted: ${JSON.stringify(missing)}`);
+	});
+
+	test('scans .mjs modules in src/, not just .vue and .js', () => {
+		// src/runtime/chooseTour.mjs, src/utils/pages.mjs and the like are
+		// plain modules so tests-js can import them; a string added there must
+		// still reach Transifex.
+		const extractor = fs.readFileSync(path.join(ROOT, 'scripts/extract-en-json.js'), 'utf8');
+		assert.match(extractor, /walk\(path\.join\(ROOT, 'src'\), \[[^\]]*'\.mjs'/);
 	});
 
 	test('never emits an app id as a translatable string', () => {

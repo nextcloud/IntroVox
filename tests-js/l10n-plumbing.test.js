@@ -69,7 +69,7 @@ describe('POT round-trip plumbing', () => {
 		// End-to-end: whatever the extractor found must survive into the file
 		// Transifex actually reads.
 		const pot = fs.readFileSync(path.join(ROOT, POT_REL), 'utf8');
-		for (const s of ['Global settings', 'Show wizard to all users', 'Enable wizard for all users']) {
+		for (const s of ['Global settings', 'Show Tours in the user menu', 'Tours for everyone']) {
 			assert.ok(pot.includes(`msgid "${s}"`), `POT is missing msgid ${JSON.stringify(s)}`);
 		}
 	});

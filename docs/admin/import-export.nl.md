@@ -2,7 +2,7 @@
 
 *Geïntroduceerd in v1.1.0.*
 
-Import/Export laat je wizard-stappen downloaden als JSON en later weer uploaden. Dit maakt mogelijk:
+Import/Export laat je de stappen van een tour downloaden als JSON en later weer uploaden. **Export** en **Import** zitten in de stappen-editor van elke tour: open **Tours** en klik bij de tour op **Edit steps**. Ze werken alleen op die tour en de geselecteerde taal. Dit maakt mogelijk:
 
 - **Samenwerking** met content-schrijvers, vertalers en andere beheerders
 - **Versiebeheer** (JSON committen naar git, wijzigingen volgen in de tijd)
@@ -17,89 +17,113 @@ Import/Export laat je wizard-stappen downloaden als JSON en later weer uploaden.
 2. Klik op de **📥 Exporteren**-knop bovenaan de stap-lijst
 3. Een JSON-bestand wordt automatisch gedownload
 
-**Bestandsnaam-formaat:** `introvox-steps-{taal}-{timestamp}.json`
+**Bestandsnaam-formaat:** `introvox_steps_{taal}.json` voor de welkomsttour, `introvox_{tour}_steps_{taal}.json` voor een tour voor een app of pagina
 
-**Voorbeeld:** Engels exporteren op 15 jan 2025 levert `introvox-steps-en-2025-01-15-143022.json` op.
+**Voorbeeld:** de welkomsttour in het Engels exporteren levert `introvox_steps_en.json` op.
 
 ### Wat is inbegrepen
 
-- Alle wizard-stappen voor de geselecteerde taal
+- Alle stappen van de tour voor de geselecteerde taal
 - Stap-IDs, titels, HTML-tekst-content
 - CSS-selectors (`attachTo`) en posities
+- De pagina waar een stap bij hoort (`page`) en de knop waarop de tour eerst klikt om een menu te openen (`openFirst`)
+- Hoe de stap verder gaat (`advance`): de knop Next, een klik op het element, of het veld invullen
+- De afbeelding of video van de stap (`media`): een verwijzing naar het bestand, niet het bestand zelf
 - In-/uitgeschakelde status
 - Stap-volgorde
 - Groep-zichtbaarheid (`visibleToGroups`)
+
+Het JSON-bestand bevat de afbeeldingen en video's zelf niet. Importeer je het op dezelfde Nextcloud, dan houden de stappen ze; op een andere Nextcloud vallen ze weg, met de melding "An image or video in the file is not on this server and was left out." Een tour met zijn afbeeldingen en video's verhuis je met **Export tour** in het ⋯-menu van de tour, zie hieronder.
+
+## Een hele tour
+
+Deze pagina gaat over de stappen van één taal. Een hele tour naar een andere Nextcloud verhuizen, met zijn instellingen, alle talen en zijn afbeeldingen en video's, doe je met **Export tour** en **Import tour** in de lijst met tours; zie [Een tour naar een andere Nextcloud verhuizen](tours.nl.md#een-tour-naar-een-andere-nextcloud-verhuizen).
 
 ## Wizard-stappen importeren
 
 ### Hoe te importeren
 
-1. Selecteer de **doel-taal** uit de taal-dropdown
+1. Open de tour waar de stappen bij horen: **Tours** → **Edit steps**
 2. Klik op de **📤 Importeren**-knop
 3. Kies een JSON-bestand van je computer
-4. Je ziet een succesbericht: *"Succesvol X stappen geïmporteerd voor taal Y"*
+4. Je ziet een succesbericht: *"Imported X steps (taal)"*, en de editor schakelt naar die taal
+
+De taal komt uit het bestand (het veld `"language"`), niet uit de taalkeuze. Wil je stappen in een andere taal importeren, pas dat veld dan eerst aan.
 
 ### Belangrijke opmerkingen
 
 - ⚠️ **Importeren vervangt alle bestaande stappen** voor die taal
-- ✅ Alleen de geselecteerde taal wordt geraakt — veilig voor multi-taal-setups
+- ✅ Alleen de taal van het bestand wordt geraakt — veilig voor multi-taal-setups
 - ✅ De JSON wordt gevalideerd voor toepassen
 - 💾 Auto-save — wijzigingen zijn direct actief na succesvolle import
 
 ### Validatie
 
-De import valideert:
+De import valideert, en weigert het hele bestand bij het eerste probleem:
 
-- JSON-syntax is correct
-- Verplichte velden zijn aanwezig (`id`, `title`, `text`)
-- Datatypes kloppen
+- Het bestand is maximaal 1 MB en de JSON-syntax is correct
+- Maximaal 100 stappen, elk met een `id` (letters, cijfers, `_`, `-`, `.`) en een `title`
+- Elk veld heeft het juiste type en de juiste lengte (tekst tot 20.000 tekens)
+- `page` is een pad op deze Nextcloud, zoals `/apps/spreed/` — nooit een andere site
+- `advance` is `button`, `click` of `input`
 - Geen dubbele stap-IDs binnen het bestand
+
+Velden die IntroVox niet kent, vallen weg. Opslaan vanuit de stap-editor gaat door dezelfde controles.
 
 ### Foutmeldingen
 
 Als import faalt zie je een specifieke fout:
 
-- `Fout bij importeren stappen: ongeldig JSON-formaat`
-- `Fout bij importeren stappen: ontbrekend verplicht veld 'id' in stap 3`
-- `Fout bij importeren stappen: {specifieke fout}`
+- `Fout bij het importeren van de stappen: Invalid JSON format: Syntax error`
+- `Fout bij het importeren van de stappen: Invalid step data: Step 3: id must be letters, digits, "_", "-" or "."`
+- `Fout bij het importeren van de stappen: Import file is too large (at most 1 MB)`
 
 ## JSON-bestandsstructuur
 
 ```json
-[
-  {
-    "id": "welcome",
-    "title": "👋 Welkom bij Nextcloud",
-    "text": "<p>Leuk dat je er bent!</p>",
-    "attachTo": "",
-    "position": "right",
-    "enabled": true,
-    "visibleToGroups": []
-  },
-  {
-    "id": "files",
-    "title": "📁 Bestanden",
-    "text": "<p>Beheer hier je bestanden.</p>",
-    "attachTo": "[data-id=\"files\"]",
-    "position": "right",
-    "enabled": true,
-    "visibleToGroups": []
-  },
-  {
-    "id": "admin-panel",
-    "title": "⚙️ Admin-paneel",
-    "text": "<p>Configureer hier je Nextcloud-instantie.</p>",
-    "attachTo": "[data-id=\"settings\"]",
-    "position": "right",
-    "enabled": true,
-    "visibleToGroups": ["admin", "Administrators"]
-  }
-]
+{
+  "version": "1.0",
+  "language": "nl",
+  "exportDate": "2026-10-01 12:00:00",
+  "steps": [
+    {
+      "id": "welcome",
+      "title": "👋 Welkom bij Nextcloud",
+      "text": "<p>Leuk dat je er bent!</p>",
+      "attachTo": "",
+      "position": "right",
+      "enabled": true,
+      "visibleToGroups": []
+    },
+    {
+      "id": "files",
+      "title": "📁 Bestanden",
+      "text": "<p>Beheer hier je bestanden.</p>",
+      "attachTo": "[data-id=\"files\"]",
+      "position": "right",
+      "enabled": true,
+      "visibleToGroups": []
+    },
+    {
+      "id": "admin-panel",
+      "title": "⚙️ Admin-paneel",
+      "text": "<p>Configureer hier je Nextcloud-instantie.</p>",
+      "attachTo": "[data-id=\"settings\"]",
+      "position": "right",
+      "enabled": true,
+      "visibleToGroups": ["admin", "Administrators"]
+    }
+  ]
+}
 ```
 
 **Veld-opmerkingen:**
 
 - `attachTo: ""` — gecentreerde stap (geen element-markering)
+- `page: "/apps/spreed/"` — de app waar de stap bij hoort; de tour opent die eerst. Afwezig of leeg = elke pagina
+- `openFirst` — selector van de knop waarop de tour eerst klikt, om het menu te openen waar het element in zit
+- `advance` — `button` (of afwezig): een knop Next; `click`: de gebruiker klikt op het element om verder te gaan; `input`: Next werkt pas als het veld tekst heeft
+- `media` — de afbeelding of video van de stap: `file` (een media-id van IntroVox, zoals `<32 hex>.png`), `alt`, `decorative`, `size` (`small`, `full`, `wide`); voor een video ook `playback` (`loop`, `controls`) en `captions`. Alleen een verwijzing naar het bestand: zie [Wat is inbegrepen](#wat-is-inbegrepen)
 - `visibleToGroups: []` — zichtbaar voor alle gebruikers
 - `visibleToGroups: ["group1", "group2"]` — alleen zichtbaar voor gebruikers in minstens één van deze groepen
 
@@ -117,15 +141,14 @@ Als import faalt zie je een specifieke fout:
 
 1. **Beheerder** exporteert Engelse stappen als bron
 2. **Beheerder** stuurt de JSON naar een vertaler
-3. **Vertaler** bewerkt alleen de `title`- en `text`-velden, retourneert het bestand
-4. **Beheerder** selecteert de doel-taal, importeert het bestand
-5. **Beheerder** schakelt de taal in via **Beschikbare talen**
+3. **Vertaler** bewerkt alleen de `title`- en `text`-velden, zet `"language"` op de doeltaal (zoals `"de"`) en retourneert het bestand
+4. **Beheerder** importeert het bestand in de stappen-editor van de tour (**Tours** → **Edit steps**); het wordt meteen de override voor die taal
 
 ### Multi-instance-deployment
 
 1. **Beheerder** configureert wizard op een development-/staging-instantie
-2. **Beheerder** exporteert alle talen (één bestand per taal)
-3. **Beheerder** importeert ze op de productie-instantie
+2. **Beheerder** exporteert alle talen (één bestand per tour en taal)
+3. **Beheerder** importeert ze op de productie-instantie, in de bijbehorende tour (maak tours voor apps daar eerst aan met **New tour**)
 4. Consistente gebruikers-ervaring in alle omgevingen
 
 ### Versiebeheer
@@ -137,6 +160,7 @@ Als import faalt zie je een specifieke fout:
 
 ## Zie ook
 
-- [Wizard-stappen beheren](managing-steps.md) — stap-CRUD
+- [Tourstappen beheren](managing-steps.md) — stap-CRUD
+- [Tours](tours.nl.md) — de welkomsttour en tours voor apps
 - [Groep-gebaseerde zichtbaarheid](group-visibility.md) — `visibleToGroups`-veld
 - [Best practices](best-practices.md) — back-up vóór grote wijzigingen

@@ -12,7 +12,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Background job that periodically sends anonymous telemetry data
- * This is opt-in and only runs when telemetry is explicitly enabled by the admin
+ * Only sends when telemetry is on (TelemetryService::isEnabled): once an admin
+ * has been asked, unless an admin declined
  * Runs every 24 hours with random jitter to spread load
  */
 class TelemetryJob extends TimedJob {

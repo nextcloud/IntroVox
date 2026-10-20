@@ -1,37 +1,90 @@
-# Wizard-stappen beheren
+# Tourstappen beheren
 
-Deze gids dekt de CRUD-operaties voor wizard-stappen: toevoegen, bewerken, verwijderen, herordenen, in-/uitschakelen, resetten en opslaan.
+Deze gids behandelt het werken met de stappen van een tour: toevoegen, bewerken, een element kiezen, bekijken, verwijderen, herordenen, in-/uitschakelen en resetten.
+
+Elke wijziging wordt direct opgeslagen: een stap opslaan in de editor, verwijderen, herordenen en een stap aan- of uitzetten gaan meteen naar de server.
+
+> Knoppen die nog niet vertaald zijn, staan hieronder met hun Engelse naam (zoals **Pick element**); zo zie je ze ook in beeld tot de vertaling er is.
 
 ## Overzicht van de stap-lijst
 
-Na het selecteren van een taal onder **Taal-instellingen** zie je de lijst stappen voor die taal. Elke rij toont:
+Stappen horen bij een tour. Open **Tours** en klik bij de tour op **Edit steps**: de **Welcome tour** voor de tour die nieuwe gebruikers krijgen, of een tour voor een app (zie [Tours](tours.nl.md)). Na het selecteren van een taal in de dropdown **Language** zie je de lijst stappen voor die taal. Elke rij toont:
 
-| Kolom | Beschrijving |
+| Onderdeel | Beschrijving |
 |---|---|
-| **☰** | Sleep-handle voor herordenen |
-| **#** | Sequentieel stap-nummer |
+| **Sleep-handle** | Slepen om te herordenen |
+| **Omhoog / Omlaag** | Herordenen zonder muis |
+| **Stap N** | Sequentieel stap-nummer |
 | **Titel** | De stap-titel die gebruikers zien |
 | **ID** | Unieke identifier (niet bewerkbaar na aanmaak) |
-| **Zichtbaar voor** | Groepen die deze stap kunnen zien (of "Alle gebruikers") |
-| **✅ / ❌** | In-/uitschakelen-toggle |
-| **✏️** | Bewerk-knop |
-| **🗑️** | Verwijder-knop |
+| **Schakelaar** | Stap in- of uitschakelen |
+| **Bewerken** | De stap-editor openen |
+| **Verwijderen** | De stap weghalen |
+
+Onder elke rij: het element waar de stap naar wijst, de positie, het menu dat eerst geopend wordt (als dat er is) en wie de stap ziet.
 
 ## Nieuwe stap toevoegen
 
-1. Klik op **➕ Nieuwe stap toevoegen** bovenaan de lijst
-2. Vul het formulier in
+1. Klik op **Stap toevoegen** boven de lijst. Er opent een dialoog met links de pagina's **Content**, **Element**, **Behavior** en **Visible to** (Behavior pas als de stap een element heeft).
+2. Vul elke pagina in en ga verder met **Next**
+3. Klik op de laatste pagina op **Opslaan**. De stap is opgeslagen; sluit je de dialoog zonder op te slaan, dan verdwijnt de nieuwe stap weer.
+
+**Test this step**, linksonder in de dialoog, toont de stap zoals hij nu is, inclusief niet-opgeslagen wijzigingen.
 
 ### Formulier-velden
 
+![De pagina Content van de stap-editor: Title en Text](../screenshots/content.png)
+
 | Veld | Verplicht | Beschrijving | Voorbeeld |
 |---|---|---|---|
-| **ID** | Ja (auto-gegenereerd) | Unieke stap-identifier, timestamp-based voor nieuwe stappen | `new_1731600000000` |
-| **Titel** | Ja | Stap-titel, ondersteunt emoji | `👋 Welkom bij Nextcloud` |
-| **Tekst (HTML)** | Ja | Stap-body, ondersteunt HTML | `<p>Leuk dat je er bent!</p>` |
-| **Element (CSS-selector)** | Nee | Element om te markeren; leeg = gecentreerde modal | `a[href*="/apps/files/"]` |
-| **Positie** | Als Element is ingesteld | Tooltip-positie t.o.v. het element | `right`, `left`, `top`, `bottom` |
+| **Titel** | Ja | Stap-titel, platte tekst; de smileyknop ernaast voegt een emoji in | `👋 Welkom bij Nextcloud` |
+| **Afbeelding of video** | Nee | Eén afbeelding, GIF of video boven de tekst; zie [Afbeelding of video](#afbeelding-of-video) hieronder | Een screenshot van het appmenu |
+| **Tekst** | Ja | Stap-body, geschreven met opmaak; zie [Tekst](#tekst) hieronder | Leuk dat je er bent! |
+| **Page** | Nee | De app waar de stap bij hoort; de tour opent die eerst. Leeg = elke pagina. **Pick element** vult dit in. Zie [Tours over meerdere apps](../features/guided-tours.nl.md#tours-over-meerdere-apps). | `/apps/spreed/` |
+| **Koppelen aan element (CSS-selector)** | Nee | Element om te markeren; leeg = gecentreerde stap. Vul het met **Pick element**. | `a[href*="/apps/files/"]` |
+| **Open first (CSS-selector)** | Nee | Voor een element in een menu: de knop waarop de tour eerst klikt om dat menu te openen. **Pick element** vult dit in. | `.app-menu__waffle` |
+| **Positie** | Als een element is ingesteld | Kant van het element waar de tooltip verschijnt | Rechts, Links, Boven, Onder |
+| **Continue with** | Als een element is ingesteld | **Next button** (standaard); **Click on the element**: gebruikers klikken op het gemarkeerde element om verder te gaan; of **Filling in the field**: **Next** werkt pas als het veld tekst heeft. Zie [Klik om verder te gaan](#klik-om-verder-te-gaan) | Click on the element |
 | **Zichtbaar voor groepen** | Nee | Groepen die deze stap kunnen zien; leeg = alle gebruikers | `Administrators` |
+
+Elke stap krijgt bij het aanmaken een uniek ID (zichtbaar in de lijst, niet te bewerken). Op de pagina **Element** staan element, pagina en menu samengevat naast **Pick element** en **Remove element** (terug naar een gecentreerde stap); open **Edit by hand** om ze zelf aan te passen.
+
+### Tekst
+
+Het veld **Text** is een opmaakeditor en toont de tekst zoals de tour dat doet: vet, cursief, een tussenkop, opsommingen en genummerde lijsten, links en code, via de werkbalk of met de gewone sneltoetsen (Ctrl+B, Ctrl+I). De smileyknop voegt een emoji in, net als naast de titel. Voor een link selecteer je de woorden en klik je op de linkknop; links openen in een nieuw tabblad, zodat de tour blijft staan. Een adres als `nextcloud.com` wordt `https://nextcloud.com`, en een pad op deze Nextcloud zoals `/apps/files/` blijft een pad.
+
+De knop `<>` rechts, **Edit as HTML**, toont de HTML zelf. HTML die gebruikers nooit zien, omdat de tour hem weghaalt (een `class`, een stijl, een afbeelding), laat de editor weg, en een regel onder het veld noemt hem. Een stap openen verandert hem niet; die HTML verdwijnt pas als je de tekst aanpast. De tekst wordt hoe dan ook als HTML opgeslagen, dus exporteren, importeren en de vertaalde standaardstappen werken als voorheen; zie [Customization](../features/customization.nl.md) voor de tags die de tour bewaart.
+
+### Afbeelding of video
+
+Een stap kan boven zijn tekst één afbeelding (PNG of JPEG), geanimeerde GIF of video (MP4 of WebM) tonen. Kies **Upload**, kies met **Choose from Files** een bestand uit je eigen Files, of plak een screenshot op het blok.
+
+- **Description (alt text)** is verplicht: dat is wat mensen horen die de afbeelding niet zien. Zet **Decorative, no description needed** alleen aan als de afbeelding niets toevoegt aan de tekst.
+- **Size:** Small, Full width, of **Wide step**, die de stap ook breder maakt.
+- **Video:** **With a play button** start nooit vanzelf; **Plays like a GIF** speelt geluidloos en herhaalt. Voeg ondertitels toe als WebVTT-bestand (`.vtt`) als er in de video gesproken wordt.
+- Alles wat beweegt krijgt in de tour een pauzeknop, en staat stil voor wie "minder beweging" aan heeft staan.
+
+IntroVox bewaart een eigen kopie van het bestand: het origineel in Files wijzigen of verwijderen verandert de stap niet. Voordat IntroVox het bewaart, controleert het het echte bestandstype, weigert alles anders (zoals SVG) en haalt metadata zoals locatie en cameragegevens eruit. Iedereen die de stap krijgt kan het bestand zien, en verder niemand: gebruikers die de stap niet krijgen, of alleen in een uitgeschakelde stap, kunnen het niet laden.
+
+Limieten: afbeeldingen 5 MB en 16 megapixel, GIF's 10 MB, video's 20 MB, ondertitels 512 KB; in totaal 250 MB en 500 bestanden. Een beheerder kan ze aanpassen met `occ config:app:set introvox` en de sleutels `media_limit_image`, `media_limit_gif`, `media_limit_video`, `media_limit_captions`, `media_max_pixels`, `media_quota_bytes` en `media_max_files` (bytes of aantallen).
+
+Tips: maak screenshots in een testaccount (het jouwe toont je eigen bestanden, namen en avatar aan iedereen), ongeveer 900 pixels breed, en kies liever een korte MP4 dan een grote GIF.
+
+### Klik om verder te gaan
+
+![De pagina Behavior van de stap-editor: Position en Continue with](../screenshots/behavior.png)
+
+Met **Continue with: Click on the element** doen gebruikers wat de stap vraagt in plaats van erover te lezen: "Klik op Nieuw gesprek" gaat verder zodra ze erop klikken. De stap toont geen Volgende-knop en zegt "Click the highlighted element to continue." Opent de klik iets op de pagina (een menu, een dialoog), dan volgt de volgende stap direct; opent hij een andere app, dan gaat de tour daar verder. Bij de laatste stap rondt de klik de tour af. Wordt het element niet gevonden, dan verschijnt alsnog een Volgende-knop, zodat niemand vastloopt.
+
+Met **Continue with: Filling in the field** werkt **Next** pas als het veld waar de stap naar wijst tekst heeft, zoals de naam van een nieuw gesprek; de stap zegt "Fill in the highlighted field to continue." Een stap op een blok rond een veld kijkt naar het veld daarin. Is het veld er niet, of verdwijnt het (de dialoog sluit), dan werkt Next gewoon.
+
+Het element waar een stap naar wijst krijgt een rand in de kleur van het thema en een knipperend pijltje vanaf de stap ernaartoe, ook in dialogen; voor wie minder beweging wil, staan ze stil.
+
+### Stappen die op de gebruiker wachten
+
+Sommige elementen bestaan pas als de gebruiker iets gedaan heeft: de deelnemers van een gesprek dat hij aanmaakt, het delen van een bestand waarvan hij de details opent, een kaart op een bord. Dat kan een tour niet voor hem doen, maar hij kan wel de weg wijzen: één stap per klik, elk met **Continue with: Click on the element**, en dan de stap over het element. In Talk bijvoorbeeld: "Klik op Nieuw gesprek" → "Geef het een naam" → "Klik op Gesprek aanmaken" → "Voeg hier mensen toe".
+
+Een stap waarvan het element er nog niet is, wacht erop: hij staat met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is, zoals een om een map te kiezen, weg van de knoppen van het venster), laat de pagina bruikbaar, en schuift naar het element zodra het verschijnt, hoe lang de gebruiker er ook over doet. **Next** gaat ook zonder het element verder. Zo'n tour bouw je met **Pick element** in de modus **Browse**: klik op de pagina wat nodig is, houd dan Shift ingedrukt en klik op het element. De kiezer meldt dan dat de stap erop wacht.
 
 ### CSS-selector-voorbeelden
 
@@ -54,55 +107,97 @@ Na het selecteren van een taal onder **Taal-instellingen** zie je de lijst stapp
 **Tips voor betrouwbare selectors:**
 
 - **Vermijd taal-specifieke attributen** zoals `aria-label="Unified search"` — die breken in andere talen. Gebruik CSS-classes zoals `.unified-search__trigger`.
-- **Gebruik meerdere fallbacks** gescheiden door komma's. Default-stappen gebruiken dit patroon (bv. `[data-id="files"], a[href*="/apps/files"]`) om Nextcloud-UI-wijzigingen te overleven.
-- **Inspecteer eerst**: open DevTools (F12), klik op "Inspect element", klik dan op het target om classes en attributen te zien.
-- **Test in de console**: `document.querySelector('je-selector')` zou het element moeten teruggeven.
+- **Gebruik meerdere fallbacks** gescheiden door komma's. Default-stappen gebruiken dit patroon (bv. `[data-id="files"], a[href*="/apps/files"]`) om Nextcloud-UI-wijzigingen te overleven. De tour probeert ze in de volgorde waarin je ze schreef: de stap wijst naar de eerste die een zichtbaar element vindt, waar de andere ook op de pagina staan, dus zet de selector die je het liefst hebt vooraan.
+- **Aanwijzen in plaats van typen**: zie [Element kiezen](#element-kiezen) hieronder.
+- **Met de hand**: open DevTools (F12), klik op "Inspect element", klik dan op het target om classes en attributen te zien. Test elke selector apart met `document.querySelector('je-selector')` in de console; dat zou het element moeten teruggeven. Test zo geen hele komma-gescheiden lijst: de browser geeft dan de match die het eerst in de pagina staat, en dat hoeft niet de selector te zijn die de tour kiest.
+
+### Element kiezen
+
+![Een element kiezen: Select-modus, met de selector van het element onder de muisaanwijzer](../screenshots/element-picker.png)
+
+In plaats van een selector op te zoeken in DevTools klik je op **Pick element** naast het element-veld. Nextcloud opent schermvullend binnen de instellingenpagina:
+
+1. In de stand **Select** beweeg je over de pagina; het element onder de muis krijgt een kader. Klik om het te kiezen. Klikken bereiken de pagina niet, dus links en knoppen doen niets.
+2. Zoek je iets dat pas na een klik verschijnt, zoals een item in een menu? Schakel naar **Browse** en gebruik de pagina zoals altijd: open het menu, of ga naar een andere app. Om iets in een open menu te kiezen, **houd je Shift ingedrukt en klik je erop**. Het menu blijft open, en de picker onthoudt welke knop het opende.
+3. Het paneel toont één of meer selectors die precies dit element vinden. Kies er een, of gebruik **Parent element** als je op een icoon klikte maar het omliggende vlak bedoelde.
+4. Klik op **Use this element**. De selector wordt ingevuld. Had de stap nog geen element, dan krijgt **Positie** een waarde die past bij waar het element staat (bijvoorbeeld Onder voor de header). Voor een element in een menu wordt **Open first** ingevuld met de knop die het menu opent. Voor een element in een app, zoals Talk, wordt **Page** die app, zodat de tour hem vóór de stap opent; elementen in de Nextcloud-header werken op elke pagina en krijgen geen pagina.
+
+De picker gebruikt alleen wat hetzelfde blijft tussen paginaladingen en talen: vaste id's, `data-*`-attributen, link-doelen en component-classes. Gegenereerde id's, toestands-classes zoals `--active` en vertaalde attributen zoals `aria-label` slaat hij over. Het paneel kan deze meldingen tonen:
+
+- "This element is inside a menu. During the tour, the menu is opened first with: …": de tour klikt vóór de stap op de genoemde knop, zodat het element er is als de stap verschijnt.
+- "This element is inside a menu or pop-up that only exists while it is open." (waarschuwing): de picker kon niet zien welke knop het menu opent, dus tijdens de tour wacht de stap opzij tot de gebruiker het menu opent. Open het menu in Browse en Shift-klik het element, of kies de knop die het menu opent.
+- "You got here by using the page.": de stap wacht op zijn element; zie [Stappen die op de gebruiker wachten](#stappen-die-op-de-gebruiker-wachten).
+- "This selector depends on where the element sits in the page…" (waarschuwing): niets vasts identificeert het element, dus de selector beschrijft waar het in de pagina staat (`nth-of-type`). Dat kan na een Nextcloud-update stukgaan.
+
+Meldt de picker dat Nextcloud niet getoond kon worden, controleer dan je verbinding en open hem opnieuw. Blijft het gebeuren, dan verbiedt je server waarschijnlijk het tonen van Nextcloud in een frame (`X-Frame-Options: DENY`); vul de selector dan met de hand in.
 
 ### Positie-gids
 
 | Positie | Geschikt voor |
 |---|---|
-| `right` | Linker-sidebar-elementen (Files, Agenda) |
-| `left` | Rechter-sidebar-elementen (gebruikers-menu) |
-| `top` | Onder-navigatie |
-| `bottom` | Boven-navigatie (header, zoeken) |
+| Rechts | Linker-sidebar-elementen (Files, Agenda) |
+| Links | Rechter-sidebar-elementen (gebruikers-menu) |
+| Boven | Onder-navigatie |
+| Onder | Boven-navigatie (header, zoeken) |
 
-### Opslaan
+## Bekijken
 
-1. Klik op **💾 Opslaan** in het formulier om de stap aan de lijst toe te voegen
-2. Klik op de groene **💾 Wijzigingen opslaan**-knop bovenaan de lijst om alle aanpassingen te persisteren
+Je hoeft niet als testgebruiker in te loggen om te zien wat je hebt ingesteld.
+
+- **Preview tour** (boven de lijst) opent Nextcloud schermvullend en speelt de tour af voor de geselecteerde taal, zoals gebruikers hem krijgen: uitgeschakelde stappen worden overgeslagen. Met **Preview as** zie je wat leden van één groep krijgen, volgens [Zichtbaar voor groepen](group-visibility.md). **Restart** speelt hem opnieuw af, ook nadat je in het voorbeeld naar een andere app bent gegaan.
+- **Test this step** (in de stap-editor) toont alleen die stap, inclusief wijzigingen die je nog niet hebt opgeslagen. Zo zie je of het kader op het juiste element valt en of de positie klopt.
+
+Beide volgen stappen naar andere apps, net als de echte tour.
+
+Een voorbeeld laat geen sporen na: het telt niet mee in de statistieken, en je eigen tour wordt er niet door als gezien of uitgeschakeld gemarkeerd.
 
 ## Stap bewerken
 
-1. Klik op **✏️ Bewerken** naast de stap
-2. Wijzig velden naar wens
-3. Klik op **💾 Opslaan** om te bevestigen, of **❌ Annuleren** om te verwerpen
-4. Klik op **💾 Wijzigingen opslaan** om te persisteren
+1. Klik op **Bewerken** naast de stap; dezelfde dialoog opent
+2. Wijzig wat nodig is op elke pagina; klik links op een pagina om er direct heen te gaan
+3. Klik op **Opslaan**, bij bewerken op elke pagina beschikbaar, of sluit de dialoog om je wijzigingen te verwerpen
+
+Verlaat je de pagina terwijl de dialoog niet-opgeslagen wijzigingen heeft, dan vraagt de browser eerst om bevestiging.
+
+Wijzig je het element van een van de default-stappen (Bestanden & apps, Zoeken, Je account & instellingen), dan gebruikt de tour vanaf dan jouw element in plaats van het ingebouwde.
 
 ## Stap verwijderen
 
-1. Klik op **🗑️ Verwijderen**
+1. Klik op **Verwijderen**
 2. Bevestig in het dialoog
-3. De stap wordt direct uit de lijst verwijderd
-4. Klik op **💾 Wijzigingen opslaan** om te persisteren
+
+De stap wordt direct verwijderd.
 
 > **Let op:** overweeg om de stap [uit te schakelen](#stap-aan-uitschakelen) in plaats van te verwijderen als je hem later misschien terug wilt.
 
 ## Stappen herordenen
 
-1. Klik en houd de **☰**-sleep-handle links van een stap vast
+In beide gevallen wordt de nieuwe volgorde direct opgeslagen.
+
+**Met de muis**
+
+1. Klik en houd de sleep-handle links van een stap vast
 2. Sleep naar de nieuwe positie
 3. Laat los om te plaatsen
-4. Klik op **💾 Wijzigingen opslaan** om te persisteren
 
-**Belangrijk:** sinds v1.0.6 wordt stap-volgorde bijgehouden op stap-**ID** (niet op positie), zodat in-/uitschakelen van stappen na herordenen correct werkt. Je moet **Wijzigingen opslaan** klikken om de nieuwe volgorde te persisteren.
+**Met het toetsenbord**
+
+1. Tab naar de knop **Omhoog** of **Omlaag** naast de sleep-handle
+2. Druk op Enter of spatie
+
+Aan de uiteinden van de lijst is de knop uitgeschakeld: de eerste stap heeft
+geen **Omhoog**, de laatste geen **Omlaag**. Slepen werkt alleen met een
+aanwijzer — daarom bestaan deze knoppen: ze zijn de enige manier om te
+herordenen met het toetsenbord of met een schermlezer.
+
+De stap-volgorde wordt bijgehouden op stap-**ID** (niet op positie), zodat in-/uitschakelen van stappen na herordenen correct werkt.
 
 ## Stap aan-/uitschakelen
 
-Elke stap heeft een in-/uitschakelen-toggle:
+Elke stap heeft een schakelaar:
 
-- **✅ Ingeschakeld** — getoond aan gebruikers
-- **❌ Uitgeschakeld** — verborgen (grijs gemaakt, met doorstreping)
+- **Aan** — getoond aan gebruikers
+- **Uit** — verborgen (grijs gemaakt, met doorstreping)
 
 Uitgeschakelde stappen blijven in je configuratie. Gebruik dit voor:
 
@@ -112,10 +207,10 @@ Uitgeschakelde stappen blijven in je configuratie. Gebruik dit voor:
 
 ## Reset naar default
 
-De knop **🔄 Reset naar default** herstelt fabrieks-defaults voor **alleen de geselecteerde taal**.
+De knop **Herstellen** herstelt fabrieks-defaults voor **alleen de geselecteerde taal**.
 
 1. Selecteer de taal om te resetten
-2. Klik op **🔄 Reset naar default**
+2. Klik op **Herstellen**
 3. Bevestig in het dialoog
 
 **Waarschuwingen:**
@@ -124,15 +219,11 @@ De knop **🔄 Reset naar default** herstelt fabrieks-defaults voor **alleen de 
 - **Alleen de geselecteerde taal** wordt gereset; andere talen blijven onveranderd
 - Alle custom-stappen voor die taal worden verwijderd
 
-De default-stappen dekken: welkom bij Nextcloud → bestand-beheer → agenda → zoeken → belangrijke features → nuttige tips → afsluiting.
+De default-stappen van de welkomsttour zijn: Welkom bij Nextcloud → Bestanden & apps → Zoeken → Je account & instellingen → Aan de slag → Belangrijke functies → Handige tips → Klaar!
 
-## Wijzigingen opslaan
+## Opslaan
 
-De groene **💾 Wijzigingen opslaan**-knop bovenaan de stap-lijst persisteert alle aanpassingen: adds, edits, deletes, reorders en aan-/uitschakelen-toggles.
-
-- Alleen actief (niet grijs) bij niet-opgeslagen wijzigingen
-- Van taal wisselen met niet-opgeslagen wijzigingen triggert een waarschuwing
-- Na opslaan zie je "Stappen succesvol opgeslagen!"
+Wijzigingen worden opgeslagen terwijl je ze maakt, met een korte bevestiging "Stappen opgeslagen" bij bewerken en verwijderen. Mislukt het opslaan (bijvoorbeeld doordat de verbinding wegviel), dan krijg je een foutmelding en verschijnt boven de lijst de knop **Wijzigingen opslaan** om het opnieuw te proberen. Je wijziging blijft in de lijst staan tot hij is opgeslagen.
 
 ## Groep-gebaseerde zichtbaarheid
 

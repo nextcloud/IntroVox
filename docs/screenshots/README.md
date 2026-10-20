@@ -1,10 +1,29 @@
 # Screenshots & Demo
 
-Media files for IntroVox documentation:
+Media files for IntroVox documentation. `tests-e2e/docs-screenshots.mjs` takes the admin, personal-settings, checklist and tour-step screenshots again on a test server; the others are made by hand.
 
-1. **introvox-demo.gif** - Animated GIF demonstration showing the full wizard experience
-2. **admin-interface.png** - The admin configuration page showing tour step management
-3. **personal-settings.png** - The user settings page with restart button
+| File | Shows |
+|---|---|
+| **introvox-demo.gif** | The full tour, start to finish |
+| **welcome-step.png** | The first step of the tour |
+| **dark-theme.png** | The same step in the dark theme |
+| **personal-settings.png** | Personal settings: the tours, with Start, and Start tours by themselves |
+| **admin-settings.png** | Admin page, Tours pane (also the App Store screenshot) |
+| **new-tour.png** | New tour: where it starts |
+| **settings.png** | Admin page, Settings pane, with the checklist |
+| **dashboard-checklist.png** | The Getting started checklist on the Dashboard |
+| **tour-step.png** | A step of a built-in tour that asks for a click, with outline and arrow |
+| **content.png** | Step editor, Content page |
+| **behavior.png** | Step editor, Behavior page (Continue with) |
+| **visible-to.png** | Step editor, Visible to page |
+| **element-picker.png** | Picking an element, Select mode |
+| **statistics.png** | Admin page, Statistics pane |
+
+### Outstanding
+
+1. The **Support** pane, which no screenshot covers
+2. The picker in **Browse** mode, where an open menu is Shift-clicked
+3. **introvox-demo.gif** shows the welcome tour as it was in 1.7; a new recording could show a built-in tour, with its hands-on steps
 
 ## Media Guidelines
 

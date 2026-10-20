@@ -66,7 +66,7 @@ case "$MODE" in
       ok "PHP syntax clean"
     fi
 
-    for s in l10n:lint lint:l10n test:js build; do
+    for s in l10n:lint lint:l10n test:js test:php build; do
       if npm run "$s" >/dev/null 2>&1; then ok "npm run $s"; else bad "npm run $s"; fi
     done
 

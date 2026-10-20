@@ -2,29 +2,48 @@
 
 Veelvoorkomende problemen en oplossingen voor IntroVox-beheerders. Voor gebruikers-issues, zie [Gebruikers-troubleshooting](../user/troubleshooting.md).
 
-## Wizard verschijnt niet
+## Welkomsttour verschijnt niet
 
-**Symptoom:** gebruikers zien de wizard niet bij eerste login.
+**Symptoom:** gebruikers krijgen de welkomsttour niet bij hun eerste login.
 
 | Mogelijke oorzaak | Oplossing |
 |---|---|
-| Wizard globaal uitgeschakeld | Inschakelen in **Instellingen → Beheer → IntroVox** |
-| Taal van gebruiker niet ingeschakeld | Schakel de taal in onder **Beschikbare talen** |
-| Gebruiker heeft wizard eerder uitgeschakeld | Gebruik **Wizard tonen aan alle gebruikers** om voorkeuren te resetten |
+| Tours staan voor iedereen uit | Zet **Tours for everyone** aan in **Instellingen → Beheer → IntroVox** |
+| De welkomsttour staat uit | Zet hem aan in de lijst **Tours** |
+| Geen enkele stap van de welkomsttour is voor deze gebruiker | Elke stap staat uit, of is beperkt tot groepen waar de gebruiker niet in zit. Controleer **Zichtbaar voor groepen**, of gebruik **Preview as** in **Preview tour** |
+| Gebruiker heeft de welkomsttour afgemaakt of overgeslagen, of in deze browser gesloten | Gebruik **Show again to everyone** in het ⋯-menu van de welkomsttour onder **Tours** om hem iedereen opnieuw te geven |
+| Gebruiker heeft **Start tours by themselves** uitgezet | Alleen de gebruiker kan die weer aanzetten, in **Persoonlijke instellingen → IntroVox**; **Show again to everyone** verandert er niets aan. Zelf tours starten kan daar nog wel |
 | JavaScript-errors | Check de browser-console (F12); verifieer dat IntroVox-versie compatibel is met je Nextcloud-versie |
 | App-menu-readiness-timeout | Versies vóór v1.4.2 konden vastlopen op sommige NC-versies; upgrade naar v1.4.2+ die fallback-selectors en een 10s-timeout toevoegt |
 
-## Stappen worden overgeslagen
+## Tour voor een app start niet
 
-**Symptoom:** sommige stappen verschijnen niet tijdens de tour.
+**Symptoom:** gebruikers openen een app die een tour heeft, maar de tour start niet.
+
+| Mogelijke oorzaak | Oplossing |
+|---|---|
+| De tour staat uit | Zet hem aan onder **Tours**; dat kan zodra hij een stap in zijn hoofdtaal heeft |
+| **Tours for everyone** staat uit | Zet hem aan onder **Settings** |
+| Gebruiker zit niet in de groepen van de tour, of kan de app niet openen | Controleer **Visible to** onder **Tour settings**, en de groepsbeperking van de app zelf |
+| Gebruiker heeft de tour al gezien, in welke browser dan ook | Zo hoort het: hij start één keer vanzelf. Gebruik **Show again to everyone** bij de tour, of de gebruiker klikt op **Start again** in **Persoonlijke instellingen → IntroVox** |
+| Gebruiker heeft de welkomsttour nog niet gehad | Zo hoort het: de welkomsttour komt eerst, de app-tour bij een later bezoek |
+| **Who gets it** staat op **New accounts only**, en de gebruiker logde voor het eerst in voordat de tour voor het eerst aanging | Zet **Who gets it** op **Everyone** onder **Tour settings** |
+| Gebruiker heeft **Start tours by themselves** uitgezet | De gebruiker kan de tour nog wel starten met **Start** in **Persoonlijke instellingen → IntroVox** |
+
+Zie [Tours](tours.nl.md) voor wanneer een tour start.
+
+## Stappen ontbreken of wachten in de hoek
+
+**Symptoom:** sommige stappen verschijnen niet tijdens de tour, of een stap staat rechtsonder in plaats van bij zijn element.
 
 | Mogelijke oorzaak | Oplossing |
 |---|---|
 | Stap uitgeschakeld in admin-paneel | Toggle de stap naar **✅** ingeschakeld |
-| Element bestaat niet | Console toont `Wizard: Skipping step 'X' - element not found`. Update de CSS-selector of verwijder `attachTo` om hem gecentreerd te maken |
-| App niet geïnstalleerd | Als een Agenda-stap een element target dat alleen bestaat met Agenda ingeschakeld, voeg een fallback-selector toe of schakel de stap alleen in wanneer Agenda is geïnstalleerd |
-| Selector kapot na Nextcloud-upgrade | Inspecteer de nieuwe DOM en update de selector. Gebruik meerdere komma-gescheiden fallbacks |
-| Pre-v1.4.1-timing-issue | Stappen konden worden overgeslagen als Vue nog niet had gerenderd; v1.4.1+ valt terug op gecentreerde weergave |
+| Element staat niet op de pagina | De stap wacht met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is), en schuift naar het element zodra het verschijnt; **Next** gaat gewoon verder. Controleer de selector met **Test this step**, kies hem opnieuw met **Pick element**, of gebruik **Remove element** voor een gecentreerde stap |
+| Element verschijnt pas als de gebruiker iets doet | Zo hoort het: de stap wacht tot het er is. Wijs de weg met één stap per klik, zie [Stappen die op de gebruiker wachten](managing-steps.nl.md#stappen-die-op-de-gebruiker-wachten) |
+| De **Page** van de stap is een app die de gebruiker niet kan openen | De stap valt weg voor die gebruiker. Beperk hem met **Zichtbaar voor groepen** tot wie de app heeft |
+| Selector kapot na Nextcloud-upgrade | Inspecteer de nieuwe DOM en update de selector. Gebruik meerdere komma-gescheiden fallbacks; de tour probeert ze in de volgorde waarin ze staan |
+| Pre-v1.4.1-timing-issue | Stappen konden worden overgeslagen als Vue nog niet had gerenderd; nu wacht een stap op zijn element |
 | Gebruiker niet in vereiste groepen | Check de **Zichtbaar voor groepen** van de stap — leeg betekent zichtbaar voor iedereen |
 
 ## Vertalingen werken niet
@@ -92,18 +111,14 @@ Veelvoorkomende problemen en oplossingen voor IntroVox-beheerders. Voor gebruike
 
 **Fix:** zorg dat je admin-paneel-sessie vers is en je de laatste IntroVox-versie gebruikt. Als je custom tooling hebt gebouwd dat deze endpoints direct aanroept, neem het CSRF-token op.
 
-## Debug-logging
+## Een stap controleren
 
-Om issues te diagnosticeren:
+IntroVox schrijft niets naar de browser-console. Zo zie je wat een stap doet:
 
-1. Open de browser-console (F12 → Console-tabblad)
-2. Zoek naar:
-
-| Log | Betekenis |
-|---|---|
-| `🎨 Nextcloud First Use Wizard (Vue 3) initialized` | App succesvol geladen |
-| `✅ Wizard initialized with X active steps` | Stappen geladen voor deze gebruiker/taal |
-| `⚠️ Wizard: Skipping step 'X' - element not found` | CSS-selector matched niet (pre-v1.4.1) of stap viel terug op gecentreerd (v1.4.1+) |
+- **Test this step** in de stap-editor toont die ene stap, inclusief niet-opgeslagen wijzigingen. **Preview tour** speelt de hele tour af; **Preview as** toont wat leden van één groep krijgen.
+- Een stap die rechtsonder staat in plaats van bij zijn element, heeft dat element niet gevonden. Hij wacht daar tot het element verschijnt.
+- Een selector met de hand controleren: open de browser-console (F12 → Console) en test elke selector van de lijst apart met `document.querySelector('…')`.
+- Fouten, zoals een verzoek dat mislukte, staan nog wel in de console en onder F12 → Network.
 
 ## Zie ook
 

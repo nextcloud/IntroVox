@@ -44,28 +44,6 @@ export function detectDeviceType() {
   return 'desktop'
 }
 
-export function isPWAInstallable() {
-  // Check if PWA is already installed
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    return false
-  }
-
-  // Check if PWA installation is supported
-  const browser = detectBrowser()
-  const os = detectOS()
-
-  // PWA installation support matrix
-  const supported = {
-    chrome: ['windows', 'macos', 'linux', 'android'],
-    edge: ['windows', 'macos', 'linux', 'android'],
-    safari: ['ios', 'macos'],
-    firefox: ['android'],
-    opera: ['windows', 'macos', 'linux', 'android']
-  }
-
-  return supported[browser]?.includes(os) || false
-}
-
 export function getPWAInstructions() {
   const browser = detectBrowser()
   const os = detectOS()

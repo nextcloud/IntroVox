@@ -24,6 +24,11 @@ use OCP\Migration\IRepairStep;
  */
 class UnescapeLegacyWizardStepHtml implements IRepairStep {
     private const APP_NAME = 'introvox';
+    // Post-migration repair steps run on every app update. Without this flag
+    // the step kept un-escaping on each one, so text deliberately stored with
+    // entities (say "&lt;a href=…&gt;" in an imported file, harmless while it
+    // shows as text) turned into live markup at the next update.
+    private const DONE_FLAG = 'legacy_html_unescaped';
 
     public function __construct(
         private IConfig $config,
@@ -35,6 +40,13 @@ class UnescapeLegacyWizardStepHtml implements IRepairStep {
     }
 
     public function run(IOutput $output): void {
+        if ($this->config->getAppValue(self::APP_NAME, self::DONE_FLAG, '') === '1') {
+            return;
+        }
+        // Set before the work: a failure halfway must not bring the step back
+        // on the next update either. Backups of whatever it changed are kept.
+        $this->config->setAppValue(self::APP_NAME, self::DONE_FLAG, '1');
+
         $keys = $this->config->getAppKeys(self::APP_NAME);
         $changedKeys = 0;
         $changedFields = 0;

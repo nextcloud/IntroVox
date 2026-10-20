@@ -6,6 +6,8 @@ Groep-gebaseerde stap-zichtbaarheid laat je individuele wizard-stappen beperken 
 
 ## Hoe het werkt
 
+![De pagina Visible to van de stap-editor, met één groep geselecteerd](../screenshots/visible-to.png)
+
 Elke stap heeft een **Zichtbaar voor groepen**-veld (multi-select-dropdown van alle Nextcloud-groepen):
 
 - **Lege selectie (default)** — stap is zichtbaar voor **alle gebruikers**
@@ -15,11 +17,12 @@ Filtering gebeurt **server-side** in [ApiController::getWizardSteps()](https://g
 
 ## Groep-zichtbaarheid configureren
 
-1. Klik op **✏️ Bewerken** op een stap
+1. Open **Tours**, klik bij de tour op **Edit steps** en klik op **Edit** bij een stap
 2. Vind de **Zichtbaar voor groepen**-dropdown onder de Positie-selector
 3. Selecteer één of meer Nextcloud-groepen
-4. Klik op **💾 Opslaan** in het formulier
-5. Klik op **💾 Wijzigingen opslaan** bovenaan de stap-lijst om te persisteren
+4. Klik op **Opslaan** in het formulier; de stap wordt direct opgeslagen
+
+Om het resultaat te controleren klik je op **Preview tour** en kies je een groep onder **Preview as**: het voorbeeld toont de stappen die leden van die groep krijgen. Zie [Bekijken](managing-steps.nl.md#bekijken).
 
 ## Use-cases
 
@@ -89,12 +92,13 @@ Dit betekent:
 | Doel | Aanpak |
 |---|---|
 | Verberg de hele app voor bepaalde gebruikers | **Instellingen → Apps → IntroVox → Beperken tot groepen** (Nextcloud-niveau) |
-| De wizard uitschakelen voor alle gebruikers in een taal | Vink de taal uit in **Beschikbare talen** |
-| De wizard globaal uitschakelen | Vink **Wizard inschakelen voor alle gebruikers** uit |
+| Alle tours uitzetten | Zet **Tours for everyone** uit |
 | Verschillende stappen per gebruikers-rol tonen | **Groep-gebaseerde zichtbaarheid** (deze pagina) |
+| Een hele tour voor een app alleen aan bepaalde groepen geven | **Visible to** bij die tour ([Tours](tours.nl.md)) |
+| Voor één taal eigen tekst schrijven | **Add language override** in de stappen-editor van een tour (**Tours** → **Edit steps**) |
 
 ## Zie ook
 
-- [Wizard-stappen beheren](managing-steps.md) — stap-CRUD
+- [Tourstappen beheren](managing-steps.md) — stap-CRUD
 - [Stap-zichtbaarheid](../features/step-visibility.md) — groep-filters + gebruikers-voorkeuren
 - [API-referentie](../architecture/api-reference.md) — `getWizardSteps`-endpoint met filtering

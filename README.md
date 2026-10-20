@@ -2,47 +2,50 @@
 
 [![GitHub release](https://img.shields.io/github/release/nextcloud/IntroVox.svg)](https://github.com/nextcloud/IntroVox/releases)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Nextcloud](https://img.shields.io/badge/Nextcloud-32-blue)](https://nextcloud.com)
+[![Nextcloud](https://img.shields.io/badge/Nextcloud-32--35-blue)](https://nextcloud.com)
 
-**Interactive onboarding tour for new Nextcloud users**
+**Guided tours for Nextcloud and its apps**
 
-IntroVox provides a user-friendly guided tour that helps new users get started with Nextcloud. Built with Vue 3 and Shepherd.js, it offers customizable tour steps, multi-language support, and comprehensive admin configuration with import/export capabilities.
+IntroVox shows people around Nextcloud. New users get a welcome tour after their first login, and a short tour the first time they open an app such as Files, Talk, Deck or Calendar. Admins write and translate the steps, choose who gets each tour and when, and see how far people get. Built with Vue 3 and Shepherd.js.
 
 ## ✨ Features
 
-### 🎯 User Experience
-- **Interactive Guided Tour** - Step-by-step introduction to Nextcloud features
-- **User Control** - Users can permanently disable the wizard or restart it anytime
-- **"Skip and don't show again"** - Quick opt-out on first encounter
-- **Smart Behavior** - Closing with X only marks completed; "Done" button disables auto-start
-- **Personal Settings** - Full control over wizard preferences in Personal Settings → IntroVox
+### 🎯 For Users
+- **Welcome tour** - Starts after the first login, on the first page someone opens, in their own language
+- **Tours for apps and pages** - A short tour the first time someone opens an app, such as Talk or Deck, or another page of Nextcloud. A tour can also start anywhere: on whichever page someone opens next, for a tip after a few days
+- **Built-in tours for Files, Talk, Deck and Calendar** - Each lets people do the app's main job once, with their own work, and then shows what matters most at work
+- **Steps you do, not just read** - A step can go on when the user clicks its element or fills in a field. A step whose element only appears after the user did something waits aside in the corner, and moves to the element once it is there
+- **Images, GIFs and videos** - Above a step's text, with a description and captions
+- **Tours in the user menu** - Leads to **Personal settings → IntroVox**, where users start any tour again. **Start tours by themselves** there switches off every tour that would start by itself
+- **"Getting started" on the Dashboard** - An optional checklist of first things to do, such as uploading a file or adding a profile picture. It ticks itself off as people do them
 
-### 🌍 Multi-Language Support
-- **6 Languages Included** - English, Dutch, German, Danish, French, Swedish
-- **Transifex-Ready** - Dynamically detects new language files - no code changes needed
-- **Per-Language Configuration** - Customize tour steps independently for each language
-- **Language Availability Control** - Admins can enable/disable specific languages
-- **Community Contributions** - Easy for translators to add new languages via Transifex
+### ⚙️ For Administrators
+- **Tours list** - Switch each tour on or off, edit its steps, preview it, show it again to everyone
+- **Timing rules** - Per tour: everyone or **New accounts only**, a number of days after the first login, and two dates between which it starts by itself
+- **Share links** - **Copy link** gives a link that starts the tour, for a welcome mail or a message to a team
+- **Statistics per tour** - How many people started, completed and skipped it, and **How far people get**: for each step, how many got at least that far
+- **Export and import a whole tour** - One `.zip` file with the tour's settings, its steps in every language and its images and videos
+- **Translate with AI / Write steps with AI** - With a provider for the Nextcloud Assistant. You check and can change every step before it is saved
+- **Steps per language and per group** - Replace the translated default steps for a language, limit a step or a tour to groups
+- **Pick element** - Point at the element a step shows instead of typing a CSS selector
+- **Admin tour** - A short tour of the admin page, the first time an admin opens it
 
-### ⚙️ Admin Configuration
-- **Full CRUD Interface** - Add, edit, delete, and reorder tour steps
-- **Group-Based Visibility** - Show specific steps only to certain user groups (role-based onboarding)
-- **Import/Export** - Share configurations, collaborate with content creators
-- **Language Management** - Enable/disable languages, manage per-language steps
-- **Global Controls** - Enable/disable wizard, force show to all users
-- **Visual Feedback** - Enable/disable individual steps, drag-and-drop reordering
+### 🌍 Languages
+- **Translated on Transifex** - Nextcloud's translators translate IntroVox and its default steps. A new language file is picked up without a code change; there is nothing to switch on. A string that is not translated yet shows in English
+- **Your own steps per language** - A user gets the steps in their language, else in its base language (`de` for `de_DE`), else in the tour's main language
 
-### 🎨 Design & Theming
-- **Nextcloud Design System** - Matches Nextcloud UI patterns and components
-- **Full Theme Support** - Adapts to light, dark, and high contrast modes
-- **Mobile Responsive** - Optimized for all screen sizes
-- **Accessibility** - Reduced motion support, keyboard navigation
+### 🎨 Design & Accessibility
+- **Nextcloud Design System** - Nextcloud's own components and theme colours: light, dark and high contrast
+- **Keyboard** - Left and right arrow keys move between steps, Esc closes the tour
+- **Reduced motion** - Nothing blinks or plays by itself for people who prefer reduced motion
+- **Phones** - Steps fit small screens and scroll inside
 
 ### 🔒 Privacy & Performance
-- **Privacy-Focused** - Tour completion status stored locally
-- **No External Dependencies** - All resources bundled
-- **Lightweight** - Optimized bundle size (~210 KB main.js)
-- **Production-Ready** - Clean code without debug logging
+- **Small on every page** - Every page loads a bootstrap of about 20 KB. It decides from what the page already carries whether a tour starts, without a request. The tour code loads only when a tour starts
+- **Checked on the server** - Users only get the tours and steps meant for their groups
+- **Totals only** - The statistics show no single person's progress. Anonymous usage statistics for the developers are optional, see [Telemetry](docs/admin/telemetry.md)
+- **Media from this Nextcloud only** - IntroVox keeps its own copy, checks the real file type and removes metadata such as location, see the [threat model](docs/security/media.md)
+- **No external resources** - Everything is bundled
 
 ## 📸 Demo
 
@@ -52,7 +55,7 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 
 ![IntroVox Welcome](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
 
-*Interactive step-by-step tour through Nextcloud's main features*
+*The welcome tour*
 
 ### Dark Mode Support
 
@@ -61,12 +64,12 @@ IntroVox provides a user-friendly guided tour that helps new users get started w
 *Automatically adapts to your Nextcloud theme (light, dark, and high contrast modes)*
 
 ### Admin Interface
-![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-interface.png)
-*Administrators can easily manage and customize tour steps*
+![Admin Configuration](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/admin-settings.png)
+*The Tours pane of the admin page*
 
 ### Personal Settings
 ![Personal Settings](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/personal-settings.png)
-*Users can restart the tour anytime from their personal settings*
+*Users start any tour again from their personal settings*
 
 ## 📦 Installation
 
@@ -100,34 +103,31 @@ npm run build
 ## 🚀 Quick Start
 
 ### For Users
-After logging in, IntroVox will automatically guide you through Nextcloud's main features (if your language is enabled).
+After your first login, the welcome tour starts by itself (if your administrator has it on).
 
-**User Options:**
-- **Skip and don't show again** - On first step to permanently opt-out
-- **Restart tour** - Go to **Personal Settings** → **IntroVox** → Click **"Restart tour now"**
-- **Permanently disable** - Check **"Permanently disable the introduction tour"** in Personal Settings → IntroVox
+- **Next** / **Back**, or the left and right arrow keys, move between steps. **✕** or Esc closes the tour; it then does not start by itself again in this browser
+- **Skip and don't show again** on the first step, or **Done** on the last, keeps the welcome tour from starting by itself again
+- **Personal settings → IntroVox** (or **Tours** in your user menu): **Restart tour now** runs the welcome tour again, and **Start** runs any other tour listed under **Tours**
+- Switch off **Start tours by themselves** there, and no tour starts by itself. You can still start each one there
 
 ### For Administrators
 
-**Quick Setup:**
-1. Go to **Admin Settings** → **IntroVox**
-2. Enable languages you want to support
-3. Customize wizard steps per language (or use defaults)
-4. Enable wizard globally
-5. Optionally use **"Show wizard to all users"** to force restart for everyone
+1. Go to **Settings → Administration → IntroVox**
+2. Under **Settings**, check that **Tours for everyone** is on (it is after installing). The welcome tour then runs in every language Nextcloud supports, with the translated default steps
+3. Under **Tours**, switch on the **Built-in** tours you want, or click **New tour** for a tour in an app, on another page, or anywhere. A new tour starts switched off
+4. **Edit steps** changes a tour's steps; **Add language override** adds your own text for a language
+5. ⋯ → **Preview** shows the tour as users get it; ⋯ → **Copy link** gives a link that starts it
+6. Optionally, switch on **Show "Getting started" on the Dashboard** under **Settings**
 
-**Key Admin Features:**
-- **Language Management** - Select which languages are available
-- **Group-Based Visibility** - Restrict steps to specific user groups (e.g., admin-only steps)
-- **Import/Export** - Share configurations or work with content creators
-- **Per-Language Steps** - Customize wizard content for each language
-- **Global Controls** - Enable/disable wizard, force show to all users
+See [Tours](docs/admin/tours.md) for timing, share links, statistics and moving a tour to another Nextcloud.
 
 **📚 Complete Documentation:**
 - [Documentation Hub](docs/index.md) - Full documentation index
 - [Getting Started](docs/getting-started.md) - Role-based quickstart
 - [Administrator Guide](docs/admin/guide.md) - Day-to-day administration
-- [Managing Wizard Steps](docs/admin/managing-steps.md) - Step CRUD, reordering, reset
+- [Tours](docs/admin/tours.md) - The welcome tour, built-in tours, tours for apps and pages, links, statistics, export and import
+- [Admin Settings](docs/admin/settings.md) - Every option on the admin page, and where it is stored
+- [Managing Tour Steps](docs/admin/managing-steps.md) - Writing steps: text, images and videos, elements, steps that wait for the user
 - [Group-Based Visibility](docs/admin/group-visibility.md) - Role-based onboarding
 - [User Manual](docs/user/overview.md) - End-user guide
 - [Architecture Overview](docs/architecture/overview.md) - For architects and developers

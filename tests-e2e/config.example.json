@@ -1,0 +1,12 @@
+{
+  "base": "https://cloud.example.com",
+  "ssh": "admin@cloud.example.com",
+  "nextcloud": "/var/www/nextcloud",
+  "chrome": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "dismiss": [".some-app-notice__close"],
+  "nc32": {
+    "base": "http://localhost:8032",
+    "container": "introvox-nc32",
+    "adminPassword": "the admin password of the container"
+  }
+}

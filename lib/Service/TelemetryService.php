@@ -49,11 +49,34 @@ class TelemetryService {
     }
 
     /**
-     * Check if telemetry is enabled
-     * Default is true (opt-out)
+     * Whether reports go out. An admin's choice counts. Without one it is on
+     * (opt-out), but only once an admin has been asked: the admin intro asks
+     * on the first visit to IntroVox's settings, and until then an instance
+     * sends nothing.
      */
     public function isEnabled(): bool {
-        return $this->config->getAppValue(Application::APP_ID, 'telemetry_enabled', 'true') === 'true';
+        $choice = $this->config->getAppValue(Application::APP_ID, 'telemetry_enabled', '');
+        if ($choice !== '') {
+            return $choice === 'true';
+        }
+        return $this->isAsked();
+    }
+
+    /**
+     * Whether an admin has been shown the telemetry question
+     */
+    public function isAsked(): bool {
+        return $this->config->getAppValue(Application::APP_ID, 'telemetry_asked', '') !== '';
+    }
+
+    /**
+     * Records that an admin has been shown the telemetry question; from then
+     * on telemetry is on unless someone chooses otherwise.
+     */
+    public function markAsked(): void {
+        if (!$this->isAsked()) {
+            $this->config->setAppValue(Application::APP_ID, 'telemetry_asked', (string)time());
+        }
     }
 
     /**
@@ -155,9 +178,9 @@ class TelemetryService {
             // Network hiccups and an unreachable server are normal for a
             // best-effort background report, so this stays a warning rather
             // than an error — but it does say what went wrong.
-            $this->logger->warning('TelemetryService: Could not send report', [
-                'exception' => $e,
-            ]);
+            // The message only: the exception's trace holds the request
+            // options, license key included, which debug logging would write out.
+            $this->logger->warning('TelemetryService: Could not send report: ' . $e->getMessage());
 
             return false;
         }
@@ -652,8 +675,13 @@ class TelemetryService {
      * Mark user as skipped wizard
      */
     public function markUserSkipped(string $userId): void {
-        $this->config->setUserValue($userId, Application::APP_ID, 'wizard_skipped', (string)time());
-        $this->incrementWizardSkipped();
+        // Counted once per user, like started and completed; otherwise any user
+        // could push the count up without end by calling the endpoint.
+        $existing = $this->config->getUserValue($userId, Application::APP_ID, 'wizard_skipped', '');
+        if (empty($existing)) {
+            $this->config->setUserValue($userId, Application::APP_ID, 'wizard_skipped', (string)time());
+            $this->incrementWizardSkipped();
+        }
     }
 
     /**

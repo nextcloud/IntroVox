@@ -1,99 +1,91 @@
 # Meertaligheid
 
-IntroVox ondersteunt gescheiden wizard-configuraties per taal, automatische detectie van gebruikers-taal-voorkeuren en Transifex-gebaseerde community-vertalingen.
+Sinds v1.7.0 wordt IntroVox automatisch vertaald in elke taal die Nextcloud ondersteunt, via de Transifex-resource [`nextcloud/introvox`](https://www.transifex.com/nextcloud/nextcloud/). Beheerders zetten geen talen aan of uit; ze beheren alleen *overrides*: eigen tekst die voor één taal de standaardtekst vervangt, als ze dat willen.
 
-## Out-of-the-box ondersteunde talen
+## Hoe de talen werken
 
-- 🇬🇧 Engels (`en`)
-- 🇳🇱 Nederlands (`nl`)
-- 🇩🇪 Duits (`de`)
-- 🇫🇷 Frans (`fr`)
-- 🇩🇰 Deens (`da`)
-- 🇸🇪 Zweeds (`sv`)
+Het model in één alinea:
 
-Extra talen kunnen zonder code-wijzigingen worden toegevoegd — zie [Transifex-integratie](#transifex-integratie-v160) hieronder.
+> Elke Nextcloud-gebruiker krijgt de wizard in zijn Nextcloud-taal. IntroVox gebruikt de basistaal van die taal (`nl` voor `nl_BE`), en Engels als er geen vertaling voor is. De standaardtekst wordt automatisch vertaald via `$l->t()`, uit de vertalingen op Transifex. Een beheerder kan voor een taal een override `wizard_steps_<lang>` opslaan; is er een voor de basistaal van de gebruiker, dan vervangt die de standaardtekst, alleen voor die taal.
 
-## Automatische taal-detectie
+IntroVox heeft geen eigen lijst met "ondersteunde talen". De lijst is wat Transifex vertaald heeft, plus Engels (altijd).
 
-Wanneer een gebruiker inlogt, gebruikt IntroVox Nextcloud's `IL10N::getLanguageCode()` om hun taal te detecteren, extraheert de base-code (bv. `en_US` → `en`), en:
+## Taaldetectie
 
-- Laadt `wizard_steps_<lang>` uit appconfig (als de taal is ingeschakeld), of
-- Geeft `languageDisabled: true` terug zodat de persoonlijke-instellingen-pagina het "niet beschikbaar in je taal"-bericht kan tonen
+[`ApiController::getWizardSteps()`](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) roept `IFactory::findLanguage(null)` aan (bewust niet `findLanguage('introvox')`), zodat hij de taal krijgt die de gebruiker echt koos, zonder dat Nextcloud stilletjes overstapt op een taal waarvoor IntroVox toevallig een bestand heeft. De stappen:
 
-Zie [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) voor de implementatie.
+1. Lees de taal van de gebruiker via `IFactory::findLanguage(null)`, bv. `nl_BE`
+2. Neem de basistaal: `nl_BE` → `nl`
+3. Zoek `wizard_steps_nl` in `oc_appconfig`
+4. **Er is een override** → stuur die (na het filteren op groepen)
+5. **Geen override** → roep [`DefaultStepsService::getForLanguage('nl')`](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php) aan, die de acht standaardstappen maakt via `IFactory::get('introvox', 'nl')`. Is er geen Nederlandse vertaling, dan valt de service bewust terug op **Engels** (niet op de standaardtaal van het systeem).
 
-## Per-taal-configuratie
+## Terugvaltabel
 
-Elke ingeschakelde taal heeft zijn eigen onafhankelijke `wizard_steps_<lang>`-config-blob, bereikbaar via de taal-dropdown van het admin-paneel. Beheerders kunnen:
+| Taal van de gebruiker | Override van de beheerder? | Wat de gebruiker ziet |
+|---|---|---|
+| `nl` | ja | De inhoud van `wizard_steps_nl` van de beheerder, zoals hij is |
+| `nl` | nee | De automatisch vertaalde standaardstappen van Transifex (of Engels als er geen Nederlandse vertaling is) |
+| `it` | nee, en geen Italiaanse vertaling | De Engelse standaardstappen (bewuste terugval op `en` in `DefaultStepsService`) |
+| `xx` (ongeldig) | n.v.t. | De Engelse standaardstappen |
 
-- Stap-content per taal aanpassen
-- Alleen één taal resetten zonder andere te raken
-- Stappen per taal exporteren/importeren
+De bewuste terugval op Engels voorkomt dat een Italiaanse gebruiker onverwacht een Nederlandse tour krijgt, wat de standaardcontrole van `findLanguage()` in Nextcloud anders zou doen.
 
-Zie [Talenbeheer](../admin/language-management.md) en [Wizard-stappen beheren](../admin/managing-steps.md).
+Alles hierboven gaat over de welkomsttour. Een tour voor een app heeft geen standaardstappen van Transifex: hij heeft alleen de stappen die een beheerder heeft geschreven. Een gebruiker krijgt die in zijn eigen taal, anders in de basistaal, anders in de hoofdtaal van de tour. De ingebouwde tours zijn de uitzondering: zolang geen van die talen eigen stappen van de beheerder heeft, krijgen gebruikers de ingebouwde stappen, vertaald in hun eigen taal, of in het Engels zolang een vertaling ontbreekt. Zie [Tours](../admin/tours.nl.md).
 
-## Transifex-integratie (v1.6.0+)
+## Een override voor een taal toevoegen (beheerder)
 
-Vanaf v1.6.0 doet IntroVox mee in de centrale Transifex-vertaal-pool van Nextcloud.
+Overrides per taal staan in de database, niet op Transifex. Het is eigen tekst voor deze installatie, die een beheerder zelf schrijft.
 
-### Vereiste bestanden (al aanwezig)
+1. Ga naar **Instellingen → Beheer → IntroVox → Tours** en klik bij de **Welcome tour** op **Edit steps**
+2. Klik op **Add language override**
+3. Zoek in de volledige lijst met Nextcloud-talen, kies een taal en klik op **Add override**
+4. De editor toont de standaardstappen in die taal (in het Engels zolang er geen vertaling is) als begin. Pas ze aan; de override wordt geschreven bij de eerste wijziging die je opslaat
 
-- **`.tx/config`** — Transifex-resource-configuratie (PO-formaat)
-- **`l10n/.gitkeep`** — houdt de directory getrackt zelfs als hij leeg is
-- **`.l10nignore`** — uitsluitingen voor de Nextcloud-l10n-sync-bot
+Een override weggooien en teruggaan naar de automatisch vertaalde standaardstappen: kies de taal → klik op **Reset** → bevestig.
 
-### Hoe nieuwe talen landen
+Zie [Talenbeheer](../admin/language-management.nl.md) voor de hele werkwijze.
 
-1. Een community-vertaler draagt vertalingen bij op [Transifex](https://www.transifex.com/nextcloud/nextcloud/)
-2. De Nextcloud-l10n-sync-bot pikt de nieuwe vertalingen op en commit een `l10n/<lang>.json`- (en `.js`-)bestand
-3. Bij de volgende IntroVox-release wordt de nieuwe taal mee-gebundled in de tarball
-4. IntroVox' [taal-auto-discovery](../admin/language-management.md#nieuwe-talen-toevoegen) pikt hem automatisch op — geen code-wijzigingen nodig
-5. Beheerders kunnen de nieuwe taal inschakelen via **Beschikbare talen** en zijn stappen aanpassen
+## Vertalen op Transifex
 
-### Auto-discovery van taal-display-namen (v1.6.0+)
+Voor de standaardtekst van de tours (de acht standaardstappen van de welkomsttour, de stappen van de ingebouwde tours, en alle teksten van de beheer- en persoonlijke instellingen):
 
-Taal-picker-labels (bv. "Nederlands", "Português") komen uit `OCP\L10N\IFactory::getLanguages()`. Elke nieuwe taal die vanuit Transifex wordt gesynchroniseerd verschijnt automatisch in de admin-dropdown met zijn correcte lokale naam.
+1. We committen `translationfiles/templates/introvox.pot` naar GitHub
+2. De Transifex-sync-bot van Nextcloud zet de POT op Transifex (resource: `nextcloud/introvox`)
+3. Vertalers uit de community vertalen op Transifex
+4. Dezelfde bot opent PR's die `l10n/<lang>.json` + `l10n/<lang>.js` terug in de repo zetten
+5. De volgende release van IntroVox bevat de nieuwe vertalingen; gebruikers in die taal krijgen ze vanzelf
 
-De picker toont native namen zonder emoji-vlaggen, in lijn met de Nextcloud-Instellingen-conventie.
+Voor overrides van een beheerder doet Transifex **niet** mee. Elke override is eigen tekst die de beheerder alleen voor zijn eigen installatie schrijft.
 
-### Engels als Transifex-bron
+## Transifex-infrastructuur
 
-Vóór v1.6.0 ging default-stap-content via opaque keys zoals `step_welcome_title`, wat onbruikbare msgids aan vertalers toonde. Sinds v1.6.0 wordt default-content gewrapped in `t('introvox', '<Engelse bron>')`, zodat vertalers de daadwerkelijke Engelse tekst als msgid zien.
+De repo bevat:
 
-Bestaande custom-stap-content (opgeslagen in `oc_appconfig.wizard_steps_<lang>`) wordt door deze wijziging niet geraakt.
+- **`.tx/config`**: de configuratie van de Transifex-resource (PO-formaat, bron = Engels)
+- **`translationfiles/templates/introvox.pot`**: het POT-sjabloon, gehaald uit alle aanroepen van `$l->t()` en `t('introvox', ...)`
+- **`l10n/.gitkeep`**: houdt de map in git, ook als hij leeg is
+- **`.l10nignore`**: wat de sync-bot overslaat
+- **`regenerate_js_translations.py`**: een Python-hulpje dat `l10n/*.js` opnieuw maakt uit `l10n/*.json`
 
-### Per-onderwerp-vertaal-pools (v1.6.0+)
+De sync is aangevraagd in [docker-ci#938](https://github.com/nextcloud/docker-ci/issues/938) en ging live met v1.7.0.
 
-De Transifex-resource bevat:
+## Teksten van de standaardstappen als Transifex-msgids
 
-- Alle admin- en persoonlijke-instellingen-UI-strings
-- Default wizard-stap-titels/tekst (16 stappen)
-- ~50 PWA-installatie-instructie-strings die alle 9 OS-/browser-combinaties dekken
-- Het "Got it"-knop-label op de PWA-stap (voorheen hardcoded Nederlands als "Begrepen")
+Sinds v1.6.0 gaan de acht standaardstappen van de welkomsttour door `t('introvox', '<Engelse bron>')` (in [`DefaultStepsService::build()`](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php)). De Engelse brontekst *is* de Transifex-msgid, zodat vertalers echte zinnen zien in plaats van nietszeggende sleutels als `step_welcome_title`.
 
-## Talen handmatig toevoegen
+Eigen stappen die al opgeslagen zijn (in `oc_appconfig.wizard_steps_<lang>`) staan daar los van en veranderen niet door updates op Transifex.
 
-Als je niet op Transifex-sync kunt wachten, kun je een vertaling-bestand direct neerzetten:
+## Namen in de override-keuzelijst
 
-1. Maak `l10n/<lang>.json` aan (bv. `pt_BR.json`) volgens het Nextcloud-vertaal-formaat
-2. Plaats het in IntroVox' `l10n/`-directory
-3. Herstart Nextcloud (of wacht op app-cache-refresh)
-4. De nieuwe taal verschijnt in **Beschikbare talen**
+De keuzelijst van **Add language override** toont talen in hun eigen naam (bv. "Nederlands", "Português") via `OCP\L10N\IFactory::getLanguages()`. Elke taal die Nextcloud kent, is te kiezen, één keer per basistaal (`en_GB` valt samen met `en`), niet alleen talen die al een IntroVox-vertaling hebben. Een beheerder kan dus een override schrijven voor een taal die Transifex nog niet vertaald heeft; die override wint tot er een vertaling op Transifex is, en dan geeft **Reset** de taal terug aan de standaardstappen.
 
-Voor custom talen die niet in de default-lijst staan, moet je ook de taalcode toevoegen aan `AdminController::getAvailableLanguages()` en defaults leveren via `AdminController::getDefaultStepsForLanguage()`. De Transifex-flow heeft de voorkeur om deze code-wijziging te vermijden.
+## Upgrade-opmerkingen (1.6.x → 1.7.0)
 
-## Fallback-strategie
-
-| Gebruikers-taal | IntroVox-response |
-|---|---|
-| In `enabled_languages` en heeft `l10n/<lang>.json` | Toont stappen in die taal |
-| Heeft `l10n/<lang>.json` maar **niet** in `enabled_languages` | Geeft `languageDisabled: true` terug; tour start niet |
-| Niet in `enabled_languages` en geen `l10n/<lang>.json` | Valt terug op Engelse stappen |
-
-Dit bewuste ontwerp vermijdt verrassingen door de tour in een onbekende taal te tonen — gebruikers zien in plaats daarvan de duidelijke "niet beschikbaar in je taal"-melding.
+Versies vóór 1.7.0 bewaarden de standaardinhoud van de tour vanzelf in `oc_appconfig` zodra de beheerder het tabblad Steps opende. Na de upgrade gelden die rijen, die precies gelijk zijn aan de oude standaardstappen, als overrides (en staan ze in de keuzelijst met talen). Ze blijven werken, maar **krijgen geen nieuwe vertalingen van Transifex meer** voor die talen, tot de beheerder op **Reset** klikt. Zie [Talenbeheer](../admin/language-management.nl.md#upgrade-opmerkingen-voor-installaties-die-van-16x-komen).
 
 ## Zie ook
 
-- [Talenbeheer](../admin/language-management.md) — talen in-/uitschakelen
-- [Transifex-integratie](../architecture/transifex-integration.md) — vertaal-workflow
-- [API-referentie](../architecture/api-reference.md) — taal-bewuste endpoints
+- [Talenbeheer](../admin/language-management.nl.md): de hele werkwijze voor overrides, plus upgrade-opmerkingen
+- [Transifex-integratie](../architecture/transifex-integration.nl.md): hoe de sync-bot werkt
+- [API-referentie](../architecture/api-reference.nl.md): endpoints die met talen werken

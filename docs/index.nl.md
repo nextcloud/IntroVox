@@ -1,71 +1,77 @@
 # IntroVox documentatie
 
-Welkom bij de IntroVox-documentatie. IntroVox is een Nextcloud-app die een interactieve onboarding-tour geeft aan nieuwe gebruikers — gebouwd met Vue 3 en Shepherd.js, met meertalige ondersteuning, groep-gebaseerde stap-zichtbaarheid en een volledige beheerderinterface voor configuratie.
+Welkom bij de IntroVox-documentatie. IntroVox is een Nextcloud-app met geleide tours: een welkomsttour voor nieuwe gebruikers, en korte tours die starten als iemand voor het eerst een app of pagina opent, zoals de ingebouwde tours voor Files, Talk, Deck en Calendar. Hij is gebouwd met Vue 3 en Shepherd.js, laat zijn standaardstappen vertalen via Transifex, en heeft een beheerpagina om tours te schrijven, te kiezen wie ze krijgt en wanneer, en te zien hoe ver mensen komen.
 
 ![IntroVox welkomstap](screenshots/welcome-step.png)
 
-*Een stapsgewijze geleide tour door de hoofdfeatures van Nextcloud, volledig aanpasbaar per taal.*
+*De eerste stap van de welkomsttour.*
 
 ## Snelle navigatie
 
 ### Voor gebruikers
 
-Leer hoe je de tour volgt, herstart en je persoonlijke voorkeuren beheert.
+Hoe je een tour volgt, er een opnieuw start, en kiest of tours vanzelf starten.
 
-- [Overzicht](user/overview.md) — Wat is IntroVox en hoe werkt de tour
-- [De tour doorlopen](user/taking-the-tour.md) — Stappen doorlopen, gemarkeerde elementen, centered vs. attached
-- [Persoonlijke instellingen](user/personal-settings.md) — Herstarten, permanent uitschakelen, taal-meldingen
-- [Toetsenbordnavigatie](user/keyboard-navigation.md) — Sneltoetsen en toegankelijkheid
-- [Mobiele ervaring](user/mobile.md) — Responsive layout, touch-interacties
-- [Problemen oplossen](user/troubleshooting.md) — Tour start niet, ontbrekende stappen, taalproblemen
-- [FAQ](user/faq.md) — Veelgestelde gebruikersvragen
-- [Tips](user/tips.md) — Het meeste halen uit Nextcloud
+- [Overzicht](user/overview.nl.md) — Wat is IntroVox en hoe werkt de tour
+- [De tour doorlopen](user/taking-the-tour.nl.md) — Stappen doorlopen, gemarkeerde elementen, centered vs. attached
+- [Persoonlijke instellingen](user/personal-settings.nl.md) — Herstarten, tours vanzelf laten starten of niet, tours zelf starten
+- [Toetsenbordnavigatie](user/keyboard-navigation.nl.md) — Sneltoetsen en toegankelijkheid
+- [Mobiele ervaring](user/mobile.nl.md) — Responsive layout, touch-interacties
+- [Problemen oplossen](user/troubleshooting.nl.md) — Tour start niet, ontbrekende stappen, taalproblemen
+- [FAQ](user/faq.nl.md) — Veelgestelde gebruikersvragen
+- [Tips](user/tips.nl.md) — Het meeste halen uit Nextcloud
 
 ### Voor beheerders
 
 Installatie, configuratie, stappenbeheer en operations.
 
-- [Beheergids](admin/guide.md) — Dagelijks beheer
-- [Instellingen](admin/settings.md) — Referentie voor het admin-paneel
-- [Talenbeheer](admin/language-management.md) — Talen in/uitschakelen, per-taal configuratie
-- [Wizard-stappen beheren](admin/managing-steps.md) — CRUD, ordering, in/uitschakelen, reset naar standaard
-- [Groep-gebaseerde zichtbaarheid](admin/group-visibility.md) — Rol-gebaseerde onboarding met groepsfilters
-- [Import / Export](admin/import-export.md) — Configuraties delen tussen instances
-- [Best practices](admin/best-practices.md) — Contentrichtlijnen, taalstrategie, onderhoud
-- [Problemen oplossen](admin/troubleshooting.md) — Wizard verschijnt niet, ontbrekende stappen, vertalingen
-- [FAQ](admin/faq.md) — Veelgestelde beheerdersvragen
+- [Beheergids](admin/guide.nl.md) — Dagelijks beheer
+- [Instellingen](admin/settings.nl.md) — Elke optie op de beheerpagina, de checklist op het Dashboard, en waar instellingen worden opgeslagen
+- [Talenbeheer](admin/language-management.nl.md) — Eigen tekst per taal via overrides (Transifex levert de standaardstappen automatisch)
+- [Tours](admin/tours.nl.md) — De welkomsttour, ingebouwde tours, tours voor een app, een pagina of overal; timing, links, statistieken, AI, exporteren en importeren
+- [Tourstappen beheren](admin/managing-steps.nl.md) — Stappen schrijven: tekst, afbeeldingen en video's, elementen, stappen die op de gebruiker wachten, volgorde, reset
+- [Groep-gebaseerde zichtbaarheid](admin/group-visibility.nl.md) — Rol-gebaseerde onboarding met groepsfilters
+- [Import / Export](admin/import-export.nl.md) — De stappen van één taal als JSON-bestand
+- [Best practices](admin/best-practices.nl.md) — Contentrichtlijnen, taalstrategie, onderhoud
+- [Problemen oplossen](admin/troubleshooting.nl.md) — Tour start niet, ontbrekende stappen, vertalingen
+- [Telemetrie](admin/telemetry.nl.md) — De optionele anonieme gebruiksstatistieken: wat er verstuurd wordt, en hoe je ze uitzet
+- [FAQ](admin/faq.nl.md) — Veelgestelde beheerdersvragen
 
 ### Features
 
 Per-feature documentatie voor mogelijkheden.
 
-- [Geleide tours](features/guided-tours.md) — Shepherd.js-engine, staptypen, attached vs. centered
-- [Meertalige ondersteuning](features/multi-language.md) — Transifex-integratie, auto-detectie, per-taal stappen
-- [Zichtbaarheid van stappen](features/step-visibility.md) — Groepsfilters en gebruikersvoorkeuren
-- [Customization](features/customization.md) — HTML in stapinhoud, CSS-selectors, positionering
-- [Thema-ondersteuning](features/theme-support.md) — Light, dark, high contrast, custom Nextcloud-thema's
+- [Geleide tours](features/guided-tours.nl.md) — Hoe een tour loopt: welke tour start, staptypen, stappen die wachten, tours over meerdere apps
+- [Meertalige ondersteuning](features/multi-language.nl.md) — Transifex-integratie, auto-detectie, per-taal stappen
+- [Zichtbaarheid van stappen](features/step-visibility.nl.md) — Groepsfilters en gebruikersvoorkeuren
+- [Customization](features/customization.nl.md) — HTML in stapinhoud, CSS-selectors, positionering
+- [Thema-ondersteuning](features/theme-support.nl.md) — Light, dark, high contrast, custom Nextcloud-thema's
 
 ### Voor architecten & ontwikkelaars
 
 Technische documentatie voor integratie, evaluatie en bijdragen.
 
-- [Architectuuroverzicht](architecture/overview.md) — Systeemontwerp en componenten
-- [API-referentie](architecture/api-reference.md) — REST API-endpoints
-- [Frontend-architectuur](architecture/frontend-architecture.md) — Vue 3 + Shepherd.js-structuur
-- [Backend-architectuur](architecture/backend-architecture.md) — Controllers, services, configuratie-opslag
-- [Transifex-integratie](architecture/transifex-integration.md) — Vertaling-workflow
+- [Architectuuroverzicht](architecture/overview.nl.md) — Systeemontwerp en componenten
+- [API-referentie](architecture/api-reference.nl.md) — REST API-endpoints
+- [Frontend-architectuur](architecture/frontend-architecture.nl.md) — Vue 3 + Shepherd.js-structuur
+- [Backend-architectuur](architecture/backend-architecture.nl.md) — Controllers, services, configuratie-opslag
+- [Transifex-integratie](architecture/transifex-integration.nl.md) — Vertaling-workflow
+
+### Beveiliging
+
+- [Media in tour-stappen](security/media.md) — Dreigingsmodel voor afbeeldingen en video's in stappen (in het Engels)
 
 ### Deployment
 
 Installatie, App Store-publicatie en releaseproces.
 
-- [Installatie](deployment/installation.md) — Installeren vanuit App Store of source
-- [App Store-publicatie](deployment/app-store-submission.md) — Certificaat, packaging, signing, uploaden
-- [Releaseproces](deployment/release-process.md) — Versie-sync, build, GitHub-releases
+- [Installatie](deployment/installation.nl.md) — Installeren vanuit App Store of source
+- [App Store-publicatie](deployment/app-store-submission.nl.md) — Certificaat, packaging, signing, uploaden
+- [Releaseproces](deployment/release-process.nl.md) — Versie-sync, build, GitHub-releases
 
 ## Aan de slag
 
-Nieuw bij IntroVox? Begin met de [Aan de slag-gids](getting-started.md) voor een rol-gebaseerde quickstart.
+Nieuw bij IntroVox? Begin met de [Aan de slag-gids](getting-started.nl.md) voor een rol-gebaseerde quickstart.
 
 ## Support
 

@@ -45,7 +45,7 @@ Since v1.7.0 there is no admin opt-in step — every translation that ships in `
 
 ### Display Name Discovery (v1.6.0+)
 
-The "+ Add language override" picker labels (e.g., "Nederlands", "Português") come from `OCP\L10N\IFactory::getLanguages()` — Nextcloud's built-in localized-language-name database. Every language Nextcloud knows about is selectable, not just the ones IntroVox already has a translation file for. This means an admin can author an override for a language that Transifex hasn't covered yet.
+The "Add language override" picker labels (e.g., "Nederlands", "Português") come from `OCP\L10N\IFactory::getLanguages()` — Nextcloud's built-in localized-language-name database. Every language Nextcloud knows about is selectable, not just the ones IntroVox already has a translation file for. This means an admin can author an override for a language that Transifex hasn't covered yet.
 
 Before v1.6.0, IntroVox maintained a hardcoded map of language codes to display names (and emoji flags). Since v1.6.0 the map is gone — NC provides the names, correctly localised (an English admin sees "German", a German admin sees "Deutsch"). No emoji flags, matching the Nextcloud Settings convention.
 

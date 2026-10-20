@@ -39,6 +39,6 @@ class AdminSection implements IIconSection {
      * @return string
      */
     public function getIcon() {
-        return $this->url->imagePath('introvox', 'app.svg');
+        return $this->url->imagePath('introvox', 'app-dark.svg');
     }
 }

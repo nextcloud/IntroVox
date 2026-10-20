@@ -6,11 +6,13 @@ IntroVox is fully accessible via keyboard.
 
 | Key | Action |
 |---|---|
-| `Enter` | Go to next step |
-| `Backspace` | Go to previous step |
+| `→` (right arrow) | Go to the next step |
+| `←` (left arrow) | Go to the previous step |
 | `Escape` | Close the tour |
-| `Tab` | Move focus between buttons |
-| `Space` | Activate the focused button |
+| `Tab` | Move focus between the step's buttons and links |
+| `Enter` or `Space` | Activate the focused button |
+
+The keys work while the step has focus, which it gets when it shows. On a video or its pause button, the arrow keys and `Space` control the video instead.
 
 ## Accessibility Features
 
@@ -31,7 +33,7 @@ The tour automatically adapts to your system's high-contrast settings, using enh
 
 ### Reduced Motion
 
-If your system has the "reduce motion" accessibility preference enabled, IntroVox disables its animations to avoid triggering motion sensitivity.
+If your system has the "reduce motion" accessibility preference enabled, IntroVox disables its animations to avoid triggering motion sensitivity. The arrow that points at an element stops blinking, and GIFs and videos that play by themselves stand still: use their play button to play them.
 
 ## See Also
 

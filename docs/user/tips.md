@@ -37,15 +37,16 @@ After completing (or skipping) the tour, here are some tips to keep exploring.
 ### Starting the Tour
 - **Automatic** — wait a few seconds on first login
 - **Manual** — **Personal Settings → IntroVox → Restart tour now**
+- **Tour for an app** — starts the first time you open that app; start it again under **Personal Settings → IntroVox → Tours**
 
 ### During the Tour
-- **Next** — click button or press `Enter`
-- **Back** — click button or press `Backspace`
+- **Next** — click the button or press `→`
+- **Back** — click the button or press `←`
 - **Close** — click **✕** or press `Escape`
 
 ### Managing the Tour
 - **Skip permanently** — click **Skip and don't show again** on the welcome step
-- **Disable later** — **Personal Settings → IntroVox** → check **Permanently disable**
+- **Stop all tours starting by themselves** — **Personal Settings → IntroVox** → switch off **Start tours by themselves**
 - **Restart anytime** — **Personal Settings → IntroVox → Restart tour now**
 
 ### Getting Help

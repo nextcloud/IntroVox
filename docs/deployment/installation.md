@@ -4,7 +4,7 @@ This guide describes how to install IntroVox on a Nextcloud instance.
 
 ## Requirements
 
-- **Nextcloud 32 or later** (32–34 explicitly supported as of v1.5.0)
+- **Nextcloud 32 to 35** (35 since v1.7.7)
 - **PHP 8.1 or later**
 
 Verify the authoritative requirements in [appinfo/info.xml](https://github.com/nextcloud/IntroVox/blob/main/appinfo/info.xml).
@@ -55,9 +55,10 @@ sudo -u www-data php occ app:enable introvox
 After enabling the app:
 
 1. Go to **Settings → Administration → IntroVox**
-2. Toggle **Enable wizard for all users** — the tour is now live in every Nextcloud-supported language automatically (auto-translated via Transifex; English fallback for languages without a translation)
-3. Optionally open the **Steps** tab and click **+ Add language override** to author custom copy for a specific language
+2. Toggle **Tours for everyone** — the tour is now live in every Nextcloud-supported language automatically (auto-translated via Transifex; English fallback for languages without a translation)
+3. Optionally open **Tours**, click **Edit steps** on the **Welcome tour**, and click **Add language override** to author custom copy for a specific language
 4. Optionally restrict steps to specific user groups for role-based onboarding
+5. Optionally add a tour for an app with **Tours** → **New tour** ([Tours](../admin/tours.md))
 
 See [Admin Guide](../admin/guide.md) for the full configuration walkthrough.
 
@@ -94,11 +95,13 @@ Upgrades appear in **Settings → Apps → Updates** when a new version is publi
 
 ### Migration Notes
 
-IntroVox does not create or migrate custom database tables — all state lives in `oc_appconfig` and `oc_preferences`. Upgrades are non-destructive: custom step configurations, enabled languages, and user preferences are preserved.
+IntroVox does not create or migrate custom database tables. Settings, tours and their steps live in `oc_appconfig`, user preferences in `oc_preferences`. The images and videos of steps, and the backups of the last ten deleted tours, live in IntroVox's app data folder (`appdata_<instanceid>/introvox` in the Nextcloud data directory). Upgrades are non-destructive: tours, steps, language overrides, media and user preferences are preserved.
 
 The defensive `is_array()` guard in `ApiController::getWizardSteps()` (v1.4.3+) means that even if an older corrupt step blob exists, the wizard falls back to defaults rather than crashing.
 
 ## Uninstallation
+
+If **Put it on every Dashboard** is on for the checklist, switch it off first: until then the Dashboard's default layout (app config `dashboard` / `layout`) lists `introvox-checklist`.
 
 ```bash
 sudo -u www-data php occ app:disable introvox
@@ -112,12 +115,28 @@ DELETE FROM oc_appconfig WHERE appid = 'introvox';
 DELETE FROM oc_preferences WHERE appid = 'introvox';
 ```
 
+The images and videos of steps and the backups of deleted tours stay in the app data folder. To remove them too, delete it and let Nextcloud forget the files:
+
+```bash
+sudo rm -rf /var/www/nextcloud/data/appdata_<instanceid>/introvox
+sudo -u www-data php occ files:scan-app-data
+```
+
+`<instanceid>` is the `instanceid` in `config/config.php`; the data directory may be elsewhere than `/var/www/nextcloud/data`.
+
+Disabled the app with **Put it on every Dashboard** still on? Remove `introvox-checklist` from the layout by hand:
+
+```bash
+sudo -u www-data php occ config:app:get dashboard layout
+sudo -u www-data php occ config:app:set dashboard layout --value="<the same list without introvox-checklist>"
+```
+
 ## Verification
 
 After installation:
 
-1. Log in as a regular user with an enabled language
-2. The wizard should auto-start on the dashboard after a few seconds
+1. Log in as a regular user who has not had the welcome tour yet
+2. The welcome tour should start by itself on the first page they open, in their language, once the page has loaded
 3. Check **Settings → Personal → IntroVox** — the **Restart tour now** button should be visible
 
 If the wizard doesn't appear, see [Admin Troubleshooting](../admin/troubleshooting.md).

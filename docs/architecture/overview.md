@@ -31,7 +31,7 @@ IntroVox is a Nextcloud app that follows Nextcloud's standard app architecture: 
 │  │                  Nextcloud Database                    │   │
 │  │  ┌────────────┐  ┌───────────────────────────────┐   │   │
 │  │  │ appconfig  │  │ preferences (per-user)        │   │   │
-│  │  │ (wizard_*) │  │ (introvox/permanent_disable)  │   │   │
+│  │  │ (wizard_*) │  │ (wizard_*, tours_*, tour_*)   │   │   │
 │  │  └────────────┘  └───────────────────────────────┘   │   │
 │  └───────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────┘
@@ -47,11 +47,12 @@ IntroVox is a Nextcloud app that follows Nextcloud's standard app architecture: 
 
 | Component | Responsibility |
 |---|---|
-| `src/App.vue` | Root Vue component mounted on every Nextcloud page |
-| `src/main.js` | App entry point; bootstraps the wizard and registers global handlers |
+| `src/main.js` | Small bootstrap on every Nextcloud page: decides whether a tour runs (`src/runtime/chooseTour.mjs`) and only then loads the tour code |
+| `src/runtime/tour.js` | The tour chunk: mounts `WizardManager`; loaded only on a page where a tour runs |
 | `src/admin.js` | Admin settings UI entry point |
 | `src/personal.js` | Personal settings UI entry point |
-| `src/components/WizardManager.vue` | Manages Shepherd.js tour lifecycle and step rendering |
+| `src/components/WizardManager.vue` | Manages Shepherd.js tour lifecycle and step rendering, for the welcome tour and tours for apps |
+| `src/admin/ToursList.vue`, `src/admin/NewTourDialog.vue` | The admin's Tours pane: the list of tours, and making or changing a tour for an app |
 | `src/components/SupportSettings.vue` | Enterprise subscription UI in admin Support tab |
 | `src/components/wizardSteps.js` | Default step definitions wrapped in `t('introvox', ...)` |
 
@@ -63,15 +64,17 @@ See [Frontend Architecture](frontend-architecture.md).
 
 | Component | Responsibility |
 |---|---|
-| `AdminController` | Admin CRUD for steps, languages, settings; export/import |
-| `ApiController` | Public-facing endpoints: `getWizardSteps`, tracking events |
+| `AdminController` | Admin CRUD for the steps of every tour, languages, settings; export/import |
+| `ToursController` | Admin: the tours themselves (list, create, change, delete, show again) |
+| `ApiController` | Endpoints for every logged-in user: `getWizardSteps`, `tourEvent`, tracking events |
 | `LicenseController` | Enterprise subscription validation and stats |
-| `PersonalController` | Per-user permanent-disable preference |
+| `PersonalController` | Per-user tour preferences (`wizard_disabled`, `tours_disabled`) and the user's list of tours for apps |
+| `TourRepository`, `TourStateService`, `TourValidator` | The tours, per-user tour state, and checking a tour before it is stored |
 | `TelemetryService` | Aggregates anonymous usage stats; ships to license server |
 | `LicenseService` | Validates subscription keys against `licenses.voxcloud.nl` |
 | `TelemetryJob` | Background job that ships telemetry on a daily cadence |
 | `LicenseUsageJob` | Background job that syncs license state daily (with stable jitter) |
-| `LoadScripts` | Event listener that loads IntroVox's frontend on every page |
+| `LoadScripts` | Event listener that loads IntroVox's bootstrap on every page, with the `introvox/runtime` initial state |
 | `AdminSettings` / `PersonalSettings` | Nextcloud Settings page integration |
 
 See [Backend Architecture](backend-architecture.md).
@@ -80,9 +83,9 @@ See [Backend Architecture](backend-architecture.md).
 
 | Storage | Use |
 |---|---|
-| `oc_appconfig` | Global settings (`wizard_enabled`, `wizard_version`); per-language admin overrides (`wizard_steps_<lang>`, only present when an admin saved one); telemetry preferences |
-| `oc_preferences` | Per-user state (`introvox/permanent_disable`, telemetry timestamps for `markUserStarted/Completed/Skipped`) |
-| Browser localStorage | Frontend-only completion state (`seen` / `completed`); checked against `wizard_version` to decide auto-restart |
+| `oc_appconfig` | Global settings (`wizard_enabled`, `wizard_version`); per-language admin overrides of the welcome tour (`wizard_steps_<lang>`, only present when an admin saved one); the tour index (`tours`) and the steps of tours for apps (`tour_steps_<id>_<lang>`); telemetry preferences |
+| `oc_preferences` | Per-user state (`introvox/wizard_disabled`, `tours_disabled`, `tour_<id>_seen` / `_completed` / `_skipped` / `_reached`, `checklist_<id>`, `checklist_uploaded`, telemetry timestamps for `markUserStarted/Completed/Skipped`) |
+| Browser localStorage | Frontend-only completion state of the welcome tour (`introvox_completed`, `introvox_version`); checked against `wizard_version` to decide auto-restart |
 
 No custom database tables — IntroVox stays within Nextcloud's standard storage abstractions.
 
@@ -110,30 +113,39 @@ IntroVox depends on these Nextcloud APIs:
 ```
 Browser                  IntroVox Frontend            IntroVox Backend
    │                              │                          │
-   │── login to NC ──────────────▶│                          │
-   │                              │── GET /api/steps ───────▶│
-   │                              │                          │── load wizard_enabled
-   │                              │                          │── IFactory->findLanguage(null) → baseLang
-   │                              │                          │── load wizard_steps_<baseLang>
-   │                              │                          │   if no override:
-   │                              │                          │     DefaultStepsService->getForLanguage(baseLang)
-   │                              │                          │     (auto-translated via $l->t; English fallback)
+   │── any page ─────────────────────────────────────────────▶│
+   │                              │                          │── LoadScripts: js/main.js,
+   │                              │                          │   lazy 'runtime' initial state
+   │                              │                          │   (switches, welcome version,
+   │                              │                          │    app tours due for this user)
+   │◀─ page + runtime state ─────────────────────────────────│
+   │── main.js (small) ──────────▶│                          │
+   │                              │── chooseTour(): no tour? │
+   │                              │   stop, no request       │
+   │                              │── load 'tour' chunk      │
+   │                              │── GET /api/steps         │
+   │                              │   (?tour=<id> for an     │
+   │                              │    app tour) ───────────▶│
+   │                              │                          │── welcome: wizard_steps_<lang>, or the
+   │                              │                          │   translated defaults (DefaultStepsService)
+   │                              │                          │── app tour: tour_steps_<id>_<lang>;
+   │                              │                          │   404 when it is not for this user
    │                              │                          │── filter by visibleToGroups
    │                              │◀─ steps[] ───────────────│
-   │                              │                          │
-   │                              │── wait for app-menu ─────│
-   │                              │── Shepherd.start() ──────│
-   │                              │                          │
+   │                              │── wait for the app       │
+   │                              │── Shepherd.start()       │
    │                              │── POST /api/wizard/start │
-   │                              │                          │── TelemetryService->markUserStarted()
-   │◀─ wizard appears ────────────│                          │
+   │                              │   or /api/tours/<id>/event ▶│── count it / mark it seen
+   │◀─ tour appears ──────────────│                          │
 ```
+
+See [Frontend Architecture](frontend-architecture.md) for the order of the rules in `chooseTour()`.
 
 ## Security Model
 
 - **CSRF protection** restored in v1.5.0 on all state-changing admin endpoints
 - **Defensive admin checks** via `IGroupManager::isAdmin()` on every admin endpoint, in addition to the framework's annotation-based check
-- **HTML sanitization** via `OCP\Util::sanitizeHTML` on step `title` and `text` fields on save/update/import (v1.5.0+)
+- **Step HTML** is checked on save and import (`StepValidator`: known fields, types, lengths) and cleaned when shown: `sanitizeStepHtml()` (DOMPurify) keeps only basic formatting and links, so imported files and Transifex translations cannot add markup. Up to 1.6.x `OCP\Util::sanitizeHTML` escaped it on save; `UnescapeLegacyWizardStepHtml` repairs steps stored that way
 - **Server-side group filtering** — `visibleToGroups` is enforced in the API layer; hidden steps are never sent to the client
 - **HTTP response validation** on license-server calls — `LicenseService` checks status codes and JSON shape before trusting responses (v1.5.0+)
 
@@ -141,7 +153,7 @@ Browser                  IntroVox Frontend            IntroVox Backend
 
 - **Defensive `is_array()` guard** in `ApiController::getWizardSteps` (v1.4.3+) — if `wizard_steps_<lang>` doesn't decode to a JSON array, the backend falls back to defaults rather than crashing
 - **App-menu readiness fallback selectors + 10s timeout** (v1.4.2+) — tour won't hang indefinitely if menu selectors don't match
-- **Element-not-found fallback to centered display** (v1.4.1+) — steps with missing target elements render as centered modals instead of being silently skipped
+- **Steps wait for a missing element** — a step whose element isn't there yet waits aside in the bottom right corner with its text (bottom left while a dialog is open), leaves the page usable, and moves to the element once it appears; **Next** still goes on. Up to 1.7.x such a step was shown centered (v1.4.1+), before that it was skipped
 
 ## See Also
 

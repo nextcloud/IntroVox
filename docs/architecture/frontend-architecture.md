@@ -1,6 +1,6 @@
 # Frontend Architecture
 
-IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated into Nextcloud as three entry points: the wizard runtime, the admin settings page, and the personal settings page.
+IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated into Nextcloud as three entry points: the tour runtime, the admin settings page, and the personal settings page.
 
 ## Entry Points
 
@@ -10,64 +10,115 @@ IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated 
 | `src/admin.js` | `js/admin.js` | Admin settings → IntroVox |
 | `src/personal.js` | `js/personal.js` | Personal settings → IntroVox |
 
-Webpack produces ~210 KB for `main.js`. Other bundles are smaller (admin/personal are scoped to their respective settings pages).
+`main.js` is a small bootstrap, because every logged-in page loads it. The tour code itself (WizardManager, Shepherd.js, Vue and `css/wizard.css`) is a chunk of its own, `src/runtime/tour.js` → `js/tour.<hash>.js` plus shared vendor chunks, loaded with a dynamic `import()` only on a page where a tour runs. Chunk names carry a content hash (`chunkFilename: '[name].[contenthash:8].js'`), because chunks load without Nextcloud's `?v=` parameter. The bootstrap sets `__webpack_nonce__` to the request token in base64, so Nextcloud's CSP admits the chunk's script tag. See [Tour Runtime](#tour-runtime).
 
 ## Component Tree
 
 ```
-App.vue
-└── WizardManager.vue          ← Shepherd.js tour lifecycle
-    ├── (Shepherd-managed step DOM, not Vue components)
-    └── PWA install instructions (~50 strings, v1.6.0+)
+Every page (src/main.js, the bootstrap)
+└── chooseTour()               ← src/runtime/chooseTour.mjs: which tour, if any
+    └── tour chunk (src/runtime/tour.js, loaded only when a tour runs)
+        └── WizardManager.vue  ← Shepherd.js tour lifecycle, welcome tour and tours for apps
+            ├── (Shepherd-managed step DOM, not Vue components)
+            └── PWA install instructions (~50 strings, v1.6.0+)
 
 Admin settings page (src/admin.js)
-└── AdminSettings.vue
-    ├── Steps tab (CRUD + drag-drop + import/export)
-    ├── Settings tab (global + languages)
-    ├── Statistics tab (telemetry)
-    └── Support tab → SupportSettings.vue (v1.5.0+)
+└── AdminApp.vue               ← the pane row, the tour list, opening a tour, the admin intro
+    ├── SettingsPane.vue       ← Tours for everyone, Show Tours in the user menu, the checklist
+    │   └── ChecklistSettings.vue  ← the checklist on the Dashboard: on/off, its tasks, own tasks, on every Dashboard
+    │       └── ChecklistTaskDialog.vue ← "New task" / "Edit task": title, short text, page
+    ├── Tours pane
+    │   ├── ToursList.vue      ← the tours: switch, Edit steps, ⋯ (Preview, Copy link, Export tour, Show again to everyone, Delete), New tour, Import tour
+    │   │   (its actions: useTours.js)
+    │   ├── NewTourDialog.vue  ← "New tour" and "Tour settings"
+    │   └── TourEditor.vue     ← the steps of one tour: languages, CRUD + drag-drop, per-language reset/import/export
+    │       ├── AssistantDialog.vue ← "Translate with AI" / "Write steps with AI" (its tasks: useAssistant.js)
+    │       ├── StepWizard.vue     ← "New step" / "Edit step" dialog
+    │       │   └── ElementPicker.vue  ← "Pick element" (src/picker/)
+    │       └── TourPreview.vue    ← "Preview tour" / "Test this step" (src/preview/)
+    │           both inside NextcloudFrame.vue (src/frame/): Nextcloud in an iframe
+    ├── StatisticsPane.vue     ← TourStatistics.vue (one tour: started, completed, skipped, how far people get), instance information, telemetry (TelemetryLists.vue)
+    ├── SupportSettings.vue    ← the Support pane (src/components/)
+    └── TelemetryQuestion.vue  ← the question after the admin intro (TelemetryLists.vue, telemetry.js)
 
 Personal settings page (src/personal.js)
-└── PersonalSettings.vue
+└── PersonalApp.vue            ← Start tours by themselves, Restart tour now, the Tours list with Start
 ```
 
+Inside `AdminApp.vue` the Tours pane's id is still `steps`. `TourEditor` works on one tour (AdminApp mounts one per open tour, keyed by its id) and passes its id as `tour` to every step, override, import and export call. AdminApp may call two of its functions: `addStep()`, for a new tour's first step, and `ready()`, which the admin intro awaits before it points at the editor.
+
+### Picker and Preview
+
+Both show a live Nextcloud page in a same-origin iframe, so the admin page reads and drives its DOM directly. The frame's name (`src/frame/frameNames.js`) tells `main.js` inside it what the frame is for: in the picker no tour starts, in the preview `WizardManager` runs in preview mode, waits for steps from the admin page (`window.introVoxPreview.run()`) and records nothing (no telemetry, no completion, no localStorage). The picker's selector logic lives in `src/picker/selector.mjs`, tested in `tests-js/picker-selector.test.js`.
+
+## Tour Runtime
+
+### `src/main.js` (the bootstrap)
+
+On `DOMContentLoaded`, every page:
+
+1. Works out what kind of frame it is in (`frameKind()`): a page of its own, the admin's element picker, the admin's preview, or someone else's same-origin frame. The frame names only count inside a same-origin parent, so another website cannot open a tab with one of those names to stop the tour. In the preview frame it sets up `window.introVoxPreview` and stops there.
+2. Defines `window.introVox` with `start()` (loads the chunk and starts the welcome tour by hand), `reset()` (clears the welcome tour's localStorage marks) and `isCompleted()`. WizardManager replaces it with its own once it runs.
+3. Takes a share link's `?introvox-tour=<id>` out of the address (`history.replaceState()`), keeping it only when it is a tour id; if an app already changed the address (Deck goes to Upcoming cards), it uses the `link` the server read with the page. Likewise `?introvox-check=<id>`, an own task of the checklist on the Dashboard opened from there: a chunk of its own (`src/runtime/checklist.js`) reports it.
+4. Calls `chooseTour()` with what the page already has: the lazy initial state `introvox/runtime` from `LoadScripts` (see [Backend Architecture](backend-architecture.md#loadscripts)), the link, sessionStorage, localStorage and the path. No request is made for this.
+5. Removes a start request once it has been used, and loads the tour chunk only if a tour was chosen.
+
+### `src/runtime/chooseTour.mjs`
+
+Plain data in, plain data out, tested without a browser (`tests-js/choose-tour.test.js`). The rules, in order; the first that applies decides:
+
+1. In the element picker or someone else's same-origin frame: no tour
+2. A share link starts its tour on the page it opened (not on IntroVox's admin page), also over a tour that was underway: following a link asks for that tour, and leaving a page mid-tour (by typing the link, say) leaves a resume entry, which the bootstrap then clears
+3. A tour that is underway (a resume entry, less than 10 minutes old) carries on on the page its next step opened; else a start request from the personal settings (less than 2 minutes old): the welcome tour on whatever page comes next, a tour for an app on its own page. A link and a start by hand also work with **Start tours by themselves** off and outside a tour's dates; the server still checks that the user may get the tour
+4. On IntroVox's own admin page: no tour (the admin tour runs there)
+5. No runtime state on the page: the tour code asks the server, as before this state existed
+6. **Tours for everyone** off, or **Start tours by themselves** off: no tour
+7. The welcome tour comes first: unless it is switched off in the Tours list or done for this user (`wizard_disabled`), it runs when this browser has not marked it completed, or has marked it at another `wizard_version` than the server's
+8. A tour ended in this tab less than 2 minutes ago: no tour, so two tours never run back to back
+9. The first tour for an app or page that is due here; a tour that starts anywhere is due on every page. "Due" is the server's (`TourStateService::due()`): available, not seen at this version, the audience, and its time (`TourSchedule`)
+
+Browser storage it reads:
+
+| Key | Storage | Meaning |
+|---|---|---|
+| `introvox_completed`, `introvox_version` | localStorage | The welcome tour was finished, closed or skipped in this browser, at that `wizard_version` |
+| `introvox_tour_resume` | sessionStorage | A tour underway that navigated to another page (`{ tourId, stepId, at }`) |
+| `introvox_start_tour` | sessionStorage | A start by hand from the personal settings (`{ tourId, page, at }`; the welcome tour has no page) |
+| `introvox_tour_ended` | sessionStorage | When a tour last ended in this tab |
+| `introvox_preview_resume` | sessionStorage | The admin preview's own resume entry |
+
+### `src/runtime/tour.js`
+
+The chunk's entry: mounts `WizardManager` with the bootstrap's choice (`startTour()`), for a start by hand (`startManually()`) or in preview mode (`mountPreview()`). It also imports Shepherd's CSS and `css/wizard.css`, so those load with the chunk.
+
 ## Key Files
-
-### `src/App.vue`
-
-Root component. Decides whether to mount `WizardManager` based on:
-
-- Server response from `GET /api/steps`
-- `localStorage['introvox_completed']`
-- Current page (only auto-starts on the dashboard)
 
 ### `src/components/WizardManager.vue`
 
 Manages the Shepherd.js tour:
 
-1. Receives step list from parent
-2. Instantiates `new Shepherd.Tour({...})`
-3. Registers Next/Back/Done/Skip handlers
-4. Fires telemetry events via `axios.post('/api/wizard/...')`
-5. Updates localStorage on close/complete/skip
-6. Calls `POST /personal/settings` on Skip and Done to set `permanent_disable`
+1. Gets the bootstrap's choice as its `start` prop: which tour, and whether it resumes or was started by hand
+2. **Welcome tour:** loads `GET /api/steps`, re-attaches client-side behaviour by step id (`enrichSteps()`), and starts after the app menu is ready
+3. **Tour for an app or page:** loads `GET /api/steps?tour=<id>` (a 404 or no steps: nothing starts), waits for the app to be ready (the first step's element or the app's content, no dialog of the app open, the tab visible; at most 15 seconds), then sends `POST /api/tours/{id}/event` with `start`. It shows the tour only if that was the first start at this version, or the tour was started by hand. Its first step's button is **Skip** instead of **Skip and don't show again**
+4. Instantiates `new Shepherd.Tour({...})` and registers Next/Back/Done/Skip handlers
+5. Welcome tour: fires telemetry events via `axios.post('/api/wizard/...')`, updates localStorage on close/complete/skip, and calls `POST /personal/settings` with `wizardDisabled: true` on Skip and Done
+6. Tour for an app: sends `complete` or `skip` to `POST /api/tours/{id}/event`; nothing in localStorage
+7. Any tour, during a run that started by itself: each step further than this run got before goes to `POST /api/tours/{id}/reached` (step id and place in the run), for **How far people get**. A start by hand (`window.introVox.start()`, **Start** in the personal settings) and a preview never count; an app tour counts only when its `start` was the first. Whether a run counts travels in the resume entry when the tour changes page
 
 ### `src/components/wizardSteps.js`
 
-Default step definitions wrapped in `t('introvox', ...)`. Used when:
+Client-side definitions of the welcome tour's built-in steps, wrapped in `t('introvox', ...)`, with what the server cannot store: lazy `attachTo`, menus to open first, `beforeShowPromise`. Used:
 
-- `GET /api/steps` returns `useDefault: true`
-- For new installations before any admin customization
+- By `enrichSteps()`, which re-attaches that behaviour by id to the steps `GET /api/steps` returns
+- As the full fallback (`getWizardSteps()`) when the server sends no steps or can't be reached
+
+Tours for an app or page don't use it.
 
 Since v1.6.0, all 16 default step titles and texts use English source strings as Transifex msgids rather than opaque `step_welcome_title`-style keys.
 
-### `src/components/SupportSettings.vue` (v1.5.0+)
+### `src/components/SupportSettings.vue`
 
-Enterprise subscription management UI:
-
-- Subscription key input
-- Validation against `licenses.voxcloud.nl`
-- Per-language step-count progress bars showing free-tier (10 steps per language) vs. licensed limits
+The **Support** pane: that IntroVox is free and open source with no limits, links to the other apps, to report an issue and to the source code, and **Show the admin tour again**. The subscription key and the per-language step counters it had before 1.7.7 are gone.
 
 ### `src/utils/deviceDetection.js` (v1.6.0+)
 
@@ -77,9 +128,11 @@ OS/browser detection used by the PWA install step. All ~40 user-facing strings a
 
 IntroVox does **not** use Vuex or Pinia. State is kept local to components:
 
-- **Step list** — loaded once per page via `GET /api/steps`, kept in `WizardManager.vue`'s reactive state
-- **Admin step editing** — local component state in `AdminSettings.vue`; persisted only when **Save changes** is clicked
-- **User completion state** — split across browser localStorage (frontend-only) and the server preferences table (`permanent_disable`)
+- **Whether a tour runs** — decided per page load by `chooseTour()` from the `introvox/runtime` initial state and browser storage, before any tour code loads
+- **Step list** — loaded once per page via `GET /api/steps` (with `?tour=<id>` for a tour for an app), kept in `WizardManager.vue`'s reactive state
+- **Admin tours** — `GET /admin/tours` in `useTours.js`, used by `AdminApp.vue`; switching, show again, delete, export and import go to `/admin/tours/…`
+- **Admin step editing** — local component state in `TourEditor.vue`, for the tour open in it; every change (saving in the editor, delete, reorder, enable/disable) is written straight away via `POST /admin/steps` with that tour's id, queued one after another so quick changes never land out of order
+- **User completion state** — welcome tour: browser localStorage plus the server preference `wizard_disabled`; tours for an app: on the server only (`tour_<id>_seen`, `_completed`, `_skipped`); how far any tour got: `tour_<id>_reached`; **Start tours by themselves**: the server preference `tours_disabled`
 - **Language selection** (admin) — local state; switching with unsaved changes triggers a confirm dialog
 
 ## Tour Engine: Shepherd.js
@@ -100,7 +153,6 @@ IntroVox wraps [Shepherd.js](https://shepherdjs.dev/) for tour rendering:
 ## Build Configuration
 
 - `npm run build` — production build (minified, no source maps)
-- `npm run build:dev` — development build (readable, source maps)
 - `npm run watch` — watch mode for active development
 
 Bundle outputs go to `js/`. The `src/` directory is **not** included in App Store tarballs — only compiled assets.

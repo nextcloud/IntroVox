@@ -6,6 +6,8 @@ Group-based step visibility lets you restrict individual wizard steps to specifi
 
 ## How It Works
 
+![The Visible to page of the step editor, with one group selected](../screenshots/visible-to.png)
+
 Each step has a **Visible to groups** field (multi-select dropdown of all Nextcloud groups):
 
 - **Empty selection (default)** — step is visible to **all users**
@@ -15,11 +17,12 @@ Filtering happens **server-side** in [ApiController::getWizardSteps()](https://g
 
 ## Configuring Group Visibility
 
-1. Click **✏️ Edit** on any step
+1. Open **Tours**, click **Edit steps** on the tour, and click **Edit** on any step
 2. Find the **Visible to groups** dropdown below the Position selector
 3. Select one or more Nextcloud groups
-4. Click **💾 Save** in the form
-5. Click **💾 Save changes** at the top of the steps list to persist
+4. Click **Save** in the form; the step is saved straight away
+
+To check the result, click **Preview tour** and pick a group under **Preview as**: the preview shows the steps members of that group get. See [Preview](managing-steps.md#preview).
 
 ## Use Cases
 
@@ -89,12 +92,13 @@ This means:
 | Goal | Approach |
 |---|---|
 | Hide the entire app from certain users | **Settings → Apps → IntroVox → Limit to groups** (Nextcloud-level) |
-| Disable the wizard globally | Uncheck **Enable wizard for all users** |
+| Switch off all tours | Switch off **Tours for everyone** |
 | Show different steps per user role | **Group-based visibility** (this page) |
-| Author different copy for one language only | **+ Add language override** in the Steps tab |
+| Give a whole tour for an app to some groups only | **Visible to** on that tour ([Tours](tours.md)) |
+| Author different copy for one language only | **Add language override** in a tour's step editor (**Tours** → **Edit steps**) |
 
 ## See Also
 
-- [Managing Wizard Steps](managing-steps.md) — Step CRUD
+- [Managing Tour Steps](managing-steps.md) — Step CRUD
 - [Step Visibility](../features/step-visibility.md) — Group filters + user preferences
 - [API Reference](../architecture/api-reference.md) — `getWizardSteps` endpoint with filtering

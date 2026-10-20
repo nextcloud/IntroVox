@@ -6,7 +6,6 @@ namespace OCA\IntroVox\Controller;
 use OCA\IntroVox\Service\LicenseService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IGroupManager;
 use OCP\IRequest;
@@ -48,7 +47,6 @@ class LicenseController extends Controller {
     /**
      * Get license statistics
      */
-#[NoCSRFRequired]
     public function getStats(): DataResponse {
         if (!$this->isAdmin()) {
             return $this->forbidden();

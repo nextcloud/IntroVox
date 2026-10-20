@@ -1,29 +1,22 @@
 <?php
 namespace OCA\IntroVox\Settings;
 
+use OCA\IntroVox\Service\TourRepository;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IConfig;
-use OCP\IL10N;
 use OCP\Settings\ISettings;
 
 class PersonalSettings implements ISettings {
-    private $config;
-    private $l10n;
-
-    public function __construct(IConfig $config, IL10N $l10n) {
-        $this->config = $config;
-        $this->l10n = $l10n;
+    public function __construct(
+        private TourRepository $tours,
+    ) {
     }
 
     /**
      * @return TemplateResponse
      */
     public function getForm() {
-        $wizardGloballyEnabled = $this->config->getAppValue('introvox', 'wizard_enabled', 'true') === 'true';
-
         return new TemplateResponse('introvox', 'personal', [
-            'wizardEnabled' => $wizardGloballyEnabled,
-            'wizardGloballyEnabled' => $wizardGloballyEnabled,
+            'wizardEnabled' => $this->tours->toursEnabled(),
         ], '');
     }
 

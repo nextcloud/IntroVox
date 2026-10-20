@@ -51,9 +51,9 @@ Gebruik CSS-classes die over talen heen werken:
 .unified-search__trigger, .header-menu__trigger
 ```
 
-### Sla op na herordenen
+### Bekijk het voordat gebruikers het zien
 
-Drag-and-drop-herorderingen zijn in-memory totdat je op **💾 Wijzigingen opslaan** klikt. Sla altijd op vóór je van taal wisselt of de beheer-pagina sluit — niet-opgeslagen wijzigingen triggeren een waarschuwing, maar die is makkelijk per ongeluk te dismissen.
+Wijzigingen worden opgeslagen zodra je ze maakt, dus gebruikers krijgen ze bij hun volgende tour. Gebruik **Preview tour** na het herordenen of het wijzigen van elementen, en **Test this step** tijdens het bewerken van een stap, om een verkeerd geplaatst kader te zien voordat je gebruikers het zien. Zie [Bekijken](managing-steps.nl.md#bekijken).
 
 ### Test op verschillende browsers
 
@@ -61,9 +61,9 @@ CSS-selector-gedrag kan licht variëren. Verifieer in Chrome, Firefox, Safari en
 
 ## Taal-strategie
 
-### Begin met één taal
+### Schrijf eerst de hoofdtaal
 
-Maak de Engelse versie eerst perfect; voeg andere talen toe zodra vertalingen klaar zijn. Het is makkelijker om één goed-geteste tour te onderhouden dan vijf middelmatige.
+Maak de tour eerst goed in zijn hoofdtaal: de stappen, hun elementen en hun volgorde. Bij een tour voor een app krijgt wie een taal heeft zonder eigen stappen die hoofdtaal. Voeg daarna de andere talen toe, met **Translate with AI** als er een provider voor de Nextcloud Assistant is ingesteld: die vertaalt de woorden en laat de elementen, pagina's en media zoals ze zijn. Zie [Stappen schrijven of vertalen met AI](tours.nl.md#stappen-schrijven-of-vertalen-met-ai).
 
 ### Behoud structurele consistentie
 
@@ -71,11 +71,11 @@ Houd dezelfde stap-telling en onderwerp-volgorde over talen heen — maakt impor
 
 ### Gebruik native speakers
 
-Voor elke taal, laat vertalingen reviewen door een native speaker. Auto-vertaalde stap-content leest slecht in onboarding-contexten en ondermijnt de welkomende toon.
+Laat de vertaling van elke taal nakijken door een native speaker, ook die van **Translate with AI**. Je kunt elke stap in de dialoog aanpassen voordat hij wordt opgeslagen. Een stijve vertaling leest slecht in onboarding en ondermijnt de welkomende toon.
 
-### Schakel alleen benodigde talen in
+### Voeg alleen overrides toe waar het nodig is
 
-Elke ingeschakelde taal is een stap-lijst om te onderhouden. Schakel Zweeds niet in als niemand in je org Zweeds spreekt — uitschakelen verbergt de tour netjes voor die gebruikers met een duidelijke melding.
+De welkomsttour en de ingebouwde tours zijn vertaald in elke taal die Transifex heeft. Elke override is een lijst met stappen die je zelf bijhoudt, en hij krijgt geen nieuwe vertalingen van de standaardstappen meer. Voeg er alleen een toe waar de standaardstappen niet passen, zoals tekst die je eigen cloud noemt, en gebruik **Reset** zodra je hem niet meer nodig hebt. Zie [Talenbeheer](language-management.nl.md).
 
 ## Operationeel onderhoud
 
@@ -110,7 +110,7 @@ Na elke grote Nextcloud-versie:
 
 - Vermeld IntroVox in je interne onboarding-documentatie
 - Verwijs nieuwe medewerkers er expliciet naar
-- Na een grote content-update, overweeg **Wizard tonen aan alle gebruikers** te gebruiken met een heads-up in je bedrijfs-communicatiekanaal
+- Na een grote content-update, overweeg **Show again to everyone** bij de tour te gebruiken, met een heads-up in je bedrijfs-communicatiekanaal
 
 ## Content-kwaliteit
 
@@ -134,6 +134,6 @@ Na elke grote Nextcloud-versie:
 
 ## Zie ook
 
-- [Wizard-stappen beheren](managing-steps.md) — stap-CRUD
+- [Tourstappen beheren](managing-steps.md) — stap-CRUD
 - [Customization](../features/customization.md) — HTML, CSS-selectors, positionering
 - [Problemen oplossen](troubleshooting.md) — wanneer er iets mis gaat

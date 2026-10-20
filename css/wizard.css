@@ -32,7 +32,7 @@
   max-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
-  border-radius: var(--border-radius-large, 10px);
+  border-radius: var(--border-radius-large);
   box-shadow: 0 0 10px var(--color-box-shadow);
   overflow: hidden;
   background: var(--color-main-background);
@@ -95,7 +95,7 @@
 
 /* Text styling - WCAG 2.1 AA compliant & Theme aware */
 .nextcloud-wizard-step .shepherd-text {
-  font-size: 15px;
+  font-size: var(--default-font-size);
   line-height: 1.7;
   color: var(--color-main-text);
 }
@@ -104,37 +104,69 @@
   margin: 0 0 14px 0;
 }
 
+/* h3 and h4 are in the allowlist an admin may use (src/utils/stepHtml.js),
+   so they are headings this app styles and need an explicit size: unsized is
+   inherited, not default. Below the 20px dialog title, above body text. */
+.nextcloud-wizard-step .shepherd-text h3 {
+  margin: 16px 0 4px;
+  font-size: 18px;
+  font-weight: var(--font-weight-heading);
+}
+
+.nextcloud-wizard-step .shepherd-text h4 {
+  margin: 12px 0 4px;
+  font-size: var(--default-font-size);
+  font-weight: var(--font-weight-heading);
+}
+
+.nextcloud-wizard-step .shepherd-text h3:first-child,
+.nextcloud-wizard-step .shepherd-text h4:first-child {
+  margin-top: 0;
+}
+
 .nextcloud-wizard-step .shepherd-text p:last-child {
   margin-bottom: 0;
 }
 
 /* Link styling - Nextcloud theme compliant */
 .nextcloud-wizard-step .shepherd-text a {
-  color: var(--color-primary-element, #0082c9);
+  color: var(--color-primary-element);
   text-decoration: underline;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: var(--font-weight-element);
+  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
 }
 
 .nextcloud-wizard-step .shepherd-text a:hover {
-  color: var(--color-primary-element-hover, #0092e0);
+  color: var(--color-primary-element-hover);
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
 
 .nextcloud-wizard-step .shepherd-text a:focus {
-  outline: 2px solid var(--color-primary-element, #0082c9);
+  outline: 2px solid var(--color-primary-element);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
 }
 
 .nextcloud-wizard-step .shepherd-text a:visited {
-  color: var(--color-primary-element, #0082c9);
+  color: var(--color-primary-element);
+}
+
+/* Nextcloud's own stylesheet takes the bullets off every list
+   (ul { list-style: none }); in a step, a list is a list. The step editor
+   (src/admin/StepTextEditor.vue) shows them the same way. */
+.nextcloud-wizard-step .shepherd-text ul,
+.nextcloud-wizard-step .shepherd-text ol {
+  margin: 8px 0;
+  padding-inline-start: 20px;
 }
 
 .nextcloud-wizard-step .shepherd-text ul {
-  margin: 8px 0;
-  padding-left: 20px;
+  list-style: disc;
+}
+
+.nextcloud-wizard-step .shepherd-text ol {
+  list-style: decimal;
 }
 
 .nextcloud-wizard-step .shepherd-text li {
@@ -152,29 +184,28 @@
   min-height: 56px;
   border-bottom: 2px solid var(--color-primary-element);
   color: var(--color-main-text);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Override Shepherd's .shepherd-has-title .shepherd-content .shepherd-header (0,3,0) */
 .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
   padding: 16px 20px;
-  background: var(--color-background-dark);
+  background: var(--color-main-background);
   border-radius: 0;
 }
 
 /* Title styling - Nextcloud h2 style (0,2,0 > Shepherd's 0,1,0) */
 .nextcloud-wizard-step .shepherd-title {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: var(--font-weight-heading);
   margin: 0;
-  color: var(--color-primary-element);
+  color: var(--color-main-text);
   line-height: 1.4;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: none;
   flex: 1;
   min-width: 0;
-  padding-right: 0;
+  padding-inline-end: 0;
   letter-spacing: -0.01em;
 }
 
@@ -199,12 +230,12 @@
 /* Button styling - Nextcloud button style (NcButton compatible) */
 .nextcloud-wizard-step button:not(.shepherd-cancel-icon) {
   padding: 0 16px;
-  min-height: 44px;
-  border-radius: var(--border-radius-pill, 22px);
+  min-height: var(--default-clickable-area);
+  border-radius: var(--border-radius-pill);
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: var(--default-font-size);
+  font-weight: var(--font-weight-element);
   transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out, border-color 0.1s ease-in-out;
   text-transform: none;
   position: relative;
@@ -254,13 +285,12 @@
 .nextcloud-wizard-step .shepherd-cancel-icon {
   color: var(--color-main-text);
   opacity: 0.7;
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: var(--default-clickable-area);
+  height: var(--default-clickable-area);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--border-radius-pill, 22px);
+  border-radius: var(--border-radius-pill);
   transition: opacity 0.1s ease-in-out, background-color 0.1s ease-in-out;
   font-size: 20px;
   background: transparent;
@@ -298,28 +328,10 @@
   background: var(--color-background-dark);
 }
 
-/* Add aria-label support via pseudo-element tooltip */
-.nextcloud-wizard-step .shepherd-cancel-icon::after {
-  content: attr(aria-label);
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  padding: 4px 8px;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  font-size: 12px;
-  border-radius: 4px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.nextcloud-wizard-step .shepherd-cancel-icon:hover::after,
-.nextcloud-wizard-step .shepherd-cancel-icon:focus::after {
-  opacity: 1;
-}
+/* The close button had a hand-built tooltip here: a ::after that repeated its
+   aria-label in a black box. The guidelines forbid hand-building a tooltip --
+   it cannot be dismissed with Escape, is invisible on touch and repeats what
+   a screen reader already reads from the aria-label. */
 
 /* Arrow styling (connector to elements) */
 /* (0,2,1) overrides Shepherd's .shepherd-arrow:before (0,1,1) */
@@ -331,6 +343,71 @@
 /* (0,4,1) overrides Shepherd's .shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before (0,3,1) */
 .nextcloud-wizard-step.shepherd-has-title[data-popper-placement^=bottom] > .shepherd-arrow:before {
   background-color: var(--color-background-dark);
+}
+
+/* Room between a step and its element, for the arrow (showPointer) */
+.nextcloud-wizard-step[data-popper-placement^=bottom]:not(.shepherd-centered) {
+  margin-top: 24px;
+}
+
+.nextcloud-wizard-step[data-popper-placement^=top]:not(.shepherd-centered) {
+  margin-top: -24px;
+}
+
+.nextcloud-wizard-step[data-popper-placement^=left]:not(.shepherd-centered) {
+  margin-left: -24px;
+}
+
+.nextcloud-wizard-step[data-popper-placement^=right]:not(.shepherd-centered) {
+  margin-left: 24px;
+}
+
+/* A blinking arrow between a step and its element, pointing at the element
+   (wizardSteps.js, showPointer). Above dialogs, like the step. */
+.introvox-pointer {
+  position: fixed;
+  z-index: 10000;
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  pointer-events: none;
+  /* Four blinks, under five seconds: anything that blinks longer needs a way
+     to stop it (WCAG 2.2.2) */
+  animation: introvoxPointerBlink 1.2s ease-in-out 4;
+}
+
+/* The step below the element: the arrow points up at it */
+.introvox-pointer[data-side=bottom] {
+  border-top-width: 0;
+  border-bottom: 20px solid var(--color-primary-element);
+  transform: translate(-50%, 0);
+}
+
+.introvox-pointer[data-side=top] {
+  border-bottom-width: 0;
+  border-top: 20px solid var(--color-primary-element);
+  transform: translate(-50%, -100%);
+}
+
+.introvox-pointer[data-side=left] {
+  border-right-width: 0;
+  border-left: 20px solid var(--color-primary-element);
+  transform: translate(-100%, -50%);
+}
+
+.introvox-pointer[data-side=right] {
+  border-left-width: 0;
+  border-right: 20px solid var(--color-primary-element);
+  transform: translate(0, -50%);
+}
+
+@keyframes introvoxPointerBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
 }
 
 /* Prevent flickering on initial render - hide until positioned */
@@ -364,10 +441,16 @@
   }
 }
 
-/* Text improvements - WCAG compliant colors & Theme aware */
+/* Emphasis is weight, not colour. This used to paint <strong> in
+   --color-primary-element, the same value links take, so "apps menu" and
+   "avatar" inside a sentence were indistinguishable from a link -- measured
+   identical rgb(0,103,158) against a real <a>, separated only by an
+   underline. Colour is not an information channel, and the step texts come
+   from admins and translators who cannot know a bold word will look
+   clickable. */
 .nextcloud-wizard-step .shepherd-text strong {
-  color: var(--color-primary-element, #006ba3); /* WCAG AA: 5.1:1 contrast ratio on white */
-  font-weight: 600;
+  color: inherit;
+  font-weight: var(--font-weight-heading);
 }
 
 /* List styling - Theme aware */
@@ -377,12 +460,12 @@
 
 .nextcloud-wizard-step .shepherd-text ul li {
   position: relative;
-  padding-left: 4px;
+  padding-inline-start: 4px;
   color: var(--color-main-text);
 }
 
 .nextcloud-wizard-step .shepherd-text ul li::marker {
-  color: var(--color-primary-element, #006ba3); /* WCAG AA compliant blue */
+  color: var(--color-primary-element); /* WCAG AA compliant blue */
 }
 
 /* Modal overlay - darker for better focus */
@@ -398,33 +481,31 @@
   z-index: 9998;
 }
 
-.shepherd-target::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border: 3px solid var(--color-primary-element, #0082c9);
-  border-radius: 8px;
-  box-shadow: 0 0 0 4px rgba(0, 130, 201, 0.2),
-              0 0 20px rgba(0, 130, 201, 0.4),
-              inset 0 0 20px rgba(0, 130, 201, 0.1);
-  pointer-events: none;
-  animation: pulseHighlight 2s ease-in-out infinite;
-  z-index: 9999;
+/* On the element itself, not a ::before: inputs have no ::before, and
+   Nextcloud's buttons clip one. An outline is never clipped by the element,
+   and shows in a dialog that lies above the tour's overlay too. Focus styles
+   of Nextcloud's own (with !important) would hide it, hence the weight. */
+html .shepherd-target.shepherd-enabled {
+  outline: 3px solid var(--color-primary-element) !important;
+  outline-offset: 3px !important;
+  border-radius: var(--border-radius-large);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--color-primary-element) 25%, transparent),
+              0 0 24px 6px color-mix(in srgb, var(--color-primary-element) 45%, transparent) !important;
+  /* Two pulses, then it stays lit, like the pointer above (WCAG 2.2.2) */
+  animation: pulseHighlight 2s ease-in-out 2;
 }
 
+/* The glow follows the theme's primary colour. It used to be a hardcoded
+   Nextcloud blue, so on a server with its own brand colour the border took the
+   brand and the glow around it stayed blue. */
 @keyframes pulseHighlight {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(0, 130, 201, 0.2),
-                0 0 20px rgba(0, 130, 201, 0.4),
-                inset 0 0 20px rgba(0, 130, 201, 0.1);
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--color-primary-element) 25%, transparent),
+                0 0 24px 6px color-mix(in srgb, var(--color-primary-element) 45%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(0, 130, 201, 0.3),
-                0 0 30px rgba(0, 130, 201, 0.6),
-                inset 0 0 30px rgba(0, 130, 201, 0.2);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--color-primary-element) 35%, transparent),
+                0 0 34px 10px color-mix(in srgb, var(--color-primary-element) 65%, transparent);
   }
 }
 
@@ -434,33 +515,10 @@
     box-shadow: 0 0 20px var(--color-box-shadow);
   }
 
-  .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  }
-
   .shepherd-modal-overlay-container.shepherd-modal-is-visible {
     background: rgba(0, 0, 0, 0.5);
   }
 
-  .shepherd-target::before {
-    border-color: var(--color-primary-element, #00a3ff);
-    box-shadow: 0 0 0 4px rgba(0, 163, 255, 0.3),
-                0 0 20px rgba(0, 163, 255, 0.5),
-                inset 0 0 20px rgba(0, 163, 255, 0.2);
-  }
-
-  @keyframes pulseHighlight {
-    0%, 100% {
-      box-shadow: 0 0 0 4px rgba(0, 163, 255, 0.3),
-                  0 0 20px rgba(0, 163, 255, 0.5),
-                  inset 0 0 20px rgba(0, 163, 255, 0.2);
-    }
-    50% {
-      box-shadow: 0 0 0 6px rgba(0, 163, 255, 0.4),
-                  0 0 30px rgba(0, 163, 255, 0.7),
-                  inset 0 0 30px rgba(0, 163, 255, 0.3);
-    }
-  }
 }
 
 /* Dark theme via Nextcloud theme selector - only non-variable overrides */
@@ -470,25 +528,10 @@ body[data-theme="dark"] .nextcloud-wizard-step {
   box-shadow: 0 0 20px var(--color-box-shadow);
 }
 
-[data-themes*="dark"] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header,
-[data-theme-dark] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header,
-body[data-theme="dark"] .nextcloud-wizard-step.shepherd-has-title .shepherd-content .shepherd-header {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
 [data-themes*="dark"] .shepherd-modal-overlay-container.shepherd-modal-is-visible,
 [data-theme-dark] .shepherd-modal-overlay-container.shepherd-modal-is-visible,
 body[data-theme="dark"] .shepherd-modal-overlay-container.shepherd-modal-is-visible {
   background: rgba(0, 0, 0, 0.5);
-}
-
-[data-themes*="dark"] .shepherd-target::before,
-[data-theme-dark] .shepherd-target::before,
-body[data-theme="dark"] .shepherd-target::before {
-  border-color: var(--color-primary-element, #00a3ff);
-  box-shadow: 0 0 0 4px rgba(0, 163, 255, 0.3),
-              0 0 20px rgba(0, 163, 255, 0.5),
-              inset 0 0 20px rgba(0, 163, 255, 0.2);
 }
 
 /* High contrast mode support */
@@ -505,8 +548,8 @@ body[data-theme="dark"] .shepherd-target::before {
     border: 2px solid currentColor;
   }
 
-  .shepherd-target::before {
-    border-width: 4px;
+  html .shepherd-target.shepherd-enabled {
+    outline-width: 4px !important;
   }
 
   .shepherd-modal-overlay-container.shepherd-modal-is-visible {
@@ -527,7 +570,8 @@ body[data-theme="dark"] .shepherd-target::before {
     transform: none !important;
   }
 
-  .shepherd-target::before {
+  html .shepherd-target.shepherd-enabled,
+  .introvox-pointer {
     animation: none !important;
   }
 
@@ -549,6 +593,78 @@ body[data-theme="dark"] .shepherd-target::before {
   border-bottom: 4px solid var(--color-main-text);
 }
 
+/* An image, GIF or video in a step (src/utils/stepMedia.js): above the text,
+   never taller than the screen leaves room for. width/height attributes keep
+   the tooltip from jumping while the file loads. */
+.nextcloud-wizard-step.introvox-step--wide {
+  max-width: 640px;
+}
+
+.nextcloud-wizard-step .introvox-media {
+  position: relative;
+  margin: 0 0 12px;
+}
+
+.nextcloud-wizard-step .introvox-media--small {
+  max-width: 50%;
+}
+
+.nextcloud-wizard-step .introvox-media__visual {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: min(40vh, 320px);
+  border-radius: var(--border-radius-large);
+  object-fit: contain;
+}
+
+.nextcloud-wizard-step .introvox-media__visual[hidden] {
+  display: none;
+}
+
+@media (max-height: 600px) {
+  .nextcloud-wizard-step .introvox-media__visual {
+    max-height: 30vh;
+  }
+}
+
+/* Pause and play for anything that moves by itself (WCAG 2.2.2). One class
+   deeper than core's button:not(.button-vue,[class^=vs__]):hover and :focus
+   (0,2,1), whose tint would otherwise stay on the button after a click. */
+.nextcloud-wizard-step .introvox-media button.introvox-media__motion {
+  position: absolute;
+  inset-inline-start: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--default-clickable-area);
+  height: var(--default-clickable-area);
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-main-background);
+  color: var(--color-main-text);
+  box-shadow: 0 0 4px var(--color-box-shadow);
+  cursor: pointer;
+}
+
+.nextcloud-wizard-step .introvox-media button.introvox-media__motion:hover {
+  background: var(--color-background-hover);
+}
+
+.nextcloud-wizard-step .introvox-media__motion:focus-visible {
+  outline: 2px solid var(--color-main-text);
+  outline-offset: 2px;
+}
+
+.nextcloud-wizard-step .introvox-media__motion svg {
+  fill: currentColor;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .nextcloud-wizard-step {
@@ -559,7 +675,7 @@ body[data-theme="dark"] .shepherd-target::before {
     max-height: calc(100vh - 16px);
     max-height: calc(100dvh - 16px);
     margin: 8px;
-    border-radius: var(--border-radius-large, 10px);
+    border-radius: var(--border-radius-large);
   }
 
   .nextcloud-wizard-step .shepherd-header {
@@ -579,7 +695,7 @@ body[data-theme="dark"] .shepherd-target::before {
   }
 
   .nextcloud-wizard-step .shepherd-text {
-    font-size: 14px;
+    font-size: var(--default-font-size);
   }
 
   .nextcloud-wizard-step .shepherd-footer {
@@ -590,12 +706,62 @@ body[data-theme="dark"] .shepherd-target::before {
 
   .nextcloud-wizard-step button:not(.shepherd-cancel-icon) {
     width: 100%;
-    min-height: 44px;
+    min-height: var(--default-clickable-area);
   }
 
   .nextcloud-wizard-step .shepherd-cancel-icon {
-    width: 40px;
-    height: 40px;
-    min-height: 40px;
+    width: var(--default-clickable-area);
+    height: var(--default-clickable-area);
   }
+}
+
+/* "Click the highlighted element to continue." under a click-to-continue step */
+.nextcloud-wizard-step .introvox-click-hint {
+  margin-top: 12px;
+  font-size: var(--font-size-small);
+  font-style: italic;
+  color: var(--color-text-maxcontrast);
+}
+
+.nextcloud-wizard-step .introvox-click-hint[hidden] {
+  display: none;
+}
+
+/* Next while the field it waits for is empty (holdUntilFilled) */
+.nextcloud-wizard-step .shepherd-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A step waiting for its element (WizardManager, whenTargetAppears): what
+   makes it appear is up to the user, such as a conversation they create, so
+   the page stays usable and the step stands aside until it is there. Steps
+   without an element of their own stay centered. Shepherd centers with an
+   inline style, hence !important. Last in the file, so it wins over the dark
+   theme's overlay too. */
+html body.introvox-step-waiting .shepherd-element.shepherd-centered {
+  top: auto !important;
+  left: auto !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  max-width: min(400px, calc(100vw - 48px));
+  transform: none !important;
+  animation: none;
+  opacity: 1;
+}
+
+/* With a dialog open, on the left: Nextcloud's dialogs have their buttons on
+   the right (followDialogs) */
+html body.introvox-step-waiting.introvox-dialog-open .shepherd-element.shepherd-centered {
+  right: auto !important;
+  left: 24px !important;
+}
+
+html body.introvox-step-waiting .shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html body.introvox-step-waiting .shepherd-modal-overlay-container.shepherd-modal-is-visible path {
+  pointer-events: none;
 }
