@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport v-if="!nested" to="body">
     <div
       ref="dialogRef"
       class="introvox-frame"
@@ -49,13 +49,14 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { generateUrl } from '@nextcloud/router'
 import { translate as t } from '@nextcloud/l10n'
+import { showWarning } from '@nextcloud/dialogs'
 import { NcButton, NcNoteCard } from '@nextcloud/vue'
 
 import Close from 'vue-material-design-icons/Close.vue'
 
 import { normalizePage } from '../utils/pages.mjs'
 
-import { FRAME_READY_EVENT } from './frameNames.js'
+import { FRAME_READY_EVENT, currentFrameKind } from './frameNames.js'
 
 /**
  * Full-screen overlay on the admin page with a live Nextcloud page in an
@@ -145,7 +146,18 @@ export default {
     // stay usable.
     let madeInert = []
 
+    // The admin page opened inside a preview or the picker (by browsing to
+    // it there) would put a second overlay inside the first, with two bars.
+    // One at a time: this one stays closed and says why.
+    const nested = ['picker', 'preview'].includes(currentFrameKind())
+
     onMounted(() => {
+      if (nested) {
+        // TRANSLATORS: Shown when an admin opens IntroVox's settings inside a tour preview or the element picker and starts another one there
+        showWarning(t('introvox', 'A tour preview or the element picker is already open around this page. Close it first.'))
+        emit('close')
+        return
+      }
       previousFocus = document.activeElement
       madeInert = [...document.body.children].filter((el) => el !== dialogRef.value && !el.inert)
       madeInert.forEach((el) => { el.inert = true })
@@ -165,6 +177,7 @@ export default {
     })
 
     return {
+      nested,
       dialogRef,
       frameRef,
       blocked,

@@ -1,6 +1,6 @@
 {
-    "count": 606,
-    "sha256": "2eb86277de8dc9b01abef2c8d1aac5805ea9f4c07d3adc9d7ba05399e183b6d3",
+    "count": 607,
+    "sha256": "aa18703fb4743d2419405b67052e480e863c64e31e0302ba3775ff1d15369e49",
     "strings": [
         "\"{task}\" goes from everyone's list.",
         "{from} to {until}",
@@ -132,6 +132,7 @@
         "A short tour of Nextcloud",
         "A step in four moves",
         "A task needs a title of at most 60 characters.",
+        "A tour preview or the element picker is already open around this page. Close it first.",
         "A unique hash of your instance URL (privacy-friendly identifier)",
         "About IntroVox",
         "Active users (30d)",

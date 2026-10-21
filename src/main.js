@@ -1,9 +1,8 @@
 import { loadState } from '@nextcloud/initial-state'
 import { getRequestToken } from '@nextcloud/auth'
-import { FRAME_READY_EVENT, PICKER_FRAME_NAME, PREVIEW_FRAME_NAME } from './frame/frameNames.js'
+import { FRAME_READY_EVENT, currentFrameKind } from './frame/frameNames.js'
 import {
   chooseTour,
-  frameKind,
   COMPLETED_KEY,
   LINK_PARAM,
   PREVIEW_RESUME_KEY,
@@ -68,21 +67,7 @@ const readJson = (storage, key) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // The frame names only count inside the admin page's own iframe:
-  // frameElement is null in a top-level tab, which another website could
-  // have opened with one of these names to keep the tour from starting.
-  let sameOriginParent = false
-  try {
-    sameOriginParent = !!window.frameElement
-  } catch (e) {
-    // A cross-origin parent: a page of its own
-  }
-  const frame = frameKind({
-    sameOriginParent,
-    name: window.name,
-    pickerName: PICKER_FRAME_NAME,
-    previewName: PREVIEW_FRAME_NAME
-  })
+  const frame = currentFrameKind()
 
   if (frame === 'picker' || frame === 'preview') {
     window.frameElement.dispatchEvent(new CustomEvent(FRAME_READY_EVENT))

@@ -118,6 +118,8 @@ IntroVox grows from one welcome tour into tours for Nextcloud and its apps. The 
 
 - **The pause button of a GIF or video kept a blue tint after a click**, and showed a tooltip that repeated its label.
 
+- **The app's icon was a solid disc in the app list**, and white on white where Nextcloud shows it on a light background. It is drawn again from filled shapes, for 20 pixels.
+
 ### Security
 
 - **Media in steps is checked by its content.** The type of an image or video is taken from its bytes, never from its name; SVG, HTML and every type other than PNG, JPEG, GIF, MP4, WebM and WebVTT captions are refused. Location and other metadata are stripped before the file is stored, and size, pixels, frames and total storage are limited. See the [threat model](docs/security/media.md).

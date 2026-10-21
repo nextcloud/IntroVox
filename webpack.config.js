@@ -1,5 +1,7 @@
 const path = require('path');
+const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
+const packageJson = require('./package.json');
 
 module.exports = {
   entry: {
@@ -37,7 +39,13 @@ module.exports = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    // @nextcloud/vue reads these globals and logs an error on every page
+    // without them; the version also goes into its cache keys.
+    new webpack.DefinePlugin({
+      appName: JSON.stringify('introvox'),
+      appVersion: JSON.stringify(packageJson.version)
+    })
   ],
   resolve: {
     extensions: ['.js', '.vue'],
