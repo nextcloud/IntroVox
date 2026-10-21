@@ -45,7 +45,10 @@ made, here or on another Nextcloud. See [Tours](tours.md).
 The **Statistics** pane shows one tour at a time: started, completed,
 skipped, and how far people get ([Statistics](tours.md#statistics)), with
 the anonymous usage statistics below ([Telemetry](telemetry.md)). The
-**Support** pane holds the subscription and **Show the admin tour again**.
+**Support** pane says what IntroVox is (**About IntroVox**: free and open
+source, no paid features), links to the other VoxCloud apps (**Do you value
+this app?**), and under **Need help?** has **Report an issue**, **Source
+code**, **Show the admin tour again** and an address for **Questions?**.
 
 The three sections below are what the **Settings** pane and a tour's step
 editor hold. To open the step editor, click **Edit steps** on a tour;

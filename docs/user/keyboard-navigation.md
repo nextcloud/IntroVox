@@ -6,7 +6,7 @@ IntroVox is fully accessible via keyboard.
 
 | Key | Action |
 |---|---|
-| `→` (right arrow) | Go to the next step |
+| `→` (right arrow) | Go to the next step; not on a step that waits for you to click its element or fill in its field, just like its **Next** button |
 | `←` (left arrow) | Go to the previous step |
 | `Escape` | Close the tour |
 | `Tab` | Move focus between the step's buttons and links |
@@ -33,7 +33,7 @@ The tour automatically adapts to your system's high-contrast settings, using enh
 
 ### Reduced Motion
 
-If your system has the "reduce motion" accessibility preference enabled, IntroVox disables its animations to avoid triggering motion sensitivity. The arrow that points at an element stops blinking, and GIFs and videos that play by themselves stand still: use their play button to play them.
+If your system has the "reduce motion" accessibility preference enabled, IntroVox disables its animations to avoid triggering motion sensitivity. The arrow that points at an element and the outline around it stay still, GIFs and videos don't play by themselves (use their play button), and the tour jumps to a step instead of scrolling.
 
 ## See Also
 

@@ -31,9 +31,11 @@ Admin settings page (src/admin.js)
     │   ├── ToursList.vue      ← the tours: switch, Edit steps, ⋯ (Preview, Copy link, Export tour, Show again to everyone, Delete), New tour, Import tour
     │   │   (its actions: useTours.js)
     │   ├── NewTourDialog.vue  ← "New tour" and "Tour settings"
-    │   └── TourEditor.vue     ← the steps of one tour: languages, CRUD + drag-drop, per-language reset/import/export
+    │   └── TourEditor.vue     ← the steps of one tour: languages, add, edit, delete, reorder (drag-drop or Move step up / Move step down), per-language reset/import/export
     │       ├── AssistantDialog.vue ← "Translate with AI" / "Write steps with AI" (its tasks: useAssistant.js)
     │       ├── StepWizard.vue     ← "New step" / "Edit step" dialog
+    │       │   ├── StepTextEditor.vue ← the Text field: formatting toolbar, emoji, Edit as HTML (rules in stepTextHtml.mjs)
+    │       │   ├── StepMediaBlock.vue ← Image or video: upload, choose from Files, paste a screenshot; description, size, captions
     │       │   └── ElementPicker.vue  ← "Pick element" (src/picker/)
     │       └── TourPreview.vue    ← "Preview tour" / "Test this step" (src/preview/)
     │           both inside NextcloudFrame.vue (src/frame/): Nextcloud in an iframe
@@ -116,6 +118,12 @@ Tours for an app or page don't use it.
 
 Since v1.6.0, all 16 default step titles and texts use English source strings as Transifex msgids rather than opaque `step_welcome_title`-style keys.
 
+### Step media and text
+
+`StepMediaBlock.vue` adds a step's image, GIF or video through `POST /admin/media` or `/admin/media/from-files` and edits the step's `media` block. In the tour, `src/utils/stepMedia.js` (`buildStepMedia()`) builds the image or video with DOM APIs from that block, never through HTML, checks the file id again, and loads the file from `GET /media/{file}`; anything that moves gets a pause button and stays still with reduced motion. See [Media in tour steps](../security/media.md).
+
+`StepTextEditor.vue` edits the step text with a TipTap editor limited to the tags the tour shows (`EDITOR_TAGS` in `src/admin/stepTextHtml.mjs`, the same allowlist as `src/utils/stepHtml.js`). Texts are still stored as HTML.
+
 ### `src/components/SupportSettings.vue`
 
 The **Support** pane: that IntroVox is free and open source with no limits, links to the other apps, to report an issue and to the source code, and **Show the admin tour again**. The subscription key and the per-language step counters it had before 1.7.7 are gone.
@@ -148,7 +156,8 @@ IntroVox wraps [Shepherd.js](https://shepherdjs.dev/) for tour rendering:
 - **v1.6.1** — added `.nextcloud-wizard-step[hidden] { display: none }` to prevent Shepherd-hidden steps from stacking visibly behind the active step (was caused by `.nextcloud-wizard-step { display: flex }` overriding the browser default)
 - **v1.5.0** — added `max-height` and internal body scrolling so long mobile steps remain navigable
 - **v1.4.2** — added fallback CSS selectors and 10s timeout to the app-menu readiness check
-- **v1.4.1** — steps with missing target elements now fall back to centered display instead of being silently skipped
+- **2.0.0** — a step whose element is not there yet waits aside in a corner, leaves the page usable, and moves to the element once it appears; it replaced the centered display of v1.4.1
+- **v1.4.1** — steps with missing target elements fell back to centered display instead of being silently skipped
 
 ## Build Configuration
 
@@ -160,7 +169,7 @@ Bundle outputs go to `js/`. The `src/` directory is **not** included in App Stor
 ## Translation Flow
 
 - Vue components and JS use `t('introvox', '<English source>')` from `@nextcloud/l10n`
-- `python3 regenerate_js_translations.py` converts `l10n/<lang>.json` files into `l10n/<lang>.js` files that webpack picks up
+- `python3 scripts/po2l10n.py` converts `translationfiles/<lang>/introvox.po` (from `tx pull`) into `l10n/<lang>.js` and `l10n/<lang>.json`, as the Nextcloud Transifex bot does: Nextcloud loads the `.js` in the browser (`OC.L10N.register`) and the `.json` on the server
 - `OCP\L10N\IFactory::getLanguages()` provides display names for the language picker (v1.6.0+)
 
 See [Transifex Integration](transifex-integration.md) for the full translation workflow.

@@ -14,23 +14,23 @@ Meestal 2–5 minuten, afhankelijk van hoeveel stappen je beheerder heeft geconf
 
 ### Kan ik de tour pauzeren en later doorgaan?
 
-Je kunt hem sluiten met **✕** en later opnieuw starten via **Persoonlijke instellingen → IntroVox**: **Restart tour now** voor de welkomsttour, **Start again** voor een tour voor een app. Hij begint dan bij de eerste stap: de tour onthoudt je plek niet, dus je kunt hem het beste in één keer doen.
+Je kunt hem sluiten met **✕** en later opnieuw starten via **Persoonlijke instellingen → IntroVox**: **Tour nu herstarten** voor de welkomsttour, **Start again** voor een tour voor een app. Hij begint dan bij de eerste stap: de tour onthoudt je plek niet, dus je kunt hem het beste in één keer doen.
 
 ### Zie ik de tour elke keer dat ik inlog?
 
-Nee. Heb je de welkomsttour voltooid of **Skip and don't show again** gekozen, dan start hij niet meer vanzelf. Sluiten met **✕** stopt hem alleen in deze browser. Een tour voor een app start één keer vanzelf.
+Nee. Heb je de welkomsttour voltooid of **Overslaan en niet meer tonen** gekozen, dan start hij niet meer vanzelf. Sluiten met **✕** stopt hem alleen in deze browser. Een tour voor een app start één keer vanzelf, en je beheerder kan hem later laten starten: alleen voor nieuwe accounts, een aantal dagen na je eerste login, of alleen tussen twee datums.
 
 ### Waarom startte er een tour toen ik een app opende?
 
-Je beheerder heeft een korte tour voor die app gemaakt. Die start één keer vanzelf, de eerste keer dat je de app opent. Wil je hem nog eens zien, ga dan naar **Persoonlijke instellingen → IntroVox** en klik onder **Tours** op **Start again** bij die tour. **Tours** in je gebruikersmenu leidt daar ook heen.
+Je beheerder heeft een korte tour voor die app gemaakt. Die start één keer vanzelf, de eerste keer dat je de app opent, tenzij je beheerder hem alleen voor nieuwe accounts, pas een aantal dagen na je eerste login of alleen tussen twee datums laat starten. Een tour die "overal" start, komt als tip op de eerstvolgende pagina die je opent. Wil je een tour nog eens zien, ga dan naar **Persoonlijke instellingen → IntroVox** en klik onder **Tours** op **Start again** bij die tour. **Tours** in je gebruikersmenu leidt daar ook heen.
 
 ### Iemand stuurde me een link naar een tour. Wat doet die?
 
-Die opent de app van de tour en start de tour daar, ook als je hem al zag of **Start tours by themselves** uit hebt gezet. Ben je niet ingelogd, dan log je eerst in. Is de tour niet voor jou bedoeld, dan krijg je de pagina zonder tour.
+Die opent de app van de tour en start de tour daar, ook als je hem al zag of **Start tours by themselves** uit hebt gezet. Ben je niet ingelogd, dan log je eerst in. Is de tour niet voor jou bedoeld, dan kom je op je startpagina, zonder tour.
 
-### Wat is de lijst "Getting started" op mijn Dashboard?
+### Wat is de lijst "Aan de slag" op mijn Dashboard?
 
-Je beheerder heeft een lijst toegevoegd met de eerste dingen om te doen in Nextcloud, zoals een bestand uploaden of een profielfoto toevoegen. Elke taak linkt naar de plek waar je hem doet, en vinkt zichzelf af zodra je hem gedaan hebt. Heb je er niets aan? Haal hem weg onder **Customize** op je Dashboard; daar kun je hem ook terugzetten.
+Je beheerder heeft een lijst toegevoegd met de eerste dingen om te doen in Nextcloud, zoals een bestand uploaden of een profielfoto toevoegen. Elke taak linkt naar de plek waar je hem doet, en vinkt zichzelf af zodra je hem gedaan hebt. Met **Put it on every Dashboard** verschijnt hij vanzelf alleen bij nieuwe accounts en bij iedereen die zijn Dashboard nooit heeft ingericht; ieder ander voegt hem toe onder **Aanpassen** op zijn Dashboard. Heb je er niets aan? Haal hem daar weg; op dezelfde manier zet je hem terug.
 
 ## Inhoud
 
@@ -68,7 +68,7 @@ Alleen wat IntroVox nodig heeft om te weten welke tours je krijgt, en hoe ver je
 
 ### Kan ik de tour met screenreaders gebruiken?
 
-Ja — IntroVox is ontworpen om toegankelijk te zijn en werkt met JAWS, NVDA en VoiceOver. Zie [Toetsenbord-navigatie](keyboard-navigation.md).
+Ja — IntroVox is ontworpen om toegankelijk te zijn en werkt met JAWS, NVDA en VoiceOver. Zie [Toetsenbord-navigatie](keyboard-navigation.nl.md).
 
 ## Privacy
 
@@ -81,7 +81,7 @@ Op twee plekken:
    - voor de welkomsttour en elke tour voor een app: of je hem startte, afmaakte of oversloeg, en wanneer
    - hoe ver je kwam de laatste keer dat een tour vanzelf startte
    - je instelling **Start tours by themselves**
-   - voor de lijst **Getting started** op het Dashboard: de taken van je beheerder die je vanuit de lijst opende, en dat je een eerste bestand uploadde
+   - voor de lijst **Aan de slag** op het Dashboard: de taken van je beheerder die je vanuit de lijst opende, en dat je een eerste bestand uploadde
 
 ### Wat gebeurt er met mijn data als ik de tour uitschakel?
 
@@ -89,12 +89,12 @@ Op twee plekken:
 
 ### Kan mijn beheerder zien of ik de tour heb voltooid?
 
-Niet in IntroVox. Het paneel **Statistics** toont alleen totalen per tour: hoeveel mensen hem startten, afmaakten en oversloegen, en hoeveel er bij elke stap kwamen. Niemand kan daar zien hoe ver jij kwam. Deelt je beheerder anonieme gebruiksstatistieken, dan zijn dat ook totalen voor de hele server.
+Niet in IntroVox. Het paneel **Statistieken** toont alleen totalen per tour: hoeveel mensen hem startten, afmaakten en oversloegen, en hoeveel er bij elke stap kwamen. Niemand kan daar zien hoe ver jij kwam. Deelt je beheerder anonieme gebruiksstatistieken, dan zijn dat ook totalen voor de hele server.
 
 ## Zie ook
 
-- [Overzicht](overview.md)
-- [De tour doorlopen](taking-the-tour.md)
-- [Persoonlijke instellingen](personal-settings.md)
-- [Problemen oplossen](troubleshooting.md)
-- [Tips om het beste uit Nextcloud te halen](tips.md)
+- [Overzicht](overview.nl.md)
+- [De tour doorlopen](taking-the-tour.nl.md)
+- [Persoonlijke instellingen](personal-settings.nl.md)
+- [Problemen oplossen](troubleshooting.nl.md)
+- [Tips om het beste uit Nextcloud te halen](tips.nl.md)

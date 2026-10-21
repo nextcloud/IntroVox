@@ -37,7 +37,7 @@ IntroVox sends the following anonymous data periodically, exactly these fields (
 | OS family | `osFamily` | PHP's `PHP_OS_FAMILY`, such as Linux |
 | Web server | `webServer` | Apache, nginx, or the name the server software gives |
 | Docker | `isDocker` | Whether the server runs inside a Docker container (boolean) |
-| License key | `licenseKey` | The IntroVox license key, when one is configured; empty otherwise. Sent so the license server can verify the Enterprise claim below — the booleans alone could otherwise be spoofed |
+| License key | `licenseKey` | The IntroVox license key, when one is stored; empty otherwise (the app has had no field for it since 1.7.7). Sent so the license server can verify the Enterprise claim below — the booleans alone could otherwise be spoofed |
 | Enterprise subscription | `hasValidSubscription` | Whether this Nextcloud has a valid Enterprise subscription (`IRegistry::delegateHasValidSubscription()`). `false` for Community and on any error |
 | Extended Support | `hasExtendedSupport` | Whether that subscription also has the Extended Support add-on (`IRegistry::delegateHasExtendedSupport()`). `false` for Community and on any error |
 
@@ -77,16 +77,18 @@ If your firewall blocks outbound connections to `licenses.voxcloud.nl`, IntroVox
 
 ## Manual Report
 
-You can send a telemetry report immediately from the Support tab:
+You can send a telemetry report immediately from the Statistics pane:
 
 1. Go to **Settings → Administration → IntroVox**
-2. Open the **Support** tab
-3. Click **Send report now**
+2. Open the **Statistics** tab
+3. Click **Send report now**, in the note below **Share anonymous usage statistics**
+
+The button is only there while **Share anonymous usage statistics** is on.
 
 The button shows clear feedback:
 
-- **Success**: confirms the report was sent and updates the timestamp
-- **Error**: shows the specific server error message (e.g., rate limit, connectivity issue)
+- **Success**: "Statistics sent", and **Last report sent** shows the new time
+- **Error**: "Error sending statistics: …" with the server's reason (e.g., rate limit, connectivity issue)
 
 ## Wizard-Tracking Events
 

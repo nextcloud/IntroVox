@@ -29,7 +29,14 @@ Omdat deze variabelen scoped zijn aan het document en geüpdatet worden door het
 
 ### Beperkte beweging
 
-Als de "reduce motion"-toegankelijkheidsvoorkeur van het systeem van de gebruiker is ingeschakeld, schakelt IntroVox zijn animaties uit (stap-overgangen, fade-ins, overlay-tweens).
+Als de "reduce motion"-toegankelijkheidsvoorkeur van het systeem van de gebruiker is ingeschakeld, staat de tour stil:
+
+- Stappen verschijnen zonder in te faden
+- Het pijltje en de rand rond het element van een stap staan stil
+- GIF's en video's spelen niet vanzelf; ze starten met hun afspeelknop
+- De tour springt naar een stap in plaats van soepel te scrollen, en de stappenlijst op de beheerpagina ook
+
+Voor alle anderen knipperen het pijltje en de rand een paar keer en staan ze daarna ook stil, in plaats van te blijven knipperen zolang de stap er staat.
 
 ### Hoog contrast
 
@@ -41,7 +48,7 @@ Alle interactieve elementen hebben zichtbare focus-indicators die zich aanpassen
 
 ### Semantische HTML en ARIA
 
-Stappen gebruiken semantische HTML (`<h2>` voor titels, `<button>` voor acties) en ARIA-labels waar nodig, zodat screenreaders content correct kunnen aankondigen.
+Stappen gebruiken semantische HTML (Shepherd rendert de titel als `<h3 class="shepherd-title">`, acties als `<button>`) en ARIA-labels waar nodig, zodat screenreaders content correct kunnen aankondigen.
 
 ## Custom CSS
 
@@ -50,10 +57,10 @@ IntroVox ondersteunt momenteel geen custom-CSS-overrides via het admin-paneel. A
 - De Nextcloud-Theming-app gebruiken om globale CSS-variabelen aan te passen (wijzigingen gelden automatisch voor IntroVox)
 - Custom CSS deployen op Nextcloud-niveau (via de "Custom CSS"-feature van de Theming-app)
 
-Vermijd inline-styles binnen stap-HTML — die breken thema-overerving.
+Inline-styles in stap-HTML worden verwijderd als de stap getoond wordt (zie [Inline-styles](customization.nl.md#inline-styles)), dus ze kunnen de thema-overerving niet breken. Gebruik in plaats daarvan de Theming-app.
 
 ## Zie ook
 
-- [Customization](customization.md) — HTML, CSS-selectors, positionering
-- [Toetsenbord-navigatie](../user/keyboard-navigation.md) — toegankelijkheids-features voor gebruikers
-- [Architectuur-overzicht](../architecture/overview.md) — hoe de frontend integreert met Nextcloud-theming
+- [Customization](customization.nl.md) — HTML, CSS-selectors, positionering
+- [Toetsenbord-navigatie](../user/keyboard-navigation.nl.md) — toegankelijkheids-features voor gebruikers
+- [Architectuur-overzicht](../architecture/overview.nl.md) — hoe de frontend integreert met Nextcloud-theming

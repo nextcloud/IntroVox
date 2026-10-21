@@ -8,9 +8,10 @@ These files are in place in the IntroVox repository and configure Transifex sync
 
 | File | Purpose |
 |---|---|
-| `.tx/config` | Transifex resource configuration (PO format, points the sync bot at the right files) |
+| `.tx/config` | Transifex resource configuration (`o:nextcloud:p:nextcloud:r:introvox`, PO format, `translationfiles/<lang>/introvox.po`) |
+| `translationfiles/templates/introvox.pot` | The source strings (`npm run pot`: `scripts/extract-en-json.js` scans `src/` and `lib/`, `scripts/generate-pot.js` writes the POT) |
 | `l10n/.gitkeep` | Keeps the `l10n/` directory tracked in git even before any translations land |
-| `.l10nignore` | Exclusions for the Nextcloud l10n sync bot (e.g., docs/, .gitea/) |
+| `.l10nignore` | Exclusions for the Nextcloud l10n sync bot (e.g. `docs/`, `js/`, `node_modules/`, the test folders) |
 
 ## Translation Flow
 
@@ -53,6 +54,10 @@ Before v1.6.0, IntroVox maintained a hardcoded map of language codes to display 
 
 `ApiController::getWizardSteps()` uses `IFactory::findLanguage(null)` to obtain the user's raw language preference (deliberately not `findLanguage('introvox')`, which would re-route to a language IntroVox happens to ship a translation file for). `DefaultStepsService::getForLanguage($lang)` then builds the eight default steps via `IFactory::get('introvox', $lang)`, with an explicit English fallback when `$lang` has no translation file — never the system default language.
 
+### Built-in Tours (2.0.0+)
+
+The built-in tours for Files, Talk, Deck and Calendar are translated the same way. `BuiltinTours::stepsIn($l)` defines their steps with `$l->t()`, so their strings are in the POT like the welcome tour's; `BuiltinTours::steps($id, $lang)` builds them in the user's language, its base language, or English. For users, an admin's own steps for the user's language come first, then the Transifex translation, then the admin's steps in the tour's main language, then English (see [API Reference](api-reference.md#a-tour-for-an-app-or-page-tourid)).
+
 ## English as Transifex Source (v1.6.0+)
 
 Pre-v1.6.0, default step content used opaque translation keys:
@@ -89,14 +94,20 @@ Since v1.6.0, every PWA string is wrapped in `t('introvox', '<English source>')`
 For developers updating translations during development:
 
 ```bash
-# After editing l10n/<lang>.json (manual or via Transifex pull):
-python3 regenerate_js_translations.py
+# Pull the translations and convert them (needs the tx CLI and a Transifex token):
+./scripts/sync-translations.sh
 
-# Then build:
-npm run build
+# Or by hand:
+tx pull -a --minimum-perc=1
+python3 scripts/po2l10n.py          # every translationfiles/*/introvox.po
+python3 scripts/po2l10n.py de nl    # only these languages
 ```
 
-The Python script converts `l10n/<lang>.json` files into the `l10n/<lang>.js` format that webpack picks up at build time. Both `.json` and `.js` files are shipped in the App Store tarball.
+`scripts/po2l10n.py` converts `translationfiles/<lang>/introvox.po` into `l10n/<lang>.js` and `l10n/<lang>.json`, exactly as the Nextcloud Transifex bot writes them. The `.js` registers the translations in the browser through `OC.L10N.register`; the `.json` is what the server reads. Neither goes through webpack. Both are shipped in the App Store tarball.
+
+### The 2.0.0 Translations
+
+2.0.0 ships a pull of its own from Transifex, made on release day (21 October 2026) with the steps above: every language with translations (105 languages), including those under 25% that the bot would leave out. What is not translated shows in English.
 
 ## Reintroduced: `DefaultStepsService` (v1.7.0+)
 

@@ -9,7 +9,7 @@ Je kunt je IntroVox-tour-voorkeuren op elk moment beheren via je persoonlijke in
 1. Klik op je **profielfoto** of **gebruikersnaam** rechtsboven
 2. Kies **Tours**, net boven **Help**
 
-Of: **Persoonlijke instellingen**, en dan **IntroVox** in de linker-sidebar. Je beheerder kan het item **Tours** verbergen; de pagina is er altijd.
+Of: **Persoonlijke instellingen**, en dan **IntroVox** in de linker-sidebar. Je beheerder kan het item **Tours** verbergen, en het is ook weg zolang de tours voor iedereen uit staan; de pagina is er altijd.
 
 ## Beschikbare opties
 
@@ -24,8 +24,8 @@ In je persoonlijke instellingen kun je:
 ### Methode 1 — vanuit persoonlijke instellingen
 
 1. Navigeer naar **Persoonlijke instellingen → IntroVox**
-2. Klik op **🔄 Tour nu herstarten**
-3. Je wordt naar het dashboard geleid
+2. Klik op **Tour nu herstarten** (Restart tour now)
+3. Je komt op je startpagina
 4. De tour start automatisch
 
 ### Methode 2 — browser-console (geavanceerd)
@@ -53,7 +53,9 @@ Dit start de welkomsttour. Het werkt alleen wanneer je al ingelogd bent en op ee
 
 Naast de welkomsttour kan je beheerder een korte tour maken voor een app, zoals Talk, of voor een andere pagina van Nextcloud. Zo'n tour start vanzelf de eerste keer dat je die app opent, één keer; hij start niet opnieuw in een andere browser of op een ander apparaat. Hij start nooit bovenop de welkomsttour: heb je de welkomsttour nog niet gehad, dan krijg je die eerst, en de tour van de app bij een later bezoek.
 
-Zijn er zulke tours voor je, dan staan ze in **Persoonlijke instellingen → IntroVox** onder **Tours**. Bij elke tour zie je het icoon van de app, de naam, en **Seen** of **Not seen yet**. Klik op **Start** (of **Start again**) om de app te openen en de tour te starten. Dat werkt ook als **Start tours by themselves** uit staat.
+Je beheerder bepaalt wanneer zo'n tour vanzelf start: bijvoorbeeld alleen voor nieuwe accounts, pas een aantal dagen na je eerste login, of alleen tussen twee datums. Een tour kan ook "overal" starten: als tip op de eerstvolgende pagina die je opent. Hoe hij ook is ingesteld, je kunt hem altijd zelf starten vanaf deze pagina.
+
+Zijn er zulke tours voor je, dan staan ze in **Persoonlijke instellingen → IntroVox** onder **Tours**. Bij elke tour zie je het icoon van de app, de naam, en **Gelezen** (Seen) of **Nog niet gezien** (Not seen yet). Klik op **Start** (of **Start again**) om de app te openen en de tour te starten. Dat werkt ook als **Start tours by themselves** uit staat.
 
 ## Tours niet meer vanzelf laten starten
 
@@ -68,12 +70,12 @@ Staat hij uit, dan start er geen tour vanzelf: de welkomsttour niet, en de tours
 
 ### Alleen de welkomsttour
 
-- Klik in de eerste stap op **Skip and don't show again**, of
-- Klik in de laatste stap op **Done**
+- Klik in de eerste stap op **Overslaan en niet meer tonen**, of
+- Klik in de laatste stap op **Klaar**
 
 Allebei markeren ze de welkomsttour als klaar voor jou. Andere tours blijven aan: een tour voor een app start nog steeds de eerste keer dat je die app opent.
 
-In een tour voor een app heeft de eerste stap in plaats daarvan een knop **Skip**. Die tour start daarna niet meer vanzelf.
+In een tour voor een app heeft de eerste stap in plaats daarvan een knop **Overslaan**. Die tour start daarna niet meer vanzelf.
 
 > **Let op:** je kunt de welkomsttour altijd herstarten via **Persoonlijke instellingen → IntroVox**. Je beheerder kan de welkomsttour ook opnieuw aan iedereen tonen; je krijgt hem dan bij je volgende login, tenzij je **Start tours by themselves** hebt uitgezet.
 
@@ -92,7 +94,7 @@ Een tour voor een app komt niet vanzelf terug als hij eenmaal gestart is, ook ni
 
 Je kunt in plaats van de herstart-knop dit bericht zien in persoonlijke instellingen:
 
-### "De introductie-tour is momenteel uitgeschakeld door je beheerder"
+### "De introductietour is momenteel uitgeschakeld door uw beheerder"
 
 Je Nextcloud-beheerder heeft de tours voor alle gebruikers uitgezet. Er start geen tour, de welkomsttour niet en een tour voor een app ook niet, en je kunt er zelf ook geen starten. Neem contact op met je beheerder als je hem alsnog wilt zien.
 
@@ -100,6 +102,6 @@ Je Nextcloud-beheerder heeft de tours voor alle gebruikers uitgezet. Er start ge
 
 ## Zie ook
 
-- [De tour doorlopen](taking-the-tour.md) — hoe je door de tour navigeert
-- [Problemen oplossen](troubleshooting.md) — als dingen niet werken
-- [FAQ](faq.md) — veelgestelde vragen
+- [De tour doorlopen](taking-the-tour.nl.md) — hoe je door de tour navigeert
+- [Problemen oplossen](troubleshooting.nl.md) — als dingen niet werken
+- [FAQ](faq.nl.md) — veelgestelde vragen

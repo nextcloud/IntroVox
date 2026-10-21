@@ -63,11 +63,9 @@ Technical documentation for integration, evaluation, and contribution.
 
 ### Deployment
 
-Installation, App Store submission, and release process.
+Installing and upgrading IntroVox.
 
-- [Installation](deployment/installation.md) — Install from App Store or source
-- [App Store Submission](deployment/app-store-submission.md) — Certificate, packaging, signing, uploading
-- [Release Process](deployment/release-process.md) — Version sync, build, GitHub releases
+- [Installation](deployment/installation.md) — Install from the App Store or source, and upgrade
 
 ## Getting Started
 

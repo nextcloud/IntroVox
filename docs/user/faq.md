@@ -18,19 +18,19 @@ You can close it with **✕** and start it again later from **Personal Settings 
 
 ### Will I see the tour every time I log in?
 
-No. Once you complete the welcome tour or choose **Skip and don't show again**, it doesn't start by itself again. Closing it with **✕** stops it in this browser only. A tour for an app starts by itself once.
+No. Once you complete the welcome tour or choose **Skip and don't show again**, it doesn't start by itself again. Closing it with **✕** stops it in this browser only. A tour for an app starts by itself once, and your administrator can have it start later: only for new accounts, a number of days after your first login, or only between two dates.
 
 ### Why did a tour start when I opened an app?
 
-Your administrator made a short tour for that app. It starts by itself once, the first time you open the app. To see it again, go to **Personal Settings → IntroVox** and click **Start again** next to it under **Tours**. **Tours** in your user menu leads there too.
+Your administrator made a short tour for that app. It starts by itself once, the first time you open the app, unless your administrator set it to start only for new accounts, a number of days after your first login, or between two dates. A tour that starts "anywhere" comes as a tip on whichever page you open next. To see a tour again, go to **Personal Settings → IntroVox** and click **Start again** next to it under **Tours**. **Tours** in your user menu leads there too.
 
 ### Someone sent me a link to a tour. What does it do?
 
-It opens the tour's app and starts the tour there, also if you saw it before or switched off **Start tours by themselves**. If you're not logged in, you log in first. If the tour isn't meant for you, you get the page without a tour.
+It opens the tour's app and starts the tour there, also if you saw it before or switched off **Start tours by themselves**. If you're not logged in, you log in first. If the tour isn't meant for you, you land on your start page without a tour.
 
 ### What is the "Getting started" list on my Dashboard?
 
-Your administrator added a list of first things to do in Nextcloud, such as uploading a file or adding a profile picture. Each task links to where you do it, and ticks itself off once you have done it. Don't need it? Remove it under **Customize** on your Dashboard; you can add it back there.
+Your administrator added a list of first things to do in Nextcloud, such as uploading a file or adding a profile picture. Each task links to where you do it, and ticks itself off once you have done it. With **Put it on every Dashboard**, it appears by itself only for new accounts and for everyone who never arranged their Dashboard; anyone else adds it under **Customize** on their Dashboard. Don't need it? Remove it there; you can add it back the same way.
 
 ## Content
 

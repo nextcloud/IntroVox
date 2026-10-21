@@ -18,9 +18,9 @@ Filtering happens **server-side** in [ApiController::getWizardSteps()](https://g
 ## Configuring Group Visibility
 
 1. Open **Tours**, click **Edit steps** on the tour, and click **Edit** on any step
-2. Find the **Visible to groups** dropdown below the Position selector
+2. Go to the **Visible to** page of the step dialog (on the left) and find the **Visible to groups** field
 3. Select one or more Nextcloud groups
-4. Click **Save** in the form; the step is saved straight away
+4. Click **Save**; the step is saved straight away
 
 To check the result, click **Preview tour** and pick a group under **Preview as**: the preview shows the steps members of that group get. See [Preview](managing-steps.md#preview).
 
@@ -84,7 +84,7 @@ This means:
 
 1. **Start permissive, restrict later** — leave new steps visible to all initially, then add group restrictions once you know who needs what. Easier than the reverse.
 2. **Document your group usage** — keep a note of which groups gate which steps so future admins understand the structure.
-3. **Test with a non-admin account** — group filtering works server-side, but only by logging in as a non-member can you confirm the user experience.
+3. **Check with Preview as** — **Preview tour** → **Preview as** shows the steps members of one group get, without logging in as someone else. See [Preview](managing-steps.md#preview).
 4. **Combine with language separation** — group-based filtering applies *within* a language. To target both a language and a group, configure that language's steps with the relevant group restrictions.
 
 ## Alternatives to Step-Level Group Restriction

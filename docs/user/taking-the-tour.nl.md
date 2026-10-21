@@ -8,7 +8,7 @@ Elke stap toont:
 
 **Header**
 
-- **Titel** — waar deze stap over gaat (bv. `📁 Bestanden`)
+- **Titel** — waar deze stap over gaat (bv. `📁 Bestanden & apps`)
 - **Sluit-knop (✕)** — verlaat de tour zonder hem permanent uit te schakelen
 
 **Inhoud**
@@ -20,18 +20,18 @@ Elke stap toont:
 
 **Footer**
 
-- **Back** — naar de vorige stap
-- **Next** / **Done** — doorgaan, of afronden bij de laatste stap
+- **Terug** — naar de vorige stap
+- **Volgende** / **Klaar** — doorgaan, of afronden bij de laatste stap
 
 ## Navigeren door stappen
 
 ### Vooruit gaan
 
-- Klik op **Next**, of druk op de pijltjestoets naar rechts (`→`)
+- Klik op **Volgende**, of druk op de pijltjestoets naar rechts (`→`)
 
 ### Terug gaan
 
-- Klik op **Back**, of druk op de pijltjestoets naar links (`←`)
+- Klik op **Terug**, of druk op de pijltjestoets naar links (`←`)
 
 ### Verlaten
 
@@ -47,7 +47,7 @@ Wanneer een stap een specifiek onderdeel van de Nextcloud-interface markeert:
 - Een **knipperend pijltje** wijst vanaf de stap naar het element
 - De rest van het scherm wordt licht **gedimd**
 
-Voorbeeld: wanneer de tour de Files-app toont, is het Files-menu-item gemarkeerd zodat je het later makkelijk kunt vinden.
+Voorbeeld: wanneer de tour de app Bestanden toont, is het menu-item Bestanden gemarkeerd zodat je het later makkelijk kunt vinden.
 
 ## Gecentreerde vs. gekoppelde stappen
 
@@ -67,7 +67,7 @@ Je ziet twee soorten stappen:
 
 ### Stappen die wachten
 
-Soms staat het element waar een stap over gaat nog niet op de pagina, bijvoorbeeld omdat je eerst nog iets moet openen of aanmaken. De stap wacht dan met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is, zodat hij de knoppen van het venster vrijlaat). De pagina blijft bruikbaar, en de stap schuift naar het element zodra het verschijnt, hoe lang je er ook over doet. **Next** gaat ook zonder het element verder.
+Soms staat het element waar een stap over gaat nog niet op de pagina, bijvoorbeeld omdat je eerst nog iets moet openen of aanmaken. De stap wacht dan met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is, zodat hij de knoppen van het venster vrijlaat). De pagina blijft bruikbaar, en de stap schuift naar het element zodra het verschijnt, hoe lang je er ook over doet. **Volgende** gaat ook zonder het element verder.
 
 ## Stappen die je iets laten doen
 
@@ -75,10 +75,10 @@ Soms staat het element waar een stap over gaat nog niet op de pagina, bijvoorbee
 
 Sommige stappen laten je dingen uitproberen in plaats van erover te lezen. Tours voor apps doen dat vaak. Wat je erin maakt is echt: de map, het gesprek of de kaart blijft van jou.
 
-- **Klikken:** de stap zegt "Click the highlighted element to continue." en heeft geen knop **Next**. Klik op het element, en de tour gaat vanzelf verder, ook als de klik een andere app opent.
-- **Invullen:** de stap zegt "Fill in the highlighted field to continue." **Next** werkt zodra het veld tekst heeft, zoals de naam van een nieuw gesprek.
+- **Klikken:** de stap zegt "Klik op het gemarkeerde element om verder te gaan." en heeft geen knop **Volgende**. Klik op het element, en de tour gaat vanzelf verder, ook als de klik een andere app opent.
+- **Invullen:** de stap zegt "Vul het gemarkeerde veld in om verder te gaan." **Volgende** werkt zodra het veld tekst heeft, zoals de naam van een nieuw gesprek.
 
-Staat het element niet op de pagina, dan werkt **Next** gewoon, zodat je nooit vastloopt.
+Staat het element niet op de pagina, dan werkt **Volgende** gewoon, zodat je nooit vastloopt.
 
 ## Afbeeldingen en video's
 
@@ -91,18 +91,18 @@ Er zijn drie manieren om de tour te verlaten, met verschillende gevolgen:
 | Actie | Effect |
 |---|---|
 | **✕ Sluiten** | Tour sluit; deze browser onthoudt het, dus hij start hier niet meer vanzelf, maar in een andere browser wel |
-| **Done** (laatste stap) | Tour gemarkeerd als voltooid; start niet meer automatisch, maar je kunt hem herstarten via persoonlijke instellingen |
-| **Skip and don't show again** (eerste stap) | Schakelt auto-start direct uit; zelfde effect als voltooien |
+| **Klaar** (laatste stap) | Tour gemarkeerd als voltooid; start niet meer automatisch, maar je kunt hem herstarten via persoonlijke instellingen |
+| **Overslaan en niet meer tonen** (eerste stap) | Schakelt auto-start direct uit; zelfde effect als voltooien |
 
-Deze tabel gaat over de welkomsttour. **Done** en **Skip and don't show again** beëindigen alleen de welkomsttour; tours voor apps starten nog steeds de eerste keer dat je die app opent.
+Deze tabel gaat over de welkomsttour. **Klaar** en **Overslaan en niet meer tonen** beëindigen alleen de welkomsttour; tours voor apps starten nog steeds de eerste keer dat je die app opent.
 
-Een tour voor een app start maar één keer vanzelf, dus hoe je hem ook verlaat, hij start daarna niet meer vanzelf. De eerste stap heeft daar **Skip** in plaats van **Skip and don't show again**.
+Een tour voor een app start maar één keer vanzelf, dus hoe je hem ook verlaat, hij start daarna niet meer vanzelf. De eerste stap heeft daar **Overslaan** in plaats van **Overslaan en niet meer tonen**.
 
-Om een tour later opnieuw te doen, zie [Persoonlijke instellingen](personal-settings.md).
+Om een tour later opnieuw te doen, zie [Persoonlijke instellingen](personal-settings.nl.md).
 
 ## Zie ook
 
-- [Overzicht](overview.md) — wat IntroVox is
-- [Persoonlijke instellingen](personal-settings.md) — herstarten en uitschakelen
-- [Toetsenbord-navigatie](keyboard-navigation.md) — sneltoetsen
-- [Mobiel](mobile.md) — op telefoons en tablets
+- [Overzicht](overview.nl.md) — wat IntroVox is
+- [Persoonlijke instellingen](personal-settings.nl.md) — herstarten en uitschakelen
+- [Toetsenbord-navigatie](keyboard-navigation.nl.md) — sneltoetsen
+- [Mobiel](mobile.nl.md) — op telefoons en tablets

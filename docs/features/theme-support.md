@@ -29,7 +29,14 @@ Because these variables are scoped to the document and updated by Nextcloud's th
 
 ### Reduced Motion
 
-If the user's system has the "reduce motion" accessibility preference enabled, IntroVox disables its animations (step transitions, fade-ins, overlay tweens).
+If the user's system has the "reduce motion" accessibility preference enabled, the tour keeps still:
+
+- Steps appear without fading in
+- The arrow and the outline around a step's element stand still
+- GIFs and videos don't play by themselves; they start with their play button
+- The tour jumps to a step instead of scrolling smoothly, and so does the step list on the admin page
+
+For everyone else, the arrow and the outline blink a few times and then stay still too, instead of blinking for as long as the step shows.
 
 ### High Contrast
 
@@ -41,7 +48,7 @@ All interactive elements have visible focus indicators that adapt to the current
 
 ### Semantic HTML and ARIA
 
-Steps use semantic HTML (`<h2>` for titles, `<button>` for actions) and ARIA labels where needed, so screen readers can announce content correctly.
+Steps use semantic HTML (Shepherd renders the title as `<h3 class="shepherd-title">`, actions as `<button>`) and ARIA labels where needed, so screen readers can announce content correctly.
 
 ## Custom CSS
 
@@ -50,7 +57,7 @@ IntroVox does not currently support custom CSS overrides via the admin panel. If
 - Use the Nextcloud Theming app to adjust global CSS variables (changes apply to IntroVox automatically)
 - Deploy custom CSS at the Nextcloud level (via the Theming app's "Custom CSS" feature)
 
-Avoid inline styles inside step HTML — they break theme inheritance.
+Inline styles inside step HTML are removed when the step is shown (see [Inline Styles](customization.md#inline-styles)), so they can't break theme inheritance. Use the Theming app instead.
 
 ## See Also
 

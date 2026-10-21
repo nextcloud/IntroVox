@@ -7,7 +7,7 @@ Admins can optionally provide **per-language overrides** — custom copy that re
 ## How language coverage works (the short version)
 
 - **Default content** comes from `$l->t('…')` calls in `lib/Service/DefaultStepsService.php`. The English source strings are extracted to `translationfiles/templates/introvox.pot` and translated on Transifex (`nextcloud/introvox`).
-- **End users always get the wizard in their Nextcloud language**, in the base language of their language (`nl` for `nl_BE`), or in English when there is no translation for it. No language opt-in by the admin, no per-user gating.
+- **End users always get the wizard in their Nextcloud language**: the full language first (`pt_BR`), then its base language (`pt`), and English when there is no translation for either. No language opt-in by the admin, no per-user gating.
 - **Admin overrides** live in the database (`oc_appconfig`, key `wizard_steps_<lang>`). One row per language that has an override; if no row exists, the Transifex-translated default is served.
 
 ## Adding a language override
@@ -18,7 +18,7 @@ Admins can optionally provide **per-language overrides** — custom copy that re
 4. The step editor switches to that language and shows the current default content as a starting point.
 5. Edit the steps. The override row is created with the first change you save, not earlier — so picking a language and bailing out costs nothing.
 
-The **Language** dropdown only lists languages that currently have an override (plus English, always). It will never show the full 80+ language list directly.
+The **Language** dropdown only lists languages that currently have an override (plus English, always). It will never show the full list of 100+ languages directly.
 
 This page is about the welcome tour. A tour for an app works the same way in its own step editor, but only the built-in tours have auto-translated defaults. Any other app tour only has the steps you write, and users whose language has none get the tour's main language. A built-in tour gives users its translated steps as long as their language, its base language and the tour's main language have no steps of your own. See [Tours](tours.md).
 
@@ -36,11 +36,13 @@ The `wizard_steps_<lang>` row is deleted. Users in that language now see the Tra
 
 When a user opens Nextcloud, IntroVox:
 
-1. Reads the user's language via `IFactory::findLanguage(null)` (e.g. `nl_BE`): the language they chose, not one IntroVox happens to have a file for.
-2. Extracts the base language (`nl_BE` → `nl`).
-3. Looks for `wizard_steps_nl` in `oc_appconfig`.
-4. **Override exists** → serves it as-is (after group-visibility filtering).
-5. **No override** → calls `DefaultStepsService::getForLanguage('nl')`, which builds the eight default steps via the Nextcloud `IFactory` translator. If a Dutch translation exists on Transifex, the user sees Dutch; if not, the service falls back to English, never to the server's default language.
+1. Reads the user's language via `IFactory::findLanguage(null)` (e.g. `pt_BR`): the language they chose, not one IntroVox happens to have a file for.
+2. Makes a short list: the full language, then its base language (`pt_BR`, then `pt`).
+3. Looks for an override in that order: `wizard_steps_pt_BR`, then `wizard_steps_pt` in `oc_appconfig`.
+4. **Override exists** → serves the first one it finds as-is, after leaving out disabled steps and steps for groups the user is not in.
+5. **No override for either** → serves the default steps (`DefaultStepsService::getForLanguage()`) in the first of those languages that has a Transifex translation, built via the Nextcloud `IFactory` translator. If neither has one, the user gets English, never the server's default language.
+
+So an override for `pt` also serves `pt_BR` users, unless `pt_BR` has an override of its own. Since 2.0.0: before, only the first two letters of the language were used, so an override or a translation for `pt_BR` or `zh_CN` was never shown.
 
 See [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) and [DefaultStepsService](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php) for the implementation.
 

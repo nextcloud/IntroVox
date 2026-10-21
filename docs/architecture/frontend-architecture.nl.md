@@ -31,9 +31,11 @@ Admin-instellingen-pagina (src/admin.js)
     │   ├── ToursList.vue      ← de tours: schakelaar, Edit steps, ⋯ (Preview, Copy link, Export tour, Show again to everyone, Delete), New tour, Import tour
     │   │   (de acties: useTours.js)
     │   ├── NewTourDialog.vue  ← "New tour" en "Tour settings"
-    │   └── TourEditor.vue     ← de stappen van één tour: talen, CRUD + drag-drop, reset/import/export per taal
+    │   └── TourEditor.vue     ← de stappen van één tour: talen, toevoegen, bewerken, verwijderen, herordenen (slepen of Move step up / Move step down), reset/import/export per taal
     │       ├── AssistantDialog.vue ← "Translate with AI" / "Write steps with AI" (de taken: useAssistant.js)
     │       ├── StepWizard.vue     ← dialoog "New step" / "Edit step"
+    │       │   ├── StepTextEditor.vue ← het veld Text: opmaakbalk, emoji, Edit as HTML (regels in stepTextHtml.mjs)
+    │       │   ├── StepMediaBlock.vue ← Image or video: uploaden, kiezen uit Bestanden, een schermafbeelding plakken; beschrijving, grootte, ondertitels
     │       │   └── ElementPicker.vue  ← "Pick element" (src/picker/)
     │       └── TourPreview.vue    ← "Preview tour" / "Test this step" (src/preview/)
     │           beide in NextcloudFrame.vue (src/frame/): Nextcloud in een iframe
@@ -60,7 +62,7 @@ Bij `DOMContentLoaded` doet elke pagina dit:
 1. Bepaalt in wat voor frame hij zit (`frameKind()`): een eigen pagina, de element-picker van de beheerder, het voorbeeld van de beheerder, of een same-origin-frame van iemand anders. De frame-namen tellen alleen binnen een same-origin-parent, zodat een andere website geen tabblad met zo'n naam kan openen om de tour tegen te houden. In het voorbeeld-frame zet hij `window.introVoxPreview` klaar en stopt.
 2. Definieert `window.introVox` met `start()` (laadt de chunk en start de welkomsttour met de hand), `reset()` (wist de localStorage-markeringen van de welkomsttour) en `isCompleted()`. WizardManager vervangt dit door zijn eigen versie zodra hij draait.
 3. Haalt het `?introvox-tour=<id>` van een deellink uit het adres (`history.replaceState()`), en houdt het alleen als het een tour-id is; heeft een app het adres al veranderd (Deck gaat naar Upcoming cards), dan gebruikt hij de `link` die de server bij de pagina las. Net zo `?introvox-check=<id>`, een eigen taak van de checklist op het Dashboard die vanuit de lijst geopend is: een eigen chunk (`src/runtime/checklist.js`) meldt die.
-4. Roept `chooseTour()` aan met wat de pagina al heeft: de lazy initial state `introvox/runtime` van `LoadScripts` (zie [Backend Architecture](backend-architecture.md#loadscripts)), de link, sessionStorage, localStorage en het pad. Daar is geen request voor nodig.
+4. Roept `chooseTour()` aan met wat de pagina al heeft: de lazy initial state `introvox/runtime` van `LoadScripts` (zie [Backend Architecture](backend-architecture.md#loadscripts), in het Engels), de link, sessionStorage, localStorage en het pad. Daar is geen request voor nodig.
 5. Haalt een start-verzoek weg zodra het gebruikt is, en laadt de tour-chunk alleen als er een tour gekozen is.
 
 ### `src/runtime/chooseTour.mjs`
@@ -116,13 +118,15 @@ Tours voor een app of pagina gebruiken het niet.
 
 Sinds v1.6.0 gebruiken alle 16 default-stap-titels en -teksten Engelse source-strings als Transifex-msgids in plaats van opaque `step_welcome_title`-achtige keys.
 
-### `src/components/SupportSettings.vue` (v1.5.0+)
+### Media en tekst van een stap
 
-Enterprise-subscription-beheer-UI:
+`StepMediaBlock.vue` voegt de afbeelding, GIF of video van een stap toe via `POST /admin/media` of `/admin/media/from-files` en bewerkt het blok `media` van de stap. In de tour bouwt `src/utils/stepMedia.js` (`buildStepMedia()`) de afbeelding of video met DOM-API's uit dat blok, nooit via HTML, controleert het bestands-id opnieuw en laadt het bestand van `GET /media/{file}`; alles wat beweegt krijgt een pauzeknop en staat stil bij verminderde beweging. Zie [Media in tour steps](../security/media.md) (in het Engels).
 
-- Subscription-key-input
-- Validatie tegen `licenses.voxcloud.nl`
-- Per-taal stap-tellings-progress-bars die free-tier (10 stappen per taal) vs. licensed-limieten tonen
+`StepTextEditor.vue` bewerkt de tekst van een stap met een TipTap-editor die beperkt is tot de tags die de tour toont (`EDITOR_TAGS` in `src/admin/stepTextHtml.mjs`, dezelfde allowlist als `src/utils/stepHtml.js`). Teksten worden nog steeds als HTML opgeslagen.
+
+### `src/components/SupportSettings.vue`
+
+Het paneel **Support**: dat IntroVox vrij en open source is zonder limieten, links naar de andere apps, naar een issue melden en naar de broncode, en **Show the admin tour again**. De abonnementssleutel en de stap-tellers per taal die het vóór 1.7.7 had, zijn weg.
 
 ### `src/utils/deviceDetection.js` (v1.6.0+)
 
@@ -145,14 +149,15 @@ IntroVox wrapt [Shepherd.js](https://shepherdjs.dev/) voor tour-rendering:
 
 - Elke stap wordt geregistreerd als `tour.addStep({...})`
 - Element-markering (`.shepherd-target-click-disabled`) wordt overschreven zodat gebruikers nog steeds op gemarkeerde elementen kunnen klikken
-- Custom styling overschrijft Shepherd's default-classes om Nextcloud's thema-variabelen te matchen (zie [Thema-ondersteuning](../features/theme-support.md))
+- Custom styling overschrijft Shepherd's default-classes om Nextcloud's thema-variabelen te matchen (zie [Thema-ondersteuning](../features/theme-support.nl.md))
 
 ### Bug-fixes gerelateerd aan Shepherd-integratie
 
 - **v1.6.1** — `.nextcloud-wizard-step[hidden] { display: none }` toegevoegd om te voorkomen dat Shepherd-verborgen stappen zichtbaar stapelen achter de actieve stap (werd veroorzaakt door `.nextcloud-wizard-step { display: flex }` die de browser-default overschreef)
 - **v1.5.0** — `max-height` en interne body-scrolling toegevoegd zodat lange mobiele stappen navigeerbaar blijven
 - **v1.4.2** — fallback-CSS-selectors en 10s-timeout toegevoegd aan de app-menu-readiness-check
-- **v1.4.1** — stappen met ontbrekende doel-elementen vallen nu terug op gecentreerde weergave in plaats van stil te worden overgeslagen
+- **2.0.0** — een stap waarvan het element er nog niet is, wacht opzij in een hoek, laat de pagina bruikbaar en schuift naar het element zodra het verschijnt; dit verving de gecentreerde weergave van v1.4.1
+- **v1.4.1** — stappen met ontbrekende doel-elementen vielen terug op gecentreerde weergave in plaats van stil te worden overgeslagen
 
 ## Build-configuratie
 
@@ -164,14 +169,14 @@ Bundle-outputs gaan naar `js/`. De `src/`-directory is **niet** opgenomen in App
 ## Vertaal-flow
 
 - Vue-componenten en JS gebruiken `t('introvox', '<Engelse bron>')` uit `@nextcloud/l10n`
-- `python3 regenerate_js_translations.py` converteert `l10n/<lang>.json`-bestanden naar `l10n/<lang>.js`-bestanden die webpack oppakt
+- `python3 scripts/po2l10n.py` zet `translationfiles/<lang>/introvox.po` (uit `tx pull`) om naar `l10n/<lang>.js` en `l10n/<lang>.json`, zoals de Transifex-bot van Nextcloud dat doet: Nextcloud laadt de `.js` in de browser (`OC.L10N.register`) en de `.json` op de server
 - `OCP\L10N\IFactory::getLanguages()` levert display-namen voor de taal-picker (v1.6.0+)
 
-Zie [Transifex-integratie](transifex-integration.md) voor de volledige vertaal-workflow.
+Zie [Transifex-integratie](transifex-integration.nl.md) voor de volledige vertaal-workflow.
 
 ## Zie ook
 
-- [Architectuur-overzicht](overview.md)
-- [Backend-architectuur](backend-architecture.md)
-- [Geleide tours](../features/guided-tours.md) — Shepherd-levenscyclus
-- [Thema-ondersteuning](../features/theme-support.md) — CSS-variabele-overerving
+- [Architectuur-overzicht](overview.nl.md)
+- [Backend-architectuur](backend-architecture.nl.md)
+- [Geleide tours](../features/guided-tours.nl.md) — Shepherd-levenscyclus
+- [Thema-ondersteuning](../features/theme-support.nl.md) — CSS-variabele-overerving

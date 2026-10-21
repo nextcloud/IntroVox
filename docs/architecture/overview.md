@@ -38,7 +38,7 @@ IntroVox is a Nextcloud app that follows Nextcloud's standard app architecture: 
                               │
                               ▼
                   licenses.voxcloud.nl
-              (telemetry + subscription validation)
+              (telemetry + optional subscription key)
 ```
 
 ## Core Components
@@ -53,8 +53,9 @@ IntroVox is a Nextcloud app that follows Nextcloud's standard app architecture: 
 | `src/personal.js` | Personal settings UI entry point |
 | `src/components/WizardManager.vue` | Manages Shepherd.js tour lifecycle and step rendering, for the welcome tour and tours for apps |
 | `src/admin/ToursList.vue`, `src/admin/NewTourDialog.vue` | The admin's Tours pane: the list of tours, and making or changing a tour for an app |
-| `src/components/SupportSettings.vue` | Enterprise subscription UI in admin Support tab |
-| `src/components/wizardSteps.js` | Default step definitions wrapped in `t('introvox', ...)` |
+| `src/admin/TourEditor.vue`, `src/admin/StepWizard.vue` | The steps of one tour, and the dialog that edits a step, with its text editor and media (`StepTextEditor.vue`, `StepMediaBlock.vue`) |
+| `src/components/SupportSettings.vue` | The **Support** pane: about IntroVox, links, and **Show the admin tour again** |
+| `src/components/wizardSteps.js` | Default step definitions wrapped in `t('introvox', ...)`, and the helpers that find and wait for a step's element |
 
 Technology stack: Vue 3 (Composition API), webpack, [Shepherd.js](https://shepherdjs.dev/), `@nextcloud/vue`.
 
@@ -65,16 +66,21 @@ See [Frontend Architecture](frontend-architecture.md).
 | Component | Responsibility |
 |---|---|
 | `AdminController` | Admin CRUD for the steps of every tour, languages, settings; export/import |
-| `ToursController` | Admin: the tours themselves (list, create, change, delete, show again) |
-| `ApiController` | Endpoints for every logged-in user: `getWizardSteps`, `tourEvent`, tracking events |
-| `LicenseController` | Enterprise subscription validation and stats |
+| `ToursController` | Admin: the tours themselves (list, create, change, delete, show again, statistics, export and import) |
+| `AssistantController`, `TourAssistant` | Admin: translating a tour and drafting steps with the Nextcloud Assistant (`OCP\TaskProcessing`) |
+| `ApiController` | Endpoints for every logged-in user: `getWizardSteps`, `tourEvent`, `tourReached`, `checklistOpened`, tracking events |
+| `LinkController` | A tour's share link, `GET /tour/{id}`: redirects to the tour's page |
+| `MediaController`, `MediaUploadController`, `MediaService` | Images, videos and captions in steps: checked, stripped of metadata, stored in IntroVox's app data, served only to users who get the step |
+| `LicenseController` | An optional subscription key: validation and usage report. Nothing in IntroVox is limited by it |
 | `PersonalController` | Per-user tour preferences (`wizard_disabled`, `tours_disabled`) and the user's list of tours for apps |
 | `TourRepository`, `TourStateService`, `TourValidator` | The tours, per-user tour state, and checking a tour before it is stored |
 | `TelemetryService` | Aggregates anonymous usage stats; ships to license server |
-| `LicenseService` | Validates subscription keys against `licenses.voxcloud.nl` |
-| `TelemetryJob` | Background job that ships telemetry on a daily cadence |
-| `LicenseUsageJob` | Background job that syncs license state daily (with stable jitter) |
+| `LicenseService` | Validates the optional subscription key against `licenses.voxcloud.nl` |
+| `TelemetryJob` | Background job that ships telemetry every 24 hours, once an admin has been asked |
+| `LicenseUsageJob` | Background job that reports usage daily (with stable jitter) when a subscription key is set |
 | `LoadScripts` | Event listener that loads IntroVox's bootstrap on every page, with the `introvox/runtime` initial state |
+| `UserMenuEntry` | Event listener that adds **Tours** to the user menu |
+| `ChecklistWidget` | "Getting started" on the Dashboard (Dashboard API v2) |
 | `AdminSettings` / `PersonalSettings` | Nextcloud Settings page integration |
 
 See [Backend Architecture](backend-architecture.md).
@@ -85,6 +91,7 @@ See [Backend Architecture](backend-architecture.md).
 |---|---|
 | `oc_appconfig` | Global settings (`wizard_enabled`, `wizard_version`); per-language admin overrides of the welcome tour (`wizard_steps_<lang>`, only present when an admin saved one); the tour index (`tours`) and the steps of tours for apps (`tour_steps_<id>_<lang>`); telemetry preferences |
 | `oc_preferences` | Per-user state (`introvox/wizard_disabled`, `tours_disabled`, `tour_<id>_seen` / `_completed` / `_skipped` / `_reached`, `checklist_<id>`, `checklist_uploaded`, telemetry timestamps for `markUserStarted/Completed/Skipped`) |
+| IntroVox's app data (`IAppData`) | Images, videos and captions of steps; JSON backups of the last ten deleted tours |
 | Browser localStorage | Frontend-only completion state of the welcome tour (`introvox_completed`, `introvox_version`); checked against `wizard_version` to decide auto-restart |
 
 No custom database tables — IntroVox stays within Nextcloud's standard storage abstractions.
@@ -100,13 +107,18 @@ IntroVox depends on these Nextcloud APIs:
 - **`OCP\L10N\IFactory`** — `findLanguage(null)` for raw user-locale detection (v1.7.0+, deliberately bypasses per-app validation that silently rerouted on missing translations), `getLanguages()` for the override-picker display names, and `get('introvox', $lang)` to build the auto-translated default tour for any language
 - **`OCP\IGroupManager`** — group membership checks for step filtering
 - **`OCP\IUserSession`** — current-user lookup
-- **`OCP\Util::hasExtendedSupport`** — Enterprise tier detection (v1.5.0+)
+- **`OCP\Support\Subscription\IRegistry`** — `delegateHasValidSubscription()` and `delegateHasExtendedSupport()`, reported in telemetry
+- **`OCP\TaskProcessing\IManager`** — `core:text2text` tasks for **Translate with AI** and **Write steps with AI**
+- **`OCP\Files\IAppData`** — IntroVox's own copies of step media, and tour backups
+- **`OCP\Dashboard\IAPIWidgetV2`** — the checklist on the Dashboard
+- **`LoadAdditionalEntriesEvent`** — **Tours** in the user menu
+- **`OCP\App\IAppManager`**, **`OCP\INavigationManager`** — whether a user can open a tour's app, and the apps menu for **Where does it start?**
 - **Nextcloud Settings sections** — admin and personal settings pages
-- **Background jobs** — `TimedJob` for telemetry and license sync
+- **Background jobs** — `TimedJob` for telemetry and the usage report
 
 ### External Services
 
-- **`licenses.voxcloud.nl`** — Enterprise subscription validation and telemetry collection (v1.4.x+)
+- **`licenses.voxcloud.nl`** — telemetry collection, and validation of an optional subscription key (nothing in IntroVox depends on it)
 
 ## Request Flow: Tour Start
 
@@ -143,7 +155,7 @@ See [Frontend Architecture](frontend-architecture.md) for the order of the rules
 
 ## Security Model
 
-- **CSRF protection** restored in v1.5.0 on all state-changing admin endpoints
+- **CSRF protection** on every route, `GET` included, since 2.0.0, except `GET /media/{file}` (an `<img>` or `<video>` cannot send a token) and `GET /tour/{id}` (a share link from a mail; it only redirects). v1.5.0 restored it on the state-changing admin endpoints
 - **Defensive admin checks** via `IGroupManager::isAdmin()` on every admin endpoint, in addition to the framework's annotation-based check
 - **Step HTML** is checked on save and import (`StepValidator`: known fields, types, lengths) and cleaned when shown: `sanitizeStepHtml()` (DOMPurify) keeps only basic formatting and links, so imported files and Transifex translations cannot add markup. Up to 1.6.x `OCP\Util::sanitizeHTML` escaped it on save; `UnescapeLegacyWizardStepHtml` repairs steps stored that way
 - **Server-side group filtering** — `visibleToGroups` is enforced in the API layer; hidden steps are never sent to the client
@@ -151,7 +163,7 @@ See [Frontend Architecture](frontend-architecture.md) for the order of the rules
 
 ## Resilience
 
-- **Defensive `is_array()` guard** in `ApiController::getWizardSteps` (v1.4.3+) — if `wizard_steps_<lang>` doesn't decode to a JSON array, the backend falls back to defaults rather than crashing
+- **Defensive `is_array()` guard** in `TourRepository::steps()` — if `wizard_steps_<lang>` or `tour_steps_<id>_<lang>` doesn't decode to a JSON array, it counts as no steps, so the backend falls back to defaults rather than crashing
 - **App-menu readiness fallback selectors + 10s timeout** (v1.4.2+) — tour won't hang indefinitely if menu selectors don't match
 - **Steps wait for a missing element** — a step whose element isn't there yet waits aside in the bottom right corner with its text (bottom left while a dialog is open), leaves the page usable, and moves to the element once it appears; **Next** still goes on. Up to 1.7.x such a step was shown centered (v1.4.1+), before that it was skipped
 

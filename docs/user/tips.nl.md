@@ -23,8 +23,8 @@ Na het voltooien (of overslaan) van de tour, hier wat tips om te blijven verkenn
 ## 4. Leer een paar sneltoetsen
 
 - `/` — snelzoeken
-- `N` — nieuw bestand aanmaken (in de Files-app)
-- `U` — bestanden uploaden (in de Files-app)
+- `N` — nieuw bestand aanmaken (in de app Bestanden)
+- `U` — bestanden uploaden (in de app Bestanden)
 
 ## 5. Vraag hulp wanneer nodig
 
@@ -42,8 +42,8 @@ Na het voltooien (of overslaan) van de tour, hier wat tips om te blijven verkenn
 
 ### Tijdens de tour
 
-- **Next** — klik op de knop of druk op `→`
-- **Back** — klik op de knop of druk op `←`
+- **Volgende** — klik op de knop of druk op `→`
+- **Terug** — klik op de knop of druk op `←`
 - **Sluiten** — klik op **✕** of druk op `Escape`
 
 ### De tour beheren

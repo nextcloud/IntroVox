@@ -1,11 +1,11 @@
 # Telemetrie
 
-IntroVox bevat optionele, anonieme gebruiks-rapportage om de applicatie te helpen verbeteren. De eerste keer dat een beheerder de instellingen van IntroVox opent, eindigt de [beheerderstour](settings.nl.md#beheerderstour) met de vraag of die gedeeld mag worden, met de lijst hieronder. Voordat een beheerder het gevraagd is, wordt er niets verstuurd. Daarna staat het aan, tenzij een beheerder **Do not share** koos, en het is op elk moment uit te zetten.
+IntroVox bevat optionele, anonieme gebruiks-rapportage om de applicatie te helpen verbeteren. De eerste keer dat een beheerder de instellingen van IntroVox opent, eindigt de [beheerderstour](settings.nl.md#beheerderstour) met de vraag of die gedeeld mag worden, met de lijst hieronder. Voordat een beheerder het gevraagd is, wordt er niets verstuurd. Daarna staat het aan, tenzij een beheerder **Niet delen** koos, en het is op elk moment uit te zetten.
 
 ![Het paneel Statistieken, met tour-gebruik, instantie-informatie en de telemetrie-schakelaar](../screenshots/statistics.png)
 
 De volledige lijst van wat er wel en niet wordt verstuurd zit achter
-**Exactly what is and is not sent** onderaan het paneel.
+**Precies wat wel en niet wordt verzonden** onderaan het paneel.
 
 ## Wat wordt verzameld?
 
@@ -24,10 +24,10 @@ IntroVox verstuurt periodiek de volgende anonieme data, precies deze velden (`Te
 | Talen met overrides | `languagesWithOverrides` | Talen met een override van de welkomsttour, plus altijd `en` (bv. `["en", "nl"]`) |
 | Tours for everyone | `wizardEnabled` | Of **Tours for everyone** aan staat |
 | Welkomsttour gestart | `wizardStartedCount` | Hoeveel mensen de welkomsttour startten; ieder telt één keer |
-| Welkomsttour voltooid | `wizardCompletedCount` | Hoeveel mensen op **Done** klikten in de laatste stap; ieder telt één keer |
-| Welkomsttour overgeslagen | `wizardSkippedCount` | Hoeveel mensen op **Skip and don't show again** klikten; ieder telt één keer |
+| Welkomsttour voltooid | `wizardCompletedCount` | Hoeveel mensen op **Klaar** klikten in de laatste stap; ieder telt één keer |
+| Welkomsttour overgeslagen | `wizardSkippedCount` | Hoeveel mensen op **Overslaan en niet meer tonen** klikten; ieder telt één keer |
 | Gebruikers die startten | `usersStartedWizard` | Aantal verschillende accounts die ooit de welkomsttour startten |
-| Gebruikers die voltooiden | `usersCompletedWizard` | Aantal verschillende accounts die hem ooit voltooiden met **Done** (overslaan telt niet mee) |
+| Gebruikers die voltooiden | `usersCompletedWizard` | Aantal verschillende accounts die hem ooit voltooiden met **Klaar** (overslaan telt niet mee) |
 | Server-regio | `serverRegion` | Uit de Nextcloud-instelling `default_phone_region` |
 | Default-taal | `defaultLanguage` | Nextcloud-default-taalcode |
 | Default-timezone | `defaultTimezone` | `default_timezone` van Nextcloud, anders de tijdzone van PHP, anders UTC |
@@ -37,7 +37,7 @@ IntroVox verstuurt periodiek de volgende anonieme data, precies deze velden (`Te
 | OS-familie | `osFamily` | `PHP_OS_FAMILY` van PHP, zoals Linux |
 | Web-server | `webServer` | Apache, nginx, of de naam die de serversoftware opgeeft |
 | Docker | `isDocker` | Of de server in een Docker-container draait (boolean) |
-| Licentiesleutel | `licenseKey` | De licentiesleutel van IntroVox, als die is ingesteld; anders leeg. Wordt meegestuurd zodat de licentie-server de Enterprise-claim hieronder kan verifiëren — de booleans alleen zouden anders gespooft kunnen worden |
+| Licentiesleutel | `licenseKey` | De licentiesleutel van IntroVox, als die is opgeslagen; anders leeg (de app heeft er sinds 1.7.7 geen veld meer voor). Wordt meegestuurd zodat de licentie-server de Enterprise-claim hieronder kan verifiëren — de booleans alleen zouden anders gespooft kunnen worden |
 | Enterprise-subscription | `hasValidSubscription` | Of deze Nextcloud een geldige Enterprise-subscription heeft (`IRegistry::delegateHasValidSubscription()`). `false` voor Community en bij elke fout |
 | Extended Support | `hasExtendedSupport` | Of die subscription ook de add-on Extended Support heeft (`IRegistry::delegateHasExtendedSupport()`). `false` voor Community en bij elke fout |
 
@@ -49,7 +49,7 @@ IntroVox verstuurt periodiek de volgende anonieme data, precies deze velden (`Te
 - Geen URLs of domeinnamen (alleen de instance-hash)
 - Geen wachtwoorden of API-tokens
 - Geen per-gebruiker-gedrag — alleen geaggregeerde aantallen
-- Niets over tours voor apps of pagina's, en niets van de statistieken per tour (**How far people get**): die blijven op je eigen server, in het paneel [Statistics](tours.nl.md#statistieken)
+- Niets over tours voor apps of pagina's, en niets van de statistieken per tour (**Hoe ver mensen komen**): die blijven op je eigen server, in het paneel [Statistieken](tours.nl.md#statistieken)
 
 ## Waar wordt data naartoe gestuurd?
 
@@ -62,8 +62,8 @@ Het endpoint is door beheerders configureerbaar via de `telemetry_url`-app-confi
 ### Via admin-paneel
 
 1. Ga naar **Instellingen → Beheer → IntroVox**
-2. Open het tabblad **Statistics**
-3. Zet **Share anonymous usage statistics** uit
+2. Open het tabblad **Statistieken**
+3. Zet **Anonieme gebruiksstatistieken delen** uit
 
 ### Via command-line
 
@@ -77,16 +77,18 @@ Als je firewall outbound-connecties naar `licenses.voxcloud.nl` blokkeert, faalt
 
 ## Handmatig rapport
 
-Je kunt direct een telemetrie-rapport versturen via het Support-tabblad:
+Je kunt direct een telemetrie-rapport versturen via het paneel Statistieken:
 
 1. Ga naar **Instellingen → Beheer → IntroVox**
-2. Open het **Support**-tabblad
-3. Klik op **Send report now**
+2. Open het tabblad **Statistieken**
+3. Klik op **Rapport nu versturen**, in de melding onder **Anonieme gebruiksstatistieken delen**
+
+De knop staat er alleen zolang **Anonieme gebruiksstatistieken delen** aan staat.
 
 De knop toont duidelijke feedback:
 
-- **Succes**: bevestigt dat het rapport is verstuurd en updatet het tijdstempel
-- **Fout**: toont de specifieke server-foutmelding (bv. rate-limit, connectivity-issue)
+- **Succes**: "Statistieken verzonden", en **Laatste rapport verzonden** toont het nieuwe tijdstip
+- **Fout**: "Fout bij het verzenden van de statistieken: …" met de reden van de server (bv. rate-limit, verbindingsprobleem)
 
 ## Wizard-tracking-events
 
@@ -95,8 +97,8 @@ Naast het periodieke aggregate-rapport rapporteert de wizard drie real-time leve
 | Event | Endpoint | Wanneer |
 |---|---|---|
 | `start` | `POST /apps/introvox/api/wizard/start` | Gebruiker begint de tour |
-| `complete` | `POST /apps/introvox/api/wizard/complete` | Gebruiker klikt op **Done** in de laatste stap |
-| `skip` | `POST /apps/introvox/api/wizard/skip` | Gebruiker klikt op **Skip and don't show again** |
+| `complete` | `POST /apps/introvox/api/wizard/complete` | Gebruiker klikt op **Klaar** in de laatste stap |
+| `skip` | `POST /apps/introvox/api/wizard/skip` | Gebruiker klikt op **Overslaan en niet meer tonen** |
 
 Deze updaten de per-gebruiker `markUserStarted/Completed/Skipped`-timestamps in `oc_preferences` en voeden de aggregate-counts in het volgende telemetrie-rapport. Er wordt geen content uit de tour meegestuurd.
 
@@ -110,6 +112,6 @@ Deze updaten de per-gebruiker `markUserStarted/Completed/Skipped`-timestamps in 
 
 ## Zie ook
 
-- [Instellingen](settings.md) — admin-paneel-overzicht
-- [FAQ](faq.md) — verzamelt de app telemetrie?
-- [Backend-architectuur](../architecture/backend-architecture.md) — TelemetryService-internals
+- [Instellingen](settings.nl.md) — admin-paneel-overzicht
+- [FAQ](faq.nl.md) — verzamelt de app telemetrie?
+- [Backend-architectuur](../architecture/backend-architecture.nl.md) — TelemetryService-internals

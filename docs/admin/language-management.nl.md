@@ -2,23 +2,23 @@
 
 Sinds v1.7.0 werkt IntroVox vanzelf in elke taal die Nextcloud kent. De standaardinhoud van de wizard wordt vertaald via Transifex, en gebruikers zien hem in hun Nextcloud-taal zonder dat een beheerder iets hoeft te doen.
 
-Beheerders kunnen **overrides per taal** maken: eigen tekst die de standaardinhoud vervangt, alleen voor die ene taal. Overrides zijn de uitzondering; de meeste installaties hebben er nooit een nodig.
+Beheerders kunnen **overrides per taal** maken: eigen tekst die de standaardinhoud vervangt, alleen voor die ene taal. Overrides zijn de uitzondering; de meeste installaties hebben er nooit een nodig. In de Nederlandse interface heet een override een *eigen versie* (**Taalspecifieke versie toevoegen**, **Talen met een eigen versie**).
 
 ## Hoe de talen werken (kort)
 
 - **De standaardinhoud** komt uit aanroepen van `$l->t('…')` in `lib/Service/DefaultStepsService.php`. De Engelse bronteksten gaan naar `translationfiles/templates/introvox.pot` en worden vertaald op Transifex (`nextcloud/introvox`).
-- **Gebruikers krijgen de wizard altijd in hun Nextcloud-taal**, in de basistaal van hun taal (`nl` voor `nl_BE`), of in het Engels als er geen vertaling voor is. De beheerder zet geen talen aan, en er is geen schifting per gebruiker.
+- **Gebruikers krijgen de wizard altijd in hun Nextcloud-taal**: eerst de volledige taal (`pt_BR`), dan de basistaal (`pt`), en Engels als er voor geen van beide een vertaling is. De beheerder zet geen talen aan, en er is geen schifting per gebruiker.
 - **Overrides van de beheerder** staan in de database (`oc_appconfig`, sleutel `wizard_steps_<lang>`). Eén rij per taal met een override; is er geen rij, dan krijgt de gebruiker de standaardstappen die op Transifex vertaald zijn.
 
 ## Een override voor een taal toevoegen
 
-1. Ga naar **Instellingen → Beheer → IntroVox → Tours** en klik bij de **Welcome tour** op **Edit steps**.
-2. Klik op **Add language override**.
-3. Typ om te zoeken in de volledige lijst met Nextcloud-talen, kies een taal en klik op **Add override**.
+1. Ga naar **Instellingen → Beheer → IntroVox → Tours** en klik bij de **Welcome tour** op **Stappen bewerken**.
+2. Klik op **Taalspecifieke versie toevoegen**.
+3. Typ om te zoeken in de volledige lijst met Nextcloud-talen, kies een taal en klik op **Eigen versie toevoegen**.
 4. De stappen-editor schakelt naar die taal en toont de huidige standaardinhoud als begin.
 5. Pas de stappen aan. De override-rij wordt gemaakt bij de eerste wijziging die je opslaat, niet eerder; een taal kiezen en weer afhaken kost dus niets.
 
-De keuzelijst **Language** toont alleen talen die nu een override hebben (plus Engels, altijd). Hij toont nooit direct de volledige lijst van 80+ talen.
+De keuzelijst **Taal** toont alleen talen die nu een override hebben (plus Engels, altijd). Hij toont nooit direct de volledige lijst van 100+ talen.
 
 Deze pagina gaat over de welkomsttour. Een tour voor een app werkt net zo in zijn eigen stappen-editor, maar alleen de ingebouwde tours hebben automatisch vertaalde standaardstappen. Elke andere app-tour heeft alleen de stappen die je zelf schrijft, en wie een taal heeft zonder eigen stappen, krijgt de hoofdtaal van de tour. Een ingebouwde tour geeft gebruikers zijn vertaalde stappen zolang hun taal, de basistaal daarvan en de hoofdtaal van de tour geen eigen stappen van jou hebben. Zie [Tours](tours.nl.md).
 
@@ -27,7 +27,7 @@ Deze pagina gaat over de welkomsttour. Een tour voor een app werkt net zo in zij
 Een taal teruggeven aan de automatisch vertaalde standaardstappen:
 
 1. Kies de taal in de keuzelijst.
-2. Klik op **Reset**.
+2. Klik op **Herstellen**.
 3. Bevestig.
 
 De rij `wizard_steps_<lang>` wordt verwijderd. Gebruikers in die taal zien nu de standaardstappen van Transifex, ook de nieuwe vertalingen die er sinds het schrijven van de override bij zijn gekomen.
@@ -36,11 +36,13 @@ De rij `wizard_steps_<lang>` wordt verwijderd. Gebruikers in die taal zien nu de
 
 Als een gebruiker Nextcloud opent, doet IntroVox dit:
 
-1. Leest de taal van de gebruiker via `IFactory::findLanguage(null)` (bv. `nl_BE`): de taal die de gebruiker koos, niet een taal waarvoor IntroVox toevallig een bestand heeft.
-2. Neemt de basistaal (`nl_BE` → `nl`).
-3. Zoekt `wizard_steps_nl` in `oc_appconfig`.
-4. **Er is een override** → stuurt die zoals hij is (na het filteren op groepen).
-5. **Geen override** → roept `DefaultStepsService::getForLanguage('nl')` aan, die de acht standaardstappen maakt met de vertaler van Nextcloud (`IFactory`). Is er een Nederlandse vertaling op Transifex, dan ziet de gebruiker Nederlands; zo niet, dan valt de service terug op Engels, nooit op de standaardtaal van de server.
+1. Leest de taal van de gebruiker via `IFactory::findLanguage(null)` (bv. `pt_BR`): de taal die de gebruiker koos, niet een taal waarvoor IntroVox toevallig een bestand heeft.
+2. Maakt een kort lijstje: de volledige taal, dan de basistaal (`pt_BR`, dan `pt`).
+3. Zoekt in die volgorde een override: `wizard_steps_pt_BR`, dan `wizard_steps_pt` in `oc_appconfig`.
+4. **Er is een override** → stuurt de eerste die hij vindt zoals hij is, zonder uitgeschakelde stappen en zonder stappen voor groepen waar de gebruiker niet in zit.
+5. **Geen override voor allebei** → stuurt de standaardstappen (`DefaultStepsService::getForLanguage()`) in de eerste van die talen die een vertaling op Transifex heeft, gemaakt met de vertaler van Nextcloud (`IFactory`). Heeft geen van beide er een, dan krijgt de gebruiker Engels, nooit de standaardtaal van de server.
+
+Een override voor `pt` geldt dus ook voor gebruikers met `pt_BR`, tenzij `pt_BR` een eigen override heeft. Sinds 2.0.0: daarvoor telden alleen de eerste twee letters van de taal, zodat een override of vertaling voor `pt_BR` of `zh_CN` nooit getoond werd.
 
 Zie [ApiController::getWizardSteps()](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) en [DefaultStepsService](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php) voor de code.
 
@@ -56,13 +58,13 @@ Na de upgrade naar 1.7.0:
 
 Zo komt een van die zes talen weer helemaal van Transifex:
 
-1. Open **Tours** en klik bij de **Welcome tour** op **Edit steps**.
+1. Open **Tours** en klik bij de **Welcome tour** op **Stappen bewerken**.
 2. Kies de taal in de keuzelijst.
-3. Klik op **Reset**.
+3. Klik op **Herstellen**.
 
 Dat verwijdert de rij; vanaf dan komen updates van Transifex vanzelf door.
 
-Heb je een van die zes talen in 1.6.x echt aangepast, laat hem dan staan: het is een echte override, en **Reset** gooit je werk weg.
+Heb je een van die zes talen in 1.6.x echt aangepast, laat hem dan staan: het is een echte override, en **Herstellen** gooit je werk weg.
 
 De oude sleutel `enabled_languages` in de appconfig wordt door 1.7.0 genegeerd, maar blijft in de database staan zodat terugzetten naar een oudere versie veilig is. Je kunt hem met de hand weghalen:
 

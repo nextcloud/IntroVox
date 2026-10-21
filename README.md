@@ -73,6 +73,8 @@ IntroVox shows people around Nextcloud. New users get a welcome tour after their
 
 ## 📦 Installation
 
+**Requirements:** Nextcloud 32–35, PHP 8.1+
+
 ### From Nextcloud App Store (Recommended)
 
 1. Log in to your Nextcloud instance as an administrator
@@ -93,12 +95,16 @@ Or install directly from the [Nextcloud App Store](https://apps.nextcloud.com/ap
 
 ### From Source
 
+In your Nextcloud `apps/` directory:
+
 ```bash
-git clone https://github.com/nextcloud/IntroVox.git
-cd IntroVox
+git clone https://github.com/nextcloud/IntroVox.git introvox
+cd introvox
 npm install
 npm run build
 ```
+
+The folder must be called `introvox`, the app's id. Then enable the app as under Manual Installation.
 
 ## 🚀 Quick Start
 

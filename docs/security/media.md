@@ -19,7 +19,7 @@ A tour package (`POST /admin/tours/import`, `TourTransfer`) is a third way in, a
 
 ## Who can see it
 
-`GET /media/{file}` (`MediaController::show`) is the only IntroVox route without a request token: an `<img>` or `<video>` cannot send one. It only reads, needs a logged-in user with strict cookies (so no cross-site request carries them), and has no other method. `tests-js/controller-security.test.js` allows the exception there and nowhere else.
+`GET /media/{file}` (`MediaController::show`) is one of two IntroVox routes without a request token: an `<img>` or `<video>` cannot send one. It only reads, needs a logged-in user with strict cookies (so no cross-site request carries them), and has no other method. The other is a tour's share link, `GET /tour/{id}` (`LinkController::open`), which serves no file and only redirects to the tour's page. `tests-js/controller-security.test.js` allows the exception for these two routes and nowhere else.
 
 Each file has an access list (`refreshAccess`), rebuilt from the stored steps after every save, import, reset and switch of the tour: everyone, some groups, or nobody but admins. A user who does not get an enabled step with the file gets the same 404 as for a file that does not exist. When the list cannot be rebuilt, files stay closed rather than open.
 

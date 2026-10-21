@@ -23,7 +23,7 @@ For reliability, use multiple selectors separated by commas — see [Best Practi
 
 ### Can I use HTML in step text?
 
-Yes. Supported tags include `<p>`, `<strong>`, `<b>`, `<em>`, `<i>`, `<ul>`, `<ol>`, `<li>`, `<br>`, `<a href="...">`.
+Yes. The tour keeps `<p>`, `<br>`, `<strong>`, `<b>`, `<em>`, `<i>`, `<u>`, `<small>`, `<code>`, `<h3>`, `<h4>`, `<ul>`, `<ol>`, `<li>` and `<a href="...">`; see the table in [Customization](../features/customization.md#supported-tags). The **Text** field writes this HTML for you; **Edit as HTML** shows it.
 
 > **Security note:** Step `title` and `text` are stored as written. Where they are shown, the text keeps only the supported tags and titles are plain text, so an imported tour or a translation cannot add scripts, styles, forms or images. See [Customization](../features/customization.md#html-in-step-content).
 
@@ -93,7 +93,7 @@ Select the language in the dropdown → click **Reset** → confirm. The overrid
 
 ### What if a user's language has no Transifex translation yet?
 
-The wizard falls back to the **English** defaults for that user. (NC's per-app language detection falls back to the system default; IntroVox forces an English fallback in `DefaultStepsService` so users never see a surprise third language.)
+The wizard uses its base language (`pt` for `pt_BR`) if that has a translation, and otherwise falls back to the **English** defaults for that user. (NC's per-app language detection falls back to the system default; IntroVox forces an English fallback in `DefaultStepsService` so users never see a surprise third language.)
 
 ### Can I mix languages in step text?
 
@@ -109,7 +109,7 @@ Several options:
 2. **Group-based step visibility** (v1.2.0+) — restrict individual steps to groups ([Group Visibility](group-visibility.md))
 3. **Globally** — switch off **Tours for everyone** (this stops every tour, also tours for apps)
 
-(Per-language opt-out was removed in v1.7.0 — that pattern doesn't scale across 80+ Transifex languages.)
+(Per-language opt-out was removed in v1.7.0 — that pattern doesn't scale across 100+ Transifex languages.)
 
 To give a tour for an app to some groups only, set **Visible to** on that tour; see [Tours](tours.md).
 
@@ -137,8 +137,8 @@ For the welcome tour:
 | Action | localStorage | Server preference | Auto-start next login? |
 |---|---|---|---|
 | **✕ Close** | Marked as done in this browser | Not changed | Only in another browser |
-| **Done** button | Marked as completed | `wizard_disabled` set | No (unless admin force-shows) |
-| **Skip and don't show again** | Marked as completed | `wizard_disabled` set | No (unless admin force-shows) |
+| **Done** button | Marked as completed | `wizard_disabled` set | No (unless **Show again to everyone** is used) |
+| **Skip and don't show again** | Marked as completed | `wizard_disabled` set | No (unless **Show again to everyone** is used) |
 
 A tour for an app counts as seen as soon as it starts, so it doesn't start by itself again, however the user leaves it. Its first step has **Skip** instead of **Skip and don't show again**.
 
@@ -188,7 +188,7 @@ Yes. Standard Nextcloud reverse-proxy setups work; just ensure JavaScript and CS
 
 ### Does the app collect telemetry?
 
-Telemetry was added in v1.4.x and reports anonymous usage stats (user counts, tour-completion events) to `licenses.voxcloud.nl`. Since v1.5.0, the payload includes the configured subscription key and whether this Nextcloud has an Enterprise subscription (`hasValidSubscription`, and `hasExtendedSupport` for the add-on), used by the license server to verify Enterprise claims. Since 2.0.0 nothing is sent until an admin has been asked: the admin tour ends with the question. Admins can switch telemetry off at any time in the Statistics tab; see [Telemetry](telemetry.md).
+Telemetry was added in v1.4.x and reports anonymous usage stats (user counts, tour-completion events) to `licenses.voxcloud.nl`. Since v1.5.0, the payload includes the IntroVox license key, if one was ever stored (the app has no field for it since 1.7.7, so it is usually empty), and whether this Nextcloud has an Enterprise subscription (`hasValidSubscription`, and `hasExtendedSupport` for the add-on), used by the license server to verify Enterprise claims. Since 2.0.0 nothing is sent until an admin has been asked: the admin tour ends with the question. Admins can switch telemetry off at any time in the Statistics tab; see [Telemetry](telemetry.md).
 
 ## Best Practice Questions
 

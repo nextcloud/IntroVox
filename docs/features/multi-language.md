@@ -6,27 +6,32 @@ Since v1.7.0, IntroVox is auto-translated into every language Nextcloud supports
 
 The runtime model in one paragraph:
 
-> Every NC user gets the wizard in their Nextcloud language. IntroVox uses the base language of the user's language (`nl` for `nl_BE`), and English when there is no translation for it. Default copy is auto-translated via `$l->t()` against the Transifex translation pool. An admin can optionally save a `wizard_steps_<lang>` override for a specific language; if one exists for the user's base language, it replaces the defaults for that language only.
+> Every NC user gets the wizard in their Nextcloud language. IntroVox tries the user's full language first (`pt_BR`), then its base language (`pt`), then English. Default copy is auto-translated via `$l->t()` against the Transifex translation pool. An admin can optionally save a `wizard_steps_<lang>` override; overrides are made per base language, so an override for `pt` also serves users with `pt_BR` or `pt_PT`. An override replaces the defaults for that language only.
 
-There is no list of "supported languages" inside IntroVox. The list is whatever Transifex has translated, plus English (always).
+There is no list of "supported languages" inside IntroVox. The list is whatever Transifex has translated, plus English (always). IntroVox 2.0.0 ships 105 languages as they stood on Transifex on release day, also languages with less than 25% of the strings translated; what is not translated yet shows in English. A translation made on Transifex after a release reaches users with the next IntroVox release.
 
 ## Language detection at runtime
 
 [`ApiController::getWizardSteps()`](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) calls `IFactory::findLanguage(null)` (deliberately not `findLanguage('introvox')`) to get the user's raw language preference without NC silently rerouting to a language IntroVox happens to ship a file for. Steps:
 
-1. Read user lang via `IFactory::findLanguage(null)` — e.g. `nl_BE`
-2. Extract base language: `nl_BE` → `nl`
-3. Look up `wizard_steps_nl` in `oc_appconfig`
-4. **Override exists** → serve it (after group-visibility filtering)
-5. **No override** → call [`DefaultStepsService::getForLanguage('nl')`](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php), which serves the eight default steps via `IFactory::get('introvox', 'nl')`. If no Dutch translation exists, the service explicitly falls back to **English** (not the system default).
+1. Read user lang via `IFactory::findLanguage(null)` — e.g. `pt_BR`
+2. Make the candidates: the full language, then its base language: `pt_BR`, `pt`
+3. Look up `wizard_steps_pt_BR`, then `wizard_steps_pt` in `oc_appconfig`
+4. **An override exists** → serve the first one found (after group-visibility filtering)
+5. **No override** → take the first candidate IntroVox has a translation for (`IFactory::languageExists()`): `pt_BR`, else `pt`, else **English** (not the system default). [`DefaultStepsService::getForLanguage()`](https://github.com/nextcloud/IntroVox/blob/main/lib/Service/DefaultStepsService.php) then serves the eight default steps in that language via `IFactory::get('introvox', <lang>)`
+
+Before 2.0.0 only the base language was used, so a translation for `pt_BR` or `zh_CN` never reached anyone.
 
 ## Fallback table
 
 | User language | Admin override exists? | What the user sees |
 |---|---|---|
 | `nl` | yes | The admin's `wizard_steps_nl` content as-is |
+| `nl_BE` | yes, for `nl` | The `nl` override: overrides are per base language |
 | `nl` | no | Auto-translated defaults from Transifex (or English if no Dutch translation) |
-| `it` | no, no Italian translation | English defaults (explicit `en` fallback in `DefaultStepsService`) |
+| `pt_BR` | no | The `pt_BR` translation; without one the base language `pt`, else English |
+| `pt_BR` | yes, for `pt` | The `pt` override: an override goes before any translated defaults |
+| `it` | no, no Italian translation | English defaults (explicit `en` fallback) |
 | `xx` (invalid) | n/a | English defaults |
 
 The explicit English fallback prevents the surprising "Italian user gets Dutch tour" behaviour caused by NC's default `findLanguage()` validation.
@@ -66,7 +71,7 @@ The repo carries:
 - **`translationfiles/templates/introvox.pot`** — POT template extracted from all `$l->t()` and `t('introvox', ...)` calls
 - **`l10n/.gitkeep`** — keeps the directory tracked even when empty
 - **`.l10nignore`** — exclusions for the sync bot
-- **`regenerate_js_translations.py`** — Python helper that regenerates `l10n/*.js` from `l10n/*.json`
+- **`scripts/po2l10n.py`** — Python helper that converts the PO files pulled from Transifex (`translationfiles/<lang>/introvox.po`) into `l10n/<lang>.json` and `l10n/<lang>.js`, as the sync bot does
 
 The sync was requested in [docker-ci#938](https://github.com/nextcloud/docker-ci/issues/938) and went live alongside v1.7.0.
 

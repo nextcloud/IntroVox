@@ -71,7 +71,7 @@ A step with a **page** (for example `/apps/spreed/` for Talk) belongs to that ap
 Steps are filtered server-side before reaching the frontend:
 
 1. **Enable check** — for the welcome tour, if **Tours for everyone** (`wizard_enabled`) or the welcome tour itself is off, the API returns an empty step list. For another tour, anyone who may not get it (tours or the tour are off, the tour is unknown, they are outside its groups, or cannot open its app) gets a 404, the same answer for each case
-2. **Language resolution** — `IFactory::findLanguage(null)` resolves the user's language. The welcome tour serves the admin override `wizard_steps_<lang>` for the base language, or the Transifex-translated default set (with explicit English fallback when no translation exists for that language). Another tour serves the steps of the user's language, else its base language, else the tour's main language; a built-in tour without steps of the admin's own serves its translated default steps
+2. **Language resolution** — `IFactory::findLanguage(null)` resolves the user's language. The welcome tour serves the admin override for the user's full language, else for its base language (`wizard_steps_pt_BR`, then `wizard_steps_pt`; an admin makes overrides per base language, so one for `pt` serves `pt_BR` too). Without an override it serves the Transifex-translated default set in the full language, else the base language, else English. See [Multi-Language Support](multi-language.md#fallback-table). Another tour serves the steps of the user's language, else its base language, else the tour's main language; a built-in tour without steps of the admin's own serves its translated default steps
 3. **Group check** — steps with non-empty `visibleToGroups` must intersect with the user's groups (via `IGroupManager::getUserGroupIds()`)
 
 Disabled steps (`enabled: false`) are also filtered out before being sent to the frontend.
@@ -128,7 +128,7 @@ This is the welcome tour. A tour for an app counts as seen as soon as it starts,
 Administrators can configure, per step:
 
 - Step title (plain text + emoji)
-- Step content (HTML, sanitized server-side since v1.5.0)
+- Step content (HTML: stored as written, and cleaned in the browser with DOMPurify wherever it is shown; see [HTML in Step Content](customization.md#html-in-step-content))
 - An image, GIF or video above the text, with a description and captions
 - CSS selector for element highlighting, picked with **Pick element**
 - A menu button to open first, for elements inside a menu
@@ -137,7 +137,7 @@ Administrators can configure, per step:
 - How it continues: **Next button**, **Click on the element** or **Filling in the field**
 - Enable/disable per step
 - Group visibility per step (v1.2.0+)
-- Step order via drag-and-drop
+- Step order, by dragging or with the **Move step up** and **Move step down** buttons
 
 And per tour: where it starts (an app, a page, or anywhere), its name and main language, its groups, **Who gets it**, and when it starts by itself (days after the first login, dates).
 
@@ -148,5 +148,6 @@ See [Customization](customization.md) and [Managing Tour Steps](../admin/managin
 - [Customization](customization.md) — HTML, CSS selectors, positioning
 - [Step Visibility](step-visibility.md) — group filters and user preferences
 - [Multi-Language Support](multi-language.md) — per-language step content
+- [Tours](../admin/tours.md) — preview, [share links](../admin/tours.md#share-a-tour-with-a-link), [statistics](../admin/tours.md#statistics), [export and import](../admin/tours.md#move-a-tour-to-another-nextcloud) and [AI](../admin/tours.md#write-or-translate-steps-with-ai)
 - [Theme Support](theme-support.md) — light/dark/high contrast
 - [Architecture Overview](../architecture/overview.md) — system design

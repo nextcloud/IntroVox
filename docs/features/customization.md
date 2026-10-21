@@ -57,14 +57,14 @@ Use selectors that work across:
 ### Recommended Patterns
 
 ```css
-/* Use data attributes and CSS classes that survive UI refactors */
-[data-id="files"]
+/* Use language-independent classes and ids that survive UI refactors */
+.unified-search-input
 
-/* Use comma-separated fallbacks */
-[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
+/* Use comma-separated fallbacks for other Nextcloud versions, the one you want most first */
+.unified-search-input, #unified-search, .unified-search__trigger
 
-/* Use language-independent classes */
-.unified-search__trigger, .header-menu__trigger
+/* Combine a class with an href when several entries share the class */
+.app-menu-entry a[href*="/apps/files"]
 ```
 
 ### Anti-Patterns
@@ -75,15 +75,20 @@ button[aria-label="Unified search"]
 
 /* DON'T rely on a single fragile selector */
 #some-very-specific-id-that-changes-per-NC-version
+
+/* DON'T use a class that several elements share: on Nextcloud 34 this lands on the notifications bell */
+.header-menu__trigger
 ```
 
 ### Multi-Fallback Selectors (v1.0.6+)
 
-Default steps use comma-separated selectors so that if one fails (e.g., after a Nextcloud upgrade), another can match:
+Default steps use comma-separated selectors so that if one fails (e.g., after a Nextcloud upgrade), another can match. The search step of the welcome tour:
 
 ```css
-[data-id="files"], #appmenu li[data-id="files"], a[href*="/apps/files"]
+.unified-search-input, #unified-search, .unified-search__trigger, .header-menu__trigger
 ```
+
+Nextcloud 34 has a search field in the header (`.unified-search-input`), older versions a search button (`#unified-search`). `.header-menu__trigger` comes last, only as a last resort: on its own it matches every header menu, and on Nextcloud 34 the first of them is the notifications bell.
 
 The tour tries them in the order written: the step points at the first selector that finds a visible element, wherever the others are in the page. Put the one you want most first.
 
@@ -91,7 +96,9 @@ This significantly reduces the rate of "element not found" failures.
 
 ### Finding the Right Selector
 
-The quickest way is **🎯 Pick element** in the step editor: point at the element and the selector is filled in. See [Pick an element](../admin/managing-steps.md#pick-an-element).
+The quickest way is **Pick element** in the step editor: point at the element and the selector is filled in. See [Pick an element](../admin/managing-steps.md#pick-an-element).
+
+**An element inside a menu** only exists while the menu is open. In **Pick element**, switch to **Browse**, open the menu as you normally would, then hold Shift and click the item. The picker fills in **Open first** with the button that opens the menu, so the step opens it before it shows.
 
 To find one by hand, for example to add comma-separated fallbacks:
 
@@ -124,11 +131,11 @@ If an attached step's element isn't there when the step shows, the step waits as
 
 ## Step Identifier
 
-The **ID** field is auto-generated for new steps (timestamp-based, e.g., `new_1731600000000`) and is used internally for tracking and ordering. It's not editable after creation. Stable IDs are important because:
+Every step has an ID, generated when the step is created (timestamp-based, e.g., `new_1731600000000`) and used internally for tracking and ordering. There is no field for it in the editor; the step list shows it next to the title as "ID: …". Stable IDs are important because:
 
 - Step order is tracked by ID, not position (since v1.0.6) — enable/disable after reordering works correctly
 - Import/export references steps by ID
-- Telemetry events reference the step ID
+- **How far people get** in the statistics records the step ID
 
 ## See Also
 

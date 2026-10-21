@@ -7,7 +7,7 @@ This guide explains how to navigate the IntroVox tour, what the tour window cont
 Each step shows:
 
 **Header**
-- **Title** — what this step is about (e.g., `📁 Files`)
+- **Title** — what this step is about (e.g., `📁 Files & apps`)
 - **Close button (✕)** — exit the tour without disabling it permanently
 
 **Content**

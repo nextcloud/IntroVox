@@ -20,7 +20,7 @@ If the tour still doesn't appear, your administrator may have disabled it for ev
 
 **Problem:** You open an app that has a tour, but the tour doesn't appear.
 
-A tour for an app starts by itself only the first time you open that app, and never on top of the welcome tour: if you haven't had the welcome tour yet, you get that first, and the app's tour on a later visit. To see it (again), go to **Personal Settings → IntroVox**, find it under **Tours** and click **Start** or **Start again**. If the app's tour isn't listed there, it isn't meant for you or your administrator hasn't switched it on.
+A tour for an app starts by itself only the first time you open that app, and never on top of the welcome tour: if you haven't had the welcome tour yet, you get that first, and the app's tour on a later visit. Your administrator may also have set it to start only for new accounts, only a number of days after your first login, or only between two dates. To see it (again), go to **Personal Settings → IntroVox**, find it under **Tours** and click **Start** or **Start again**. If the app's tour isn't listed there, it isn't meant for you or your administrator hasn't switched it on.
 
 ## Steps Are Missing
 
@@ -55,7 +55,7 @@ If the element is not on the page, **Next** works as usual, so you never get stu
 
 **Problem:** The tour shows English text but you selected a different Nextcloud language.
 
-**Most likely cause:** the tour copy hasn't been translated for your language on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) yet. IntroVox falls back to English in that case so you always get readable text. Anyone can contribute translations on Transifex — once your language has translated strings there, the next Nextcloud sync ships them to IntroVox automatically.
+**Most likely cause:** the tour copy hasn't been translated for your language on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) yet. IntroVox falls back to English in that case so you always get readable text. Anyone can contribute translations on Transifex. New translations reach you with the next IntroVox release, once your administrator has updated the app.
 
 **Other things to try:**
 
@@ -94,12 +94,6 @@ Closing the welcome tour with **✕** or Escape is only remembered in this brows
 - Complete the tour fully (click **Done** on the last step), or
 - Click **Skip and don't show again** on the first step, or
 - Switch off **Start tours by themselves** in **Personal Settings → IntroVox** (then no tour starts by itself, also not tours for apps)
-
-## Previously-Shown Steps Stay Visible Behind the Current Step (v1.6.1 fix)
-
-**Problem:** Each new step adds to a stack — old steps remain visible underneath the current one.
-
-This was a bug introduced in v1.4.0 and fixed in v1.6.1. If you're seeing it, ask your administrator to upgrade IntroVox to v1.6.1 or later.
 
 ## See Also
 

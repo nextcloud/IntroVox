@@ -49,6 +49,9 @@ Deze bestanden zijn aanwezig in de IntroVox-repository en configureren Transifex
 
 - **Taal-display-namen** (v1.6.0+): de keuzelijst van **Add language override** haalt de namen uit `OCP\L10N\IFactory::getLanguages()`. Elke taal die Nextcloud kent, is te kiezen, ook een taal die IntroVox nog niet vertaald heeft.
 - **Welke vertaling**: `ApiController::getWizardSteps()` neemt de taal van de gebruiker met `IFactory::findLanguage(null)` (bewust niet `findLanguage('introvox')`). `DefaultStepsService::getForLanguage()` maakt de acht standaardstappen in die taal, en in het Engels als er geen vertaalbestand voor is, nooit in de standaardtaal van het systeem.
+- **Ingebouwde tours** (sinds 2.0.0): de tours voor Files, Talk, Deck en Calendar worden net zo via Transifex vertaald (`BuiltinTours::stepsIn()` met `$l->t()`).
+
+2.0.0 is uitgebracht met een eigen pull van Transifex, gemaakt op de releasedag (21 oktober 2026): elke taal met vertalingen, ook die onder 25%.
 
 ## Voor de complete referentie
 
@@ -56,7 +59,8 @@ Zie de [Engelse Transifex-integratie](transifex-integration.md) voor:
 
 - Engelse bronteksten als Transifex-msgids (sinds v1.6.0)
 - De vertaalde instructies voor het installeren als app (PWA)
-- Vertalingen lokaal bijwerken met `regenerate_js_translations.py`
+- Vertalingen lokaal bijwerken met `scripts/sync-translations.sh` (`tx pull` en `scripts/po2l10n.py`, dat `l10n/<lang>.js` en `.json` schrijft zoals de bot van Nextcloud)
+- Waarom 2.0.0 met een eigen pull van Transifex is uitgebracht
 - `DefaultStepsService` (sinds v1.7.0) en waarom de browser de standaardstappen niet meer zelf vertaalt
 - Een nieuwe taal toevoegen: via Transifex, of als override van een beheerder
 

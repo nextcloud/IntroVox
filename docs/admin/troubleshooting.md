@@ -38,7 +38,7 @@ See [Tours](tours.md) for when a tour starts.
 
 | Possible cause | Solution |
 |---|---|
-| Step disabled in admin panel | Toggle the step to **✅** enabled |
+| Step disabled in admin panel | Switch the step on with its switch in the step list |
 | Element isn't on the page | The step waits aside in the bottom right corner (bottom left while a dialog is open) with its text, and moves to the element once it appears; **Next** still goes on. Check the selector with **Test this step**, pick it again with **Pick element**, or use **Remove element** for a centered step |
 | Element only appears after the user does something | Expected: the step waits until it is there. Lead the way with one step per click, see [Steps that wait for the user](managing-steps.md#steps-that-wait-for-the-user) |
 | The step's **Page** is an app the user can't open | The step is left out for that user. Limit it with **Visible to groups** to people who have the app |
@@ -55,7 +55,7 @@ See [Tours](tours.md) for when a tour starts.
 | Browser cache | Hard-refresh: `Cmd+Shift+R` / `Ctrl+Shift+R` |
 | Language not selected in Nextcloud | Verify in user's **Personal Settings → Language** |
 | Translation file missing | Verify `l10n/<lang>.json` exists in the IntroVox app directory |
-| App not rebuilt after `l10n` change | If developing, run `python3 regenerate_js_translations.py` then `npm run build` |
+| App not rebuilt after `l10n` change | If developing, run `python3 scripts/po2l10n.py` then `npm run build` |
 | Hidden steps stacked under current step (v1.4.0–v1.6.0) | Upgrade to v1.6.1+, which adds `.nextcloud-wizard-step[hidden] { display: none }` |
 
 ## Import/Export Issues
@@ -65,9 +65,8 @@ See [Tours](tours.md) for when a tour starts.
 | Possible cause | Solution |
 |---|---|
 | Invalid JSON format | Validate at jsonlint.com; check the file has the expected structure |
-| Missing required fields | Each step must have `id`, `title`, `text`. See the [Import/Export](import-export.md) JSON example |
-| Wrong language code | Make sure the language code in the file (e.g., `en`, `nl`) matches one of your enabled languages |
-| Server file permissions | Verify Nextcloud has write access to its config directory |
+| Missing required fields | The file needs `language` and `steps`, and each step an `id` and a `title`. See the [Import/Export](import-export.md) JSON example |
+| Wrong language code | `language` in the file must be a Nextcloud language code: two letters, optionally with a region, such as `en`, `nl` or `pt_BR`. The steps go to that language, whichever language the editor shows |
 
 ## Hidden Wizard Steps Stack Behind Current Step (v1.6.1 fix)
 
@@ -103,13 +102,60 @@ See [Tours](tours.md) for when a tour starts.
 
 **Fix:** Upgrade to v1.4.2+. Multiple fallback selectors plus a 10-second timeout ensure the tour either starts or fails gracefully.
 
-## CSRF Errors on State-Changing Admin Endpoints
+## CSRF Errors from Scripts or Old Tooling
 
-**Symptom:** Save/reset/import/export admin actions fail with CSRF errors.
+**Symptom:** A script or custom tool that calls IntroVox's routes gets HTTP 412 ("CSRF check failed") or 404.
 
-**Cause:** v1.5.0 restored CSRF protection on 7 POST endpoints (`saveSteps`, `resetToDefault`, `saveSettings`, `exportSteps`, `importSteps`, `toggleTelemetry`, `sendTelemetryNow`) that were previously vulnerable.
+**Cause:** Since 2.0.0 every route needs the CSRF request token, also the ones that only read: the admin `GET` routes, the personal settings and `POST /api/wizard/{start,complete,skip}`. `GET /api/steps` also needs a logged-in user; it used to be public. Only two routes do without the token, because they cannot send one: `GET /media/{file}` (loaded by an image or video in a step) and `GET /tour/{id}` (a tour's share link). `POST /admin/step`, `PUT /admin/step/{id}` and `DELETE /admin/step/{id}` no longer exist.
 
-**Fix:** Ensure your admin panel session is fresh and you're using the latest IntroVox version. If you've built custom tooling that calls these endpoints directly, include the CSRF token.
+**Fix:** Send the `requesttoken` header with every call, from a logged-in session. To save steps, send the whole list of a language to `POST /admin/steps`. In the admin page itself, reload the page when the session has expired. See the [API Reference](../architecture/api-reference.md).
+
+## AI Buttons Missing
+
+**Symptom:** The step editor has no **Translate with AI** or **Write steps with AI**.
+
+**Cause:** They only show when Nextcloud has a provider for free prompts (task type `core:text2text`), set up under **Administration settings → Artificial intelligence**. See [Write or translate steps with AI](tours.md#write-or-translate-steps-with-ai).
+
+**Fix:** Install and configure a provider, such as the OpenAI and LocalAI integration or a local model, and reload the step editor. When an answer is slow, check that Nextcloud's background workers for AI tasks run.
+
+## Share Link Starts Nothing
+
+**Symptom:** A link from **Copy link** opens Files, but no tour starts. **Copy link** said "The tour is switched off: the link starts it once you switch it on."
+
+| Possible cause | Solution |
+|---|---|
+| The tour is switched off | Switch it on under **Tours**; the link you copied works from then on |
+| **Tours for everyone** is off | Switch it on under **Settings** |
+| The person is not in the tour's groups, or cannot open its app | Expected: the link only starts the tour for people who may get it |
+
+See [Share a tour with a link](tours.md#share-a-tour-with-a-link).
+
+## Image or Video Refused
+
+**Symptom:** Adding an image or video to a step fails with a message.
+
+| Message | Solution |
+|---|---|
+| "This file type is not supported…" | Use PNG, JPEG, GIF, MP4 or WebM (captions: WebVTT). SVG and WebP are refused; the real file type counts, not the name |
+| "The file is too large. The limit is …" / "The image is too large: at most … megapixels." | Make the file smaller, or raise the limit; see [Image or video](managing-steps.md#image-or-video) |
+| "The file is larger than this server accepts for uploads…" | Put the file in your Files and use **Choose from Files** |
+| "IntroVox has no room for more media…" | Remove media from steps that no longer need it, or raise `media_quota_bytes` / `media_max_files` |
+| "This video has a track with extra data…" | Export the video again without metadata |
+| "This file is shared with you for viewing only…" | Use a copy you may download |
+
+See the [threat model](../security/media.md) for what IntroVox checks and why.
+
+## Checklist Not on the Dashboard
+
+**Symptom:** Users don't see **Getting started** on their Dashboard.
+
+| Possible cause | Solution |
+|---|---|
+| The checklist is off | Switch on **Show "Getting started" on the Dashboard** under **Settings** |
+| The user arranged their own Dashboard, or removed the widget | Expected: **Put it on every Dashboard** only changes the default layout. The user adds it again under **Customize** on the Dashboard |
+| A task is missing from the list | Some tasks only show where they apply: **Take the welcome tour** while the welcome tour is on, **Send a message in Talk** for people who can use Talk, **Secure your account** when an app for two-factor authentication is installed |
+
+See [Checklist on the Dashboard](settings.md#checklist-on-the-dashboard).
 
 ## Checking a Step
 

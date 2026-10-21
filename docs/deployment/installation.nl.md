@@ -57,15 +57,20 @@ sudo -u www-data php occ app:enable introvox
 
 ## Initiële configuratie
 
-Na het inschakelen van de app:
+Na het inschakelen van de app hoeft er voor de welkomsttour niets aan:
 
-1. Ga naar **Instellingen → Beheer → IntroVox**
-2. Zet **Tours for everyone** aan — de tour werkt nu automatisch in elke taal die Nextcloud ondersteunt (vertaald via Transifex; Engels voor talen zonder vertaling)
-3. Open eventueel **Tours**, klik bij de **Welcome tour** op **Edit steps** en klik op **Add language override** om voor een bepaalde taal eigen tekst te schrijven
-4. Beperk eventueel stappen tot bepaalde gebruikersgroepen voor rol-gebaseerde onboarding
-5. Voeg eventueel een tour voor een app toe met **Tours** → **New tour** ([Tours](../admin/tours.nl.md))
+- **Tours for everyone** staat na de installatie aan, dus de welkomsttour start voor elke gebruiker bij de volgende paginalading, in de eigen taal (vertaald via Transifex; Engels voor een taal zonder vertaling)
+- **Tours** verschijnt in het gebruikersmenu van iedereen, net boven **Help**; verberg het onder **Settings** (**Show Tours in the user menu**)
+- Tours voor apps en pagina's, de ingebouwde tours voor Files, Talk, Deck en Calendar, en de checklist op het Dashboard staan uit tot je ze aanzet
+- De eerste keer dat je **Instellingen → Beheer → IntroVox** opent, laat een korte beheerderstour je de pagina zien. Hij sluit af met de vraag over telemetrie; een instantie stuurt geen telemetrie tot een beheerder die vraag gezien heeft
 
-Zie [Beheerdersgids](../admin/guide.md) voor de volledige configuratie-walkthrough.
+Daarna eventueel:
+
+1. Open **Tours**, klik bij de **Welcome tour** op **Edit steps** en klik op **Add language override** om voor een taal eigen tekst te schrijven
+2. Beperk stappen tot gebruikersgroepen voor rol-gebaseerde onboarding
+3. Zet een ingebouwde tour aan, of voeg een eigen tour toe met **Tours** → **New tour** ([Tours](../admin/tours.nl.md))
+
+Zie [Beheerdersgids](../admin/guide.nl.md) voor de volledige configuratie-walkthrough.
 
 ## De app beperken tot specifieke groepen
 
@@ -77,7 +82,7 @@ Als je alleen bepaalde Nextcloud-groepen de wizard wilt laten zien (en niet alle
 
 Gebruikers buiten die groepen krijgen IntroVox' JavaScript niet geladen — de schoonste manier om de app te scopen.
 
-Voor fijnere controle (verschillende stappen per groep), zie [Groep-gebaseerde zichtbaarheid](../admin/group-visibility.md).
+Voor fijnere controle (verschillende stappen per groep), zie [Groep-gebaseerde zichtbaarheid](../admin/group-visibility.nl.md).
 
 ## Upgraden
 
@@ -101,11 +106,20 @@ Upgrades verschijnen in **Instellingen → Apps → Updates** wanneer een nieuwe
    sudo -u www-data php occ app:enable introvox
    ```
 
+### Bijwerken naar 2.0.0
+
+2.0.0 verandert wat een update vanzelf doet. Lees de **Upgrade notes** in de [changelog van 2.0.0](../../CHANGELOG.md#200---2026-10-21) voor je bijwerkt; in het kort:
+
+- De persoonlijke schakelaar "tour uitzetten" heet nu **Start tours by themselves** en geldt voor elke tour. De repair-step `IntroduceTours` zet tours uit voor wie de welkomsttour had uitgezet zonder hem af te maken
+- Nieuwe functies (tours voor apps, ingebouwde tours, de checklist) staan uit; **Tours** in het gebruikersmenu is de uitzondering
+- Telemetrie wacht tot een beheerder de instellingen van IntroVox heeft geopend en de vraag heeft gezien
+- Scripts die de routes van IntroVox direct aanroepen moeten misschien worden aangepast: drie stap-routes zijn weg, en elke route op twee na vraagt het CSRF-request-token
+
 ### Migratie-opmerkingen
 
 IntroVox maakt of migreert geen eigen database-tabellen. Instellingen, tours en hun stappen staan in `oc_appconfig`, gebruikers-voorkeuren in `oc_preferences`. De afbeeldingen en video's van stappen, en de back-ups van de laatste tien verwijderde tours, staan in de app-datamap van IntroVox (`appdata_<instanceid>/introvox` in de datamap van Nextcloud). Upgrades zijn niet-destructief: tours, stappen, overrides per taal, media en gebruikers-voorkeuren blijven behouden.
 
-De defensieve `is_array()`-guard in `ApiController::getWizardSteps()` (v1.4.3+) betekent dat zelfs als een oudere corrupte stap-blob bestaat, de wizard terugvalt op defaults in plaats van crashen.
+De defensieve `is_array()`-guard in `TourRepository::steps()` betekent dat zelfs als een oudere corrupte stap-blob bestaat, de tour terugvalt op de standaardstappen in plaats van crashen.
 
 ## Deïnstallatie
 
@@ -147,11 +161,10 @@ Na installatie:
 2. De welkomsttour zou vanzelf moeten starten op de eerste pagina die je opent, in je eigen taal, zodra de pagina geladen is
 3. Check **Instellingen → Persoonlijk → IntroVox** — de knop **Restart tour now** zou zichtbaar moeten zijn
 
-Als de wizard niet verschijnt, zie [Beheer-troubleshooting](../admin/troubleshooting.md).
+Als de wizard niet verschijnt, zie [Beheer-troubleshooting](../admin/troubleshooting.nl.md).
 
 ## Zie ook
 
-- [Beheerdersgids](../admin/guide.md) — dagelijks beheer
-- [Beheer-troubleshooting](../admin/troubleshooting.md) — wanneer er iets misgaat
-- [App-Store-publicatie](app-store-submission.md) — voor ontwikkelaars die IntroVox zelf releasen
-- [Release-proces](release-process.md) — versie-sync, build, GitHub-releases
+- [Beheerdersgids](../admin/guide.nl.md) — dagelijks beheer
+- [Beheer-troubleshooting](../admin/troubleshooting.nl.md) — wanneer er iets misgaat
+- [Changelog](../../CHANGELOG.md) — wat er per release veranderde (in het Engels)

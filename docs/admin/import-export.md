@@ -14,7 +14,7 @@ Import/Export lets you download a tour's steps as JSON and upload them back late
 ### How to Export
 
 1. Select the language to export from the language dropdown
-2. Click the **📥 Export** button at the top of the steps list
+2. Click **Export** in the row of buttons above the steps list
 3. A JSON file downloads automatically
 
 **Filename format:** `introvox_steps_{language}.json` for the welcome tour, `introvox_{tour}_steps_{language}.json` for a tour for an app or page
@@ -44,7 +44,7 @@ This page is about the steps of one language. To move a whole tour to another Ne
 ### How to Import
 
 1. Open the tour the steps are for: **Tours** → **Edit steps**
-2. Click the **📤 Import** button
+2. Click **Import** in the row of buttons above the steps list
 3. Pick a JSON file from your computer
 4. You'll see a success message: *"Imported X steps (language)"*, and the editor switches to that language
 
@@ -132,8 +132,8 @@ If import fails you'll see a specific error:
 ### Content Creator Collaboration
 
 1. **Admin** exports current English steps
-2. **Admin** sends `introvox-steps-en-2025-01-15.json` to the content writer
-3. **Content writer** opens the JSON in a text editor, edits titles and descriptions, saves as `introvox-steps-en-updated.json`
+2. **Admin** sends `introvox_steps_en.json` to the content writer
+3. **Content writer** opens the JSON in a text editor, edits titles and texts, and saves it
 4. **Admin** imports the updated file
 5. **Admin** tests, then exports again for version control
 
@@ -150,10 +150,12 @@ For per-install custom copy:
 
 ### Multi-Instance Deployment
 
-1. **Admin** configures wizard on a development/staging instance
-2. **Admin** exports all languages (one file per tour and language)
-3. **Admin** imports them on the production instance, into the matching tour (create tours for apps there first with **New tour**)
-4. Consistent user experience across all environments
+1. **Admin** configures the tours on a development/staging instance
+2. **Admin** uses **Export tour** in each tour's ⋯ menu: one `.zip` per tour, with its settings, its steps in every language, and its images and videos
+3. **Admin** uses **Import tour** on the production instance; each tour arrives switched off, and the welcome tour replaces the steps of the languages in the file. See [Move a tour to another Nextcloud](tours.md#move-a-tour-to-another-nextcloud)
+4. **Admin** switches the tours on there
+
+The JSON files of **Export** also work for this, one file per tour and language, but they carry no settings and no images or videos, and an app tour has to exist on the other side first (**New tour**).
 
 ### Version Control
 

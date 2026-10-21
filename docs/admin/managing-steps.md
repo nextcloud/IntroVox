@@ -11,7 +11,7 @@ Steps belong to a tour. Open **Tours** and click **Edit steps** on the tour: the
 | Part | Description |
 |---|---|
 | **Drag handle** | Drag to reorder |
-| **Move up / Move down** | Reorder without a mouse |
+| **Move step up / Move step down** | Arrow buttons: reorder without a mouse |
 | **Step N** | Sequential step number |
 | **Title** | The step heading users see |
 | **ID** | Unique identifier (not editable after creation) |
@@ -180,11 +180,11 @@ Either way, the new order is saved straight away.
 
 **With the keyboard**
 
-1. Tab to the **Move up** or **Move down** button beside the drag handle
+1. Tab to the **Move step up** or **Move step down** button (the arrows beside the drag handle)
 2. Press Enter or Space
 
 The button is disabled at the ends of the list, so the first step has no
-**Move up** and the last has no **Move down**. Dragging is a pointer-only
+**Move step up** and the last has no **Move step down**. Dragging is a pointer-only
 interaction, which is why these buttons exist: they are the only way to
 reorder from the keyboard or with a screen reader.
 

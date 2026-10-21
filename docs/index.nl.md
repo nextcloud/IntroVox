@@ -63,11 +63,9 @@ Technische documentatie voor integratie, evaluatie en bijdragen.
 
 ### Deployment
 
-Installatie, App Store-publicatie en releaseproces.
+IntroVox installeren en bijwerken.
 
-- [Installatie](deployment/installation.nl.md) — Installeren vanuit App Store of source
-- [App Store-publicatie](deployment/app-store-submission.nl.md) — Certificaat, packaging, signing, uploaden
-- [Releaseproces](deployment/release-process.nl.md) — Versie-sync, build, GitHub-releases
+- [Installatie](deployment/installation.nl.md) — Installeren vanuit de App Store of source, en bijwerken
 
 ## Aan de slag
 

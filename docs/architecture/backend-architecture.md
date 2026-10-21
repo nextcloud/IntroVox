@@ -12,11 +12,13 @@ lib/
 │   ├── AdminController.php      ← Admin: steps of every tour, settings, languages, groups, statistics
 │   ├── ToursController.php      ← Admin: the tours themselves (list, create, change, delete, show again, statistics, export, import)
 │   ├── AssistantController.php  ← Admin: translating a tour and drafting steps with the Nextcloud Assistant
-│   ├── ApiController.php        ← User endpoints: tour steps + tracking
+│   ├── ApiController.php        ← User endpoints: tour steps, tracking, how far a run got, checklist tasks opened
+│   ├── LinkController.php       ← A tour's share link (GET /tour/{id}): redirects to the tour's page
 │   ├── MediaController.php      ← Serves images, videos and captions of steps
 │   ├── MediaUploadController.php ← Admin: adds media to steps
-│   ├── LicenseController.php    ← Enterprise subscription validation (v1.4.x+)
-│   └── PersonalController.php   ← Per-user tour preferences and the user's tour list
+│   ├── LicenseController.php    ← Optional subscription key: validation and usage report
+│   ├── PersonalController.php   ← Per-user tour preferences and the user's tour list
+│   └── AdminOnly.php            ← Trait: the admin check behind every admin route (403 "forbidden")
 ├── Service/
 │   ├── DefaultStepsService.php  ← Single source of truth for the eight built-in tour steps (v1.7.0+)
 │   ├── TourRepository.php       ← The tour index, the steps of tours for apps, who may get a tour
@@ -36,14 +38,22 @@ lib/
 │   ├── StepValidator.php        ← Checks steps (fields, types, sizes) on save and import
 │   ├── MediaService.php         ← Stores, checks and serves step media
 │   ├── TelemetryService.php     ← Aggregate usage tracking, sends to license server
-│   └── LicenseService.php       ← Subscription validation against licenses.voxcloud.nl
+│   └── LicenseService.php       ← Optional subscription key: validation against licenses.voxcloud.nl, usage report
+├── Media/
+│   ├── MediaSniffer.php         ← The real type of a file, from its first bytes
+│   ├── MetadataStripper.php     ← Removes metadata (EXIF, GPS, XMP, …) without re-encoding
+│   ├── StrippedMedia.php        ← A cleaned file with its size and dimensions
+│   ├── RangeParser.php          ← The single byte range of a video request
+│   └── MediaException.php       ← Why a file was refused
+├── Http/
+│   └── RangeFileResponse.php    ← Streams a video, whole or one range, after the headers
 ├── Migration/
 │   ├── IntroduceTours.php       ← Repair step: carries the old opt-out over to tours_disabled, once
 │   ├── RemoveStaleDefaultWizardSteps.php
 │   └── UnescapeLegacyWizardStepHtml.php
 ├── BackgroundJob/
-│   ├── TelemetryJob.php         ← Daily telemetry ship (TimedJob)
-│   └── LicenseUsageJob.php      ← Daily license sync with stable jitter
+│   ├── TelemetryJob.php         ← Telemetry report every 24 hours, with stable jitter (TimedJob)
+│   └── LicenseUsageJob.php      ← Usage report for a subscription key, daily with stable jitter
 ├── Dashboard/
 │   └── ChecklistWidget.php      ← "Getting started" on the Dashboard (API v2 widget)
 ├── Listener/
@@ -64,7 +74,7 @@ The largest controller (~28 KB) covering admin operations other than the tours t
 
 - **Steps** — `getSteps`, `saveSteps`, `resetToDefault`. Each takes a `tour` parameter (default `welcome`): the welcome tour's steps live in `wizard_steps_<lang>` with the Transifex defaults behind them; any other tour's in `tour_steps_<id>_<lang>`, through `TourRepository`, with no defaults. An unknown tour gets a 404.
 - **Import/Export** — `exportSteps`, `importSteps` with JSON validation, also per `tour`
-- **Settings** — `getSettings`, `saveSettings`: **Tours for everyone** (`wizard_enabled`), and `showToAll`, which runs `TourRepository::showAgain('welcome')`
+- **Settings** — `getSettings`, `saveSettings`: `enabled` (**Tours for everyone**, `wizard_enabled`), `userMenu` (`user_menu`) and `checklist` (through `ChecklistService`); only what the request carries changes. Showing the welcome tour again is `POST /admin/tours/welcome/reshow` (`ToursController::reshow`)
 - **Languages** — `getAvailableLanguagesWithMetadata` (every language Nextcloud knows, from `IFactory::getLanguages()`), `listOverrides` (the languages of one tour)
 - **Groups** — `getGroups` for the **Visible to groups** dropdown
 - **Statistics** — `getStatistics`, `toggleTelemetry`, `sendTelemetryNow`, `markTelemetryAsked`
@@ -72,13 +82,13 @@ The largest controller (~28 KB) covering admin operations other than the tours t
 
 All admin endpoints (since v1.5.0):
 
-- Use `IGroupManager::isAdmin()` as a defensive double-check on top of Nextcloud's own admin check (none has `#[NoAdminRequired]`)
+- Use `IGroupManager::isAdmin()` as a defensive double-check on top of Nextcloud's own admin check (none has `#[NoAdminRequired]`), through the `AdminOnly` trait's `requireAdmin()`
 - Check steps with `StepValidator` on save and import: known fields only, each of the right type and size. Title and text are stored as written; the HTML is cleaned where it is shown (`src/utils/stepHtml.js`)
 - Require the CSRF token, like every IntroVox route but two (see [API Reference → CSRF Protection](api-reference.md#csrf-protection))
 
 ### `ToursController`
 
-The tours themselves, admin only: `index`, `create`, `update`, `destroy`, `reshow`, and `apps` (the apps menu, for **Where does it start?**). Their steps go through `AdminController` with a tour id.
+The tours themselves, admin only: `index`, `create`, `update`, `destroy`, `reshow`, `statistics` (one tour's numbers, `TourStatistics`), `export` (the whole tour as a `.zip`, `TourTransfer`), `import` (a package uploaded or from the admin's own Files), and `apps` (the apps menu, for **Where does it start?**). Their steps go through `AdminController` with a tour id.
 
 - `create` validates with `TourValidator`; a new tour is always switched off
 - `update` on the welcome tour only takes `enabled`; switching any other tour on needs an enabled step in its main language (`needs_steps`)
@@ -89,9 +99,11 @@ The tours themselves, admin only: `index`, `create`, `update`, `destroy`, `resho
 
 Endpoints for every logged-in user, all annotated `#[NoAdminRequired]`. Like every IntroVox endpoint they require the CSRF token; `tests-js/controller-security.test.js` fails the build if one opts out.
 
-- **`getWizardSteps`** — language-aware, group-filtered step list. Without `tour`, or with `welcome`: the welcome tour, with a defensive `is_array()` guard (v1.4.3+) for corrupt config blobs. With another id: `appTourSteps()`, the steps of that tour in the user's language, its base language or the tour's main language.
+- **`getWizardSteps`** — language-aware, group-filtered step list. Without `tour`, or with `welcome`: the welcome tour; the admin's steps come through `TourRepository::steps()`, whose `is_array()` guard treats a corrupt config blob as no steps, so the translated defaults are served. With another id: `appTourSteps()`, the steps of that tour in the user's language, its base language or the tour's main language; a built-in tour falls back to its Transifex translation and then English.
 - **`appTourSteps`** (private) — answers `404 { "success": false }` to everything refused: a malformed or unknown id, tours off, the tour off, a user outside its groups or without access to its app. One answer for all, so nothing shows which tours exist. It does not check whether the tour would start by itself, so a start by hand works.
 - **`tourEvent`** — `start`, `complete` or `skip` of a tour for an app, for this user, behind the same 404 check. `start` stores the tour's version in `tour_<id>_seen` and says whether this was the first start at that version. Rate limited to 30 per hour per user (`#[UserRateLimit(limit: 30, period: 3600)]`).
+- **`tourReached`** — the furthest step of a run that started by itself (`tour_<id>_reached`, through `TourStateService::markReached()`), for **How far people get**; the welcome tour too. Same 404 check; 300 per hour per user.
+- **`checklistOpened`** — an admin's own checklist task opened from the Dashboard (`ChecklistService`); 404 for an unknown task or a checklist that is off; 60 per hour per user.
 - **`trackWizardStart`** / **`trackWizardComplete`** / **`trackWizardSkip`** — the welcome tour's telemetry events via `TelemetryService`; rate limited per user (10 per hour each)
 
 See [ApiController.php](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php) and [API Reference](api-reference.md).
@@ -100,12 +112,12 @@ See [ApiController.php](https://github.com/nextcloud/IntroVox/blob/main/lib/Cont
 
 `MediaUploadController` (admin) stores an uploaded file, or one copied from the admin's Files, through `MediaService`. `MediaController::show` serves it to users who may see a step that uses it. It is one of two routes without a CSRF token, because an `<img>` or `<video>` cannot send one; it only reads, needs strict cookies, and answers everything it refuses with the same 404. The other is `LinkController::open`, a tour's share link (`GET /tour/{id}`): a link in a mail cannot send one either; it changes nothing and only redirects to the tour's page with `?introvox-tour=<id>`.
 
-### `LicenseController` (v1.4.x+)
+### `LicenseController`
 
-Enterprise subscription endpoints:
+An optional subscription key. Nothing in IntroVox is limited by it, and the admin page does not call these routes:
 
-- `getStats` — current subscription status and step-count usage per language
-- `saveSettings` — store the subscription key in appconfig
+- `getStats` — the key's status (masked) and the step counts per language
+- `saveSettings` — store the subscription key in appconfig (`license_key`)
 - `validate` — call out to `licenses.voxcloud.nl` to verify the key
 - `updateUsage` — report current usage to the license server
 
@@ -118,7 +130,7 @@ Enterprise subscription endpoints:
 
 ### `DefaultStepsService` (v1.7.0+)
 
-Single source of truth for the eight built-in tour steps (Welcome / Files / Calendar / Search / Getting started / Important features / Useful tips / Done) of the welcome tour. Used by both `AdminController` (to seed the step editor when no override exists) and `ApiController` (to serve end users when no override exists). Tours for an app or page have no defaults.
+Single source of truth for the eight built-in tour steps (Welcome / Files & apps / Search / Your account & settings / Getting started / Important features / Useful tips / Done) of the welcome tour. Used by both `AdminController` (to seed the step editor when no override exists) and `ApiController` (to serve end users when no override exists). Tours for an app or page have no defaults.
 
 `getForLanguage(string $lang)` returns the eight steps built with `IFactory::get('introvox', $lang)`. If no translation file ships for `$lang`, the service explicitly falls back to English rather than letting `IFactory` pick the system default — so an Italian user without an Italian translation gets English copy, not whatever the instance's `default_language` happens to be.
 
@@ -201,23 +213,30 @@ The rule the `IntroduceTours` repair step uses on the update that brings tours p
 
 ### `TelemetryService`
 
-Tracks per-user welcome-tour lifecycle events (start, complete, skip) and aggregates them into anonymous statistics. Uses `oc_preferences` to record per-user timestamps. Tours for an app or page are not counted.
+Counts the welcome tour's lifecycle (start, complete, skip) and sends anonymous aggregate statistics to `licenses.voxcloud.nl`. Tours for an app or page are not counted, and nothing of the per-tour statistics goes out.
 
-The aggregate payload includes:
+- **When it sends** — `isEnabled()`: an admin's choice in `telemetry_enabled` counts. Without one (the value is empty) telemetry is on only once `telemetry_asked` is set: the admin tour asks the question on an admin's first visit to IntroVox's settings, once per instance. Until then an instance sends nothing.
+- **Counters** — `markUserStarted()`, `markUserCompleted()` and `markUserSkipped()` store the first time per user (`wizard_started`, `wizard_completed`, `wizard_skipped`) and raise a counter in appconfig (`wizard_started_count`, `wizard_completed_count`, `wizard_skipped_count`) once per user. The counters are for the whole instance, not per language; only `totalSteps` is per language.
 
-- User counts (via `callForAllUsers` — uses all provisioned users since v1.4.3, was `callForSeenUsers` before, with a minimum of `1` so downstream consumers never see `0`)
-- Subscription key + `hasExtendedSupport` flag (v1.5.0+) for license-server verification
-- Tour-completion counts per language
+What `collectData()` sends:
 
-`HTTP response validation` (v1.5.0+) — checks status codes and JSON shape before trusting responses, preventing false-positive license validations on transient server errors.
+| Group | Fields |
+|---|---|
+| Instance | `instanceHash` (SHA-256 of the instance URL, the same as `LicenseService::getInstanceUrlHash()`), `introvoxVersion`, `nextcloudVersion`, `phpVersion`, `osFamily`, `webServer`, `isDocker`, `databaseType` |
+| Accounts and groups | `totalUsers` (every account, `callForAllUsers`, at least `1`), `activeUsers30d`, `disabledUsers` (`null` when counting fails), `totalGroups` |
+| Configuration | `serverRegion` (`default_phone_region`, a country code), `defaultLanguage`, `defaultTimezone`, `wizardEnabled`, `groupVisibilityUsed` (whether a step of the welcome tour is limited to groups), `languagesWithOverrides`, `totalSteps` (steps per language with an override of the welcome tour; `en` always listed) |
+| Welcome tour | `wizardStartedCount`, `wizardCompletedCount`, `wizardSkippedCount`, `usersStartedWizard`, `usersCompletedWizard` |
+| Subscription | `licenseKey` (`null` without one), `hasValidSubscription` and `hasExtendedSupport` (`IRegistry::delegateHasValidSubscription()` / `delegateHasExtendedSupport()`, `false` on any failure) |
+
+A `2xx` answer sets `telemetry_last_report`. A `429` (the server takes one report per instance per hour) is expected: it is logged at debug level and recorded in `telemetry_last_attempt`. Other failures are logged as a warning, with the message only.
 
 ### `LicenseService`
 
-Validates subscription keys against `licenses.voxcloud.nl`. Handles:
+Validates an optional subscription key against `licenses.voxcloud.nl` and reports usage for it (step counts per language, accounts). Nothing in IntroVox is limited by it: the class still has a `FREE_LIMIT`, but nothing enforces it.
 
-- Free tier: 10 steps per language
-- Subscription tier: unlimited steps, full feature set
-- Connection failure: cached status used, no functional degradation
+- Checks status codes and the JSON shape before trusting an answer
+- On a connection failure, a key that was valid before stays valid (`license_valid`, `license_info`)
+- `getInstanceUrlHash()` is shared with telemetry, so both report the same instance hash
 
 ## Repair Steps
 
@@ -228,15 +247,15 @@ Post-migration repair steps (`appinfo/info.xml`) run on every update:
 
 ## Background Jobs
 
-Both jobs extend Nextcloud's `TimedJob`:
+Both jobs extend Nextcloud's `TimedJob`, with a **stable jitter** derived from a hash of the instance id, so each server reports at a consistent but different time of day. This avoids the thundering-herd problem when many instances sync at once.
 
 ### `TelemetryJob`
 
-Runs daily. Calls `TelemetryService` to ship aggregate stats to the license server.
+Every 24 hours plus a jitter of 0–120 minutes. Skips the run while `TelemetryService::isEnabled()` is false; otherwise calls `sendReport()`.
 
 ### `LicenseUsageJob`
 
-Runs daily with **stable jitter** to spread load across installations — derived from a hash of the instance ID so each NC server fires at a consistent but different time of day. This avoids the thundering-herd problem when many instances sync at midnight UTC.
+Every `license_sync_interval_hours` (default 24) plus a jitter of 0–60 minutes. Does nothing without a subscription key; with one, validates it and reports usage (`license_last_sync`).
 
 ## Listeners
 
@@ -249,11 +268,12 @@ Listens for `BeforeTemplateRenderedEvent` on every page where a user is logged i
   "enabled": true,
   "toursDisabled": false,
   "welcome": { "enabled": true, "version": "3", "disabledByUser": false },
-  "tours": [{ "id": "talk", "page": "/apps/spreed/", "version": 1 }]
+  "tours": [{ "id": "talk", "page": "/apps/spreed/", "version": 1 }],
+  "link": null
 }
 ```
 
-`tours` holds only the tours that would start by themselves for this user (`TourStateService::due()`), with their page and version, and `anywhere: true` for a tour that starts on any page; no steps, names or groups. The state is lazy, so it is only worked out when the page is rendered. If working it out fails, it is left out and the bootstrap asks the server instead, as before this state existed.
+`tours` holds only the tours that would start by themselves for this user (`TourStateService::due()`), with their page and version, and `anywhere: true` for a tour that starts on any page; no steps, names or groups. `link` is a share link's tour id when the page was asked for with `?introvox-tour=<id>` (else `null`), because an app that sends its start page on at once drops the parameter from the address before the bootstrap runs. The state is lazy, so it is only worked out when the page is rendered. If working it out fails, it is left out and the bootstrap asks the server instead, as before this state existed.
 
 The bootstrap decides from this whether a tour runs on the page, and only then loads the tour code; see [Frontend Architecture](frontend-architecture.md#tour-runtime).
 
@@ -283,9 +303,13 @@ IntroVox does not create custom database tables. All persistent state lives in N
 | `checklist_enabled` | string `'true'` / `'false'` | **Show "Getting started" on the Dashboard** |
 | `checklist_tasks` | JSON list of task ids | The tasks an admin chose; absent means all of them |
 | `checklist_custom` | JSON list of `{ id, title, text, page }` | An admin's own tasks, at most 10 |
-| `license_key` | string | Enterprise subscription key (v1.4.x+) |
-| `telemetry_enabled` | string `'true'` / `'false'` | Whether telemetry is active |
-| `telemetry_asked` | timestamp | When the admin tour first asked the telemetry question |
+| `user_menu` | string `'true'` / `'false'` | **Show Tours in the user menu**; absent means on |
+| `tour_package_limit` | integer string (bytes) | Largest tour package, unpacked, that export and import accept; absent means 100 MiB |
+| `license_key` | string | Optional subscription key; limits nothing |
+| `telemetry_enabled` | string `'true'` / `'false'` | An admin's choice about telemetry. Empty means on once `telemetry_asked` is set, off before |
+| `telemetry_asked` | timestamp | When an admin was first shown the telemetry question (once per instance) |
+| `telemetry_last_report` | timestamp | When the last report was accepted |
+| `wizard_started_count`, `wizard_completed_count`, `wizard_skipped_count` | integer string | The welcome tour's counters for telemetry, once per user |
 
 > The `enabled_languages` key was used pre-1.7.0 to gate which languages the wizard would start in. It was removed alongside #17. Installs upgraded from 1.6.x may still carry a stale row; the 1.7.0 code ignores it.
 
@@ -298,6 +322,7 @@ IntroVox does not create custom database tables. All persistent state lives in N
 | `tour_<id>_seen` | integer string | The version of a tour for an app or page at which it last started for this user |
 | `tour_<id>_completed` | timestamp | When the user first finished that tour |
 | `tour_<id>_skipped` | timestamp | When the user first skipped that tour |
+| `tour_<id>_reached` | `<version>\|<index>\|<step id>` | The furthest step of the user's last automatic run, for **How far people get** (the welcome tour too: `tour_welcome_reached`) |
 | `wizard_started` | timestamp | When the user first started the welcome tour (telemetry) |
 | `wizard_completed` | timestamp | When the user first completed it |
 | `wizard_skipped` | timestamp | When the user first clicked **Skip and don't show again** |
@@ -307,7 +332,7 @@ IntroVox does not create custom database tables. All persistent state lives in N
 
 ## Security Model
 
-- **CSRF protection** on every route but the media one and the share link, `GET` included (v1.5.0 for the admin endpoints; all routes since the release after 1.7.9)
+- **CSRF protection** on every route but the media one and the share link, `GET` included (v1.5.0 for the admin endpoints; all routes since 2.0.0)
 - **Defensive admin checks** via `IGroupManager::isAdmin()` on every admin endpoint
 - **Step validation** via `StepValidator` on save and import; HTML in step text is reduced to the supported tags where it is shown
 - **Server-side group filtering** — `visibleToGroups` enforcement in `ApiController::getWizardSteps`, per step and, for tours for an app, per tour

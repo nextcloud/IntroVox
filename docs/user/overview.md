@@ -38,12 +38,14 @@ See [Taking the Tour](taking-the-tour.md) for the full walkthrough.
 
 Your administrator can also give you a short tour for an app, such as Files, Talk, Deck or Calendar. It starts by itself the first time you open that app, once. Some of its steps ask you to do something, such as clicking a button or filling in a name, so you learn the app with your own work.
 
+Your administrator decides when such a tour starts by itself: for example only for new accounts, only a number of days after your first login, or only between two dates. A tour can also start "anywhere": as a tip on whichever page you open next. Whatever they chose, you can always start a tour yourself under **Tours** in your personal settings.
+
 - **All your tours** are under **Personal Settings → IntroVox**, each with **Start**. **Tours** in your user menu, above **Help**, leads there. See [Personal Settings](personal-settings.md#tours-for-apps).
 - **A link** from your administrator, for example in a welcome mail, opens the app and starts its tour there.
 
 ## "Getting Started" on the Dashboard
 
-Your administrator can add a **Getting started** list to your Dashboard: first things to do in Nextcloud, such as uploading a file or adding a profile picture. Each task links to where you do it, and ticks itself off once you have done it. You can remove the list, or add it back, under **Customize** on your Dashboard.
+Your administrator can add a **Getting started** list to your Dashboard: first things to do in Nextcloud, such as uploading a file or adding a profile picture. Each task links to where you do it, and ticks itself off once you have done it. If your administrator chose **Put it on every Dashboard**, the list appears by itself for new accounts and for everyone who never arranged their Dashboard. Otherwise, or if you removed it, add it under **Customize** on your Dashboard; you can remove it there too.
 
 ## If the Tour Doesn't Appear
 

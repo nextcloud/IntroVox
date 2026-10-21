@@ -9,7 +9,7 @@ You can manage your IntroVox tour preferences at any time from your personal set
 1. Click your **profile picture** or **username** in the top right
 2. Select **Tours**, just above **Help**
 
-Or: **Personal Settings**, then **IntroVox** in the left sidebar. Your administrator can hide the **Tours** entry; the page is always there.
+Or: **Personal Settings**, then **IntroVox** in the left sidebar. Your administrator can hide the **Tours** entry, and it is also gone while tours are switched off for everyone; the page is always there.
 
 ## Available Options
 
@@ -24,8 +24,8 @@ In your personal settings you can:
 ### Method 1 — From Personal Settings
 
 1. Navigate to **Personal Settings → IntroVox**
-2. Click **🔄 Restart tour now**
-3. You'll be redirected to the dashboard
+2. Click **Restart tour now**
+3. You're taken to your start page
 4. The tour starts automatically
 
 ### Method 2 — Browser Console (Advanced)
@@ -50,6 +50,8 @@ This starts the welcome tour. It works only when you're already logged in and on
 ## Tours for Apps
 
 Besides the welcome tour, your administrator can make a short tour for an app, such as Talk, or for another page of Nextcloud. Such a tour starts by itself the first time you open that app, once; it doesn't start again on another browser or device. It never starts on top of the welcome tour: if you haven't had the welcome tour yet, you get that first, and the app's tour on a later visit.
+
+Your administrator decides when such a tour starts by itself: for example only for new accounts, only a number of days after your first login, or only between two dates. A tour can also start "anywhere": as a tip on whichever page you open next. However it is set up, you can always start it yourself from this page.
 
 When there are tours like this for you, **Personal Settings → IntroVox** lists them under **Tours**. Each one shows the app's icon, its name, and **Seen** or **Not seen yet**. Click **Start** (or **Start again**) to open the app and start its tour. This works even when **Start tours by themselves** is off.
 

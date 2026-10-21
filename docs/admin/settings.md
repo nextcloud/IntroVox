@@ -113,7 +113,7 @@ The step management section, in the same step editor, is detailed in [Managing T
 | **Continue with** | **Next button**, **Click on the element** or **Filling in the field** | [Managing Steps → Click to Continue](managing-steps.md#click-to-continue) |
 | **Test this step** | Show one step in a preview, unsaved edits included | [Managing Steps → Preview](managing-steps.md#preview) |
 | **Delete** | Remove a step | [Managing Steps → Delete](managing-steps.md#delete-step) |
-| Drag handle | Reorder steps | [Managing Steps → Reorder](managing-steps.md#reorder-steps) |
+| Drag handle, **Move step up** / **Move step down** | Reorder steps, with the mouse or the keyboard | [Managing Steps → Reorder](managing-steps.md#reorder-steps) |
 | Switch | Enable/disable individual steps | [Managing Steps → Enable/Disable](managing-steps.md#enabledisable-step) |
 | **Translate with AI** | Translate the steps of this language into other languages; only with a provider for the Nextcloud Assistant | [Tours → AI](tours.md#write-or-translate-steps-with-ai) |
 | **Write steps with AI** | Write new steps from a description; only with a provider for the Nextcloud Assistant | [Tours → AI](tours.md#write-or-translate-steps-with-ai) |
@@ -153,7 +153,7 @@ The step management section, in the same step editor, is detailed in [Managing T
 
 Deleting a tour also deletes its `tour_<tour>_*` keys for every user.
 
-> On the update that brings tours per app, users who had switched the tour off on purpose in their personal settings (they had started the welcome tour, neither finished nor skipped it, and had **Permanently disable the introduction tour** on) get **Start tours by themselves** switched off, once. Users who finished or skipped the welcome tour keep getting tours for apps.
+> On the update to 2.0.0, users who had switched the tour off on purpose in their personal settings (they had started the welcome tour, neither finished nor skipped it, and had **Permanently disable the introduction tour** on) get **Start tours by themselves** switched off, once. Users who finished or skipped the welcome tour keep getting tours for apps.
 
 > Installs upgraded from 1.6.x may still carry a stale `enabled_languages` appconfig row. The 1.7.0 code ignores it; it's left in place for downgrade safety and can be removed with `occ config:app:delete introvox enabled_languages`.
 

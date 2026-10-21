@@ -6,7 +6,7 @@ Groep-gebaseerde stap-zichtbaarheid laat je individuele wizard-stappen beperken 
 
 ## Hoe het werkt
 
-![De pagina Visible to van de stap-editor, met één groep geselecteerd](../screenshots/visible-to.png)
+![De pagina Zichtbaar voor van de stap-editor, met één groep geselecteerd](../screenshots/visible-to.png)
 
 Elke stap heeft een **Zichtbaar voor groepen**-veld (multi-select-dropdown van alle Nextcloud-groepen):
 
@@ -17,12 +17,12 @@ Filtering gebeurt **server-side** in [ApiController::getWizardSteps()](https://g
 
 ## Groep-zichtbaarheid configureren
 
-1. Open **Tours**, klik bij de tour op **Edit steps** en klik op **Edit** bij een stap
-2. Vind de **Zichtbaar voor groepen**-dropdown onder de Positie-selector
+1. Open **Tours**, klik bij de tour op **Stappen bewerken** en klik op **Bewerken** bij een stap
+2. Ga naar de pagina **Zichtbaar voor** van het stapdialoog (links) en vind het veld **Zichtbaar voor groepen**
 3. Selecteer één of meer Nextcloud-groepen
-4. Klik op **Opslaan** in het formulier; de stap wordt direct opgeslagen
+4. Klik op **Opslaan**; de stap wordt direct opgeslagen
 
-Om het resultaat te controleren klik je op **Preview tour** en kies je een groep onder **Preview as**: het voorbeeld toont de stappen die leden van die groep krijgen. Zie [Bekijken](managing-steps.nl.md#bekijken).
+Om het resultaat te controleren klik je op **Tour bekijken** en kies je een groep onder **Bekijken als**: het voorbeeld toont de stappen die leden van die groep krijgen. Zie [Bekijken](managing-steps.nl.md#bekijken).
 
 ## Use-cases
 
@@ -84,7 +84,7 @@ Dit betekent:
 
 1. **Begin permissief, beperk later** — laat nieuwe stappen aanvankelijk zichtbaar voor iedereen, en voeg groep-beperkingen toe zodra je weet wie wat nodig heeft. Makkelijker dan andersom.
 2. **Documenteer je groep-gebruik** — houd notities bij van welke groepen welke stappen gateen zodat toekomstige beheerders de structuur begrijpen.
-3. **Test met een niet-admin-account** — groep-filtering werkt server-side, maar alleen door in te loggen als niet-lid kun je de gebruikers-ervaring bevestigen.
+3. **Controleer met Bekijken als** — **Tour bekijken** → **Bekijken als** toont de stappen die leden van één groep krijgen, zonder dat je als iemand anders hoeft in te loggen. Zie [Bekijken](managing-steps.nl.md#bekijken).
 4. **Combineer met taal-scheiding** — groep-gebaseerde filtering geldt *binnen* een taal. Om zowel taal als groep te targeten, configureer de stappen van die taal met de relevante groep-beperkingen.
 
 ## Alternatieven voor stap-niveau-groep-beperking
@@ -94,11 +94,11 @@ Dit betekent:
 | Verberg de hele app voor bepaalde gebruikers | **Instellingen → Apps → IntroVox → Beperken tot groepen** (Nextcloud-niveau) |
 | Alle tours uitzetten | Zet **Tours for everyone** uit |
 | Verschillende stappen per gebruikers-rol tonen | **Groep-gebaseerde zichtbaarheid** (deze pagina) |
-| Een hele tour voor een app alleen aan bepaalde groepen geven | **Visible to** bij die tour ([Tours](tours.nl.md)) |
-| Voor één taal eigen tekst schrijven | **Add language override** in de stappen-editor van een tour (**Tours** → **Edit steps**) |
+| Een hele tour voor een app alleen aan bepaalde groepen geven | **Zichtbaar voor** bij die tour ([Tours](tours.nl.md)) |
+| Voor één taal eigen tekst schrijven | **Taalspecifieke versie toevoegen** in de stappen-editor van een tour (**Tours** → **Stappen bewerken**) |
 
 ## Zie ook
 
-- [Tourstappen beheren](managing-steps.md) — stap-CRUD
-- [Stap-zichtbaarheid](../features/step-visibility.md) — groep-filters + gebruikers-voorkeuren
-- [API-referentie](../architecture/api-reference.md) — `getWizardSteps`-endpoint met filtering
+- [Tourstappen beheren](managing-steps.nl.md) — stap-CRUD
+- [Stap-zichtbaarheid](../features/step-visibility.nl.md) — groep-filters + gebruikers-voorkeuren
+- [API-referentie](../architecture/api-reference.nl.md) — `getWizardSteps`-endpoint met filtering

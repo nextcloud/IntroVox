@@ -4,7 +4,7 @@ Welkom bij **IntroVox** — je persoonlijke gids voor Nextcloud.
 
 ![IntroVox-tour in actie](../screenshots/introvox-demo.gif)
 
-IntroVox is een interactieve tour die je helpt om de belangrijkste features van Nextcloud te ontdekken wanneer je voor het eerst inlogt. Zie het als een vriendelijke metgezel die je rondleidt in je nieuwe cloud-werkomgeving. Je beheerder kan ook korte tours voor apps toevoegen, en een lijst "Getting started" op je Dashboard.
+IntroVox is een interactieve tour die je helpt om de belangrijkste features van Nextcloud te ontdekken wanneer je voor het eerst inlogt. Zie het als een vriendelijke metgezel die je rondleidt in je nieuwe cloud-werkomgeving. Je beheerder kan ook korte tours voor apps toevoegen, en een lijst "Aan de slag" (Getting started) op je Dashboard.
 
 ## Wat ga je leren
 
@@ -32,18 +32,20 @@ Wanneer je voor het eerst inlogt, start de welkomsttour vanzelf op de eerste pag
 1. **Tour starten** — begin de interactieve gids (aanbevolen voor nieuwe gebruikers)
 2. **Overslaan en niet meer tonen** — sluit de tour en voorkom dat hij in de toekomst opnieuw verschijnt
 
-Zie [De tour doorlopen](taking-the-tour.md) voor de volledige walkthrough.
+Zie [De tour doorlopen](taking-the-tour.nl.md) voor de volledige walkthrough.
 
 ## Tours voor apps
 
-Je beheerder kan je ook een korte tour voor een app geven, zoals Files, Talk, Deck of Calendar. Die start één keer vanzelf, de eerste keer dat je die app opent. Sommige stappen vragen je iets te doen, zoals op een knop klikken of een naam invullen, zodat je de app leert met je eigen werk.
+Je beheerder kan je ook een korte tour voor een app geven, zoals Bestanden, Talk, Deck of Agenda. Die start één keer vanzelf, de eerste keer dat je die app opent. Sommige stappen vragen je iets te doen, zoals op een knop klikken of een naam invullen, zodat je de app leert met je eigen werk.
+
+Je beheerder bepaalt wanneer zo'n tour vanzelf start: bijvoorbeeld alleen voor nieuwe accounts, pas een aantal dagen na je eerste login, of alleen tussen twee datums. Een tour kan ook "overal" starten: als tip op de eerstvolgende pagina die je opent. Wat je beheerder ook koos, je kunt een tour altijd zelf starten onder **Tours** in je persoonlijke instellingen.
 
 - **Al je tours** staan onder **Persoonlijke instellingen → IntroVox**, elk met **Start**. **Tours** in je gebruikersmenu, boven **Help**, leidt daarheen. Zie [Persoonlijke instellingen](personal-settings.nl.md#tours-voor-apps).
 - **Een link** van je beheerder, bijvoorbeeld in een welkomstmail, opent de app en start de tour daar.
 
-## "Getting started" op het Dashboard
+## "Aan de slag" op het Dashboard
 
-Je beheerder kan een lijst **Getting started** op je Dashboard zetten: de eerste dingen om te doen in Nextcloud, zoals een bestand uploaden of een profielfoto toevoegen. Elke taak linkt naar de plek waar je hem doet, en vinkt zichzelf af zodra je hem gedaan hebt. Je haalt de lijst weg, of zet hem terug, onder **Customize** op je Dashboard.
+Je beheerder kan een lijst **Aan de slag** (Getting started) op je Dashboard zetten: de eerste dingen om te doen in Nextcloud, zoals een bestand uploaden of een profielfoto toevoegen. Elke taak linkt naar de plek waar je hem doet, en vinkt zichzelf af zodra je hem gedaan hebt. Koos je beheerder **Put it on every Dashboard**, dan verschijnt de lijst vanzelf bij nieuwe accounts en bij iedereen die zijn Dashboard nooit heeft ingericht. Anders, of als je hem weghaalde, voeg je hem toe onder **Aanpassen** op je Dashboard; daar haal je hem ook weer weg.
 
 ## Als de tour niet verschijnt
 
@@ -55,11 +57,11 @@ De tour wordt mogelijk niet automatisch getoond als:
 
 (IntroVox is beschikbaar in elke taal die Nextcloud ondersteunt. Is er voor een taal nog geen vertaling op Transifex, dan krijg je de tour in het Engels, zodat je de tekst toch kunt lezen.)
 
-Je kunt hem altijd handmatig starten — zie [Persoonlijke instellingen](personal-settings.md).
+Je kunt hem altijd handmatig starten — zie [Persoonlijke instellingen](personal-settings.nl.md).
 
 ## Zie ook
 
-- [De tour doorlopen](taking-the-tour.md) — door de tour navigeren
-- [Persoonlijke instellingen](personal-settings.md) — herstarten en voorkeuren
-- [Toetsenbord-navigatie](keyboard-navigation.md) — sneltoetsen en toegankelijkheid
-- [FAQ](faq.md) — veelgestelde vragen
+- [De tour doorlopen](taking-the-tour.nl.md) — door de tour navigeren
+- [Persoonlijke instellingen](personal-settings.nl.md) — herstarten en voorkeuren
+- [Toetsenbord-navigatie](keyboard-navigation.nl.md) — sneltoetsen en toegankelijkheid
+- [FAQ](faq.nl.md) — veelgestelde vragen

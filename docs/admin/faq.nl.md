@@ -1,12 +1,12 @@
 # FAQ (beheerders)
 
-Veelgestelde vragen van IntroVox-beheerders. Voor gebruikers-vragen, zie de [Gebruikers-FAQ](../user/faq.md).
+Veelgestelde vragen van IntroVox-beheerders. Voor gebruikers-vragen, zie de [Gebruikers-FAQ](../user/faq.nl.md).
 
 ## Configuratie
 
 ### Hoe weet ik welke CSS-selector ik moet gebruiken?
 
-Klik op **Pick element** naast het Element-veld en klik op het element dat je wilt highlighten; IntroVox vult zelf een selector in. Zie [Element kiezen](managing-steps.nl.md#element-kiezen).
+Klik op **Element kiezen** naast het Element-veld en klik op het element dat je wilt highlighten; IntroVox vult zelf een selector in. Zie [Element kiezen](managing-steps.nl.md#element-kiezen).
 
 Met de hand zoeken:
 
@@ -23,7 +23,7 @@ Voor betrouwbaarheid, gebruik meerdere selectors gescheiden door komma's — zie
 
 ### Kan ik HTML gebruiken in stap-tekst?
 
-Ja. Ondersteunde tags zijn `<p>`, `<strong>`, `<b>`, `<em>`, `<i>`, `<ul>`, `<ol>`, `<li>`, `<br>`, `<a href="...">`.
+Ja. De tour houdt `<p>`, `<br>`, `<strong>`, `<b>`, `<em>`, `<i>`, `<u>`, `<small>`, `<code>`, `<h3>`, `<h4>`, `<ul>`, `<ol>`, `<li>` en `<a href="...">`; zie de tabel in [Customization](../features/customization.nl.md#ondersteunde-tags). Het veld **Tekst** schrijft die HTML voor je; **Bewerken als HTML** laat hem zien.
 
 > **Beveiligings-notitie:** stap-`title` en `text` worden opgeslagen zoals geschreven. Waar ze getoond worden, houdt de tekst alleen de ondersteunde tags en zijn titels platte tekst, zodat een geïmporteerde tour of een vertaling geen scripts, stijlen, formulieren of afbeeldingen kan toevoegen. Zie [Customization](../features/customization.nl.md#html-in-stap-content).
 
@@ -53,9 +53,9 @@ window.introVox.isCompleted(); // true als deze browser hem als klaar heeft gema
 
 `start()` werkt ook als de welkomsttour voor jou klaar is of **Start tours by themselves** uit staat; alleen als **Tours for everyone** uit staat, of de **Welcome tour** onder **Tours** uit staat, start hij niet. `reset()` wist alleen de markering in deze browser: of de tour bij de volgende login vanzelf start, hangt ook af van `wizard_disabled` op de server.
 
-**Methode 2 — persoonlijke instellingen:** **Persoonlijke instellingen → IntroVox → Restart tour now**. De tour start op de pagina die dan opent.
+**Methode 2 — persoonlijke instellingen:** **Persoonlijke instellingen → IntroVox → Tour nu herstarten**. De tour start op de pagina die dan opent.
 
-Voor een tour voor een app gebruik je **Preview** in het ⋯-menu ervan onder **Tours**, of **Start** ernaast onder **Persoonlijke instellingen → IntroVox → Tours**.
+Voor een tour voor een app gebruik je **Voorbeeld** in het ⋯-menu ervan onder **Tours**, of **Start** ernaast onder **Persoonlijke instellingen → IntroVox → Tours**.
 
 ### Kan ik emoji's in stap-titels en -teksten gebruiken?
 
@@ -66,8 +66,8 @@ Ja, volledig ondersteund. Zorg dat je Nextcloud-server UTF-8 gebruikt (default).
 Er is geen ingebouwde conditionele logica, maar:
 
 - **In-/uitschakelen-toggle** laat je stappen verbergen zonder ze te verwijderen
-- **Groep-gebaseerde zichtbaarheid** beperkt stappen tot specifieke gebruikersgroepen ([Groep-zichtbaarheid](group-visibility.md))
-- **Een stap waarvan het element niet op de pagina staat** wacht opzij in een hoek onderin met zijn tekst, en **Next** gaat gewoon verder; verschijnt het element, dan gaat de stap ernaartoe
+- **Groep-gebaseerde zichtbaarheid** beperkt stappen tot specifieke gebruikersgroepen ([Groep-zichtbaarheid](group-visibility.nl.md))
+- **Een stap waarvan het element niet op de pagina staat** wacht opzij in een hoek onderin met zijn tekst, en **Volgende** gaat gewoon verder; verschijnt het element, dan gaat de stap ernaartoe
 
 ### Hoeveel stappen moet ik maken?
 
@@ -79,7 +79,7 @@ Er is geen ingebouwde conditionele logica, maar:
 
 Daar hoef je niets voor te doen. Elke taal met een vertaling op de [Transifex-resource `nextcloud/introvox` van Nextcloud](https://www.transifex.com/nextcloud/nextcloud/) werkt vanzelf: de sync-bot zet de vertalingen via PR's in `l10n/<lang>.json`, en gebruikers in die taal zien meteen de automatisch vertaalde tour.
 
-Wil je **eigen tekst** voor een bepaalde taal (anders dan de automatisch vertaalde standaardtekst), open dan **Tours**, klik bij de **Welcome tour** op **Edit steps**, klik op **Add language override**, kies de taal, pas aan en sla op.
+Wil je **eigen tekst** voor een bepaalde taal (anders dan de automatisch vertaalde standaardtekst), open dan **Tours**, klik bij de **Welcome tour** op **Stappen bewerken**, klik op **Taalspecifieke versie toevoegen**, kies de taal, pas aan en sla op.
 
 Zie [Meertaligheid](../features/multi-language.nl.md) voor de hele werkwijze met Transifex.
 
@@ -89,11 +89,11 @@ Ja, daar zijn overrides voor. Elke taal met een override heeft zijn eigen `wizar
 
 ### Hoe gooi ik een override weg en ga ik terug naar de automatisch vertaalde standaardstappen?
 
-Kies de taal in de keuzelijst → klik op **Reset** → bevestig. De override-rij wordt verwijderd; vanaf dan komen updates van Transifex voor die taal vanzelf door.
+Kies de taal in de keuzelijst → klik op **Herstellen** → bevestig. De override-rij wordt verwijderd; vanaf dan komen updates van Transifex voor die taal vanzelf door.
 
 ### Wat als de taal van een gebruiker nog geen vertaling op Transifex heeft?
 
-Dan krijgt die gebruiker de **Engelse** standaardstappen. (De taaldetectie per app van Nextcloud valt terug op de standaardtaal van het systeem; IntroVox kiest in `DefaultStepsService` bewust voor Engels, zodat gebruikers nooit onverwacht een derde taal zien.)
+Dan krijgt die gebruiker de basistaal (`pt` voor `pt_BR`) als die een vertaling heeft, en anders de **Engelse** standaardstappen. (De taaldetectie per app van Nextcloud valt terug op de standaardtaal van het systeem; IntroVox kiest in `DefaultStepsService` bewust voor Engels, zodat gebruikers nooit onverwacht een derde taal zien.)
 
 ### Kan ik talen mixen in stap-tekst?
 
@@ -106,19 +106,19 @@ Niet aanbevolen. Elke taal met een override hoort zijn eigen samenhangende tekst
 Meerdere opties:
 
 1. **App beperken tot groepen** (Nextcloud-niveau, aanbevolen voor volledige uitsluiting) — **Instellingen → Apps → IntroVox → Beperken tot groepen**
-2. **Groep-gebaseerde stap-zichtbaarheid** (v1.2.0+) — beperk individuele stappen tot groepen ([Groep-zichtbaarheid](group-visibility.md))
+2. **Groep-gebaseerde stap-zichtbaarheid** (v1.2.0+) — beperk individuele stappen tot groepen ([Groep-zichtbaarheid](group-visibility.nl.md))
 3. **Globaal** — zet **Tours for everyone** uit (dat stopt elke tour, ook de tours voor apps)
 
-(Uitzetten per taal bestaat sinds v1.7.0 niet meer — dat werkt niet met 80+ talen op Transifex.)
+(Uitzetten per taal bestaat sinds v1.7.0 niet meer — dat werkt niet met 100+ talen op Transifex.)
 
-Wil je een tour voor een app alleen aan bepaalde groepen geven, stel dan **Visible to** in bij die tour; zie [Tours](tours.nl.md).
+Wil je een tour voor een app alleen aan bepaalde groepen geven, stel dan **Zichtbaar voor** in bij die tour; zie [Tours](tours.nl.md).
 
 ### Kunnen gebruikers zelf de wizard uitschakelen?
 
 Ja. Alleen voor de welkomsttour:
 
-- De knop **Skip and don't show again** in de eerste stap
-- De tour voltooien (klikken op **Done** in de laatste stap)
+- De knop **Overslaan en niet meer tonen** in de eerste stap
+- De tour voltooien (klikken op **Klaar** in de laatste stap)
 
 **Show again to everyone** bij de **Welcome tour** geeft deze gebruikers de welkomsttour weer.
 
@@ -137,19 +137,19 @@ Voor de welkomsttour:
 | Actie | localStorage | Server-voorkeur | Auto-start volgende login? |
 |---|---|---|---|
 | **✕ Sluiten** | In deze browser gemarkeerd als klaar | Niet gewijzigd | Alleen in een andere browser |
-| **Done**-knop | Gemarkeerd als voltooid | `wizard_disabled` ingesteld | Nee (tenzij admin forceer-toont) |
-| **Skip and don't show again** | Gemarkeerd als voltooid | `wizard_disabled` ingesteld | Nee (tenzij admin forceer-toont) |
+| **Klaar**-knop | Gemarkeerd als voltooid | `wizard_disabled` ingesteld | Nee (tenzij **Show again to everyone** wordt gebruikt) |
+| **Overslaan en niet meer tonen** | Gemarkeerd als voltooid | `wizard_disabled` ingesteld | Nee (tenzij **Show again to everyone** wordt gebruikt) |
 
-Een tour voor een app telt als gezien zodra hij start, dus hij start niet meer vanzelf, hoe de gebruiker hem ook verlaat. De eerste stap heeft daar **Skip** in plaats van **Skip and don't show again**.
+Een tour voor een app telt als gezien zodra hij start, dus hij start niet meer vanzelf, hoe de gebruiker hem ook verlaat. De eerste stap heeft daar **Overslaan** in plaats van **Overslaan en niet meer tonen**.
 
 ### Wat is nieuw in versie X?
 
 Zie [CHANGELOG.md](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md) voor de volledige versie-historie. Highlights:
 
-- **v2.0.0** — tours: naast de welkomsttour tours voor apps, pagina's of overal, elk met eigen stappen, talen, groepen en timing; ingebouwde tours voor Files, Talk, Deck en Calendar; statistieken per tour, met hoe ver mensen komen; een hele tour exporteren en importeren; een tour delen met een link; stappen vertalen of schrijven met AI; afbeeldingen en video's in stappen; stappen die op de gebruiker wachten; een checklist "Getting started" op het Dashboard; **Pick element**, **Preview tour**, en stappen bewerken in een dialoog
+- **v2.0.0** — tours: naast de welkomsttour tours voor apps, pagina's of overal, elk met eigen stappen, talen, groepen en timing; ingebouwde tours voor Bestanden, Talk, Deck en Agenda; statistieken per tour, met hoe ver mensen komen; een hele tour exporteren en importeren; een tour delen met een link; stappen vertalen of schrijven met AI; afbeeldingen en video's in stappen; stappen die op de gebruiker wachten; een checklist "Aan de slag" (Getting started) op het Dashboard; **Element kiezen**, **Tour bekijken**, en stappen bewerken in een dialoog
 - **v1.7.9** — de beheer- en persoonlijke instellingen zijn vertaald (ze bleven in het Engels); Indonesisch en Slowaaks
 - **v1.7.8** — standaardstappen die een beheerder verwijderde, komen niet meer terug in de tour; de stap over je account wijst op Nextcloud 32 en 33 naar de avatar
-- **v1.7.7** — ondersteuning voor Nextcloud 35; IntroVox is gratis, en het tabblad Support zegt dat ook
+- **v1.7.7** — ondersteuning voor Nextcloud 35; IntroVox is gratis, en het tabblad Ondersteuning (Support) zegt dat ook
 - **v1.7.6** — herstel van verminkte accenten in geïmporteerde stappen en van geëscapete HTML uit 1.6.x; een upgrade verwijdert geen aangepaste tour meer
 - **v1.7.4** — stappen wijzen op Nextcloud 34 naar de goede onderdelen van de kopbalk; Files en Calendar samengevoegd tot één stap Files & apps
 - **v1.7.1–1.7.3** — compatibel met Nextcloud 34, vertalingen voor 89 talen van Transifex, een fix voor de handtekening in de App Store, Enterprise herkennen in de telemetrie
@@ -176,7 +176,7 @@ Zie [CHANGELOG.md](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md)
 
 > Installaties van 1.6.x kunnen nog een oude `enabled_languages`-rij hebben. De code van 1.7.0 negeert die; hij kan geen kwaad en blijft staan zodat terugzetten naar een oudere versie veilig is.
 
-Zie [Backend-architectuur](../architecture/backend-architecture.md).
+Zie [Backend-architectuur](../architecture/backend-architecture.nl.md).
 
 ### Kan ik stappen direct in de database bewerken?
 
@@ -188,7 +188,7 @@ Ja. Standaard Nextcloud-reverse-proxy-setups werken; zorg alleen dat JavaScript-
 
 ### Verzamelt de app telemetrie?
 
-Telemetrie is toegevoegd in v1.4.x en rapporteert anonieme gebruiks-stats (gebruikers-aantallen, tour-voltooiings-events) naar `licenses.voxcloud.nl`. Sinds v1.5.0 bevat de payload de geconfigureerde subscription-key en of deze Nextcloud een Enterprise-subscription heeft (`hasValidSubscription`, en `hasExtendedSupport` voor de add-on), gebruikt door de licentie-server om Enterprise-claims te verifiëren. Sinds 2.0.0 wordt er niets verstuurd voordat een beheerder het gevraagd is: de beheerderstour eindigt met die vraag. Beheerders kunnen telemetrie op elk moment uitzetten in het tabblad Statistics; zie [Telemetrie](telemetry.nl.md).
+Telemetrie is toegevoegd in v1.4.x en rapporteert anonieme gebruiks-stats (gebruikers-aantallen, tour-voltooiings-events) naar `licenses.voxcloud.nl`. Sinds v1.5.0 bevat de payload de licentiesleutel van IntroVox, als die ooit is opgeslagen (de app heeft er sinds 1.7.7 geen veld meer voor, dus meestal is hij leeg), en of deze Nextcloud een Enterprise-subscription heeft (`hasValidSubscription`, en `hasExtendedSupport` voor de add-on), gebruikt door de licentie-server om Enterprise-claims te verifiëren. Sinds 2.0.0 wordt er niets verstuurd voordat een beheerder het gevraagd is: de beheerderstour eindigt met die vraag. Beheerders kunnen telemetrie op elk moment uitzetten in het tabblad Statistieken; zie [Telemetrie](telemetry.nl.md).
 
 ## Best-practice-vragen
 
@@ -209,8 +209,8 @@ Niet ingebouwd. Je kunt exports handmatig wisselen voor verschillende periodes e
 
 ## Zie ook
 
-- [Beheerdersgids](guide.md)
-- [Tourstappen beheren](managing-steps.md)
-- [Problemen oplossen](troubleshooting.md)
-- [Best practices](best-practices.md)
-- [Gebruikers-FAQ](../user/faq.md)
+- [Beheerdersgids](guide.nl.md)
+- [Tourstappen beheren](managing-steps.nl.md)
+- [Problemen oplossen](troubleshooting.nl.md)
+- [Best practices](best-practices.nl.md)
+- [Gebruikers-FAQ](../user/faq.nl.md)

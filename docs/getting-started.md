@@ -59,7 +59,7 @@ Before evaluating IntroVox at scale, read:
 | **Wizard step** | A single tour step with a title, HTML content, an optional image or video, an optional CSS selector to highlight an element, a position (left/right/top/bottom), and how it continues: **Next button**, **Click on the element** or **Filling in the field**. |
 | **Centered step** | A step with no CSS selector — appears as a centered modal. Used for welcome and conclusion screens. |
 | **Attached step** | A step with a CSS selector — appears next to the highlighted element, which gets an outline and a blinking arrow. While the element is not there yet, the step waits aside in a corner and moves to it once it appears. |
-| **Language override** | Custom per-language copy that replaces the auto-translated defaults. Stored in appconfig under `wizard_steps_<lang>`, only created when an admin saves edits. |
+| **Language override** | Custom per-language copy that replaces the auto-translated defaults. Made per base language (one for `pt` also serves `pt_BR`), stored in appconfig under `wizard_steps_<lang>`, only created when an admin saves edits. |
 | **Group visibility** | Steps can be restricted to specific Nextcloud groups via the `visibleToGroups` field. Empty = visible to all users. |
 | **Default steps** | Built-in step definitions auto-translated via Transifex; loaded when no custom configuration exists for a language. |
 | **Wizard version** | A counter (`wizard_version`) raised by **Show again to everyone** on the welcome tour — the frontend uses it to decide whether to show the welcome tour again. |
@@ -69,7 +69,7 @@ Before evaluating IntroVox at scale, read:
 - **Native Nextcloud integration** — uses NC's `IConfig` for storage, `IL10N` for language detection, `IGroupManager` for group filtering, and `IUserSession` for per-user state.
 - **A small script on every page** — every page loads a bootstrap of about 20 KB. It decides from the page's initial state whether a tour starts, without a request, and loads the tour code only then ([Frontend Architecture](architecture/frontend-architecture.md#tour-runtime)).
 - **Server-side group filtering** — `visibleToGroups` enforcement happens in the PHP backend ([ApiController](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php)), so users cannot see hidden steps via browser tools.
-- **Transifex-driven translations** — the `nextcloud/introvox` Transifex resource feeds every default tour string. New language files (`l10n/<lang>.json`) land via the Nextcloud sync bot; no code changes required and admins don't need to opt them in.
+- **Transifex-driven translations** — the `nextcloud/introvox` Transifex resource feeds every default tour string. New language files (`l10n/<lang>.json`) land via the Nextcloud sync bot and reach users with the next IntroVox release; no code changes required and admins don't need to opt them in. A user gets their full language (`pt_BR`), else its base language, else English.
 
 ## Next Steps
 

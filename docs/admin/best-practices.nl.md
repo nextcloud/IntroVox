@@ -53,7 +53,7 @@ Gebruik CSS-classes die over talen heen werken:
 
 ### Bekijk het voordat gebruikers het zien
 
-Wijzigingen worden opgeslagen zodra je ze maakt, dus gebruikers krijgen ze bij hun volgende tour. Gebruik **Preview tour** na het herordenen of het wijzigen van elementen, en **Test this step** tijdens het bewerken van een stap, om een verkeerd geplaatst kader te zien voordat je gebruikers het zien. Zie [Bekijken](managing-steps.nl.md#bekijken).
+Wijzigingen worden opgeslagen zodra je ze maakt, dus gebruikers krijgen ze bij hun volgende tour. Gebruik **Tour bekijken** na het herordenen of het wijzigen van elementen, en **Test this step** tijdens het bewerken van een stap, om een verkeerd geplaatst kader te zien voordat je gebruikers het zien. Zie [Bekijken](managing-steps.nl.md#bekijken).
 
 ### Test op verschillende browsers
 
@@ -75,13 +75,13 @@ Laat de vertaling van elke taal nakijken door een native speaker, ook die van **
 
 ### Voeg alleen overrides toe waar het nodig is
 
-De welkomsttour en de ingebouwde tours zijn vertaald in elke taal die Transifex heeft. Elke override is een lijst met stappen die je zelf bijhoudt, en hij krijgt geen nieuwe vertalingen van de standaardstappen meer. Voeg er alleen een toe waar de standaardstappen niet passen, zoals tekst die je eigen cloud noemt, en gebruik **Reset** zodra je hem niet meer nodig hebt. Zie [Talenbeheer](language-management.nl.md).
+De welkomsttour en de ingebouwde tours zijn vertaald in elke taal die Transifex heeft. Elke override is een lijst met stappen die je zelf bijhoudt, en hij krijgt geen nieuwe vertalingen van de standaardstappen meer. Voeg er alleen een toe waar de standaardstappen niet passen, zoals tekst die je eigen cloud noemt, en gebruik **Herstellen** zodra je hem niet meer nodig hebt. Zie [Talenbeheer](language-management.nl.md).
 
 ## Operationeel onderhoud
 
 ### Back-up vóór grote wijzigingen
 
-Gebruik de **Export**-feature voor:
+Gebruik de **Exporteren**-feature voor:
 
 - Resetten naar defaults
 - Bulk-bewerken van veel stappen
@@ -134,6 +134,6 @@ Na elke grote Nextcloud-versie:
 
 ## Zie ook
 
-- [Tourstappen beheren](managing-steps.md) — stap-CRUD
-- [Customization](../features/customization.md) — HTML, CSS-selectors, positionering
-- [Problemen oplossen](troubleshooting.md) — wanneer er iets mis gaat
+- [Tourstappen beheren](managing-steps.nl.md) — stap-CRUD
+- [Customization](../features/customization.nl.md) — HTML, CSS-selectors, positionering
+- [Problemen oplossen](troubleshooting.nl.md) — wanneer er iets mis gaat

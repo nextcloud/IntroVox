@@ -52,13 +52,18 @@ sudo -u www-data php occ app:enable introvox
 
 ## Initial Configuration
 
-After enabling the app:
+After enabling the app, the welcome tour needs nothing switched on:
 
-1. Go to **Settings → Administration → IntroVox**
-2. Toggle **Tours for everyone** — the tour is now live in every Nextcloud-supported language automatically (auto-translated via Transifex; English fallback for languages without a translation)
-3. Optionally open **Tours**, click **Edit steps** on the **Welcome tour**, and click **Add language override** to author custom copy for a specific language
-4. Optionally restrict steps to specific user groups for role-based onboarding
-5. Optionally add a tour for an app with **Tours** → **New tour** ([Tours](../admin/tours.md))
+- **Tours for everyone** is on after installation, so the welcome tour starts for each user on their next page load, in their own language (translated through Transifex; English for a language without a translation)
+- **Tours** appears in everyone's user menu, just above **Help**; hide it under **Settings** (**Show Tours in the user menu**)
+- Tours for apps and pages, the built-in tours for Files, Talk, Deck and Calendar, and the checklist on the Dashboard are off until you switch them on
+- The first time you open **Settings → Administration → IntroVox**, a short admin tour shows you the page. It ends with the telemetry question; an instance sends no telemetry until an admin has been asked
+
+Then, optionally:
+
+1. Open **Tours**, click **Edit steps** on the **Welcome tour**, and click **Add language override** to write your own copy for a language
+2. Restrict steps to user groups for role-based onboarding
+3. Switch on a built-in tour, or add your own with **Tours** → **New tour** ([Tours](../admin/tours.md))
 
 See [Admin Guide](../admin/guide.md) for the full configuration walkthrough.
 
@@ -93,11 +98,20 @@ Upgrades appear in **Settings → Apps → Updates** when a new version is publi
    sudo -u www-data php occ app:enable introvox
    ```
 
+### Upgrading to 2.0.0
+
+2.0.0 changes what an update does on its own. Read the **Upgrade notes** in the [2.0.0 changelog](../../CHANGELOG.md#200---2026-10-21) before you update; in short:
+
+- The personal "disable the tour" switch is now **Start tours by themselves** and covers every tour. The repair step `IntroduceTours` switches tours off for people who had switched the welcome tour off without finishing it
+- New features (app tours, built-in tours, the checklist) start switched off; **Tours** in the user menu is the exception
+- Telemetry waits until an admin has opened IntroVox's settings and been asked
+- Scripts that call IntroVox's routes directly may need changes: three step routes are gone, and every route but two needs the CSRF request token
+
 ### Migration Notes
 
 IntroVox does not create or migrate custom database tables. Settings, tours and their steps live in `oc_appconfig`, user preferences in `oc_preferences`. The images and videos of steps, and the backups of the last ten deleted tours, live in IntroVox's app data folder (`appdata_<instanceid>/introvox` in the Nextcloud data directory). Upgrades are non-destructive: tours, steps, language overrides, media and user preferences are preserved.
 
-The defensive `is_array()` guard in `ApiController::getWizardSteps()` (v1.4.3+) means that even if an older corrupt step blob exists, the wizard falls back to defaults rather than crashing.
+The defensive `is_array()` guard in `TourRepository::steps()` means that even if an older corrupt step blob exists, the tour falls back to the defaults rather than crashing.
 
 ## Uninstallation
 
@@ -145,5 +159,4 @@ If the wizard doesn't appear, see [Admin Troubleshooting](../admin/troubleshooti
 
 - [Admin Guide](../admin/guide.md) — Day-to-day administration
 - [Admin Troubleshooting](../admin/troubleshooting.md) — When something goes wrong
-- [App Store Submission](app-store-submission.md) — For developers releasing IntroVox itself
-- [Release Process](release-process.md) — Version sync, build, GitHub releases
+- [Changelog](../../CHANGELOG.md) — What changed in each release

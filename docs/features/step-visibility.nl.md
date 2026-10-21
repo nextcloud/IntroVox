@@ -13,7 +13,7 @@ Dit is een simpel tijdelijk-verberg-mechanisme voor seizoens- of in-ontwikkeling
 
 ## Laag 2 — groep-gebaseerde zichtbaarheid (v1.2.0+)
 
-Elke stap heeft een veld **Visible to groups**: een keuzelijst met meerdere Nextcloud-groepen.
+Elke stap heeft een veld **Zichtbaar voor groepen** (Visible to groups): een keuzelijst met meerdere Nextcloud-groepen.
 
 - **Lege selectie** (default) — stap is zichtbaar voor **alle gebruikers**
 - **Eén of meer groepen** — stap is alleen zichtbaar voor gebruikers in **minstens één** van die groepen
@@ -33,7 +33,7 @@ foreach ($steps as $step) {
 
 Omdat het filteren op de server gebeurt, kunnen gebruikers verborgen stappen ook niet via de ontwikkelaarstools van hun browser zien, en de groeps-id's komen nooit in de browser. Een stap met een kapotte groepenlijst blijft weg. Zie [Groep-gebaseerde zichtbaarheid](../admin/group-visibility.nl.md) voor use-cases en configuratie.
 
-Een tour voor een app kun je ook als geheel tot groepen beperken, met **Visible to** in de instellingen van de tour. Wie niet in die groepen zit, krijgt de tour helemaal niet. Zie [Tours](../admin/tours.nl.md).
+Een tour voor een app kun je ook als geheel tot groepen beperken, met **Zichtbaar voor** in de instellingen van de tour. Wie niet in die groepen zit, krijgt de tour helemaal niet. Zie [Tours](../admin/tours.nl.md).
 
 ## Laag 3 — gebruikers-voorkeuren
 
@@ -45,14 +45,14 @@ Indien gezet start de welkomsttour niet automatisch voor die gebruiker. Die kan 
 
 **Gezet door:**
 
-- De knop **Skip and don't show again** in de eerste stap
-- De tour voltooien (klikken op **Done** in de laatste stap)
+- De knop **Overslaan en niet meer tonen** in de eerste stap
+- De tour voltooien (klikken op **Klaar** in de laatste stap)
 - **Start tours by themselves** uitzetten in **Persoonlijke instellingen → IntroVox**
 
 **Gewist door:**
 
 - **Show again to everyone** bij de **Welcome tour** (wist de voorkeur voor iedereen)
-- **Restart tour now** in persoonlijke instellingen
+- **Tour nu herstarten** in persoonlijke instellingen
 
 ### Start tours by themselves (`tours_disabled`)
 
@@ -62,10 +62,10 @@ Een schakelaar in **Persoonlijke instellingen → IntroVox**, standaard aan. Zet
 
 De frontend houdt de staat van de welkomsttour per browser bij, in localStorage:
 
-- `introvox_completed`: de gebruiker heeft de tour in deze browser afgerond met **Done**, overgeslagen met **Skip and don't show again**, of gesloten met ✕. Hier start hij niet meer vanzelf
+- `introvox_completed`: de gebruiker heeft de tour in deze browser afgerond met **Klaar**, overgeslagen met **Overslaan en niet meer tonen**, of gesloten met ✕. Hier start hij niet meer vanzelf
 - `introvox_version`: de `wizard_version` van dat moment. Een nieuwere versie op de server toont de tour opnieuw
 
-Alleen **Done** en **Skip and don't show again** zetten ook `wizard_disabled` op de server. Wie de tour met ✕ sloot, krijgt hem in een andere browser opnieuw. De server-side voorkeur `wizard_disabled` is de gezaghebbende staat.
+Alleen **Klaar** en **Overslaan en niet meer tonen** zetten ook `wizard_disabled` op de server. Wie de tour met ✕ sloot, krijgt hem in een andere browser opnieuw. De server-side voorkeur `wizard_disabled` is de gezaghebbende staat.
 
 Een tour voor een app wordt alleen op de server bijgehouden, per gebruiker: is hij eenmaal gestart, dan start hij niet meer vanzelf, in geen enkele browser, tot een beheerder **Show again to everyone** bij die tour gebruikt.
 
@@ -87,7 +87,7 @@ De drie lagen worden gecombineerd:
 
 ## Zie ook
 
-- [Groep-gebaseerde zichtbaarheid](../admin/group-visibility.md) — configuratie-gids
+- [Groep-gebaseerde zichtbaarheid](../admin/group-visibility.nl.md) — configuratie-gids
 - [Tourstappen beheren](../admin/managing-steps.nl.md) — de schakelaar van een stap
-- [Persoonlijke instellingen](../user/personal-settings.md) — gebruikers-controls
-- [API-referentie](../architecture/api-reference.md) — filtering-implementatie
+- [Persoonlijke instellingen](../user/personal-settings.nl.md) — gebruikers-controls
+- [API-referentie](../architecture/api-reference.nl.md) — filtering-implementatie

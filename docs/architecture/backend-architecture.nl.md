@@ -6,10 +6,10 @@
 
 De IntroVox-backend is een standaard Nextcloud-PHP-app met:
 
-- **Controllers** voor REST-endpoints (admin, tours, gebruikers, media, license, personal)
-- **Services** voor business-logica (tours, stap-validatie, media, telemetrie, licentie-validatie)
+- **Controllers** voor REST-endpoints (admin, tours, assistant, gebruikers, deellinks, media, licentie, persoonlijk)
+- **Services** voor business-logica (tours, stap-validatie, media, telemetrie, validatie van een optionele abonnementssleutel)
 - **Repair-steps** die bij een update draaien
-- **Background-jobs** voor periodieke taken (telemetrie-verzending, licentie-sync)
+- **Background-jobs** voor periodieke taken (telemetrie-verzending, gebruiksrapport bij een abonnementssleutel)
 - **Settings-integratie** voor Nextcloud-instellingen-pagina's
 
 ## Component-categorieën
@@ -19,11 +19,12 @@ De IntroVox-backend is een standaard Nextcloud-PHP-app met:
 | Controller | Doel |
 |---|---|
 | `AdminController` | Stappen van elke tour (parameter `tour`, standaard `welcome`), talen, globale instellingen, export/import, statistieken |
-| `ToursController` | De tours zelf (alleen admin): lijst, aanmaken, wijzigen, aan/uit, verwijderen, opnieuw tonen, en de apps voor **Where does it start?** |
+| `ToursController` | De tours zelf (alleen admin): lijst, aanmaken, wijzigen, aan/uit, verwijderen, opnieuw tonen, statistieken per tour, een hele tour exporteren en importeren, en de apps voor **Where does it start?** |
 | `AssistantController` | Een tour vertalen en stappen laten schrijven met de Nextcloud Assistant (alleen admin): taken inplannen en het resultaat ophalen, alleen van de eigen taken |
-| `ApiController` | Endpoints voor gebruikers: `getWizardSteps` (met `?tour=<id>` voor een tour voor een app), `tourEvent`, tracking-events van de welkomsttour |
+| `ApiController` | Endpoints voor gebruikers: `getWizardSteps` (met `?tour=<id>` voor een tour voor een app), `tourEvent`, `tourReached` (hoe ver een run kwam), `checklistOpened` (een eigen taak van de checklist geopend), tracking-events van de welkomsttour |
+| `LinkController` | De deellink van een tour (`GET /tour/{id}`): stuurt alleen door naar de pagina van de tour |
 | `MediaController` / `MediaUploadController` | Media in stappen tonen, en (admin) toevoegen |
-| `LicenseController` | Enterprise-subscription-validatie |
+| `LicenseController` | Een optionele abonnementssleutel: validatie en gebruiksrapport. Niets in IntroVox wordt erdoor beperkt, en de beheerpagina roept deze routes niet aan |
 | `PersonalController` | Per-gebruiker-voorkeuren `wizard_disabled` en `tours_disabled`, en de tours voor apps die de gebruiker kan krijgen |
 
 Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (onbekende tour, tour uit, gebruiker niet in de groepen of zonder toegang tot de app) krijgt dezelfde 404, zodat niets verraadt welke tours er zijn. `tourEvent` heeft een limiet van 30 verzoeken per uur per gebruiker.
@@ -46,8 +47,8 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 | `TourAssistant`, `TourPrompts` | Assistant-taken (`core:text2text`) voor een tour: wat het taalmodel gevraagd wordt (alleen ids, titels, teksten en beschrijvingen van afbeeldingen), en het antwoord streng lezen: alleen een JSON-array van stappen telt, gelezen tegen de stappen zoals ze dan zijn, en door `StepValidator` |
 | `StepValidator` | Controleert stappen (velden, types, groottes) bij opslaan en importeren |
 | `MediaService` | Slaat media van stappen op, controleert en serveert ze |
-| `TelemetryService` | Aggregeert anonieme gebruiks-stats van de welkomsttour; verzendt naar `licenses.voxcloud.nl` |
-| `LicenseService` | Valideert subscription-keys, HTTP-response-validatie |
+| `TelemetryService` | Aggregeert anonieme gebruiks-stats van de welkomsttour; verzendt naar `licenses.voxcloud.nl`, maar pas als een beheerder de vraag over telemetrie gezien heeft (`telemetry_asked`) en niet nee zei |
+| `LicenseService` | Valideert een optionele abonnementssleutel en rapporteert het gebruik; niets in IntroVox wordt erdoor beperkt. HTTP-response-validatie |
 
 ### Repair-steps
 
@@ -60,8 +61,8 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 
 | Job | Cadans | Doel |
 |---|---|---|
-| `TelemetryJob` | Dagelijks | Verzendt geaggregeerde stats naar licentie-server |
-| `LicenseUsageJob` | Dagelijks (met stabiele jitter) | Synct licentie-staat en stap-limieten |
+| `TelemetryJob` | Elke 24 uur (met stabiele jitter van 0–120 minuten) | Verzendt geaggregeerde stats naar de licentie-server; slaat over zolang telemetrie niet aan staat |
+| `LicenseUsageJob` | Dagelijks (met stabiele jitter van 0–60 minuten) | Valideert de abonnementssleutel en rapporteert het gebruik; zonder sleutel doet hij niets |
 
 ### Settings-integratie
 
@@ -71,12 +72,12 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 
 ### Event-listeners
 
-- `LoadScripts` — laadt op elke pagina de kleine bootstrap `js/main.js` en levert de lazy initial state `introvox/runtime`: of tours aan staan, de eigen schakelaar van de gebruiker, de staat van de welkomsttour, en de tours voor apps die voor deze gebruiker vanzelf zouden starten (alleen id, pagina en versie). De bootstrap beslist daarmee of er een tour draait, en laadt pas dan de tour-code.
+- `LoadScripts` — laadt op elke pagina de kleine bootstrap `js/main.js` en levert de lazy initial state `introvox/runtime`: of tours aan staan, de eigen schakelaar van de gebruiker, de staat van de welkomsttour, de tours voor apps die voor deze gebruiker vanzelf zouden starten (alleen id, pagina en versie), en `link`: het tour-id van een deellink als de pagina met `?introvox-tour=<id>` werd opgevraagd. De bootstrap beslist daarmee of er een tour draait, en laadt pas dan de tour-code.
 
 ## Opslag-conventies
 
-- **Globale config**: `oc_appconfig` (`wizard_enabled` = **Tours for everyone**, `wizard_version`, `wizard_steps_<lang>` voor de welkomsttour, `tours`, `tour_steps_<id>_<lang>`, `tours_introduced`, `checklist_enabled`, `checklist_tasks`, `checklist_custom`)
-- **Per-gebruiker**: `oc_preferences` (`introvox/wizard_disabled`, `tours_disabled`, `tour_<id>_seen`, `tour_<id>_completed`, `tour_<id>_skipped`, telemetrie-timestamps `wizard_started`, `wizard_completed`, `wizard_skipped`, `checklist_uploaded`, `checklist_<id>`)
+- **Globale config**: `oc_appconfig` (`wizard_enabled` = **Tours for everyone**, `wizard_version`, `wizard_steps_<lang>` voor de welkomsttour, `tours`, `tour_steps_<id>_<lang>`, `tours_introduced`, `user_menu`, `tour_package_limit`, `checklist_enabled`, `checklist_tasks`, `checklist_custom`, `license_key`, `telemetry_enabled` (leeg = aan zodra `telemetry_asked` gezet is), `telemetry_asked`, `telemetry_last_report`, de tellers `wizard_started_count`, `wizard_completed_count`, `wizard_skipped_count`)
+- **Per-gebruiker**: `oc_preferences` (`introvox/wizard_disabled`, `tours_disabled`, `tour_<id>_seen`, `tour_<id>_completed`, `tour_<id>_skipped`, `tour_<id>_reached`, `admin_intro_done`, telemetrie-timestamps `wizard_started`, `wizard_completed`, `wizard_skipped`, `checklist_uploaded`, `checklist_<id>`)
 - Media en back-ups van verwijderde tours in de app-data-map
 - Geen custom database-tabellen
 
@@ -87,7 +88,7 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 - `StepValidator` op stappen bij opslaan/importeren; HTML in de stap-tekst wordt opgeschoond waar hij getoond wordt (`src/utils/stepHtml.js`)
 - Server-side groep-filtering — verborgen stappen verlaten nooit de server; bij een tour voor een app ook per tour
 - Eén 404 voor alles wat geweigerd wordt bij tours voor apps en media
-- Defensieve `is_array()`-guard tegen corrupte appconfig-blobs (v1.4.3+)
+- Defensieve `is_array()`-guard tegen corrupte appconfig-blobs, in `TourRepository::steps()`
 
 ## Voor de complete referentie
 
@@ -101,7 +102,7 @@ Zie [backend-architecture.md](backend-architecture.md) voor:
 
 ## Zie ook
 
-- [Architectuur-overzicht](overview.md) — systeem-design
-- [Frontend-architectuur](frontend-architecture.md) — Vue-client
-- [API-referentie](api-reference.md) — REST-endpoints
-- [Transifex-integratie](transifex-integration.md) — l10n-workflow
+- [Architectuur-overzicht](overview.nl.md) — systeem-design
+- [Frontend-architectuur](frontend-architecture.nl.md) — Vue-client
+- [API-referentie](api-reference.nl.md) — REST-endpoints
+- [Transifex-integratie](transifex-integration.nl.md) — l10n-workflow

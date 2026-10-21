@@ -13,7 +13,7 @@ IntroVox biedt een REST-API voor:
 - Admin-CRUD op stappen, talen en globale instellingen, per tour
 - De per-gebruiker-voorkeuren `wizard_disabled` (welkomsttour klaar) en `tours_disabled` (**Start tours by themselves** uit) beheren, en de tours voor apps die een gebruiker kan krijgen opvragen
 - Afbeeldingen, video's en ondertitels in stappen uploaden en tonen
-- Enterprise-subscription-status valideren
+- Een optionele abonnementssleutel valideren (beperkt niets)
 
 ## Authenticatie
 
@@ -34,11 +34,11 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 | **Tours (admin)** | `GET`/`POST /admin/tours`, `PUT`/`DELETE /admin/tours/{id}`, `POST /admin/tours/{id}/reshow`, `GET /admin/tours/{id}/statistics`, `GET /admin/tours/{id}/export` (`.zip`), `POST /admin/tours/import`, `GET /admin/apps` |
 | **Assistant (admin)** | `GET /admin/assistant` (is er een provider), `POST /admin/assistant/translate` (`tour`, `from`, `to`), `POST /admin/assistant/draft` (`tour`, `description`, `lang`), `GET /admin/assistant/tasks/{id}` (`running`, `done` met stappen, of `failed` met een reden) |
 | **Admin-stap-CRUD** | `saveSteps`, `resetToDefault`, `importSteps`, `exportSteps` — elk met een parameter `tour` (standaard `welcome`) |
-| **Admin-instellingen** | `saveSettings` (`enabled`, `userMenu`, `showToAll`, `checklist`; alleen wat meekomt verandert), `toggleTelemetry`, `sendTelemetryNow`, `markTelemetryAsked`, `markIntroDone` |
+| **Admin-instellingen** | `saveSettings` (`enabled` = **Tours for everyone**, `userMenu`, `checklist`; alleen wat meekomt verandert; de welkomsttour opnieuw tonen gaat via `POST /admin/tours/welcome/reshow`), `toggleTelemetry`, `sendTelemetryNow`, `markTelemetryAsked`, `markIntroDone` |
 | **Talen** | `getAvailableLanguagesWithMetadata` (alle talen van Nextcloud), `listOverrides` (per tour) |
 | **Media** | `POST /admin/media`, `POST /admin/media/from-files`, `GET /media/{file}` |
 | **Persoonlijk** | `GET`/`POST /personal/settings` (`wizardDisabled`, `toursDisabled`, lijst met tours) |
-| **Licentie** | Enterprise-subscription-validatie + statistieken |
+| **Licentie** | Een optionele abonnementssleutel valideren en het gebruik rapporteren; niets in IntroVox wordt erdoor beperkt, en de beheerpagina roept deze routes niet aan |
 
 ## Voor de complete referentie
 
@@ -51,6 +51,6 @@ Zie [api-reference.md](api-reference.md) voor:
 
 ## Zie ook
 
-- [Backend-architectuur](backend-architecture.md) — controllers en services
-- [Frontend-architectuur](frontend-architecture.md) — Vue-client
-- [Architectuur-overzicht](overview.md) — systeem-design
+- [Backend-architectuur](backend-architecture.nl.md) — controllers en services
+- [Frontend-architectuur](frontend-architecture.nl.md) — Vue-client
+- [Architectuur-overzicht](overview.nl.md) — systeem-design

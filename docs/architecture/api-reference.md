@@ -71,7 +71,7 @@ Returns the steps of one tour for the current user, filtered by language, group 
 }
 ```
 
-- `steps` — in the user's language (e.g. `pt_BR`), else its base language (`pt`), else the tour's main language; disabled and group-restricted steps removed, `visibleToGroups` stripped. There are no translated defaults: a language without saved steps falls through to the next.
+- `steps` — in the user's language (e.g. `pt_BR`), else its base language (`pt`), else the tour's main language; disabled and group-restricted steps removed, `visibleToGroups` stripped. A tour of your own has no translated defaults: a language without saved steps falls through to the next. A built-in tour (`builtin-files`, `builtin-talk`, `builtin-deck`, `builtin-calendar`) does: without the admin's steps in the user's language or its base language, it uses its Transifex translation for the user's language (or its base language) where there is one, then the admin's steps in the main language, then the English defaults.
 - `version` — the tour's version (integer); raised by **Show again to everyone**
 
 This route does not check whether the tour would start *by itself* (seen before, **Start tours by themselves** off, audience). That is the runtime's decision, so that a tour started by hand from the personal settings still loads.
@@ -426,14 +426,16 @@ These move one language of a tour's steps. A whole tour, with its settings, ever
 | `POST` | `/apps/introvox/admin/telemetry/asked` | Record that the admin tour asked the telemetry question |
 | `POST` | `/apps/introvox/admin/intro/done` | Record that this admin has seen the admin tour (`admin_intro_done`) |
 
-### License (Enterprise Subscription)
+### License (optional subscription key)
+
+`LicenseController` validates an optional subscription key against `licenses.voxcloud.nl` and reports usage to it. Nothing in IntroVox is limited by it, and the admin page does not call these routes.
 
 | Method | URL | Purpose |
 |---|---|---|
-| `GET` | `/apps/introvox/admin/license/stats` | Get current license status and step-count usage |
-| `POST` | `/apps/introvox/admin/license/settings` | Save subscription key |
-| `POST` | `/apps/introvox/admin/license/validate` | Validate subscription key against license server |
-| `POST` | `/apps/introvox/admin/license/usage` | Report current usage to license server |
+| `GET` | `/apps/introvox/admin/license/stats` | The key's status (masked) and the step counts per language |
+| `POST` | `/apps/introvox/admin/license/settings` | Save the subscription key |
+| `POST` | `/apps/introvox/admin/license/validate` | Validate the key against the license server |
+| `POST` | `/apps/introvox/admin/license/usage` | Report current usage to the license server |
 
 ## Step Object Schema
 
@@ -460,15 +462,15 @@ The steps of every tour use this schema. Saving and importing check every field'
 - **Personal API** (`/personal/*`) — requires Nextcloud session
 - **Admin API** (`/admin/*`) — requires Nextcloud session **and** admin role; double-checked via `IGroupManager::isAdmin()` (v1.5.0+)
 
-No route is reachable without logging in: none has `#[PublicPage]`. Until the release after 1.7.9, `GET /api/steps` did, and without a user it skipped the group filter, so anyone could read every step, group-restricted ones included.
+No route is reachable without logging in: none has `#[PublicPage]`. Until 2.0.0, `GET /api/steps` did, and without a user it skipped the group filter, so anyone could read every step, group-restricted ones included.
 
 ## CSRF Protection
 
-Every endpoint requires a valid CSRF token, `GET` requests included, with two exceptions. `GET /media/{file}`, because an `<img>` or `<video>` cannot send a token: that route only reads, needs a logged-in user with strict cookies (which no cross-site request carries), and answers everything it refuses with the same 404. `GET /tour/{id}`, a share link from a mail, which cannot carry one either: it needs a logged-in user, changes nothing, and only redirects (see [Share Links](#share-links)). Until the release after 1.7.9 the tracking endpoints (`POST /api/wizard/start`, `/complete`, `/skip`) and the read-only `GET` endpoints skipped the check, so any website could fire the tracking calls on behalf of a logged-in visitor.
+Every endpoint requires a valid CSRF token, `GET` requests included, with two exceptions. `GET /media/{file}`, because an `<img>` or `<video>` cannot send a token: that route only reads, needs a logged-in user with strict cookies (which no cross-site request carries), and answers everything it refuses with the same 404. `GET /tour/{id}`, a share link from a mail, which cannot carry one either: it needs a logged-in user, changes nothing, and only redirects (see [Share Links](#share-links)). Until 2.0.0 the tracking endpoints (`POST /api/wizard/start`, `/complete`, `/skip`) and the read-only `GET` endpoints skipped the check, so any website could fire the tracking calls on behalf of a logged-in visitor.
 
 Use `@nextcloud/axios` from the frontend — it injects the token automatically. A bare `fetch()` sends no token and gets `412 Precondition Failed`.
 
-`tests-js/controller-security.test.js` fails the build when a route gets `#[PublicPage]`, when any route other than the media one gets `#[NoCSRFRequired]`, or when the frontend calls the API with `fetch()`.
+`tests-js/controller-security.test.js` fails the build when a route gets `#[PublicPage]`, when any route other than the media route and the share link gets `#[NoCSRFRequired]`, or when the frontend calls the API with `fetch()`.
 
 ## See Also
 

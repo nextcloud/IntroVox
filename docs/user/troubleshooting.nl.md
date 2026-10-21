@@ -1,6 +1,6 @@
 # Problemen oplossen (gebruikers)
 
-Veelvoorkomende problemen die gebruikers met IntroVox ervaren en hoe je ze oplost. Voor admin-side problemen, zie [Beheer-troubleshooting](../admin/troubleshooting.md).
+Veelvoorkomende problemen die gebruikers met IntroVox ervaren en hoe je ze oplost. Voor admin-side problemen, zie [Beheer-troubleshooting](../admin/troubleshooting.nl.md).
 
 ## Tour start niet
 
@@ -10,9 +10,9 @@ Veelvoorkomende problemen die gebruikers met IntroVox ervaren en hoe je ze oplos
 
 1. Wacht 2–3 seconden — de tour start automatisch na een korte vertraging
 2. Ververs de pagina (`Ctrl+R` / `Cmd+R`)
-3. Open een andere pagina, zoals Files: de welkomsttour start op de eerste pagina die je na het inloggen opent, welke app dat ook is
+3. Open een andere pagina, zoals Bestanden: de welkomsttour start op de eerste pagina die je na het inloggen opent, welke app dat ook is
 4. Controleer of **Start tours by themselves** aan staat in **Persoonlijke instellingen → IntroVox**
-5. Probeer handmatig starten via **Persoonlijke instellingen → IntroVox → Restart tour now**
+5. Probeer handmatig starten via **Persoonlijke instellingen → IntroVox → Tour nu herstarten**
 
 Als de tour nog steeds niet verschijnt, heeft je beheerder hem mogelijk voor iedereen uitgeschakeld. Neem contact op.
 
@@ -20,7 +20,7 @@ Als de tour nog steeds niet verschijnt, heeft je beheerder hem mogelijk voor ied
 
 **Probleem:** je opent een app die een tour heeft, maar de tour verschijnt niet.
 
-Een tour voor een app start alleen vanzelf de eerste keer dat je die app opent, en nooit bovenop de welkomsttour: heb je de welkomsttour nog niet gehad, dan krijg je die eerst, en de tour van de app bij een later bezoek. Wil je hem (opnieuw) zien, ga dan naar **Persoonlijke instellingen → IntroVox**, zoek hem onder **Tours** en klik op **Start** of **Start again**. Staat de tour van de app daar niet, dan is hij niet voor jou bedoeld of heeft je beheerder hem niet aangezet.
+Een tour voor een app start alleen vanzelf de eerste keer dat je die app opent, en nooit bovenop de welkomsttour: heb je de welkomsttour nog niet gehad, dan krijg je die eerst, en de tour van de app bij een later bezoek. Je beheerder kan hem ook alleen voor nieuwe accounts, pas een aantal dagen na je eerste login, of alleen tussen twee datums laten starten. Wil je hem (opnieuw) zien, ga dan naar **Persoonlijke instellingen → IntroVox**, zoek hem onder **Tours** en klik op **Start** of **Start again**. Staat de tour van de app daar niet, dan is hij niet voor jou bedoeld of heeft je beheerder hem niet aangezet.
 
 ## Stappen ontbreken
 
@@ -38,24 +38,24 @@ De tour toont automatisch alleen de stappen die relevant zijn voor jouw setup en
 
 **Probleem:** een stap staat rechtsonder (linksonder zolang er een venster open is) in plaats van ergens naar te wijzen.
 
-De stap wacht op het deel van de pagina waar hij over gaat. Vaak verschijnt dat pas als je iets gedaan hebt, zoals een gesprek aanmaken of de details van een bestand openen. De pagina blijft bruikbaar: doe wat de stap zegt, en de stap schuift erheen zodra het verschijnt. **Next** gaat ook zonder het element verder.
+De stap wacht op het deel van de pagina waar hij over gaat. Vaak verschijnt dat pas als je iets gedaan hebt, zoals een gesprek aanmaken of de details van een bestand openen. De pagina blijft bruikbaar: doe wat de stap zegt, en de stap schuift erheen zodra het verschijnt. **Volgende** gaat ook zonder het element verder.
 
-## Geen Next-knop, of Next werkt niet
+## Geen knop Volgende, of Volgende werkt niet
 
-**Probleem:** een stap heeft geen knop **Next**, of je kunt er niet op klikken.
+**Probleem:** een stap heeft geen knop **Volgende** (Next), of je kunt er niet op klikken.
 
 De stap vraagt je iets te doen:
 
-- "Click the highlighted element to continue.": klik op het deel van de pagina met de rand en het knipperende pijltje. De tour gaat dan vanzelf verder.
-- "Fill in the highlighted field to continue.": typ iets in het veld. **Next** werkt zodra het veld tekst heeft.
+- "Klik op het gemarkeerde element om verder te gaan.": klik op het deel van de pagina met de rand en het knipperende pijltje. De tour gaat dan vanzelf verder.
+- "Vul het gemarkeerde veld in om verder te gaan.": typ iets in het veld. **Volgende** werkt zodra het veld tekst heeft.
 
-Staat het element niet op de pagina, dan werkt **Next** gewoon, zodat je nooit vastloopt.
+Staat het element niet op de pagina, dan werkt **Volgende** gewoon, zodat je nooit vastloopt.
 
 ## Tekst niet in mijn taal
 
 **Probleem:** de tour toont Engelse tekst maar je hebt een andere Nextcloud-taal geselecteerd.
 
-**Meest waarschijnlijke oorzaak:** de tekst van de tour is voor jouw taal nog niet vertaald op [Transifex](https://www.transifex.com/nextcloud/nextcloud/). IntroVox valt dan terug op Engels, zodat je altijd leesbare tekst krijgt. Iedereen kan op Transifex meevertalen; zodra jouw taal daar vertaald is, brengt de volgende Nextcloud-sync de vertaling vanzelf naar IntroVox.
+**Meest waarschijnlijke oorzaak:** de tekst van de tour is voor jouw taal nog niet vertaald op [Transifex](https://www.transifex.com/nextcloud/nextcloud/). IntroVox valt dan terug op Engels, zodat je altijd leesbare tekst krijgt. Iedereen kan op Transifex meevertalen. Nieuwe vertalingen bereiken je met de volgende release van IntroVox, zodra je beheerder de app heeft bijgewerkt.
 
 **Andere dingen om te proberen:**
 
@@ -95,14 +95,8 @@ Sluit je de welkomsttour met **✕** of Escape, dan onthoudt alleen deze browser
 - Klik in de eerste stap op **Overslaan en niet meer tonen**, of
 - Zet **Start tours by themselves** uit in **Persoonlijke instellingen → IntroVox** (dan start er geen tour meer vanzelf, ook geen tour voor een app)
 
-## Eerder getoonde stappen blijven achter de huidige stap zichtbaar (v1.6.1-fix)
-
-**Probleem:** elke nieuwe stap stapelt op — oude stappen blijven zichtbaar onder de huidige.
-
-Dit was een bug die in v1.4.0 werd geïntroduceerd en in v1.6.1 is opgelost. Als je hem ziet, vraag je beheerder om IntroVox naar v1.6.1 of hoger te upgraden.
-
 ## Zie ook
 
-- [FAQ](faq.md) — veelgestelde vragen
-- [Persoonlijke instellingen](personal-settings.md) — herstarten, tours voor apps starten, tours niet meer vanzelf laten starten
-- [Beheer-troubleshooting](../admin/troubleshooting.md) — als je beheerder bent
+- [FAQ](faq.nl.md) — veelgestelde vragen
+- [Persoonlijke instellingen](personal-settings.nl.md) — herstarten, tours voor apps starten, tours niet meer vanzelf laten starten
+- [Beheer-troubleshooting](../admin/troubleshooting.nl.md) — als je beheerder bent
