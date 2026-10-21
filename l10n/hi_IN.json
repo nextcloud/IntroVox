@@ -1,0 +1,8 @@
+{ "translations": {
+    "Saved" : "सहेजा गया",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Delete" : "Delete",
+    "Close" : "Close"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

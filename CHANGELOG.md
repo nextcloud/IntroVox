@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - Unreleased
+## [2.0.0] - 2026-10-21
 
 IntroVox grows from one welcome tour into tours for Nextcloud and its apps. The major version marks that, and a few changes to the app's HTTP routes that a script outside the app could notice; the stored tours, steps and settings carry over as they are.
 
@@ -50,6 +50,8 @@ IntroVox grows from one welcome tour into tours for Nextcloud and its apps. The 
 - **A short tour of the admin page for every admin**, the first time they open IntroVox's settings: the parts of the page, languages, how to make a step in four moves, the preview, and a link to the manual. It uses the same tour users get. **Show the admin tour again** under **Support** runs it again.
 
 - **Steps can be reordered without a mouse.** Every step has **Move up** and **Move down** buttons beside the drag handle. Reordering was drag-only, so it could not be done from the keyboard or with a screen reader at all — the two buttons save the new order the same way a drag does.
+
+- **Translations in 105 languages**, from Transifex as they stood on release day. Danish is complete; Spanish, Dutch and French are largely translated, partly by machine and not yet reviewed by their language teams. Languages with only a few translated strings are included too: what is not translated shows in English.
 
 ### Changed
 

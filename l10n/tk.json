@@ -1,0 +1,23 @@
+{ "translations": {
+    "Completed" : "Tamamlanan",
+    "Settings" : "Sazlamalar",
+    "Translate" : "Terjime et",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Create" : "Dörediň",
+    "Name" : "Ady",
+    "Back" : "Yzyna",
+    "Unknown error" : "Näbelli ýalňyşlyk",
+    "Choose" : "saýlamak",
+    "Upload" : "Ýüklemek",
+    "Replace" : "Çalyşmaklyk",
+    "Remove" : "Aýyrmak",
+    "Link" : "Baglanyşyk",
+    "Share" : "Paýlaş",
+    "Edit" : "Redaktirläň",
+    "Delete" : "Delete",
+    "Copy link" : "Link-y nusgalaň",
+    "Close" : "Ýap",
+    "Skip" : "Geçiň"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

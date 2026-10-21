@@ -1,0 +1,23 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Files" : "Archivos",
+    "Settings" : "Configuración",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Create" : "Crear",
+    "Name" : "Nombre",
+    "Everyone" : "Cualsiquiera",
+    "Back" : "Ta zaga",
+    "Never" : "Nunca",
+    "Choose" : "Eslechir",
+    "Size" : "Grandaria",
+    "Share" : "Compartir",
+    "Enabled" : "Activau",
+    "Disabled" : "Desactivau",
+    "Language" : "Luenga",
+    "Delete" : "Delete",
+    "Close" : "Zarrar",
+    "Done" : "Feito"
+},
+"nplurals=2; plural=(n != 1);");

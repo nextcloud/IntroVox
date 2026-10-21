@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Completed" : "Ավարտվեց",
+    "Calendar" : "Օրացույց",
+    "Settings" : "Կարգավորումներ",
+    "Translate" : "Թարգմանել",
+    "Saved" : "Պահված",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Name" : "Անուն",
+    "Never" : "Երբեք",
+    "Choose" : "Ընտրել",
+    "Upload" : "Բեռնել",
+    "Size" : "Չափս",
+    "Link" : "Հղում",
+    "Share" : "կիսվել",
+    "Language" : "Լեզու",
+    "Export" : "Արտահանում",
+    "Import" : "Ներմուծում",
+    "Edit" : "մշակել",
+    "Delete" : "Delete",
+    "Copy link" : "Պատճենել հղումը",
+    "Source code" : "ծրագրի կոդը",
+    "Close" : "Փակել",
+    "Select" : "Նշել"
+},
+"nplurals=2; plural=(n != 1);");

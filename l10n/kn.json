@@ -1,15 +1,25 @@
 { "translations": {
+    "Files" : "﻿ಕಡತಗಳು",
+    "Settings" : "ಆಯ್ಕೆ",
+    "Saved" : "﻿ಉಳಿಸಿದ",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Name" : "﻿ಹೆಸರು",
+    "Everyone" : "﻿ಪ್ರತಿಯೊಬ್ಬರೂ",
     "Unknown error" : "ಗೊತ್ತಿಲ್ಲದ ದೋಷ",
+    "Choose" : "﻿ಆಯ್ಕೆ",
+    "Upload" : "ವರ್ಗಾಯಿಸಿ",
+    "Size" : "﻿ ಗಾತ್ರ",
+    "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
     "Enabled" : "ಸಕ್ರಿಯಗೊಳಿಸಿದೆ",
     "Disabled" : "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ",
-    "Settings" : "ಆಯ್ಕೆ",
-    "Cancel" : "Cancel",
+    "Language" : "﻿ಭಾಷೆ",
     "Export" : "ರಫ್ತು",
     "Import" : "ಆಮದು",
     "Reset" : "ಮರುಹೊಂದಿಸಿ",
     "Edit" : "ಸಂಪಾದಿಸು",
     "Delete" : "Delete",
-    "Save" : "Save",
-    "Close" : "ಮುಚ್ಚು"
+    "Close" : "ಮುಚ್ಚು",
+    "Select" : "ಆಯ್ಕೆ ಮಾಡಿ"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

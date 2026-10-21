@@ -2,13 +2,24 @@ OC.L10N.register(
     "introvox",
     {
     "Completed" : "Završeno",
+    "Files" : "Fajlovi",
     "Settings" : "Поставке",
+    "Translate" : "Prevedi",
     "Failed" : "Nije uspelo",
     "Cancel" : "Poništi",
     "Save" : "Sačuvaj",
+    "Name" : "Ime",
     "Unknown error" : "Nepoznata greška",
     "Never" : "Nikad",
+    "Choose" : "Odaberi",
+    "Upload" : "Otpremi",
+    "Small" : "Mali",
+    "Replace" : "Zameni postojeću",
+    "Bold" : "Podebljano",
+    "Italic" : "Kurziv",
+    "Link" : "Veza",
     "Share" : "Deli",
+    "Language" : "Jezik",
     "Edit" : "Izmeni",
     "Delete" : "Obriši",
     "Copy link" : "Kopiraj vezu",
@@ -16,6 +27,7 @@ OC.L10N.register(
     "Source code" : "Izvorni kôd",
     "Close" : "Zatvori",
     "Done" : "Gotovo",
-    "Skip" : "Preskoči"
+    "Skip" : "Preskoči",
+    "Select" : "Obeleži"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

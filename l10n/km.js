@@ -1,16 +1,26 @@
 OC.L10N.register(
     "introvox",
     {
+    "Calendar" : "ប្រតិទិន",
     "Settings" : "ការកំណត់",
+    "Saved" : "បាន​រក្សាទុក",
     "Cancel" : "Cancel",
+    "Tasks" : "ភារកិច្ច",
     "Save" : "Save",
+    "Name" : "ឈ្មោះ",
     "Unknown error" : "មិន​ស្គាល់​កំហុស",
+    "Choose" : "ជ្រើស",
+    "Upload" : "ផ្ទុក​ឡើង",
+    "Size" : "ទំហំ",
+    "Apply" : "អនុវត្ត",
     "Enabled" : "បាន​បើក",
     "Disabled" : "បាន​បិទ",
+    "Language" : "ភាសា",
     "Export" : "នាំចេញ",
     "Import" : "នាំយកចូល",
     "Edit" : "កែប្រែ",
     "Delete" : "Delete",
+    "Copy link" : "ចម្លងតំណ",
     "Close" : "បិទ"
 },
 "nplurals=1; plural=0;");

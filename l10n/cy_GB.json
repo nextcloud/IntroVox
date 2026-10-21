@@ -1,0 +1,27 @@
+{ "translations": {
+    "Talk" : "Sgwrs",
+    "Calendar" : "Calendr",
+    "Settings" : "Gosodiadau",
+    "Translate" : "Cyfieithu",
+    "Saved" : "Wedi'u cadw",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "App" : "Ap",
+    "Name" : "Enw",
+    "Unknown error" : "Gwall anhysbys",
+    "Choose" : "Dewisa",
+    "Upload" : "Llwytho i fyny",
+    "Size" : "Maint",
+    "Bold" : "Trwm",
+    "Italic" : "Italig",
+    "Link" : "Dolen",
+    "Language" : "Iaith",
+    "Export" : "Allforio",
+    "Import" : "Mewnforio",
+    "Edit" : "Golygu",
+    "Delete" : "Delete",
+    "Preview" : "Rhagolwg",
+    "Source code" : "Cod ffynhonnell",
+    "Close" : "Cau"
+},"pluralForm" :"nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;"
+}

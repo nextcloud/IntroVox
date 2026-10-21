@@ -1,18 +1,31 @@
 OC.L10N.register(
     "introvox",
     {
+    "Completed" : "সুসম্পন্ন",
+    "Calendar" : "দিনপঞ্জী",
     "Settings" : "সেটিংস",
+    "Saved" : "সংরক্ষণ করা হলো",
     "Cancel" : "Cancel",
+    "Tasks" : "কর্ম",
     "Save" : "Save",
+    "Name" : "নাম",
+    "Everyone" : "সকলে",
+    "From" : "থেকে",
     "Unknown error" : "অজানা জটিলতা",
+    "Choose" : "বেছে নিন",
+    "Upload" : "আপলোড",
+    "Size" : "আকার",
     "Enabled" : "কার্যকর",
     "Disabled" : "অকার্যকর",
+    "Language" : "ভাষা",
     "Export" : "রপ্তানি",
     "Import" : "আমদানি",
     "Reset" : "পূণঃনির্ধানণ",
     "Edit" : "সম্পাদনা",
     "Delete" : "Delete",
+    "Copy link" : "লিঙ্ক কপি করো",
     "Close" : "বন্ধ",
-    "Done" : "শেষ হলো"
+    "Done" : "শেষ হলো",
+    "Select" : "সিলেক্ট"
 },
 "nplurals=2; plural=(n != 1);");

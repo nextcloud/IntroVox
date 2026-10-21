@@ -1,17 +1,27 @@
 OC.L10N.register(
     "introvox",
     {
+    "Calendar" : "நாட்காட்டி",
     "Settings" : "அமைப்புகள்",
+    "Translate" : "Translate",
     "Cancel" : "Cancel",
+    "Tasks" : "கடமைகள்",
     "Title" : "தலைப்பு",
     "Save" : "Save",
+    "Name" : "பெயர்",
     "Back" : "பின்னுக்கு",
+    "Choose" : "தெரிவுசெய்க ",
+    "Upload" : "பதிவேற்றுக",
+    "Size" : "அளவு",
     "Remove" : "அகற்றுக",
+    "Link" : "Link",
+    "Language" : "மொழி",
     "Export" : "ஏற்றுமதி",
     "Import" : "இறக்குமதி",
     "Edit" : "தொகுக்க",
     "Delete" : "Delete",
     "Close" : "மூடுக",
-    "Done" : "Done"
+    "Done" : "Done",
+    "Select" : "Select"
 },
 "nplurals=2; plural=(n != 1);");

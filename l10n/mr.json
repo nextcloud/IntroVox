@@ -1,0 +1,8 @@
+{ "translations": {
+    "Settings" : "सेटिंग",
+    "Cancel" : "रद्द करा",
+    "Save" : "Save",
+    "Delete" : "Delete",
+    "Close" : "Close"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

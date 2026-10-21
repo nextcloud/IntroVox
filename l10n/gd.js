@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "introvox",
+    {
+    "Completed" : "Coileanta",
+    "Files" : "Faidhlichean",
+    "Settings" : "Roghainnean",
+    "Translate" : "Eadar-theangaich",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Create" : "Cruthaich",
+    "Name" : "Ainm",
+    "Back" : "Air ais",
+    "Unknown error" : "Mearachd nach aithne dhuinn",
+    "Choose" : "Tagh",
+    "Upload" : "Luchdaich suas",
+    "Replace" : "Cuir ’na àite",
+    "Remove" : "Thoir air falbh",
+    "Link" : "Ceangal",
+    "Share" : "Co-roinn",
+    "Edit" : "Deasaich",
+    "Delete" : "Delete",
+    "Preview" : "Ro-sheall",
+    "Copy link" : "Dèan lethbhreac dhen cheangal",
+    "Source code" : "Bun-tùs",
+    "Close" : "Dùin",
+    "Skip" : "Leum thairis air"
+},
+"nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3;");
