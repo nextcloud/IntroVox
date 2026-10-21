@@ -1,21 +1,26 @@
 OC.L10N.register(
     "introvox",
     {
+    "Completed" : "සම්පුර්ණයි",
+    "Settings" : "සැකසුම්",
     "English" : "ඉංග්‍රීසි",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "App" : "යෙදුම",
+    "Back" : "ආපසු",
     "Unknown error" : "නොදන්නා දෝෂයකි",
+    "Remove" : "ඉවත් කරන්න",
+    "Share" : "බෙදාගන්න",
     "Enabled" : "සබල කර ඇත",
     "Disabled" : "අබල කර ඇත",
-    "Settings" : "සැකසුම්",
-    "Cancel" : "Cancel",
     "Save changes" : "වෙනස්කම් සුරකින්න",
     "Edit" : "සංස්කරණය",
     "Delete" : "Delete",
-    "Save" : "Save",
+    "Preview" : "පෙරදසුන",
+    "Copy link" : "සබැඳිය පිටපත් කරන්න",
     "Need help?" : "උපකාරයක් අවශ්‍යයද?",
     "Report an issue" : "ගැටලුවක් වාර්තා කරන්න",
     "Close" : "වසන්න",
-    "Back" : "ආපසු",
-    "Skip" : "මඟ හරින්න",
-    "Save settings" : "සැකසුම් සුරකින්න"
+    "Skip" : "මඟ හරින්න"
 },
 "nplurals=2; plural=(n != 1);");

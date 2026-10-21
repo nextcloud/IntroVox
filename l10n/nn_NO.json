@@ -1,22 +1,25 @@
 { "translations": {
-    "Unknown error" : "Ukjend feil",
-    "Never" : "Aldri",
-    "Disabled" : "Deaktivert",
+    "Completed" : "Fullført",
     "Settings" : "Innstillingar",
     "Support" : "Støtte",
     "Cancel" : "Avbryt",
+    "Save" : "Save",
+    "Back" : "Tilbake",
+    "Unknown error" : "Ukjend feil",
+    "Never" : "Aldri",
+    "Remove" : "Fjern",
+    "Share" : "Del",
+    "Disabled" : "Deaktivert",
     "Export" : "Eksporter",
     "Import" : "Importer",
     "Save changes" : "Lagre endringar",
     "Drag to reorder" : "Dra for å endre rekkefylgje",
     "Edit" : "Rediger",
     "Delete" : "Delete",
-    "Save" : "Save",
+    "Preview" : "Førehandsvisning",
     "Need help?" : "Treng du hjelp?",
     "Close" : "Lukk",
-    "Back" : "Tilbake",
     "Done" : "Ferdig",
-    "Skip" : "Hopp over",
-    "Saving …" : "Lagrar …"
+    "Skip" : "Hopp over"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

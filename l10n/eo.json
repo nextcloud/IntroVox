@@ -1,25 +1,24 @@
 { "translations": {
+    "Settings" : "Agordoj",
     "English" : "Angla",
-    "Unsaved changes" : "Nekonservitaj ŝanĝoj",
+    "Cancel" : "Cancel",
+    "Save" : "Save",
+    "Next" : "Posten",
     "Unknown error" : "Nekonata eraro",
     "Never" : "Neniam",
+    "Position" : "Loko",
+    "Unsaved changes" : "Nekonservitaj ŝanĝoj",
     "Disabled" : "Malkapabligita",
-    "Settings" : "Agordoj",
-    "Cancel" : "Cancel",
     "Export" : "Eksporti",
     "Import" : "Importi",
     "Reset" : "Restarigi",
     "Save changes" : "Konservi ŝanĝojn",
     "Edit" : "Modifi",
     "Delete" : "Delete",
-    "Position" : "Loko",
-    "Save" : "Save",
     "Need help?" : "Ĉu necesas helpo?",
     "Close" : "Malfermi",
     "Done" : "Farita",
-    "Next" : "Posten",
     "Skip" : "Preterpasi",
-    "Settings saved" : "Agordoj konservitaj",
-    "Save settings" : "Konservi agordojn"
+    "Settings saved" : "Agordoj konservitaj"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
