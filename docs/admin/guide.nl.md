@@ -2,6 +2,10 @@
 
 Deze gids beschrijft dagelijks beheer van IntroVox. Voor installatie, zie de [Installatie-gids](../deployment/installation.nl.md).
 
+![De beheerderstour van de IntroVox-instellingen, van begin tot eind](../screenshots/tours-demo.gif)
+
+*De korte tour die elke beheerder krijgt bij het eerste bezoek aan de IntroVox-instellingen. **Show the admin tour again** onder **Ondersteuning** start hem opnieuw.*
+
 ![De IntroVox-beheerpagina, paneel Tours](../screenshots/admin-settings.png)
 
 ## Overzicht

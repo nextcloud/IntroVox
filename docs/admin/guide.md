@@ -2,6 +2,10 @@
 
 This guide describes day-to-day administration of IntroVox. For installation, see the [Installation Guide](../deployment/installation.md).
 
+![The admin tour of the IntroVox settings page, start to finish](../screenshots/tours-demo.gif)
+
+*The short tour every admin gets the first time they open IntroVox's settings. **Show the admin tour again** under **Support** runs it again.*
+
 ![The IntroVox admin page, Tours pane](../screenshots/admin-settings.png)
 
 ## Overview

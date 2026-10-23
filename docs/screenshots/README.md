@@ -4,7 +4,7 @@ Media files for IntroVox documentation. `tests-e2e/docs-screenshots.mjs` takes t
 
 | File | Shows |
 |---|---|
-| **tours-demo.gif** | The admin tour of the settings page, start to finish (README) |
+| **tours-demo.gif** | The admin tour of the settings page, start to finish (README and the admin guide) |
 | **tours-files.gif** | The built-in Files tour as users get it, start to finish (first image of the manual and the user overview) |
 | **welcome-step.png** | The first step of the tour |
 | **dark-theme.png** | The same step in the dark theme |
