@@ -76,6 +76,12 @@ Once a provider for the Nextcloud Assistant is set up (**Administration settings
 - **Translate with AI** translates the steps of the language you are editing into one or more other languages. Only titles, texts and image descriptions change; elements, pages, media and groups stay as they are. Steps a language already has are replaced when you save.
 - **Write steps with AI** writes three to six steps, in the language you are editing, from a description of what the tour should explain. They are added after the steps there are, in the middle of the screen: pick an element for each of them afterwards.
 
+![Translate with AI: choosing the languages](../screenshots/ai-translate-0.png)
+
+![Checking the translation before it is saved](../screenshots/ai-translate-1.png)
+
+![The translated steps in the step editor](../screenshots/ai-translate-2.png)
+
 Nothing is saved before you check it: the dialog shows every step, and you can change titles and texts there. An answer goes through the same checks as an imported file, and one that does not fit is refused as a whole. Tasks run in the background, so how fast an answer comes depends on the provider and on Nextcloud's background workers for AI tasks. An admin can start 60 translations and 60 drafts an hour.
 
 A whole tour makes a long answer. With the OpenAI and LocalAI integration, set **Max output tokens per request** to 8000 or more: its default of 1000 cuts a tour off halfway, and models that think before they answer use part of it for that. An answer that was cut off says so in the dialog.

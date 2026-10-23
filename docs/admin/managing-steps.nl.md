@@ -59,6 +59,8 @@ De knop `<>` rechts, **Bewerken als HTML**, toont de HTML zelf. HTML die gebruik
 
 Een stap kan boven zijn tekst één afbeelding (PNG of JPEG), geanimeerde GIF of video (MP4 of WebM) tonen. Kies **Upload**, kies met **Kies uit Bestanden** een bestand uit je eigen Bestanden, of plak een screenshot op het blok.
 
+![Een stap met een geanimeerde GIF en de pauzeknop](../screenshots/media-step.png)
+
 - **Beschrijving (alt-tekst)** is verplicht: dat is wat mensen horen die de afbeelding niet zien. Zet **Decoratief, geen beschrijving nodig** alleen aan als de afbeelding niets toevoegt aan de tekst.
 - **Grootte:** Klein, Volle breedte, of **Wide step**, die de stap ook breder maakt.
 - **Video:** **With a play button** start nooit vanzelf; **Speelt af als een GIF** speelt geluidloos en herhaalt. Voeg ondertitels toe als WebVTT-bestand (`.vtt`) als er in de video gesproken wordt.
@@ -121,6 +123,8 @@ In plaats van een selector op te zoeken in DevTools klik je op **Element kiezen*
 2. Zoek je iets dat pas na een klik verschijnt, zoals een item in een menu? Schakel naar **Bladeren** en gebruik de pagina zoals altijd: open het menu, of ga naar een andere app. Om iets in een open menu te kiezen, **houd je Shift ingedrukt en klik je erop**. Het menu blijft open, en de picker onthoudt welke knop het opende.
 3. Het paneel toont één of meer selectors die precies dit element vinden. Kies er een, of gebruik **Bovenliggend element** als je op een icoon klikte maar het omliggende vlak bedoelde.
 4. Klik op **Use this element**. De selector wordt ingevuld. Had de stap nog geen element, dan krijgt **Positie** een waarde die past bij waar het element staat (bijvoorbeeld Onder voor de header). Voor een element in een menu wordt **Eerst openen** ingevuld met de knop die het menu opent. Voor een element in een app, zoals Talk, wordt **Pagina** die app, zodat de tour hem vóór de stap opent; elementen in de Nextcloud-header werken op elke pagina en krijgen geen pagina.
+
+![Een element kiezen in de modus Bladeren: bereikt door de pagina te gebruiken, dus de stap wacht tot het element er is](../screenshots/element-picker-browse.png)
 
 De picker gebruikt alleen wat hetzelfde blijft tussen paginaladingen en talen: vaste id's, `data-*`-attributen, link-doelen en component-classes. Gegenereerde id's, toestands-classes zoals `--active` en vertaalde attributen zoals `aria-label` slaat hij over. Het paneel kan deze meldingen tonen:
 

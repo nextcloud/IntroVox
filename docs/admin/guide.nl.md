@@ -53,6 +53,8 @@ open source, geen betaalde functies), verwijst naar de andere VoxCloud-apps
 **Meld een probleem**, **Broncode** en **Show the admin tour again**, met een
 adres bij **Vragen?**.
 
+![Het paneel Ondersteuning van de IntroVox-beheerpagina](../screenshots/support.png)
+
 De drie secties hieronder zijn wat het paneel **Instellingen** en de
 stappen-editor van een tour bevatten. De stappen-editor open je met
 **Stappen bewerken** bij een tour; **Alle tours** brengt je terug naar de lijst.

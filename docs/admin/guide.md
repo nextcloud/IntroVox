@@ -50,6 +50,8 @@ source, no paid features), links to the other VoxCloud apps (**Do you value
 this app?**), and under **Need help?** has **Report an issue**, **Source
 code**, **Show the admin tour again** and an address for **Questions?**.
 
+![The Support pane of the IntroVox admin page](../screenshots/support.png)
+
 The three sections below are what the **Settings** pane and a tour's step
 editor hold. To open the step editor, click **Edit steps** on a tour;
 **All tours** goes back to the list.

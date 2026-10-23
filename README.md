@@ -49,9 +49,13 @@ IntroVox shows people around Nextcloud. New users get a welcome tour after their
 
 ## 📸 Demo
 
-### User Tour Experience
+### Tours in Action
 
-![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/introvox-demo.gif)
+![IntroVox Demo](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/tours-demo.gif)
+
+*The short tour every admin gets on IntroVox's settings page, made with the same tours your users get*
+
+### User Tour Experience
 
 ![IntroVox Welcome](https://raw.githubusercontent.com/nextcloud/IntroVox/main/docs/screenshots/welcome-step.png)
 

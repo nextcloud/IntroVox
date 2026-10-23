@@ -76,6 +76,12 @@ Is er een provider voor de Nextcloud Assistant ingesteld (**Beheerinstellingen ‚
 - **Translate with AI** vertaalt de stappen van de taal die je bewerkt naar een of meer andere talen. Alleen titels, teksten en beschrijvingen van afbeeldingen veranderen; elementen, pagina's, media en groepen blijven zoals ze zijn. Stappen die een taal al heeft, worden bij opslaan vervangen.
 - **Write steps with AI** schrijft drie tot zes stappen, in de taal die je bewerkt, op basis van een beschrijving van wat de tour moet uitleggen. Ze komen na de stappen die er al zijn, midden in beeld: kies daarna per stap een element.
 
+![Vertalen met AI: de talen kiezen](../screenshots/ai-translate-0.png)
+
+![De vertaling nakijken voordat hij wordt opgeslagen](../screenshots/ai-translate-1.png)
+
+![De vertaalde stappen in de stap-editor](../screenshots/ai-translate-2.png)
+
 Er wordt niets opgeslagen voordat jij het hebt gecontroleerd: de dialoog toont elke stap, en je kunt titels en teksten daar aanpassen. Een antwoord gaat door dezelfde controles als een ge√Ømporteerd bestand; een antwoord dat niet past, wordt in zijn geheel geweigerd. Taken lopen op de achtergrond, dus hoe snel een antwoord komt, hangt af van de provider en van de achtergrondworkers van Nextcloud voor AI-taken. Een beheerder kan per uur 60 vertalingen en 60 concepten starten.
 
 Een hele tour levert een lang antwoord op. Zet bij de integratie OpenAI and LocalAI **Max output tokens per request** op 8000 of meer: de standaardwaarde van 1000 kapt een tour halverwege af, en modellen die eerst nadenken gebruiken daar een deel van. Een afgekapt antwoord meldt de dialoog als zodanig.

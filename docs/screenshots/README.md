@@ -4,7 +4,8 @@ Media files for IntroVox documentation. `tests-e2e/docs-screenshots.mjs` takes t
 
 | File | Shows |
 |---|---|
-| **introvox-demo.gif** | The full tour, start to finish |
+| **tours-demo.gif** | The admin tour of the settings page, start to finish (README) |
+| **introvox-demo.gif** | The welcome tour as users get it (recorded in 1.7) |
 | **welcome-step.png** | The first step of the tour |
 | **dark-theme.png** | The same step in the dark theme |
 | **personal-settings.png** | Personal settings: the tours, with Start, and Start tours by themselves |
@@ -17,13 +18,15 @@ Media files for IntroVox documentation. `tests-e2e/docs-screenshots.mjs` takes t
 | **behavior.png** | Step editor, Behavior page (Continue with) |
 | **visible-to.png** | Step editor, Visible to page |
 | **element-picker.png** | Picking an element, Select mode |
+| **element-picker-browse.png** | Picking an element reached in Browse mode: the step will wait for it |
+| **media-step.png** | A step with an animated GIF and its pause button |
+| **support.png** | Admin page, Support pane |
+| **ai-translate-0.png**, **-1**, **-2** | Translate with AI: choosing languages, checking the translation, the result |
 | **statistics.png** | Admin page, Statistics pane |
 
 ### Outstanding
 
-1. The **Support** pane, which no screenshot covers
-2. The picker in **Browse** mode, where an open menu is Shift-clicked
-3. **introvox-demo.gif** shows the welcome tour as it was in 1.7; a new recording could show a built-in tour, with its hands-on steps
+- **introvox-demo.gif** still shows the welcome tour as it was in 1.7; a new recording could show a built-in tour, with its hands-on steps.
 
 ## Media Guidelines
 

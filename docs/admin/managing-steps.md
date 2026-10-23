@@ -57,6 +57,8 @@ The `<>` button at the right, **Edit as HTML**, shows the HTML itself. HTML that
 
 A step can show one image (PNG or JPEG), animated GIF or video (MP4 or WebM) above its text. **Upload** a file, **Choose from Files** to take one from your own Files, or paste a screenshot onto the block.
 
+![A step with an animated GIF and its pause button](../screenshots/media-step.png)
+
 - **Description (alt text)** is required: it is what people who cannot see the image hear. Switch on **Decorative, no description needed** only when the image adds nothing to the text.
 - **Size:** Small, Full width, or **Wide step**, which also makes the step wider.
 - **Video:** **With a play button** never starts by itself; **Plays like a GIF** plays silently on repeat. Add captions as a WebVTT (`.vtt`) file when the video has speech.
@@ -119,6 +121,8 @@ Instead of looking up a selector in DevTools, click **Pick element** next to the
 2. Need something that only appears after a click, such as an item in a menu? Switch to **Browse** and use the page as usual: open the menu, or go to another app. To pick something inside an open menu, **hold Shift and click** it. The menu stays open, and the picker remembers which button opened it.
 3. The panel shows one or more selectors that match exactly this element. Pick one, or use **Parent element** if you clicked an icon but meant its surrounding area.
 4. Click **Use this element**. The selector is filled in. For a step that had no element yet, **Position** is set to match where the element sits (for example Bottom for the header). For an element inside a menu, **Open first** is filled in with the button that opens the menu. For an element inside an app, such as Talk, **Page** is set to that app, so the tour opens it before the step; elements in the Nextcloud header work on every page and get no page.
+
+![Picking an element in Browse mode: reached by using the page, so the step waits until the element is there](../screenshots/element-picker-browse.png)
 
 The picker only uses what stays the same across page loads and languages: stable ids, `data-*` attributes, link targets and component classes. It skips generated ids, state classes such as `--active`, and translated attributes such as `aria-label`. The panel can show these notes:
 
