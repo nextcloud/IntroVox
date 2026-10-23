@@ -2,9 +2,9 @@
 
 Welkom bij de IntroVox-documentatie. IntroVox is een Nextcloud-app met geleide tours: een welkomsttour voor nieuwe gebruikers, en korte tours die starten als iemand voor het eerst een app of pagina opent, zoals de ingebouwde tours voor Files, Talk, Deck en Calendar. Hij is gebouwd met Vue 3 en Shepherd.js, laat zijn standaardstappen vertalen via Transifex, en heeft een beheerpagina om tours te schrijven, te kiezen wie ze krijgt en wanneer, en te zien hoe ver mensen komen.
 
-![IntroVox welkomstap](screenshots/welcome-step.png)
+![De ingebouwde tour voor Bestanden: een map maken, delen met een link, en zien dat er niets verloren gaat](screenshots/tours-files.gif)
 
-*De eerste stap van de welkomsttour.*
+*De ingebouwde tour voor Bestanden, zoals gebruikers hem krijgen als ze Bestanden voor het eerst openen.*
 
 ## Snelle navigatie
 

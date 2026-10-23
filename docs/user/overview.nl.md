@@ -2,7 +2,7 @@
 
 Welkom bij **IntroVox** — je persoonlijke gids voor Nextcloud.
 
-![IntroVox-tour in actie](../screenshots/introvox-demo.gif)
+![De ingebouwde tour voor Bestanden in actie](../screenshots/tours-files.gif)
 
 IntroVox is een interactieve tour die je helpt om de belangrijkste features van Nextcloud te ontdekken wanneer je voor het eerst inlogt. Zie het als een vriendelijke metgezel die je rondleidt in je nieuwe cloud-werkomgeving. Je beheerder kan ook korte tours voor apps toevoegen, en een lijst "Aan de slag" (Getting started) op je Dashboard.
 

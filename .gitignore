@@ -23,6 +23,9 @@ translationfiles/*
 l10n/en.json
 l10n/en.js
 *.tar.gz
+# Tour and IntraVox exports downloaded while testing: they can hold a
+# customer's content
+*.zip
 *.sig
 *.key
 *.key.*
