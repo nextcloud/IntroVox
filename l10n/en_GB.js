@@ -132,7 +132,7 @@ OC.L10N.register(
     "Page:" : "Page:",
     "No steps defined yet." : "No steps defined yet.",
     "Add first step" : "Add first step",
-    "%n person" : ["%n person", "%n people"],
+    "_%n person_::_%n people_" : ["%n person", "%n people"],
     "Users started" : "Users started",
     "Users completed" : "Users completed",
     "Completion rate" : "Completion rate",

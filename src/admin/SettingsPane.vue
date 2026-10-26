@@ -47,7 +47,8 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { showError, showSuccess } from '@nextcloud/dialogs'
-import { NcCheckboxRadioSwitch, NcSettingsSection } from '@nextcloud/vue'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcSettingsSection from '@nextcloud/vue/components/NcSettingsSection'
 
 import ChecklistSettings from './ChecklistSettings.vue'
 

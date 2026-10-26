@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { NcButton } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 export default {
 	name: 'SupportSettings',

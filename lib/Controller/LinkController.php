@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OCA\IntroVox\Controller;
 
+use OCA\IntroVox\Service\PageUrl;
 use OCA\IntroVox\Service\TourRepository;
 use OCA\IntroVox\Service\TourValidator;
 use OCP\AppFramework\Controller;
@@ -47,6 +48,6 @@ class LinkController extends Controller {
             return new RedirectResponse($this->urlGenerator->linkToDefaultPageUrl());
         }
         $page = TourValidator::triggerPage($tour['trigger'] ?? []) ?: self::ANYWHERE_PAGE;
-        return new RedirectResponse($this->urlGenerator->linkTo('', 'index.php') . $page . '?introvox-tour=' . $id);
+        return new RedirectResponse(PageUrl::path($this->urlGenerator->linkTo('', 'index.php'), $page) . '?introvox-tour=' . $id);
     }
 }

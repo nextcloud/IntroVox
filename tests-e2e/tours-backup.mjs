@@ -31,12 +31,20 @@ if (action === 'save') {
   const own = (await tours()).filter(t => !t.builtin)
   const index = []
   for (const tour of own) {
-    const bytes = await page.evaluate(async (id) => {
+    const exported = await page.evaluate(async (id) => {
       const response = await fetch(OC.generateUrl(`/apps/introvox/admin/tours/${id}/export`), { headers: { requesttoken: OC.requestToken } })
-      if (!response.ok) throw new Error(`export ${id}: ${response.status}`)
-      return [...new Uint8Array(await response.arrayBuffer())]
+      if (response.ok) return { bytes: [...new Uint8Array(await response.arrayBuffer())] }
+      const error = await response.json().catch(() => null)
+      return { status: response.status, error: error?.error }
     }, tour.id)
-    fs.writeFileSync(path.join(BACKUP, `${tour.id}.zip`), Buffer.from(bytes))
+    // A tour without steps yet has no package: its settings are enough
+    if (exported.error === 'nothing_to_export') {
+      const fields = Object.fromEntries(['name', 'trigger', 'visibleToGroups', 'mainLanguage', 'audience', 'startAfterDays', 'startFrom', 'startUntil'].map(key => [key, tour[key]]))
+      index.push({ id: tour.id, name: tour.name, enabled: tour.enabled, fields })
+      continue
+    }
+    if (!exported.bytes) throw new Error(`export ${tour.id}: ${exported.status}`)
+    fs.writeFileSync(path.join(BACKUP, `${tour.id}.zip`), Buffer.from(exported.bytes))
     index.push({ id: tour.id, name: tour.name, enabled: tour.enabled })
   }
   fs.writeFileSync(path.join(BACKUP, 'tours.json'), JSON.stringify(index, null, 2))
@@ -49,7 +57,17 @@ if (action === 'save') {
   for (const saved of index) {
     // Still there (no suite deleted it): leave it as it is
     if (present.has(saved.name)) {
-      fs.rmSync(path.join(BACKUP, `${saved.id}.zip`))
+      fs.rmSync(path.join(BACKUP, `${saved.id}.zip`), { force: true })
+      continue
+    }
+    if (saved.fields) {
+      const made = await api(page, 'POST', '/apps/introvox/admin/tours', { tour: saved.fields })
+      const id = made.data?.tour?.id
+      if (!id) {
+        console.log(`could not make ${saved.id} again: ${made.status} ${JSON.stringify(made.data)}`)
+        continue
+      }
+      restored.push(id === saved.id ? `${id} (no steps)` : `${saved.id} (now ${id}, no steps)`)
       continue
     }
     const bytes = [...fs.readFileSync(path.join(BACKUP, `${saved.id}.zip`))]

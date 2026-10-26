@@ -141,15 +141,13 @@ import { generateUrl } from '@nextcloud/router'
 import { getCanonicalLocale, translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
-import {
-  NcButton,
-  NcCheckboxRadioSwitch,
-  NcNoteCard,
-  NcProgressBar,
-  NcRadioGroup,
-  NcRadioGroupButton,
-  NcTextField
-} from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcProgressBar from '@nextcloud/vue/components/NcProgressBar'
+import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
+import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import ClosedCaptionOutline from 'vue-material-design-icons/ClosedCaptionOutline.vue'
 import Close from 'vue-material-design-icons/Close.vue'

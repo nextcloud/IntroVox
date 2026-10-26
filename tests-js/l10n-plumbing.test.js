@@ -131,3 +131,33 @@ describe('release packaging', () => {
 			'l10n/.source-strings.json must be committed — check-l10n-sync.js reads it');
 	});
 });
+
+describe('plural translations', () => {
+	// Nextcloud looks a plural up under `_<singular>_::_<plural>_`, in IL10N::n()
+	// as in translatePlural() of @nextcloud/l10n. IntroVox 2.0.0 shipped every
+	// plural under its bare singular (scripts/po2l10n.py wrote them so): 46
+	// translations in 15 languages that n() never found, so the admin UI showed
+	// "%n people" in English everywhere. Nothing failed, nothing logged.
+	const pot = fs.readFileSync(path.join(ROOT, POT_REL), 'utf8');
+	const unescape = (s) => s.replace(/\\(["\\nt])/g, (_, c) => ({ n: '\n', t: '\t' })[c] ?? c);
+	const plurals = new Set([...pot.matchAll(/^msgid "((?:[^"\\]|\\.)*)"\nmsgid_plural "((?:[^"\\]|\\.)*)"$/gm)]
+		.map(([, s, p]) => `_${unescape(s)}_::_${unescape(p)}_`));
+	const catalogues = fs.readdirSync(path.join(ROOT, 'l10n')).filter((f) => /^[^.].*\.json$/.test(f));
+
+	test('the POT has plurals to check', () => {
+		assert.ok(plurals.size > 0, 'no msgid_plural found in the POT — the regex no longer matches it');
+	});
+
+	test('every plural sits under the key n() looks up', () => {
+		const wrong = [];
+		for (const f of catalogues) {
+			const { translations } = JSON.parse(fs.readFileSync(path.join(ROOT, 'l10n', f), 'utf8'));
+			for (const [key, value] of Object.entries(translations)) {
+				if (Array.isArray(value) && !plurals.has(key)) {
+					wrong.push(`${f}: ${JSON.stringify(key).slice(0, 70)}`);
+				}
+			}
+		}
+		assert.deepEqual(wrong, [], 'plural translations under a key n() never looks up');
+	});
+});

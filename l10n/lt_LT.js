@@ -84,7 +84,7 @@ OC.L10N.register(
     "Edit" : "Redaguoti",
     "Delete" : "Ištrinti",
     "Page:" : "Puslapis:",
-    "%n person" : ["%n asmuo", "%n žmonės", "%n žmonių", "%n žmonių"],
+    "_%n person_::_%n people_" : ["%n asmuo", "%n žmonės", "%n žmonių", "%n žmonių"],
     "Preview" : "Peržiūra",
     "Copy link" : "Kopijuoti nuorodą",
     "Need help?" : "Reikia pagalbos?",

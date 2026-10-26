@@ -101,7 +101,7 @@ An app tour starts by itself when all of this holds:
 
 It never starts on top of another tour. Someone who has not had the welcome tour yet gets that first, wherever they log in, and the app tour on a later visit. With two tabs of the same app open, it shows in one.
 
-Users find every tour they can get under **Personal settings → IntroVox**, with **Start** to run it by hand, and **Tours** in their user menu, above **Help**, leads there. Starting by hand works even when **Start tours by themselves** is off, and whatever the tour's dates. A tour that starts anywhere is started from there in Files.
+Users find every tour they can get under **Personal settings → IntroVox**, with **Start** to run it by hand, and **Tours** in their user menu, above **Help**, leads there. Starting by hand works even when **Start tours by themselves** is off, and whatever the tour's dates. A tour that starts anywhere is started from there in Files. Another app, such as a help page, can show the same tours as links (see [Embedding the tour list](../architecture/frontend-architecture.md#embedding-the-tour-list)).
 
 **Show Tours in the user menu** under **Settings** hides that menu entry.
 
@@ -109,9 +109,9 @@ Someone outside the tour's groups gets nothing from it: the server answers them 
 
 ## Share a Tour with a Link
 
-**Copy link** in a tour's ⋯ menu copies a link, such as `https://cloud.example.com/index.php/apps/introvox/tour/builtin-talk`, that opens the tour's page and starts the tour there, for a welcome mail or a message to a team. For the welcome tour and a tour that starts anywhere, the link opens Files.
+**Copy link** in a tour's ⋯ menu copies a link, such as `https://cloud.example.com/index.php/apps/introvox/tour/builtin-talk` (without `index.php` on a Nextcloud with pretty URLs), that opens the tour's page and starts the tour there, for a welcome mail or a message to a team. For the welcome tour and a tour that starts anywhere, the link opens Files.
 
-Opening the link is like **Start** in the personal settings: the tour starts even when the person saw it before, switched **Start tours by themselves** off, or is outside the tour's dates, and it is not counted in the statistics. It still only starts for people who may get the tour: someone outside its groups, or without the app, gets the page without a tour. A tour that is switched off starts for nobody: the link then opens Files, and **Copy link** warns you. Someone who is not logged in logs in first and then gets the tour. The address bar loses the link's part once the page has read it, so a reload or a bookmark does not start the tour again.
+Opening the link is like **Start** in the personal settings: the tour starts even when the person saw it before, switched **Start tours by themselves** off, or is outside the tour's dates, and it is not counted in the statistics. It still only starts for people who may get the tour: someone outside its groups, or without the app, gets the page without a tour. A tour that is switched off starts for nobody: the link then opens Files, and **Copy link** warns you. Someone who is not logged in logs in first and then gets the tour. The address bar loses the link's part once the page has read it, so a bookmark, or a reload after the tour has ended, does not start the tour again.
 
 ## Show a Tour Again
 

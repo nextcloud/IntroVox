@@ -117,7 +117,11 @@
 import { ref, shallowRef, computed, watch, onBeforeUnmount } from 'vue'
 import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
-import { NcButton, NcCheckboxRadioSwitch, NcNoteCard, NcRadioGroup, NcRadioGroupButton } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
+import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
 
 import ArrowUp from 'vue-material-design-icons/ArrowUp.vue'
 import Check from 'vue-material-design-icons/Check.vue'

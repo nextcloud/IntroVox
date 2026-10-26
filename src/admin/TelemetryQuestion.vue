@@ -24,7 +24,8 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
-import { NcButton, NcDialog } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
 
 import TelemetryLists from './TelemetryLists.vue'
 import { setTelemetry } from './telemetry.js'

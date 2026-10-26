@@ -1,6 +1,6 @@
 # Frontend-architectuur
 
-De frontend van IntroVox is een Vue-3-single-page-app gebundeld met webpack, geïntegreerd in Nextcloud als drie entry-points: de tour-runtime, de admin-instellingen-pagina en de persoonlijke-instellingen-pagina.
+De frontend van IntroVox is een Vue-3-single-page-app gebundeld met webpack, geïntegreerd in Nextcloud als vier entry-points: de tour-runtime, de admin-instellingen-pagina, de persoonlijke-instellingen-pagina en de tourlijst die andere apps kunnen tonen.
 
 ## Entry-points
 
@@ -9,6 +9,7 @@ De frontend van IntroVox is een Vue-3-single-page-app gebundeld met webpack, ge�
 | `src/main.js` | `js/main.js` | Elke Nextcloud-pagina (via `LoadScripts`-listener) |
 | `src/admin.js` | `js/admin.js` | Admin-instellingen → IntroVox |
 | `src/personal.js` | `js/personal.js` | Persoonlijke instellingen → IntroVox |
+| `src/embed/embed.js` | `js/introvox-embed.js` | Een pagina van een andere app die `<introvox-tour-list>` toont (zie [De tourlijst insluiten](#de-tourlijst-insluiten)) |
 
 `main.js` is een kleine bootstrap, omdat elke ingelogde pagina hem laadt. De tour-code zelf (WizardManager, Shepherd.js, Vue en `css/wizard.css`) is een eigen chunk, `src/runtime/tour.js` → `js/tour.<hash>.js` plus gedeelde vendor-chunks, die met een dynamische `import()` alleen geladen wordt op een pagina waar een tour draait. Chunk-namen hebben een content-hash (`chunkFilename: '[name].[contenthash:8].js'`), omdat chunks zonder Nextclouds `?v=`-parameter laden. De bootstrap zet `__webpack_nonce__` op het request-token in base64, zodat Nextclouds CSP de script-tag van de chunk toelaat. Zie [Tour-runtime](#tour-runtime).
 
@@ -44,7 +45,13 @@ Admin-instellingen-pagina (src/admin.js)
     └── TelemetryQuestion.vue  ← de vraag na de beheerderstour (TelemetryLists.vue, telemetry.js)
 
 Persoonlijke-instellingen-pagina (src/personal.js)
-└── PersonalApp.vue            ← Start tours by themselves, Restart tour now, de lijst Tours met Start
+└── PersonalApp.vue            ← Start tours by themselves
+    └── TourList.vue           ← Restart tour now, de lijst Tours met Start (src/components/)
+
+Pagina van een andere app (src/embed/embed.js)
+└── <introvox-tour-list>       ← custom element
+    └── EmbeddedTourList.vue   ← laadt de lijst (GET /personal/settings)
+        └── TourLinks.vue      ← een link per tour, zonder stijl: de host stijlt hem
 ```
 
 In `AdminApp.vue` heet het paneel Tours intern nog `steps`. `TourEditor` werkt op één tour (AdminApp maakt er één per geopende tour, met het id als key) en geeft het id daarvan als `tour` mee aan elke aanroep voor stappen, overrides, import en export. AdminApp mag twee functies ervan aanroepen: `addStep()`, voor de eerste stap van een nieuwe tour, en `ready()`, waar de beheerderstour op wacht voordat hij naar de editor wijst.
@@ -52,6 +59,47 @@ In `AdminApp.vue` heet het paneel Tours intern nog `steps`. `TourEditor` werkt o
 ### Picker en voorbeeld
 
 Beide tonen een live Nextcloud-pagina in een iframe van dezelfde origin, zodat de admin-pagina de DOM ervan direct kan lezen en aansturen. De naam van het frame (`src/frame/frameNames.js`) vertelt `main.js` in het frame waarvoor het dient: in de picker start geen tour, in het voorbeeld wacht `WizardManager` in voorbeeldmodus op stappen van de admin-pagina (`window.introVoxPreview.run()`) en registreert niets (geen telemetrie, geen voltooiing, geen localStorage). De selector-logica van de picker staat in `src/picker/selector.mjs`, getest in `tests-js/picker-selector.test.js`.
+
+## De tourlijst insluiten
+
+Een andere app kan de tours tonen die een gebruiker kan starten, als het custom element `<introvox-tour-list>`: een link voor de welkomsttour, en dan een link voor elke tour die deze gebruiker mag krijgen, met het icoon van de app en de naam. IntroVox bepaalt per gebruiker welke tours erin staan, met dezelfde regels als overal (aan/uit, groepen, toegang tot de app van de tour), dus de lijst is altijd actueel. De vormgeving is van de host: het element levert kale markup zonder stijl, en de host stijlt die met de klassenamen hieronder. Een custom element in plaats van een Vue-component, net als `<metavox-metadata-form>` van MetaVox: de host hangt niet af van de Vue-versie van IntroVox, of van Vue überhaupt.
+
+Laad de bundle tijdens het renderen van de pagina. IntroVox is optioneel voor de host, dus bewaak de aanroep:
+
+```php
+if (class_exists(\OCA\IntroVox\Embed\TourListEmbed::class)) {
+    \OCP\Server::get(\OCA\IntroVox\Embed\TourListEmbed::class)->load();
+}
+```
+
+`isAvailable($userId)` zegt of IntroVox voor een gebruiker aanstaat.
+
+Plaats daarna het element:
+
+```js
+container.appendChild(document.createElement('introvox-tour-list'))
+```
+
+Het neemt geen attributen. Elke link is de deellink van de tour (`/apps/introvox/tour/<id>`, `/apps/introvox/tour/welcome` voor de welkomsttour), die de pagina van de tour opent en de tour daar met de hand start. Staat **Tours for everyone** uit, dan blijft het element leeg; anders staat de link van de welkomsttour er altijd in.
+
+De markup, binnen het element:
+
+| Klasse | Op |
+|---|---|
+| `introvox-tour-list__items` | de lijst (`ul`) |
+| `introvox-tour-list__item` | elk item (`li`) |
+| `introvox-tour-list__link` | de link (`a`); `--welcome` voor de welkomsttour, `--seen` als de gebruiker de tour gezien heeft |
+| `introvox-tour-list__icon` | het icoon (een SVG van 20 px); `--app` voor het icoon van een app (een `img`, licht zoals in het app-menu, dus een lichte pagina keert het om, bijvoorbeeld met `filter: var(--background-invert-if-bright)`) |
+| `introvox-tour-list__name` | de naam van de tour; "Welcome tour" voor de welkomsttour, vertaald door IntroVox |
+
+Events bubbelen vanaf het element:
+
+| Event | Detail |
+|---|---|
+| `introvox:loaded` | `{ tours, welcome }`: de getoonde tours, en of de link van de welkomsttour er staat. `tours` leeg en `welcome` false: tours staan voor iedereen uit, er valt niets te starten, dus een host kan zijn eigen kader verbergen |
+| `introvox:error` | `{ message }`: IntroVox staat niet aan voor deze gebruiker, of gaf geen antwoord |
+
+De tagnaam, `TourListEmbed` met `load()` en `isAvailable()`, de klassenamen en de twee events zijn een vaste interface; `tests-js/embed-contract.test.js` faalt als een ervan verandert.
 
 ## Tour-runtime
 
@@ -71,7 +119,7 @@ Gewone data erin, gewone data eruit, getest zonder browser (`tests-js/choose-tou
 
 1. In de element-picker of een same-origin-frame van iemand anders: geen tour
 2. Een deellink start zijn tour op de pagina die hij opende (niet op de beheerpagina van IntroVox), ook boven een tour die bezig was: wie een link volgt, vraagt om die tour, en wie midden in een tour een pagina verlaat (door de link te typen bijvoorbeeld) laat een resume-entry achter, die de bootstrap dan wist
-3. Een tour die bezig is (een resume-entry, jonger dan 10 minuten) gaat verder op de pagina die zijn volgende stap opende; anders een start-verzoek uit de persoonlijke instellingen (jonger dan 2 minuten): de welkomsttour op de eerstvolgende pagina, een tour voor een app op zijn eigen pagina. Een link en een start met de hand werken ook als **Start tours by themselves** uit staat en buiten de datums van een tour; de server controleert nog steeds of de gebruiker de tour mag krijgen
+3. Een tour die bezig is (een resume-entry, jonger dan 10 minuten) gaat verder op de pagina die zijn volgende stap opende, of na herladen op de pagina waar hij was (een entry met `stay` gaat alleen op die pagina verder, `resumesHere()`, zodat de tour niemand volgt die ergens anders heen ging); anders een start-verzoek uit de persoonlijke instellingen (jonger dan 2 minuten): de welkomsttour op de eerstvolgende pagina, een tour voor een app op zijn eigen pagina. Een link en een start met de hand werken ook als **Start tours by themselves** uit staat en buiten de datums van een tour; de server controleert nog steeds of de gebruiker de tour mag krijgen
 4. Op de eigen beheerpagina van IntroVox: geen tour (daar draait de beheerderstour)
 5. Geen runtime-state op de pagina: de tour-code vraagt het de server, zoals vóór deze state bestond
 6. **Tours for everyone** uit, of **Start tours by themselves** uit: geen tour
@@ -84,7 +132,7 @@ Browser-opslag die hij leest:
 | Key | Opslag | Betekenis |
 |---|---|---|
 | `introvox_completed`, `introvox_version` | localStorage | De welkomsttour is in deze browser afgerond, gesloten of overgeslagen, bij die `wizard_version` |
-| `introvox_tour_resume` | sessionStorage | Een tour die bezig is en naar een andere pagina ging (`{ tourId, stepId, at }`) |
+| `introvox_tour_resume` | sessionStorage | Een tour die bezig is en naar een andere pagina ging, of waarvan de pagina op een andere manier verlaten werd, zoals door herladen (`{ tourId, stepId, at }`, plus `stay`: de pagina waar hij was) |
 | `introvox_start_tour` | sessionStorage | Een start met de hand uit de persoonlijke instellingen (`{ tourId, page, at }`; de welkomsttour heeft geen pagina) |
 | `introvox_tour_ended` | sessionStorage | Wanneer er in dit tabblad voor het laatst een tour eindigde |
 | `introvox_preview_resume` | sessionStorage | De eigen resume-entry van het voorbeeld van de beheerder |
@@ -100,7 +148,7 @@ De ingang van de chunk: mount `WizardManager` met de keuze van de bootstrap (`st
 Beheert de Shepherd.js-tour:
 
 1. Krijgt de keuze van de bootstrap als prop `start`: welke tour, en of hij verdergaat of met de hand gestart is
-2. **Welkomsttour:** laadt `GET /api/steps`, hangt gedrag aan de client-kant weer aan de stappen op id (`enrichSteps()`), en start zodra het app-menu klaar is
+2. **Welkomsttour:** laadt `GET /api/steps`, hangt gedrag aan de client-kant weer aan de stappen op id (`enrichSteps()`), terwijl hij op het app-menu wacht (en tot de eerste-start-wizard van Nextcloud dicht is), en start zodra er geen dialoog open is
 3. **Tour voor een app of pagina:** laadt `GET /api/steps?tour=<id>` (een 404 of geen stappen: er start niets), wacht tot de app klaar is (het element van de eerste stap of de inhoud van de app, geen dialoog van de app open, het tabblad in beeld; hoogstens 15 seconden), en stuurt dan `POST /api/tours/{id}/event` met `start`. Hij toont de tour alleen als dit de eerste start bij deze versie was, of als de tour met de hand gestart is. De knop in de eerste stap is **Skip** in plaats van **Skip and don't show again**
 4. Instantiëert `new Shepherd.Tour({...})` en registreert Next/Back/Done/Skip-handlers
 5. Welkomsttour: vuurt telemetrie-events via `axios.post('/api/wizard/...')`, updatet localStorage bij close/complete/skip, en roept `POST /personal/settings` aan met `wizardDisabled: true` bij Skip en Done

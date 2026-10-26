@@ -15,8 +15,10 @@ const step = p => p.locator('.shepherd-element:visible')
 const tours = async () => (await api(page, 'GET', '/apps/introvox/admin/tours')).data.tours
 const putTour = (id, tour) => api(page, 'PUT', `/apps/introvox/admin/tours/${id}`, { tour })
 const reshow = id => api(page, 'POST', `/apps/introvox/admin/tours/${id}/reshow`)
+// Logged in to a page without a built-in tour: Files, the default app,
+// would start its tour already, and count it as seen
 const welcomeDone = async (uid) => {
-  const session = await login(browser, uid)
+  const session = await login(browser, uid, { landing: '/index.php/settings/user' })
   await api(session.page, 'POST', '/apps/introvox/personal/settings', { wizardDisabled: true, toursDisabled: false })
   return session
 }

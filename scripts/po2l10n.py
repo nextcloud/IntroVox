@@ -27,8 +27,15 @@ def unescape(s: str) -> str:
              .replace('\\"', '"').replace('\\\\', '\\'))
 
 
+def plural_key(singular: str, plural: str) -> str:
+    """The key Nextcloud looks a plural up under, in IL10N::n() and in
+    translatePlural() of @nextcloud/l10n. Under the bare singular it is never
+    found, and n() falls back to English."""
+    return "_%s_::_%s_" % (singular, plural)
+
+
 def parse_po(path):
-    """Return (entries, plural_form). entries: list of (msgid, msgstr, [plurals])."""
+    """Return (entries, plural_form). entries: list of (key, msgstr, [plurals])."""
     entries = []
     plural_form = None
     msgid = msgid_plural = None
@@ -49,7 +56,7 @@ def parse_po(path):
             if msgid_plural is not None:
                 plurals = [unescape(msgstrs.get(i, "")) for i in sorted(msgstrs)]
                 if any(plurals):
-                    entries.append((unescape(msgid), None, plurals))
+                    entries.append((plural_key(unescape(msgid), unescape(msgid_plural)), None, plurals))
             else:
                 val = unescape(msgstrs.get(0, ""))
                 if val:  # only emit translated strings

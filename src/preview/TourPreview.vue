@@ -43,7 +43,9 @@
 <script>
 import { ref, computed } from 'vue'
 import { translate as t } from '@nextcloud/l10n'
-import { NcButton, NcNoteCard, NcSelect } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
 
 import Play from 'vue-material-design-icons/Play.vue'
 import Replay from 'vue-material-design-icons/Replay.vue'

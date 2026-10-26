@@ -249,15 +249,13 @@
 import { ref, computed, nextTick, watch } from 'vue'
 import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
-import {
-  NcButton,
-  NcDialog,
-  NcEmojiPicker,
-  NcRadioGroup,
-  NcRadioGroupButton,
-  NcSelect,
-  NcTextField
-} from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
+import NcEmojiPicker from '@nextcloud/vue/components/NcEmojiPicker'
+import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
+import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import ArrowDown from 'vue-material-design-icons/ArrowDown.vue'
 import ArrowLeft from 'vue-material-design-icons/ArrowLeft.vue'

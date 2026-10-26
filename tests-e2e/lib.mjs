@@ -43,8 +43,10 @@ export async function launch() {
 }
 
 // A logged-in context. skipTour: pretend the tour was seen, so it does not
-// cover pages the test wants to use.
-export async function login(browser, user, { skipTour = true } = {}) {
+// cover pages the test wants to use. landing: the page to log in to instead
+// of the default app, such as one where no tour of the test is due: a tour
+// there starts within a second, and counts as seen once it has.
+export async function login(browser, user, { skipTour = true, landing = '' } = {}) {
   // A regular Chrome user agent: Talk shows a "browser not supported" banner
   // over its buttons for HeadlessChrome.
   const context = await browser.newContext({
@@ -67,7 +69,7 @@ export async function login(browser, user, { skipTour = true } = {}) {
     }, CONFIG.dismiss)
   }
   const page = await context.newPage()
-  await page.goto(BASE + '/index.php/login')
+  await page.goto(BASE + '/index.php/login' + (landing ? `?redirect_url=${encodeURIComponent(landing)}` : ''))
   await page.fill('input[name="user"]', user)
   await page.fill('input[name="password"]', PASSWORD)
   await Promise.all([

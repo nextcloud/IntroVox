@@ -51,6 +51,7 @@ IntroVox is een Nextcloud-app die de standaard Nextcloud-app-architectuur volgt:
 | `src/runtime/tour.js` | De tour-chunk: mount `WizardManager`; alleen geladen op een pagina waar een tour draait |
 | `src/admin.js` | Admin-instellingen-UI-entry-point |
 | `src/personal.js` | Persoonlijke-instellingen-UI-entry-point |
+| `src/embed/embed.js` | `<introvox-tour-list>` voor andere apps: de tours die een gebruiker kan starten, als kale links die de andere app zelf stijlt |
 | `src/components/WizardManager.vue` | Beheert Shepherd.js-tour-levenscyclus en stap-rendering, voor de welkomsttour en tours voor apps |
 | `src/admin/ToursList.vue`, `src/admin/NewTourDialog.vue` | Het paneel Tours van de beheerder: de lijst met tours, en een tour voor een app maken of wijzigen |
 | `src/admin/TourEditor.vue`, `src/admin/StepWizard.vue` | De stappen van één tour, en de dialoog die een stap bewerkt, met de teksteditor en de media (`StepTextEditor.vue`, `StepMediaBlock.vue`) |
@@ -73,6 +74,7 @@ Zie [Frontend-architectuur](frontend-architecture.nl.md).
 | `MediaController`, `MediaUploadController`, `MediaService` | Afbeeldingen, video's en ondertitels in stappen: gecontroleerd, ontdaan van metadata, opgeslagen in de app-data van IntroVox, alleen geserveerd aan gebruikers die de stap krijgen |
 | `LicenseController` | Een optionele abonnementssleutel: validatie en gebruiksrapport. Niets in IntroVox wordt erdoor beperkt |
 | `PersonalController` | Per-gebruiker-tour-voorkeuren (`wizard_disabled`, `tours_disabled`) en de lijst met tours voor apps van de gebruiker |
+| `TourListEmbed` | Laat een andere app `<introvox-tour-list>` tonen: laadt de bundle ervan |
 | `TourRepository`, `TourStateService`, `TourValidator` | De tours, per-gebruiker-tour-staat, en een tour controleren voor hij wordt opgeslagen |
 | `TelemetryService` | Aggregeert anonieme gebruiks-stats; verzendt naar licentie-server |
 | `LicenseService` | Valideert de optionele abonnementssleutel tegen `licenses.voxcloud.nl` |

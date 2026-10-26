@@ -1,6 +1,6 @@
 # Frontend Architecture
 
-IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated into Nextcloud as three entry points: the tour runtime, the admin settings page, and the personal settings page.
+IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated into Nextcloud as four entry points: the tour runtime, the admin settings page, the personal settings page, and the tour list other apps can show.
 
 ## Entry Points
 
@@ -9,6 +9,7 @@ IntroVox's frontend is a Vue 3 single-page app bundled with webpack, integrated 
 | `src/main.js` | `js/main.js` | Every Nextcloud page (via `LoadScripts` listener) |
 | `src/admin.js` | `js/admin.js` | Admin settings → IntroVox |
 | `src/personal.js` | `js/personal.js` | Personal settings → IntroVox |
+| `src/embed/embed.js` | `js/introvox-embed.js` | A page of another app that shows `<introvox-tour-list>` (see [Embedding the tour list](#embedding-the-tour-list)) |
 
 `main.js` is a small bootstrap, because every logged-in page loads it. The tour code itself (WizardManager, Shepherd.js, Vue and `css/wizard.css`) is a chunk of its own, `src/runtime/tour.js` → `js/tour.<hash>.js` plus shared vendor chunks, loaded with a dynamic `import()` only on a page where a tour runs. Chunk names carry a content hash (`chunkFilename: '[name].[contenthash:8].js'`), because chunks load without Nextcloud's `?v=` parameter. The bootstrap sets `__webpack_nonce__` to the request token in base64, so Nextcloud's CSP admits the chunk's script tag. See [Tour Runtime](#tour-runtime).
 
@@ -44,7 +45,13 @@ Admin settings page (src/admin.js)
     └── TelemetryQuestion.vue  ← the question after the admin intro (TelemetryLists.vue, telemetry.js)
 
 Personal settings page (src/personal.js)
-└── PersonalApp.vue            ← Start tours by themselves, Restart tour now, the Tours list with Start
+└── PersonalApp.vue            ← Start tours by themselves
+    └── TourList.vue           ← Restart tour now, the Tours list with Start (src/components/)
+
+Another app's page (src/embed/embed.js)
+└── <introvox-tour-list>       ← custom element
+    └── EmbeddedTourList.vue   ← loads the list (GET /personal/settings)
+        └── TourLinks.vue      ← a link per tour, without styles: the host styles it
 ```
 
 Inside `AdminApp.vue` the Tours pane's id is still `steps`. `TourEditor` works on one tour (AdminApp mounts one per open tour, keyed by its id) and passes its id as `tour` to every step, override, import and export call. AdminApp may call two of its functions: `addStep()`, for a new tour's first step, and `ready()`, which the admin intro awaits before it points at the editor.
@@ -52,6 +59,47 @@ Inside `AdminApp.vue` the Tours pane's id is still `steps`. `TourEditor` works o
 ### Picker and Preview
 
 Both show a live Nextcloud page in a same-origin iframe, so the admin page reads and drives its DOM directly. The frame's name (`src/frame/frameNames.js`) tells `main.js` inside it what the frame is for: in the picker no tour starts, in the preview `WizardManager` runs in preview mode, waits for steps from the admin page (`window.introVoxPreview.run()`) and records nothing (no telemetry, no completion, no localStorage). The picker's selector logic lives in `src/picker/selector.mjs`, tested in `tests-js/picker-selector.test.js`.
+
+## Embedding the tour list
+
+Another app can show the tours a user can start, as the custom element `<introvox-tour-list>`: a link for the welcome tour, then a link for each tour this user may get, with its app's icon and name. IntroVox decides per user which tours are in it, by the same rules as everywhere else (on/off, groups, the user's access to the tour's app), so the list is always current. The look is the host's: the element brings plain markup without styles, and the host styles it by the class names below. A custom element rather than a Vue component, as MetaVox's `<metavox-metadata-form>`: the host does not depend on IntroVox's Vue version, or on Vue at all.
+
+Load the bundle while rendering the page. IntroVox is optional to the host, so guard the call:
+
+```php
+if (class_exists(\OCA\IntroVox\Embed\TourListEmbed::class)) {
+    \OCP\Server::get(\OCA\IntroVox\Embed\TourListEmbed::class)->load();
+}
+```
+
+`isAvailable($userId)` tells whether IntroVox is enabled for a user.
+
+Then place the element:
+
+```js
+container.appendChild(document.createElement('introvox-tour-list'))
+```
+
+It takes no attributes. Each link is the tour's share link (`/apps/introvox/tour/<id>`, `/apps/introvox/tour/welcome` for the welcome tour), which opens the tour's page and starts the tour there by hand. With **Tours for everyone** off, the element stays empty; otherwise it always has the welcome tour's link.
+
+The markup, inside the element:
+
+| Class | On |
+|---|---|
+| `introvox-tour-list__items` | the list (`ul`) |
+| `introvox-tour-list__item` | each entry (`li`) |
+| `introvox-tour-list__link` | the link (`a`); `--welcome` for the welcome tour, `--seen` once the user has seen the tour |
+| `introvox-tour-list__icon` | the icon (a 20 px SVG); `--app` for an app's icon (an `img`, light like the apps menu's, so a light page inverts it, for example with `filter: var(--background-invert-if-bright)`) |
+| `introvox-tour-list__name` | the tour's name; "Welcome tour" for the welcome tour, translated by IntroVox |
+
+Events bubble from the element:
+
+| Event | Detail |
+|---|---|
+| `introvox:loaded` | `{ tours, welcome }`: the listed tours, and whether the welcome tour's link is there. `tours` empty and `welcome` false: tours are off for everyone, nothing to start, so a host can hide its own frame |
+| `introvox:error` | `{ message }`: IntroVox is not enabled for this user, or did not answer |
+
+The tag name, `TourListEmbed` with `load()` and `isAvailable()`, the class names and the two events are a fixed interface; `tests-js/embed-contract.test.js` fails when one of them changes.
 
 ## Tour Runtime
 
@@ -71,7 +119,7 @@ Plain data in, plain data out, tested without a browser (`tests-js/choose-tour.t
 
 1. In the element picker or someone else's same-origin frame: no tour
 2. A share link starts its tour on the page it opened (not on IntroVox's admin page), also over a tour that was underway: following a link asks for that tour, and leaving a page mid-tour (by typing the link, say) leaves a resume entry, which the bootstrap then clears
-3. A tour that is underway (a resume entry, less than 10 minutes old) carries on on the page its next step opened; else a start request from the personal settings (less than 2 minutes old): the welcome tour on whatever page comes next, a tour for an app on its own page. A link and a start by hand also work with **Start tours by themselves** off and outside a tour's dates; the server still checks that the user may get the tour
+3. A tour that is underway (a resume entry, less than 10 minutes old) carries on on the page its next step opened, or after a reload on the page it was on (an entry with `stay` resumes only on that page, `resumesHere()`, so the tour does not follow someone who went elsewhere); else a start request from the personal settings (less than 2 minutes old): the welcome tour on whatever page comes next, a tour for an app on its own page. A link and a start by hand also work with **Start tours by themselves** off and outside a tour's dates; the server still checks that the user may get the tour
 4. On IntroVox's own admin page: no tour (the admin tour runs there)
 5. No runtime state on the page: the tour code asks the server, as before this state existed
 6. **Tours for everyone** off, or **Start tours by themselves** off: no tour
@@ -84,7 +132,7 @@ Browser storage it reads:
 | Key | Storage | Meaning |
 |---|---|---|
 | `introvox_completed`, `introvox_version` | localStorage | The welcome tour was finished, closed or skipped in this browser, at that `wizard_version` |
-| `introvox_tour_resume` | sessionStorage | A tour underway that navigated to another page (`{ tourId, stepId, at }`) |
+| `introvox_tour_resume` | sessionStorage | A tour underway that navigated to another page, or whose page was left otherwise, such as by a reload (`{ tourId, stepId, at }`, plus `stay`: the page it was on) |
 | `introvox_start_tour` | sessionStorage | A start by hand from the personal settings (`{ tourId, page, at }`; the welcome tour has no page) |
 | `introvox_tour_ended` | sessionStorage | When a tour last ended in this tab |
 | `introvox_preview_resume` | sessionStorage | The admin preview's own resume entry |
@@ -100,7 +148,7 @@ The chunk's entry: mounts `WizardManager` with the bootstrap's choice (`startTou
 Manages the Shepherd.js tour:
 
 1. Gets the bootstrap's choice as its `start` prop: which tour, and whether it resumes or was started by hand
-2. **Welcome tour:** loads `GET /api/steps`, re-attaches client-side behaviour by step id (`enrichSteps()`), and starts after the app menu is ready
+2. **Welcome tour:** loads `GET /api/steps`, re-attaches client-side behaviour by step id (`enrichSteps()`), while it waits for the app menu (and for Nextcloud's first-run wizard to close), and starts once no dialog is open
 3. **Tour for an app or page:** loads `GET /api/steps?tour=<id>` (a 404 or no steps: nothing starts), waits for the app to be ready (the first step's element or the app's content, no dialog of the app open, the tab visible; at most 15 seconds), then sends `POST /api/tours/{id}/event` with `start`. It shows the tour only if that was the first start at this version, or the tour was started by hand. Its first step's button is **Skip** instead of **Skip and don't show again**
 4. Instantiates `new Shepherd.Tour({...})` and registers Next/Back/Done/Skip handlers
 5. Welcome tour: fires telemetry events via `axios.post('/api/wizard/...')`, updates localStorage on close/complete/skip, and calls `POST /personal/settings` with `wizardDisabled: true` on Skip and Done

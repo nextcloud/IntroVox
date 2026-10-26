@@ -3,7 +3,7 @@
 // code and makes no request. Plain data in, plain data out: tests-js checks
 // the order of the rules without a browser.
 
-import { isOnPage } from '../utils/pages.mjs'
+import { isOnPage, stepPageFor } from '../utils/pages.mjs'
 
 // Where the bootstrap and WizardManager keep the tour's state
 export const COMPLETED_KEY = 'introvox_completed'
@@ -22,6 +22,19 @@ export const TOUR_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,31}$/
 // A tour that navigated to another page for its next step leaves a resume
 // entry (WizardManager); a stale one must never hijack a later visit.
 export const RESUME_TTL = 10 * 60 * 1000
+
+/**
+ * A resume entry the user left by themselves, by reloading or going to a
+ * page of their own choosing, has the page they left as `stay`. The tour
+ * carries on only there: it never follows someone who went elsewhere.
+ *
+ * @param {object} resume The resume entry
+ * @param {string} pathname location.pathname
+ * @return {boolean} Whether the entry carries the tour on on this page
+ */
+export function resumesHere(resume, pathname) {
+  return typeof resume.stay !== 'string' || stepPageFor(pathname) === resume.stay
+}
 
 // Right after a tour ends, the next page load starts no other tour: two
 // tours in a row feel like one that does not stop.
@@ -112,9 +125,10 @@ export function chooseTour({ frame, resume, start, link = null, onAdminPage, run
   if (link && !onAdminPage) {
     return { tour: link, manual: true }
   }
-  // 3. A tour that is underway carries on, whatever the rules below say.
-  // Entries written before tours had ids have no tourId: those are the welcome tour's.
-  if (resume && now - resume.at < RESUME_TTL) {
+  // 3. A tour that is underway carries on, whatever the rules below say;
+  // after a reload only on the page it was on (resumesHere). Entries
+  // written before tours had ids have no tourId: those are the welcome tour's.
+  if (resume && now - resume.at < RESUME_TTL && resumesHere(resume, pathname)) {
     return { tour: resume.tourId || 'welcome', resume }
   }
   // Started by hand from the personal settings: an app tour on its own

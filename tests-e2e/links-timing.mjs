@@ -79,6 +79,9 @@ await check('share link: Copy link gives the tour\'s page; the link starts it th
   await s.page.goto(link)
   const byLink = await shows(s.page)
   const address = s.page.url()
+  // Closed, then reloaded: the link is gone from the address, so nothing
+  // starts. (A reload of a tour still open carries it on: app-states.)
+  if (byLink) await step(s.page).locator('.shepherd-cancel-icon').click()
   await s.page.reload()
   const afterReload = await shows(s.page, 8000)
   await s.context.close()
@@ -129,7 +132,7 @@ await check('user menu: Tours above Help, to the tours in the personal settings;
     if (there) {
       await entry.click()
       await s.page.waitForURL(/introvox-help/, { timeout: 15000 })
-      landed = await s.page.locator('.introvox-personal__tour', { hasText: 'Talk' }).waitFor({ timeout: 15000 }).then(() => true, () => false)
+      landed = await s.page.locator('.introvox-tour-list__tour', { hasText: 'Talk' }).waitFor({ timeout: 15000 }).then(() => true, () => false)
     }
     await s.context.close()
     return { there, order, landed }
@@ -181,7 +184,7 @@ await check('when: only between two dates; starting by hand still works outside 
   await putTour(talkId, { startFrom: day(5), startUntil: '' })
   const s = await welcomeDone(USER)
   await s.page.goto(BASE + '/index.php/settings/user/introvox-help')
-  const row = s.page.locator('.introvox-personal__tour', { hasText: 'Talk' })
+  const row = s.page.locator('.introvox-tour-list__tour', { hasText: 'Talk' })
   await row.waitFor({ timeout: 20000 })
   await row.getByRole('button', { name: /^Start/ }).click()
   await s.page.waitForURL(/apps\/spreed/, { timeout: 30000 })
@@ -209,7 +212,7 @@ await check('anywhere: a tip on the next page someone opens, once; and from the 
   await s.page.goto(BASE + '/index.php/settings/user')
   const again = await shows(s.page, 8000)
   await s.page.goto(BASE + '/index.php/settings/user/introvox-help')
-  const row = s.page.locator('.introvox-personal__tour', { hasText: 'Tips' })
+  const row = s.page.locator('.introvox-tour-list__tour', { hasText: 'Tips' })
   await row.waitFor({ timeout: 20000 })
   await row.getByRole('button', { name: /^Start/ }).click()
   await s.page.waitForURL(/apps\/files/, { timeout: 30000 })
@@ -267,5 +270,7 @@ await check('export and import keep where and when', async () => {
   assert(copy && JSON.stringify(copy.trigger) === '{"type":"any"}' && copy.startAfterDays === 5 && copy.startFrom === day(1) && copy.startUntil === day(9) && copy.enabled === false, JSON.stringify(copy))
 })
 
+// Its tours go: Tips is on, for every page
+for (const id of [talkId, tipsId].filter(Boolean)) await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
 await browser.close()
 process.exit(summary() ? 1 : 0)

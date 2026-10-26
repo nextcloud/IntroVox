@@ -73,9 +73,12 @@
   min-height: 0;
 }
 
-/* Override Shepherd.js default white background (0,2,0 > Shepherd's 0,1,0) */
+/* Override Shepherd.js default white background (0,2,0 > Shepherd's 0,1,0).
+   Shepherd also fades steps in with a 0.3 s opacity transition, which ran
+   alongside and over our own animation below: ours alone now. */
 .nextcloud-wizard-step.shepherd-element {
   background: var(--color-main-background);
+  transition: none;
 }
 
 /* Centered steps (no attachTo element) */
@@ -89,8 +92,7 @@
 
 /* Override animation for centered elements to preserve centering */
 .shepherd-element.shepherd-centered {
-  animation: wizardFadeInCentered 0.3s ease-out forwards;
-  animation-delay: 0.05s;
+  animation: wizardFadeInCentered 0.15s ease-out both;
 }
 
 /* Text styling - WCAG 2.1 AA compliant & Theme aware */
@@ -410,11 +412,11 @@
   }
 }
 
-/* Prevent flickering on initial render - hide until positioned */
+/* Hidden until it fades in. Shepherd positions a step before its first
+   paint, so no delay is needed; 'both' keeps frame 0 at the start state. */
 .shepherd-element {
   opacity: 0;
-  animation: wizardFadeIn 0.3s ease-out forwards;
-  animation-delay: 0.05s; /* Small delay to ensure positioning is complete */
+  animation: wizardFadeIn 0.15s ease-out both;
 }
 
 /* Smooth entrance animation */
@@ -473,6 +475,8 @@
 .shepherd-modal-overlay-container.shepherd-modal-is-visible {
   opacity: 0.7;
   background: rgba(0, 0, 0, 0.4);
+  /* Darkens as fast as the step fades in */
+  transition: all 0.15s ease-out, height 0s 0s, opacity 0.15s 0s;
 }
 
 /* Highlighted element - much more visible */
@@ -755,6 +759,8 @@ html body.introvox-step-waiting .shepherd-element.shepherd-centered {
 html body.introvox-step-waiting.introvox-dialog-open .shepherd-element.shepherd-centered {
   right: auto !important;
   left: 24px !important;
+  /* The space left of the dialog, on smaller screens narrower than a step */
+  max-width: min(400px, var(--introvox-aside-width, 400px));
 }
 
 html body.introvox-step-waiting .shepherd-modal-overlay-container.shepherd-modal-is-visible {

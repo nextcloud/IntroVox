@@ -102,7 +102,10 @@ import { computed, ref, watch } from 'vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { getCanonicalLocale, translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { NcEmptyContent, NcLoadingIcon, NcNoteCard, NcSelect } from '@nextcloud/vue'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
 
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 
@@ -143,6 +146,12 @@ export default {
     const failed = ref(false)
 
     const languageName = (code) => props.languages.find(language => language.code === code)?.name || code
+    // The names can come after the statistics (AdminApp loads both at once)
+    watch(() => props.languages, () => {
+      if (selectedLanguage.value) {
+        selectedLanguage.value = { ...selectedLanguage.value, label: languageName(selectedLanguage.value.id) }
+      }
+    })
     const languageOptions = computed(() => (stats.value?.languages || []).map(code => ({ id: code, label: languageName(code) })))
 
     const percent = (part, whole) => (whole > 0 ? Math.round((part / whole) * 100) : 0)

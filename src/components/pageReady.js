@@ -56,3 +56,47 @@ export function waitForNextcloudReady() {
     check()
   })
 }
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+// Nextcloud adds this script only when its first-run wizard, or "What's new"
+// after an upgrade, is about to open. The wizard itself mounts a little after
+// the page is ready, too late for waitForNextcloudReady to see it.
+const FIRST_RUN_SCRIPT = 'script[src*="/firstrunwizard/js/firstrunwizard-activate"]'
+const FIRST_RUN_DIALOG = '.first-run-wizard'
+
+/**
+ * Resolves once a tour may start on this page: a moment after the page is
+ * ready, for pop-ups that open right after it, and after Nextcloud's first-run
+ * wizard, when one is coming, has opened and been closed again. A tour that
+ * started under it would count as seen, unseen.
+ *
+ * @return {Promise<void>}
+ */
+export async function afterPopups() {
+  await sleep(300)
+  await waitForNextcloudReady()
+  if (!document.querySelector(FIRST_RUN_SCRIPT)) {
+    return
+  }
+  // It opens within a second or so; give it 5 s
+  for (let waited = 0; waited < 5000 && !document.querySelector(FIRST_RUN_DIALOG); waited += 100) {
+    await sleep(100)
+  }
+  // Then as long as the user takes: no tour on top of it
+  while (document.querySelector(FIRST_RUN_DIALOG)?.getClientRects().length) {
+    await sleep(250)
+  }
+}
+
+/**
+ * Resolves once no dialog is open and the tab is in view, right before a tour
+ * starts; at most 15 seconds, then it starts anyway.
+ *
+ * @return {Promise<void>}
+ */
+export async function whenPageClear() {
+  for (let waited = 0; waited < 15000 && (dialogOpen() || document.visibilityState !== 'visible'); waited += 200) {
+    await sleep(200)
+  }
+}

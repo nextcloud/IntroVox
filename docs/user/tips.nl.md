@@ -36,7 +36,7 @@ Na het voltooien (of overslaan) van de tour, hier wat tips om te blijven verkenn
 
 ### De tour starten
 
-- **Automatisch** — wacht een paar seconden bij eerste login
+- **Automatisch** — start vanzelf bij eerste login, zodra de pagina geladen is
 - **Handmatig** — **Persoonlijke instellingen → IntroVox → Tour nu herstarten**
 - **Tour voor een app** — start de eerste keer dat je die app opent; start hem opnieuw via **Persoonlijke instellingen → IntroVox → Tours**
 

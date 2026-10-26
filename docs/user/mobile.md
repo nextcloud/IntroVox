@@ -14,6 +14,7 @@ IntroVox works on phones and tablets — the layout adapts to small screens and 
 - **Full-width steps** — steps take up most of the screen for readability
 - **Stacked buttons** — Back/Next stack vertically on very narrow screens
 - **Internal scrolling for long steps** — the body of each step scrolls inside the step container while the header and close button stay pinned. This means you can always reach the **✕** button and the navigation buttons, even on long-content steps.
+- **Steps about the app navigation** — on a phone an app's navigation is closed until you open it. A step about it waits aside until then, and moves to it once you open the navigation.
 
 ## Tips
 

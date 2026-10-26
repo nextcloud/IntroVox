@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-10-26
+
+**Coming from 1.x?** Read the [2.0.0 upgrade notes](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md#200---2026-10-21) first.
+
+### Added
+
+- **Other apps can show the tours a user can start**, as the element `<introvox-tour-list>`: a link per tour, always as IntroVox decides for that user, in the other app's own style. See [Embedding the tour list](https://github.com/nextcloud/IntroVox/blob/main/docs/architecture/frontend-architecture.md#embedding-the-tour-list).
+
+### Changed
+
+- **Tours start sooner.** A tour no longer waits a fixed second after the page has loaded: its steps load while Nextcloud gets ready, and it starts 0.3 seconds after the app menu is there. When Nextcloud's first-run wizard opens, the tour waits until it is closed, and any tour waits until no dialog is open.
+- **Steps within a page follow sooner.** Only the first step on a page waits up to 5 seconds for its element; after a click a step waits 1 second, after **Next** or **Back** 0.4 seconds, and then waits aside. A step fades in within 0.15 seconds.
+- **The admin pages load faster.** The settings page fetches its languages, groups and tours at the same time, and the admin and personal pages ship only the components they use (the personal page is less than half its size).
+
+### Fixed
+
+- **A long tour name no longer gives a share link that looks cut off.** A new tour's id, which is the end of its share link, is now cut between words and uses all 32 characters: "Sharing with other organizations" becomes `.../tour/sharing-with-other-organizations`, where it was `.../tour/sharing-with-other-organizat`. An existing tour keeps its id, so links already sent keep working.
+- **A tour's share link works on Nextcloud with pretty URLs.** `/apps/introvox/tour/<id>` sent people to `//apps/…`, which the browser reads as a different website, so the link opened nothing. The links in the Dashboard checklist had the same double slash.
+- **Counts in the admin pages are translated.** "%n people" in the statistics, the limits in the checklist and the tour list, and the other texts with a number showed in English in every language: their translations were stored under a key Nextcloud does not look up. 46 translations in 15 languages now show.
+- A step no longer takes the focus from a field the user is typing in, for example when the window is resized.
+- Reloading the page, or sending a form that reloads it, keeps the tour at its step instead of ending it.
+- A step that waits beside an open dialog no longer covers the dialog on smaller screens (1366 or 1280 pixels wide).
+- On phones, a step no longer points at the app navigation while it is closed; it waits aside until the navigation opens.
+
 ## [2.0.0] - 2026-10-21
 
 IntroVox grows from one welcome tour into tours for Nextcloud and its apps. The major version marks that, and a few changes to the app's HTTP routes that a script outside the app could notice; the stored tours, steps and settings carry over as they are.

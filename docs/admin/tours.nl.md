@@ -101,7 +101,7 @@ Een app-tour start vanzelf als dit allemaal klopt:
 
 Een tour start nooit boven op een andere tour. Wie de welkomsttour nog niet had, krijgt die eerst, waar hij ook inlogt, en de app-tour bij een later bezoek. Met twee tabbladen van dezelfde app open verschijnt hij in één.
 
-Gebruikers vinden alle tours die ze kunnen krijgen onder **Persoonlijke instellingen → IntroVox**, met **Start** om er zelf een te starten, en **Tours** in hun gebruikersmenu, boven **Help**, leidt daarheen. Zelf starten werkt ook als **Start tours by themselves** uit staat, en los van de datums van de tour. Een tour die overal start, start van daaruit in Bestanden.
+Gebruikers vinden alle tours die ze kunnen krijgen onder **Persoonlijke instellingen → IntroVox**, met **Start** om er zelf een te starten, en **Tours** in hun gebruikersmenu, boven **Help**, leidt daarheen. Zelf starten werkt ook als **Start tours by themselves** uit staat, en los van de datums van de tour. Een tour die overal start, start van daaruit in Bestanden. Een andere app, zoals een helppagina, kan dezelfde tours als links tonen (zie [De tourlijst insluiten](../architecture/frontend-architecture.nl.md#de-tourlijst-insluiten)).
 
 **Show Tours in the user menu** onder **Instellingen** verbergt dat menu-item.
 
@@ -109,9 +109,9 @@ Wie niet in de groepen van de tour zit, krijgt er niets van: de server antwoordt
 
 ## Een tour delen met een link
 
-**Link kopiëren** in het ⋯-menu van een tour kopieert een link, zoals `https://cloud.example.com/index.php/apps/introvox/tour/builtin-talk`, die de pagina van de tour opent en de tour daar start, voor een welkomstmail of een bericht aan een team. Voor de welkomsttour en een tour die overal start opent de link Bestanden.
+**Link kopiëren** in het ⋯-menu van een tour kopieert een link, zoals `https://cloud.example.com/index.php/apps/introvox/tour/builtin-talk` (zonder `index.php` op een Nextcloud met pretty URLs), die de pagina van de tour opent en de tour daar start, voor een welkomstmail of een bericht aan een team. Voor de welkomsttour en een tour die overal start opent de link Bestanden.
 
-De link openen is als **Start** in de persoonlijke instellingen: de tour start ook als iemand hem al zag, **Start tours by themselves** uit heeft gezet of buiten de datums van de tour valt, en het telt niet mee in de statistieken. Hij start wel alleen voor wie de tour mag krijgen: wie buiten de groepen van de tour valt of de app niet heeft, krijgt de pagina zonder tour. Een tour die uit staat, start voor niemand: de link opent dan Bestanden, en **Link kopiëren** waarschuwt daarvoor. Wie niet ingelogd is, logt eerst in en krijgt dan de tour. De adresbalk raakt het linkdeel kwijt zodra de pagina het gelezen heeft, zodat herladen of een bladwijzer de tour niet opnieuw start.
+De link openen is als **Start** in de persoonlijke instellingen: de tour start ook als iemand hem al zag, **Start tours by themselves** uit heeft gezet of buiten de datums van de tour valt, en het telt niet mee in de statistieken. Hij start wel alleen voor wie de tour mag krijgen: wie buiten de groepen van de tour valt of de app niet heeft, krijgt de pagina zonder tour. Een tour die uit staat, start voor niemand: de link opent dan Bestanden, en **Link kopiëren** waarschuwt daarvoor. Wie niet ingelogd is, logt eerst in en krijgt dan de tour. De adresbalk raakt het linkdeel kwijt zodra de pagina het gelezen heeft, zodat een bladwijzer, of herladen nadat de tour klaar is, de tour niet opnieuw start.
 
 ## Een tour opnieuw tonen
 

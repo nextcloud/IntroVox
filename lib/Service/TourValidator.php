@@ -16,6 +16,8 @@ class TourValidator {
     public const WELCOME = 'welcome';
     public const MAX_TOURS = 50;
     public const ID_PATTERN = '/^[a-z0-9][a-z0-9-]{0,31}$/D';
+    // Ids go into config keys, which Nextcloud caps at 64 characters
+    private const MAX_ID = 32;
     // Nextcloud app ids: lowercase letters, digits and underscores
     public const APP_PATTERN = '/^[a-z][a-z0-9_]{0,63}$/D';
     public const LANG_PATTERN = '/^[a-z]{2}(_[A-Z]{2})?$/D';
@@ -94,7 +96,9 @@ class TourValidator {
     /**
      * An id from a tour's name: an ASCII slug, never "welcome", unique among
      * the ids there are. No underscores, so tour_steps_<id>_<lang> reads back
-     * unambiguously.
+     * unambiguously. The id ends up in the tour's share link, so a long name
+     * is cut between words, never in one: "sharing-with-other", not
+     * "sharing-with-other-organizat".
      *
      * @param string[] $taken
      */
@@ -107,16 +111,25 @@ class TourValidator {
             }
         }
         $base = trim(preg_replace('/[^a-z0-9]+/', '-', $ascii) ?? '', '-');
-        $base = substr($base, 0, 28);
-        $base = rtrim($base, '-');
         if ($base === '' || $base === self::WELCOME) {
             $base = 'tour';
         }
-        $id = $base;
+        $id = self::cut($base, self::MAX_ID);
         for ($n = 2; in_array($id, $taken, true) || $id === self::WELCOME; $n++) {
-            $id = $base . '-' . $n;
+            $suffix = '-' . $n;
+            $id = self::cut($base, self::MAX_ID - strlen($suffix)) . $suffix;
         }
         return $id;
+    }
+
+    // A slug of at most $max characters, cut after a whole word; a single
+    // word longer than that is cut where it has to be
+    private static function cut(string $slug, int $max): string {
+        if (strlen($slug) <= $max) {
+            return $slug;
+        }
+        $end = strrpos(substr($slug, 0, $max + 1), '-');
+        return $end ? substr($slug, 0, $end) : substr($slug, 0, $max);
     }
 
     /**

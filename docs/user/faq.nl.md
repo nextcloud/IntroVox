@@ -14,7 +14,7 @@ Meestal 2–5 minuten, afhankelijk van hoeveel stappen je beheerder heeft geconf
 
 ### Kan ik de tour pauzeren en later doorgaan?
 
-Je kunt hem sluiten met **✕** en later opnieuw starten via **Persoonlijke instellingen → IntroVox**: **Tour nu herstarten** voor de welkomsttour, **Start again** voor een tour voor een app. Hij begint dan bij de eerste stap: de tour onthoudt je plek niet, dus je kunt hem het beste in één keer doen.
+Je kunt hem sluiten met **✕** en later opnieuw starten via **Persoonlijke instellingen → IntroVox**: **Tour nu herstarten** voor de welkomsttour, **Start again** voor een tour voor een app. Hij begint dan bij de eerste stap: de tour onthoudt je plek niet, dus je kunt hem het beste in één keer doen. De pagina verversen is anders: dan gaat de tour verder bij de stap waar hij was.
 
 ### Zie ik de tour elke keer dat ik inlog?
 

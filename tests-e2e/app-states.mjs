@@ -47,10 +47,11 @@ const makeTour = async (name, app, steps) => {
   await api(page, 'PUT', `/apps/introvox/admin/tours/${id}`, { tour: { enabled: true } })
   return id
 }
-// A fresh run of an app tour for the user, in a fresh browser
+// A fresh run of an app tour for the user, in a fresh browser. Logged in to
+// a page without the tour: Files, the default app, would start it already.
 const userSession = async (tourId) => {
   await api(page, 'POST', `/apps/introvox/admin/tours/${tourId}/reshow`)
-  const session = await login(browser, USER)
+  const session = await login(browser, USER, { landing: '/index.php/settings/user' })
   await api(session.page, 'POST', '/apps/introvox/personal/settings', { wizardDisabled: true, toursDisabled: false })
   return session
 }
@@ -134,8 +135,11 @@ await check('follow: an element that never comes keeps the step waiting, and Nex
   const { context, page: p } = await userSession(id)
   await p.goto(BASE + '/index.php/apps/files/')
   await waitTitle(p, 'First', 30000)
+  // Within a page the step waits 0.4 s after Next, not the 5 s of a page load
+  const nextAt = Date.now()
   await step(p).getByRole('button', { name: /Start tour/ }).click()
   await waitTitle(p, 'Not here')
+  const shownIn = Date.now() - nextAt
   await p.waitForTimeout(2000)
   const waiting = await stepState(p)
   await step(p).getByRole('button', { name: 'Next' }).click()
@@ -147,6 +151,8 @@ await check('follow: an element that never comes keeps the step waiting, and Nex
   await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
   assert(waiting.waiting && waiting.aside, JSON.stringify(waiting))
   assert(last.centered && !last.waiting && !last.aside && overlayBlocks, JSON.stringify({ last, overlayBlocks }))
+  assert(shownIn < 2000, `the waiting step showed after ${shownIn} ms`)
+  return `waiting step shown ${shownIn} ms after Next`
 })
 
 await check('click step: the → key does not pass it without the click', async () => {
@@ -204,6 +210,92 @@ await check('follow: with a dialog open, a waiting step stands on the left, clea
   await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
   assert(before === 'right' && during === 'left' && reachable && after === 'right', JSON.stringify({ before, during, reachable, after }))
   return `${before} → ${during} while the dialog is open → ${after}`
+})
+
+await check('follow: on a 1280 × 720 screen a waiting step fits beside an open dialog', async () => {
+  const id = await makeTour('Narrow', 'files', [
+    { id: 'nw-1', title: 'First', text: '<p>One</p>' },
+    { id: 'nw-2', title: 'Not yet', text: '<p>Fill in the form first</p>', attachTo: '#introvox-never-there' },
+  ])
+  const { context, page: p } = await userSession(id)
+  await p.setViewportSize({ width: 1280, height: 720 })
+  await p.goto(BASE + '/index.php/apps/files/')
+  await waitTitle(p, 'First', 30000)
+  await step(p).getByRole('button', { name: /Start tour/ }).click()
+  await waitTitle(p, 'Not yet')
+  // A dialog as wide as Contacts' invitation form, in the middle
+  await p.evaluate(() => {
+    const mask = document.createElement('div')
+    mask.className = 'modal-mask introvox-e2e-dialog'
+    mask.innerHTML = '<div class="modal-container" style="position: fixed; top: 120px; left: calc(50% - 300px); width: 600px; height: 480px"></div>'
+    document.body.appendChild(mask)
+  })
+  await p.waitForTimeout(1000)
+  const boxes = await step(p).evaluate(el => {
+    const box = el.getBoundingClientRect()
+    return { stepLeft: Math.round(box.left), stepRight: Math.round(box.right), dialogLeft: Math.round(document.querySelector('.introvox-e2e-dialog .modal-container').getBoundingClientRect().left) }
+  })
+  await context.close()
+  await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
+  assert(Math.abs(boxes.stepLeft - 24) < 2 && boxes.stepRight <= boxes.dialogLeft - 16, JSON.stringify(boxes))
+  return `step ${boxes.stepLeft}–${boxes.stepRight} px, dialog from ${boxes.dialogLeft} px`
+})
+
+await check('typing: a step does not take the focus from a field outside it, also when the window resizes', async () => {
+  const id = await makeTour('Typing', 'files', [
+    { id: 'tp-1', title: 'First', text: '<p>One</p>' },
+    { id: 'tp-2', title: 'Type somewhere', text: '<p>Type in a field</p>', attachTo: '[data-cy-upload-picker]' },
+  ])
+  const { context, page: p } = await userSession(id)
+  await p.goto(BASE + '/index.php/apps/files/')
+  await waitTitle(p, 'First', 30000)
+  await step(p).getByRole('button', { name: /Start tour/ }).click()
+  await waitTitle(p, 'Type somewhere')
+  await p.evaluate(() => {
+    const input = document.createElement('input')
+    input.id = 'introvox-e2e-field'
+    input.style.cssText = 'position: fixed; top: 8px; left: 50%; z-index: 100000'
+    document.body.appendChild(input)
+  })
+  await p.focus('#introvox-e2e-field')
+  await p.keyboard.type('abc')
+  // A resize moves the step, and Shepherd focuses it 300 ms later
+  await p.setViewportSize({ width: 1300, height: 850 })
+  await p.waitForTimeout(800)
+  await p.keyboard.type('def')
+  const value = await p.inputValue('#introvox-e2e-field')
+  const focused = await p.evaluate(() => document.activeElement?.id)
+  // With no field in use the step still takes the focus, for keyboard users
+  await p.evaluate(() => document.activeElement.blur())
+  await p.setViewportSize({ width: 1440, height: 900 })
+  await p.waitForTimeout(800)
+  const stepFocused = await step(p).evaluate(el => el.contains(document.activeElement))
+  await context.close()
+  await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
+  assert(value === 'abcdef' && focused === 'introvox-e2e-field', JSON.stringify({ value, focused }))
+  assert(stepFocused, 'the step did not take the focus with no field in use')
+})
+
+await check('reload: the tour stays at its step on that page, and does not follow the user elsewhere', async () => {
+  const id = await makeTour('Reload', 'files', [
+    { id: 'rl-1', title: 'First', text: '<p>One</p>' },
+    { id: 'rl-2', title: 'Second', text: '<p>Two</p>', attachTo: '[data-cy-upload-picker]' },
+    { id: 'rl-3', title: 'Last', text: '<p>Three</p>' },
+  ])
+  const { context, page: p } = await userSession(id)
+  await p.goto(BASE + '/index.php/apps/files/')
+  await waitTitle(p, 'First', 30000)
+  await step(p).getByRole('button', { name: /Start tour/ }).click()
+  await waitTitle(p, 'Second')
+  await p.reload({ waitUntil: 'domcontentloaded' })
+  await waitTitle(p, 'Second', 30000)
+  // Somewhere else the step does not belong: no tour there
+  await p.goto(BASE + '/index.php/apps/dashboard/', { waitUntil: 'domcontentloaded' })
+  await p.waitForTimeout(5000)
+  const elsewhere = await step(p).count()
+  await context.close()
+  await api(page, 'DELETE', `/apps/introvox/admin/tours/${id}`)
+  assert(elsewhere === 0, 'a step showed on the dashboard')
 })
 
 await check('picker: an element reached by using the page says the step waits for it; one there from the start does not', async () => {

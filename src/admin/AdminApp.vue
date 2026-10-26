@@ -300,9 +300,8 @@ export default {
     }
 
     const initializeAdmin = async () => {
-      await loadAvailableLanguages()
-      await loadAvailableGroups()
-      await loadTours()
+      // Independent of each other; each shows its own error
+      await Promise.all([loadAvailableLanguages(), loadAvailableGroups(), loadTours()])
       if (!props.introDone) {
         startIntro()
       } else {

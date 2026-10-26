@@ -124,7 +124,7 @@ await check('statistics: a run that started by itself counts how far it got', as
 await check('statistics: a start by hand and going back count nothing more', async () => {
   const s = await welcomeDone(USER)
   await s.page.goto(BASE + '/index.php/settings/user/introvox-help')
-  const row = s.page.locator('.introvox-personal__tour', { hasText: 'Talk' })
+  const row = s.page.locator('.introvox-tour-list__tour', { hasText: 'Talk' })
   await row.waitFor({ timeout: 20000 })
   await row.getByRole('button', { name: /^Start/ }).click()
   await s.page.waitForURL(/apps\/spreed/, { timeout: 30000 })

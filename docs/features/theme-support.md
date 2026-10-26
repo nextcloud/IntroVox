@@ -31,7 +31,7 @@ Because these variables are scoped to the document and updated by Nextcloud's th
 
 If the user's system has the "reduce motion" accessibility preference enabled, the tour keeps still:
 
-- Steps appear without fading in
+- Steps appear without fading in (for everyone else they fade in within 0.15 seconds)
 - The arrow and the outline around a step's element stand still
 - GIFs and videos don't play by themselves; they start with their play button
 - The tour jumps to a step instead of scrolling smoothly, and so does the step list on the admin page

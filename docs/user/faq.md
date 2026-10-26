@@ -14,7 +14,7 @@ Usually 2–5 minutes, depending on how many steps your administrator configured
 
 ### Can I pause the tour and continue later?
 
-You can close it with **✕** and start it again later from **Personal Settings → IntroVox**: **Restart tour now** for the welcome tour, **Start again** for a tour for an app. It starts at the first step: the tour doesn't keep your place, so it is easiest to finish it in one sitting.
+You can close it with **✕** and start it again later from **Personal Settings → IntroVox**: **Restart tour now** for the welcome tour, **Start again** for a tour for an app. It starts at the first step: the tour doesn't keep your place, so it is easiest to finish it in one sitting. Reloading the page is different: the tour carries on at the step it was at.
 
 ### Will I see the tour every time I log in?
 

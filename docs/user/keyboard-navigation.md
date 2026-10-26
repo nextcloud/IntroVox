@@ -12,7 +12,7 @@ IntroVox is fully accessible via keyboard.
 | `Tab` | Move focus between the step's buttons and links |
 | `Enter` or `Space` | Activate the focused button |
 
-The keys work while the step has focus, which it gets when it shows. On a video or its pause button, the arrow keys and `Space` control the video instead.
+The keys work while the step has focus, which it gets when it shows. It doesn't take the focus from a field on the page you are typing in. On a video or its pause button, the arrow keys and `Space` control the video instead.
 
 ## Accessibility Features
 

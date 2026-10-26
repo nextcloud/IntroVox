@@ -7,7 +7,9 @@ module.exports = {
   entry: {
     main: './src/main.js',
     admin: './src/admin.js',
-    personal: './src/personal.js'
+    personal: './src/personal.js',
+    // <introvox-tour-list> for other apps (lib/Embed/TourListEmbed.php)
+    'introvox-embed': './src/embed/embed.js'
   },
   output: {
     filename: '[name].js',

@@ -2,7 +2,7 @@
 // there and pick up again after the page load. The progress is kept per
 // browser tab and expires (RESUME_TTL), so a stale entry never hijacks a
 // later visit.
-import { RESUME_TTL, TOUR_ENDED_KEY } from '../runtime/chooseTour.mjs'
+import { RESUME_TTL, TOUR_ENDED_KEY, resumesHere } from '../runtime/chooseTour.mjs'
 
 /**
  * @param {string} key The sessionStorage key: the preview frame shares
@@ -14,7 +14,7 @@ export function resumeStore(key) {
     read() {
       try {
         const resume = JSON.parse(sessionStorage.getItem(key))
-        return resume && Date.now() - resume.at < RESUME_TTL ? resume : null
+        return resume && Date.now() - resume.at < RESUME_TTL && resumesHere(resume, window.location.pathname) ? resume : null
       } catch (e) {
         return null
       }

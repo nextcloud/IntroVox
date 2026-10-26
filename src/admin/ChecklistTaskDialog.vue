@@ -34,7 +34,9 @@
 import { computed, ref } from 'vue'
 import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
-import { NcButton, NcDialog, NcTextField } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 /**
  * A page of this Nextcloud as a path: a full address of this Nextcloud

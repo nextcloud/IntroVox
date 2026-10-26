@@ -35,6 +35,7 @@ Each step shows:
 - Click **✕** in the top right
 - Or press `Escape`
 - Closing this way does **not** switch tours off. This browser remembers it, so the welcome tour doesn't start by itself here again; in another browser or on another device it does
+- Reloading the page doesn't end the tour: it carries on at the same step
 
 ## Highlighted Elements
 
@@ -66,6 +67,8 @@ You'll see two kinds of steps:
 
 Sometimes the element a step is about isn't on the page yet, for example because you still have to open or create something. The step then waits aside in the bottom right corner with its text (bottom left while a dialog is open, so it stays clear of the dialog's buttons). The page stays usable, and the step moves to the element as soon as it appears, however long you take. **Next** still goes on without it.
 
+On a phone, a step about the app's navigation waits while the navigation is closed, until you open it.
+
 ## Steps That Ask You to Do Something
 
 ![A step that asks you to click, with the outline and the arrow](../screenshots/tour-step.png)
@@ -73,7 +76,7 @@ Sometimes the element a step is about isn't on the page yet, for example because
 Some steps let you try things instead of reading about them. Tours for apps use this a lot. What you make in them is real: the folder, conversation or card stays yours.
 
 - **Click:** the step says "Click the highlighted element to continue." and has no **Next** button. Click the element, and the tour goes on by itself, also when the click opens another app.
-- **Fill in:** the step says "Fill in the highlighted field to continue." **Next** works once the field has text, such as the name of a new conversation.
+- **Fill in:** the step says "Fill in the highlighted field to continue." **Next** works once the field has text, such as the name of a new conversation. While you type, the focus stays in the field.
 
 If the element is not on the page, **Next** works as usual, so you never get stuck.
 

@@ -153,7 +153,7 @@ Serves an image, video or captions file used in a step. `{file}` is a 32-charact
 
 ## Share Links
 
-**Copy link** gives `/index.php/apps/introvox/tour/<id>` (`LinkController::open`). Someone who is not logged in goes through the login first, which keeps that path (it drops a query string). The route then redirects to the tour's page (`/apps/files/` for the welcome tour and a tour that starts anywhere) with `?introvox-tour=<id>`, or to the default page for a tour this user may not get. It has no CSRF check, as a link in a mail cannot carry a token; it changes nothing.
+**Copy link** gives `/index.php/apps/introvox/tour/<id>`, or `/apps/introvox/tour/<id>` on a Nextcloud with pretty URLs (`LinkController::open`). `<introvox-tour-list>` in other apps links to the same route (see [Embedding the tour list](frontend-architecture.md#embedding-the-tour-list)). Someone who is not logged in goes through the login first, which keeps that path (it drops a query string). The route then redirects to the tour's page (`/apps/files/` for the welcome tour and a tour that starts anywhere) with `?introvox-tour=<id>`, or to the default page for a tour this user may not get. The redirect keeps a single slash between Nextcloud's front controller and the page (`PageUrl::path()`), with or without pretty URLs. It has no CSRF check, as a link in a mail cannot carry a token; it changes nothing.
 
 Any page of this Nextcloud with `?introvox-tour=<id>` starts that tour there, as a start by hand (`src/main.js`, `chooseTour()`), also over a tour that was underway. The server reads the parameter with the page and passes it on in the runtime state (`link`), because an app that sends its start page on at once (Deck goes to Upcoming cards) has dropped it from the address by the time the bootstrap runs. The bootstrap takes the parameter out of the address straight away, checks it is a tour id, and the tour then loads its steps through `GET /api/steps?tour=<id>` — so it starts only for someone who may get the tour, and anyone else gets the page without one. It is not counted in the statistics.
 
@@ -168,6 +168,7 @@ Per-user state. Requires authentication; `401` without a user.
 ```json
 {
   "success": true,
+  "toursEnabled": true,
   "wizardDisabledByUser": false,
   "toursDisabled": false,
   "tours": [
@@ -182,6 +183,7 @@ Per-user state. Requires authentication; `401` without a user.
 }
 ```
 
+- `toursEnabled` — **Tours for everyone** (`wizard_enabled`); without it no tour starts. `<introvox-tour-list>` in other apps shows its links only while this is `true`
 - `wizardDisabledByUser` — the user preference `wizard_disabled`: the welcome tour is done for this user (**Done**, **Skip and don't show again**, or **Start tours by themselves** switched off)
 - `toursDisabled` — the user preference `tours_disabled`: **Start tours by themselves** is off
 - `tours` — the tours for an app or page this user may get (switched on, **Tours for everyone** on, in the tour's groups, and able to open its app); not the welcome tour. `page` is `/apps/<app>/` for an app tour, or the page path. `app` is the name and icon from the user's own apps menu, `null` for a page tour. `seen` is `true` once any version of the tour started for the user.

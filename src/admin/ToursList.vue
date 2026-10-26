@@ -110,14 +110,12 @@
 import { getCanonicalLocale, translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
-import {
-  NcActionButton,
-  NcActions,
-  NcButton,
-  NcCheckboxRadioSwitch,
-  NcNoteCard,
-  NcSettingsSection
-} from '@nextcloud/vue'
+import NcActionButton from '@nextcloud/vue/components/NcActionButton'
+import NcActions from '@nextcloud/vue/components/NcActions'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcSettingsSection from '@nextcloud/vue/components/NcSettingsSection'
 
 import Earth from 'vue-material-design-icons/Earth.vue'
 import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'

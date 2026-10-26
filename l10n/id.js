@@ -93,7 +93,7 @@ OC.L10N.register(
     "Drag to reorder" : "Seret untuk mengurutkan ulang",
     "Edit" : "Sunting",
     "Delete" : "Hapus",
-    "%n person" : ["%n orang"],
+    "_%n person_::_%n people_" : ["%n orang"],
     "Preview" : "Pratinjau",
     "Copy link" : "Salin tautan",
     "About IntroVox" : "Tentang IntroVox",

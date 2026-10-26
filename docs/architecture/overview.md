@@ -51,6 +51,7 @@ IntroVox is a Nextcloud app that follows Nextcloud's standard app architecture: 
 | `src/runtime/tour.js` | The tour chunk: mounts `WizardManager`; loaded only on a page where a tour runs |
 | `src/admin.js` | Admin settings UI entry point |
 | `src/personal.js` | Personal settings UI entry point |
+| `src/embed/embed.js` | `<introvox-tour-list>` for other apps: the tours a user can start, as plain links the other app styles |
 | `src/components/WizardManager.vue` | Manages Shepherd.js tour lifecycle and step rendering, for the welcome tour and tours for apps |
 | `src/admin/ToursList.vue`, `src/admin/NewTourDialog.vue` | The admin's Tours pane: the list of tours, and making or changing a tour for an app |
 | `src/admin/TourEditor.vue`, `src/admin/StepWizard.vue` | The steps of one tour, and the dialog that edits a step, with its text editor and media (`StepTextEditor.vue`, `StepMediaBlock.vue`) |
@@ -73,6 +74,7 @@ See [Frontend Architecture](frontend-architecture.md).
 | `MediaController`, `MediaUploadController`, `MediaService` | Images, videos and captions in steps: checked, stripped of metadata, stored in IntroVox's app data, served only to users who get the step |
 | `LicenseController` | An optional subscription key: validation and usage report. Nothing in IntroVox is limited by it |
 | `PersonalController` | Per-user tour preferences (`wizard_disabled`, `tours_disabled`) and the user's list of tours for apps |
+| `TourListEmbed` | Lets another app show `<introvox-tour-list>`: loads its bundle |
 | `TourRepository`, `TourStateService`, `TourValidator` | The tours, per-user tour state, and checking a tour before it is stored |
 | `TelemetryService` | Aggregates anonymous usage stats; ships to license server |
 | `LicenseService` | Validates the optional subscription key against `licenses.voxcloud.nl` |

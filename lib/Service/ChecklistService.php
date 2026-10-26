@@ -308,6 +308,6 @@ class ChecklistService {
 
     // A page of this Nextcloud, as a full address for the Dashboard and the apps
     private function absolute(string $page): string {
-        return $this->urlGenerator->getAbsoluteURL($this->urlGenerator->linkTo('', 'index.php') . $page);
+        return $this->urlGenerator->getAbsoluteURL(PageUrl::path($this->urlGenerator->linkTo('', 'index.php'), $page));
     }
 }

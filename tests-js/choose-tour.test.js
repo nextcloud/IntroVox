@@ -101,6 +101,29 @@ describe('chooseTour', () => {
 		assert.equal(tours.chooseTour(context({ resume })).tour, 'welcome');
 	});
 
+	test('after a reload the tour carries on only on the page it was on, also inside the same app', () => {
+		const resume = { stepId: 'f-2', at: NOW - 1000, tourId: 'files', stay: '/apps/files/' };
+		assert.deepEqual(tours.chooseTour(context({ resume, pathname: '/index.php/apps/files/' })), { tour: 'files', resume });
+		assert.deepEqual(tours.chooseTour(context({ resume, pathname: '/index.php/apps/files/files/12?dir=/Documents' })), { tour: 'files', resume });
+		const contacts = { stepId: 'c-4', at: NOW - 1000, tourId: 'fed', stay: '/apps/contacts/' };
+		assert.deepEqual(tours.chooseTour(context({ resume: contacts, pathname: '/index.php/apps/contacts/ocm-invites' })), { tour: 'fed', resume: contacts });
+		const settings = { stepId: 's-1', at: NOW - 1000, tourId: 'fed', stay: '/settings/user/sharing' };
+		assert.deepEqual(tours.chooseTour(context({ resume: settings, pathname: '/index.php/settings/user/sharing' })), { tour: 'fed', resume: settings });
+	});
+
+	test('a tour the user left for a page of their own does not follow them there', () => {
+		const resume = { stepId: 'f-2', at: NOW - 1000, tourId: 'files', stay: '/apps/files/' };
+		// Elsewhere the other rules decide, as without the entry
+		assert.equal(tours.chooseTour(context({ resume, local: seen, pathname: '/index.php/apps/dashboard/' })), null);
+		assert.equal(tours.chooseTour(context({ resume, local: seen, pathname: '/index.php/apps/files_sharing/' })), null);
+		assert.equal(tours.chooseTour(context({ resume, onAdminPage: true, pathname: '/index.php/settings/admin/introvox' })), null);
+		const talk = { id: 'talk', page: '/apps/spreed/' };
+		assert.deepEqual(tours.chooseTour(context({ resume, local: seen, runtime: runtime({ tours: [talk] }), pathname: '/index.php/apps/spreed/' })), { tour: 'talk' });
+		// A step's own navigation leaves no stay: that one goes to its page
+		const navigated = { stepId: 't-1', at: NOW - 1000, tourId: 'files', forward: true };
+		assert.deepEqual(tours.chooseTour(context({ resume: navigated, pathname: '/index.php/apps/spreed/' })), { tour: 'files', resume: navigated });
+	});
+
 	test('a stale resume entry is ignored', () => {
 		const resume = { stepId: 'talk', at: NOW - tours.RESUME_TTL - 1, tourId: 'welcome' };
 		assert.equal(tours.chooseTour(context({ resume, local: seen })), null);

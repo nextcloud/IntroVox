@@ -7,7 +7,7 @@ IntroVox's tour engine is built on [Shepherd.js](https://shepherdjs.dev/), wrapp
 1. **Bootstrap** — every Nextcloud page loads `main.js`, a small bootstrap (about 20 KB). It reads the `introvox/runtime` initial state that the `LoadScripts` listener adds to the page, plus browser storage, and decides with `src/runtime/chooseTour.mjs` whether a tour starts on this page, and which (see [Which Tour Starts](#which-tour-starts)). That takes no request. On a page without a tour nothing else loads
 2. **Tour code** — only when a tour starts does the bootstrap load the tour chunk (`src/runtime/tour.js`: WizardManager, Shepherd.js, Vue and `css/wizard.css`)
 3. **Steps** — WizardManager fetches the steps for the user's language and groups: `GET /apps/introvox/api/steps` for the welcome tour, `GET /apps/introvox/api/steps?tour=<id>` for another tour
-4. **Readiness check** — waits for Nextcloud's header and app menu: the apps "waffle" on Nextcloud 34+, the inline app bar on older versions (10-second timeout), then one more second. A tour for an app also waits for the app itself: its first step's element or the app's content, no dialog of the app open, and the tab in view (15-second timeout)
+4. **Readiness check** — waits for Nextcloud's header and app menu: the apps "waffle" on Nextcloud 34+, the inline app bar on older versions (10-second timeout), then 0.3 seconds. The steps load meanwhile. If Nextcloud's first-run wizard is about to open, the tour waits until it is closed. A tour for an app also waits for the app itself: its first step's element or the app's content, no dialog of the app open, and the tab in view (15-second timeout). Any tour then waits until no dialog is open and the tab is in view (at most 15 seconds)
 5. **Start** — creates a Shepherd `Tour` with the steps and shows the first one. A tour for an app first tells the server it started; the server answers whether this is the first start at this version, and only then does it show (or when it was started by hand), so two open tabs never both run it
 6. **User navigation** — Next/Back/Close/Done buttons, the arrow keys, or the step's own way to continue (see [How a Step Continues](#how-a-step-continues)). In a run that started by itself, each step further than the run got before is reported for **How far people get**
 7. **Completion** — the welcome tour sets localStorage and (on Done/Skip) its done mark (`wizard_disabled`); another tour reports `complete` or `skip`. A tour that went to other apps then returns to the configured homepage (see [Tours Across Apps](#tours-across-apps))
@@ -28,7 +28,7 @@ IntroVox's tour engine is built on [Shepherd.js](https://shepherdjs.dev/), wrapp
 
 ### Steps That Wait for Their Element
 
-If an attached step's element is not on the page when the step shows, the step waits for it. It stands aside in the bottom right corner with its text, or in the bottom left corner while a dialog is open, clear of the dialog's buttons. The tour's dark overlay goes, so the page stays usable. As soon as the element appears, however long the user takes, the step moves to it. **Next** still goes on without it.
+If an attached step's element is not on the page when the step shows, the step waits for it. It stands aside in the bottom right corner with its text, or in the bottom left corner while a dialog is open, clear of the dialog's buttons and narrow enough to stay beside the dialog. The tour's dark overlay goes, so the page stays usable. As soon as the element appears, however long the user takes, the step moves to it. **Next** still goes on without it. A step never takes the focus from a field the user is typing in.
 
 This is what lets a tour lead someone through work of their own: the step about a new conversation's participants waits until the user has created the conversation. See [Steps that wait for the user](../admin/managing-steps.md#steps-that-wait-for-the-user).
 
@@ -59,7 +59,8 @@ With `input`, a step on a block around a field looks at the field inside it. Wit
 A step with a **page** (for example `/apps/spreed/` for Talk) belongs to that app. When the tour reaches it on another page, it opens that app and carries on there:
 
 - **Navigation** — before showing the step the tour stores its progress in `sessionStorage` (per browser tab, valid for 10 minutes) and loads the app. The new page picks the tour up at that step, in the same direction (Next or Back).
-- **Waiting for the target** — apps like Talk render after the page load, so the step waits up to 5 seconds for its element before it shows. If the element is still not there, the step waits aside for it (see [Steps That Wait for Their Element](#steps-that-wait-for-their-element)).
+- **Waiting for the target** — apps like Talk render after the page load, so the first step on a page waits up to 5 seconds for its element before it shows. Within a page a step waits 1 second after a click (for the menu or dialog it opens) and 0.4 seconds after **Next** or **Back**. If the element is still not there, the step waits aside for it (see [Steps That Wait for Their Element](#steps-that-wait-for-their-element)).
+- **Reloading** — a reload, or a form that reloads the page, keeps the tour at its step on that page (for 10 minutes, as above).
 - **Unreachable apps** — if the user ends up elsewhere (the app is not enabled for them and Nextcloud redirects), the step is skipped, never retried.
 - **Talk and Files routes** — an open Talk conversation (`/call/…`) counts as Talk, a file link (`/f/…`) as Files.
 - **Steps without a page** show wherever the tour is at that moment. Give a step a page to bring the tour back to, say, the dashboard.
@@ -84,7 +85,7 @@ The bootstrap asks `chooseTour()`; the first rule that applies decides:
 
 1. In the admin's element picker, or in someone else's same-origin frame: no tour
 2. A share link (**Copy link**) starts its tour on the page it opened
-3. A tour underway (a step that opened another page) carries on; a start by hand from the personal settings starts that tour
+3. A tour underway (a step that opened another page, or a reload of the page it was on) carries on; a start by hand from the personal settings starts that tour
 4. On IntroVox's own admin page: no tour (the admin tour runs there)
 5. **Tours for everyone** off (`wizard_enabled`), or **Start tours by themselves** off for this user (`tours_disabled`): no tour
 6. The welcome tour comes first, on whichever page the user opens: unless it is switched off, or the user finished or skipped it (`wizard_disabled`), it starts when this browser has not marked it completed, or marked it at another `wizard_version` (raised by **Show again to everyone**)

@@ -7,8 +7,8 @@
 import { onMounted, onUnmounted } from 'vue'
 import Shepherd from 'shepherd.js'
 import { translate as t } from '@nextcloud/l10n'
-import { getWizardSteps, loadCustomSteps, enrichSteps, closeOpenedMenu, findTarget, followDialogs, holdMenuOpen, holdUntilFilled, showPointer, waitForElement, whenTargetAppears, whenTargetGone } from './wizardSteps'
-import { waitForAppReady, waitForNextcloudReady } from './pageReady.js'
+import { FIELD, getWizardSteps, loadCustomSteps, enrichSteps, closeOpenedMenu, findTarget, followDialogs, holdMenuOpen, holdUntilFilled, showPointer, waitForElement, whenTargetAppears, whenTargetGone } from './wizardSteps'
+import { afterPopups, waitForAppReady, waitForNextcloudReady, whenPageClear } from './pageReady.js'
 import { markTourEnded as markEnded, resumeStore } from './tourResume.js'
 import { finishWelcome, isWelcomeDone, markWelcomeSeen, resetWelcome, skipWelcome, trackWelcomeStart } from './welcomeState.js'
 import axios from '@nextcloud/axios'
@@ -52,6 +52,30 @@ export default {
     // that leaves the page carries the tour over to the next step.
     let pendingStepId = null
     let clickAdvancedAt = 0
+    // The first step shown on a page may wait the full 5 s for its element:
+    // apps like Talk build their interface after the page load. Later steps
+    // on the same page wait 1 s after a click, which may need a server round
+    // trip, and 0.4 s after Next or Back; then they wait aside, the page
+    // usable, instead of showing nothing.
+    let firstShowOnPage = true
+    const elementWait = () => {
+      if (firstShowOnPage) {
+        return 5000
+      }
+      return Date.now() - clickAdvancedAt < 2000 ? 1000 : 400
+    }
+    // Set while a step's page is loading: the resume for it is written already
+    let leaving = false
+    // The field someone is typing in, until the focus moves elsewhere
+    let typedIn = null
+    const onTyped = (event) => {
+      typedIn = event.target
+    }
+    const onFocusMoved = (event) => {
+      if (event.target !== typedIn) {
+        typedIn = null
+      }
+    }
     // Whether this run counts for "how far do people get" in the
     // statistics: only a run that started by itself, never a preview or a
     // start by hand. Carried along when the tour changes page.
@@ -275,12 +299,13 @@ export default {
                 return Promise.resolve()
               }
               writeResume({ stepId: step.id, forward: movingForward, failed: [...failedSteps], startPage })
+              leaving = true
               window.location.href = target.href
               // Never settles: this page unloads and the next one takes over
               return new Promise(() => {})
             }
             return Promise.resolve(ownBeforeShow ? ownBeforeShow.call(this) : undefined)
-              .then(() => (waitFor ? waitForElement(waitFor) : undefined))
+              .then(() => (waitFor ? waitForElement(waitFor, elementWait()) : undefined))
           }
           pageOptions.showOn = () => !failedSteps.has(step.id) && (typeof ownShowOn !== 'function' || ownShowOn())
         }
@@ -317,20 +342,28 @@ export default {
           media?.hide()
         }
         stepWhen.show = function() {
+          firstShowOnPage = false
           const el = this.getElement && this.getElement()
           const target = this.getTarget && this.getTarget()
           if (target) {
             releaseMenu = holdMenuOpen(target, step.openFirst)
           }
-          // Shepherd focuses the step 300 ms after every reposition. In the
-          // admin's preview that pulled focus out of the admin page, closing
-          // the "Preview as" dropdown the moment it opened. There the step
-          // only takes focus when the frame has it already.
-          if (props.preview && el) {
+          // Shepherd focuses the step 300 ms after every reposition, also
+          // when the element grew a little because someone is typing in it:
+          // their next keys went elsewhere. The step keeps its focus for
+          // keyboard and screen reader users, also when an app put the focus
+          // in a field by itself, but not from a field outside the step that
+          // someone is typing in. In the admin's preview it pulled focus out
+          // of the admin page, closing the "Preview as" dropdown the moment
+          // it opened: there it only takes focus when the frame has it.
+          if (el) {
             el.focus = (options) => {
-              if (document.hasFocus()) {
-                HTMLElement.prototype.focus.call(el, options)
+              const active = document.activeElement
+              const typing = active && active === typedIn && !el.contains(active) && active.matches(FIELD)
+              if (typing || (props.preview && !document.hasFocus())) {
+                return
               }
+              HTMLElement.prototype.focus.call(el, options)
             }
           }
           // A step with an element that is not there yet waits for it
@@ -542,15 +575,27 @@ export default {
       }
     }
 
+    // Leaving the page any other way mid-tour: a reload, or the app reloading
+    // itself (Contacts does after an invitation is sent). The tour carries on
+    // at the step it was at, but only on the page it was on (resumesHere in
+    // chooseTour.mjs): it does not follow someone who went elsewhere.
     const onPageHide = () => {
-      if (tour && tour.isActive() && Date.now() - clickAdvancedAt < 5000) {
-        writeResume({
-          stepId: pendingStepId || tour.getCurrentStep()?.id,
-          forward: true,
-          failed: [...failedSteps],
-          startPage
-        })
+      if (!tour || !tour.isActive() || leaving) {
+        return
       }
+      const afterClick = Date.now() - clickAdvancedAt < 5000
+      // The admin browsing in the preview frame: the preview leaves them be
+      // (TourPreview.vue)
+      if (props.preview && !afterClick) {
+        return
+      }
+      writeResume({
+        stepId: (afterClick && pendingStepId) || tour.getCurrentStep()?.id,
+        forward: true,
+        failed: [...failedSteps],
+        startPage,
+        ...(afterClick ? {} : { stay: stepPageFor(window.location.pathname) })
+      })
     }
 
     // A tour that went to other apps ends on the configured homepage (the
@@ -608,6 +653,7 @@ export default {
       }
       markUnreachable(resume, tour.steps.map(step => step.options))
       await waitForNextcloudReady()
+      firstShowOnPage = true
       startAt(resume.stepId, resume.forward !== false)
     }
 
@@ -641,6 +687,7 @@ export default {
       if (resume) {
         markUnreachable(resume, stepsToUse)
       }
+      firstShowOnPage = true
       startAt(resume ? resume.stepId : null, resume ? resume.forward !== false : true)
       return stepsToUse.length
     }
@@ -674,19 +721,26 @@ export default {
         }
         counting = automatic && first
         if (first || props.start?.manual) {
+          // A dialog may have opened while the start was recorded
+          await whenPageClear()
+          firstShowOnPage = true
           tour.start()
         }
         return
       }
       counting = automatic
-      // Track wizard start
-      await trackWelcomeStart()
+      // Counting is best effort, and need not hold the tour up
+      trackWelcomeStart()
+      await whenPageClear()
+      firstShowOnPage = true
       tour.start()
     }
 
     onMounted(() => {
       window.addEventListener('pagehide', onPageHide)
       window.addEventListener('keydown', guardArrowNext, true)
+      document.addEventListener('input', onTyped, true)
+      document.addEventListener('focusin', onFocusMoved, true)
 
       if (props.preview) {
         window.introVoxPreview = {
@@ -715,9 +769,12 @@ export default {
         return
       }
 
+      // The steps load while the page settles (afterPopups): no fixed wait
       if (!props.start.check) {
-        waitForNextcloudReady().then(() => {
-          setTimeout(() => startTour(), 1000)
+        Promise.all([initTour(), afterPopups()]).then(([built]) => {
+          if (built !== false && tour) {
+            startTour()
+          }
         })
         return
       }
@@ -742,11 +799,7 @@ export default {
             return
           }
 
-          waitForNextcloudReady().then(async () => {
-            setTimeout(async () => {
-              await startTour()
-            }, 1000)
-          })
+          afterPopups().then(() => startTour())
         }
       })
     })
@@ -754,6 +807,8 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('pagehide', onPageHide)
       window.removeEventListener('keydown', guardArrowNext, true)
+      document.removeEventListener('input', onTyped, true)
+      document.removeEventListener('focusin', onFocusMoved, true)
       if (tour) {
         tour.complete()
       }

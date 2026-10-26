@@ -12,7 +12,7 @@ IntroVox is volledig toegankelijk via het toetsenbord.
 | `Tab` | Focus verplaatsen tussen de knoppen en links van de stap |
 | `Enter` of `Spatie` | Geselecteerde knop activeren |
 
-De toetsen werken zolang de stap de focus heeft, en die krijgt hij als hij verschijnt. Op een video of zijn pauzeknop bedienen de pijltjestoetsen en `Spatie` de video.
+De toetsen werken zolang de stap de focus heeft, en die krijgt hij als hij verschijnt. Hij pakt de focus niet af van een veld op de pagina waarin je typt. Op een video of zijn pauzeknop bedienen de pijltjestoetsen en `Spatie` de video.
 
 ## Toegankelijkheids-features
 

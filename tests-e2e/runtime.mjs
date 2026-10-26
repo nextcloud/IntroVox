@@ -98,9 +98,14 @@ await check('runtime: after the close button, a reload asks IntroVox nothing eit
 
 await check('runtime: a resume entry without tourId, from before tours had ids, carries on in Talk', async () => {
   const { context, page } = await freshTab()
-  await page.evaluate(() => {
-    localStorage.setItem('introvox_completed', 'true')
-    sessionStorage.setItem('introvox_tour_resume', JSON.stringify({ stepId: 'rt-talk', forward: true, failed: [], startPage: '/apps/files/', at: Date.now() }))
+  await page.evaluate(() => localStorage.setItem('introvox_completed', 'true'))
+  // Written on the Talk page itself, before IntroVox runs: the tour running
+  // on the landing page writes an entry of its own when that page is left
+  await context.addInitScript(() => {
+    if (location.pathname.includes('/apps/spreed/') && !sessionStorage.getItem('introvox-e2e-resume')) {
+      sessionStorage.setItem('introvox-e2e-resume', '1')
+      sessionStorage.setItem('introvox_tour_resume', JSON.stringify({ stepId: 'rt-talk', forward: true, failed: [], startPage: '/apps/files/', at: Date.now() }))
+    }
   })
   await page.goto(BASE + '/index.php/apps/spreed/')
   await step(page).waitFor({ timeout: 30000 })

@@ -66,7 +66,7 @@ const menu = await user.page.evaluate(() => [...document.querySelectorAll('#head
 ok('user menu: Tours, just above Help', menu.indexOf('Tours') >= 0 && menu.indexOf('Tours') === menu.findIndex(text => /Help/.test(text)) - 1, JSON.stringify(menu))
 await user.page.keyboard.press('Escape')
 await user.page.goto(BASE + '/index.php/settings/user/introvox-help')
-const row = user.page.locator('.introvox-personal__tour', { hasText: 'Talk' })
+const row = user.page.locator('.introvox-tour-list__tour', { hasText: 'Talk' })
 const rowText = await row.waitFor({ timeout: 20000 }).then(() => row.textContent(), () => 'none')
 ok('user: the personal list shows it as seen', /Seen/.test(rowText) && !/Not seen/.test(rowText), rowText.trim().replace(/\s+/g, ' '))
 

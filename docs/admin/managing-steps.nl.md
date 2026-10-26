@@ -86,7 +86,11 @@ Het element waar een stap naar wijst krijgt een rand in de kleur van het thema e
 
 Sommige elementen bestaan pas als de gebruiker iets gedaan heeft: de deelnemers van een gesprek dat hij aanmaakt, het delen van een bestand waarvan hij de details opent, een kaart op een bord. Dat kan een tour niet voor hem doen, maar hij kan wel de weg wijzen: één stap per klik, elk met **Doorgaan met: Klikken op het element**, en dan de stap over het element. In Talk bijvoorbeeld: "Klik op Nieuw gesprek" → "Geef het een naam" → "Klik op Gesprek aanmaken" → "Voeg hier mensen toe".
 
-Een stap waarvan het element er nog niet is, wacht erop: hij staat met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is, zoals een om een map te kiezen, weg van de knoppen van het venster), laat de pagina bruikbaar, en schuift naar het element zodra het verschijnt, hoe lang de gebruiker er ook over doet. **Volgende** gaat ook zonder het element verder. Zo'n tour bouw je met **Element kiezen** in de modus **Bladeren**: klik op de pagina wat nodig is, houd dan Shift ingedrukt en klik op het element. De kiezer meldt dan dat de stap erop wacht.
+Een stap waarvan het element er nog niet is, wacht erop: hij staat met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is, zoals een om een map te kiezen, weg van de knoppen van het venster), laat de pagina bruikbaar, en schuift naar het element zodra het verschijnt, hoe lang de gebruiker er ook over doet. **Volgende** gaat ook zonder het element verder. Op een kleiner scherm maakt een stap naast een venster zich smaller, zodat hij het venster niet bedekt. Op een telefoon telt een element in de navigatie van een app als afwezig zolang die navigatie dicht is: de stap wacht tot de gebruiker haar opent.
+
+Hoe lang een stap naar zijn element zoekt voordat hij opzij gaat wachten: de eerste stap op een pagina tot 5 seconden, omdat apps als Talk hun pagina pas na het laden opbouwen; een stap na een klik 1 seconde, voor het menu of venster dat de klik opent; een stap na **Volgende** of **Terug** 0,4 seconde.
+
+Zo'n tour bouw je met **Element kiezen** in de modus **Bladeren**: klik op de pagina wat nodig is, houd dan Shift ingedrukt en klik op het element. De kiezer meldt dan dat de stap erop wacht.
 
 ### CSS-selector-voorbeelden
 

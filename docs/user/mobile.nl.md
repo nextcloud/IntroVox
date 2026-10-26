@@ -14,6 +14,7 @@ IntroVox werkt op telefoons en tablets — de layout past zich aan aan kleine sc
 - **Volle-breedte-stappen** — stappen nemen het grootste deel van het scherm in voor leesbaarheid
 - **Gestapelde knoppen** — Terug/Volgende worden verticaal gestapeld op zeer smalle schermen
 - **Intern scrollen voor lange stappen** — de body van elke stap binnen de stap-container terwijl de header en sluit-knop vast blijven staan. Dit betekent dat je altijd de **✕**-knop en de navigatie-knoppen kunt bereiken, ook bij stappen met veel content.
+- **Stappen over de app-navigatie** — op een telefoon is de navigatie van een app dicht tot je haar opent. Een stap daarover wacht tot dan opzij, en schuift erheen zodra je de navigatie opent.
 
 ## Tips
 

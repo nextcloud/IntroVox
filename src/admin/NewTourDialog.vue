@@ -121,22 +121,20 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
-import {
-  NcButton,
-  NcDateTimePickerNative,
-  NcDialog,
-  NcInputField,
-  NcNoteCard,
-  NcRadioGroup,
-  NcRadioGroupButton,
-  NcSelect,
-  NcTextField
-} from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDateTimePickerNative from '@nextcloud/vue/components/NcDateTimePickerNative'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
+import NcInputField from '@nextcloud/vue/components/NcInputField'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
+import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import Apps from 'vue-material-design-icons/Apps.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
@@ -220,8 +218,22 @@ export default {
       return pageTriggerValue.value
     })
 
+    // Until the list of languages is there, the tour's own language stands:
+    // Save keeps it
+    const pickLanguage = () => {
+      const code = existing?.mainLanguage || 'en'
+      return props.languages.find(l => l.code === code) || props.languages[0] || { code, name: code === 'en' ? t('introvox', 'English') : code }
+    }
+    // The list can come after the dialog opened (AdminApp loads it alongside
+    // the tours); nothing could be picked before it
+    watch(() => props.languages, (list, before) => {
+      if (list.length && !before?.length) {
+        language.value = pickLanguage()
+      }
+    })
+
     onMounted(async () => {
-      language.value = props.languages.find(l => l.code === (existing?.mainLanguage || 'en')) || props.languages[0] || { code: 'en', name: t('introvox', 'English') }
+      language.value = pickLanguage()
       try {
         const { data } = await axios.get(generateUrl('/apps/introvox/admin/apps'))
         apps.value = data.apps || []

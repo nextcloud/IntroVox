@@ -130,7 +130,7 @@
     "Page:" : "頁面︰",
     "No steps defined yet." : "尚未定義任何步驟。",
     "Add first step" : "新增第一個步驟",
-    "%n person" : ["%n 位人仕"],
+    "_%n person_::_%n people_" : ["%n 位人仕"],
     "Users started" : "已開始的使用者人數",
     "Users completed" : "已完成的使用者人數",
     "Completion rate" : "完成率",

@@ -35,6 +35,7 @@ lib/
 │   ├── TourPrompts.php          ← What the language model is asked, and how strictly its answer is read
 │   ├── Checklist.php            ← The Dashboard checklist's tasks, an admin's choice of them, the default layout
 │   ├── ChecklistService.php     ← The checklist's settings, and which tasks each user has done
+│   ├── PageUrl.php              ← A page of this Nextcloud as a path, with or without pretty URLs
 │   ├── StepValidator.php        ← Checks steps (fields, types, sizes) on save and import
 │   ├── MediaService.php         ← Stores, checks and serves step media
 │   ├── TelemetryService.php     ← Aggregate usage tracking, sends to license server
@@ -56,6 +57,8 @@ lib/
 │   └── LicenseUsageJob.php      ← Usage report for a subscription key, daily with stable jitter
 ├── Dashboard/
 │   └── ChecklistWidget.php      ← "Getting started" on the Dashboard (API v2 widget)
+├── Embed/
+│   └── TourListEmbed.php        ← <introvox-tour-list> for other apps: loads its bundle
 ├── Listener/
 │   ├── LoadScripts.php          ← Loads the main.js bootstrap and the runtime state on every page
 │   └── UserMenuEntry.php        ← "Tours" in the user menu (LoadAdditionalEntriesEvent)
@@ -123,8 +126,14 @@ An optional subscription key. Nothing in IntroVox is limited by it, and the admi
 
 ### `PersonalController`
 
-- `getSettings` — `wizardDisabledByUser` (`wizard_disabled`), `toursDisabled` (`tours_disabled`), and `tours`: the tours for an app or page this user may get (`TourRepository::availableTo()`), each with its page, the app's name and icon from the user's own apps menu, and whether the user has seen it
+- `getSettings` — `toursEnabled` (**Tours for everyone**, `wizard_enabled`), `wizardDisabledByUser` (`wizard_disabled`), `toursDisabled` (`tours_disabled`), and `tours`: the tours for an app or page this user may get (`TourRepository::availableTo()`), each with its page, the app's name and icon from the user's own apps menu, and whether the user has seen it
 - `saveSettings` — writes `wizard_disabled` (`wizardDisabled`) and/or `tours_disabled` (`toursDisabled`, through `TourStateService::setToursDisabled()`, which also sets `wizard_disabled` when switching tours off)
+
+The personal page reads `getSettings`, and so does `<introvox-tour-list>` in other apps: `toursEnabled` and `tours` are what that element shows (see [`TourListEmbed`](#tourlistembed)).
+
+### `LinkController`
+
+`open($id)` is a tour's share link (`GET /tour/{id}`). It redirects to the tour's page (`/apps/files/` for the welcome tour and a tour that starts anywhere) with `?introvox-tour=<id>`, or to the default page when `TourRepository::forUser()` finds that this user may not get the tour. The address is built with `PageUrl::path()`: `IURLGenerator::linkTo('', 'index.php')` is `/index.php`, or just `/` with pretty URLs, and a page put behind that as it is became `//apps/…`, which a browser reads as another host. `PageUrl` keeps one slash in between. It is plain PHP, tested directly (`tests-php/PageUrlTest.php`) with and without pretty URLs and with Nextcloud in a subfolder; `ChecklistService` builds the checklist's links with it too.
 
 ## Services
 
@@ -276,6 +285,12 @@ Listens for `BeforeTemplateRenderedEvent` on every page where a user is logged i
 `tours` holds only the tours that would start by themselves for this user (`TourStateService::due()`), with their page and version, and `anywhere: true` for a tour that starts on any page; no steps, names or groups. `link` is a share link's tour id when the page was asked for with `?introvox-tour=<id>` (else `null`), because an app that sends its start page on at once drops the parameter from the address before the bootstrap runs. The state is lazy, so it is only worked out when the page is rendered. If working it out fails, it is left out and the bootstrap asks the server instead, as before this state existed.
 
 The bootstrap decides from this whether a tour runs on the page, and only then loads the tour code; see [Frontend Architecture](frontend-architecture.md#tour-runtime).
+
+## For Other Apps
+
+### `TourListEmbed`
+
+Lets another app show the tours a user can start, as `<introvox-tour-list>`. `load()` queues the `introvox-embed` bundle (`Util::addScript()`) and is safe to call twice; `isAvailable($userId)` tells whether IntroVox is enabled for that user (`IAppManager::isEnabledForUser()`), which `class_exists()` does not. The element itself reads `GET /personal/settings`. The class, its two methods and the tag name are a fixed interface for other apps; see [Embedding the tour list](frontend-architecture.md#embedding-the-tour-list).
 
 ## Settings Integration
 

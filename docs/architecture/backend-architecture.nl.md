@@ -22,10 +22,10 @@ De IntroVox-backend is een standaard Nextcloud-PHP-app met:
 | `ToursController` | De tours zelf (alleen admin): lijst, aanmaken, wijzigen, aan/uit, verwijderen, opnieuw tonen, statistieken per tour, een hele tour exporteren en importeren, en de apps voor **Where does it start?** |
 | `AssistantController` | Een tour vertalen en stappen laten schrijven met de Nextcloud Assistant (alleen admin): taken inplannen en het resultaat ophalen, alleen van de eigen taken |
 | `ApiController` | Endpoints voor gebruikers: `getWizardSteps` (met `?tour=<id>` voor een tour voor een app), `tourEvent`, `tourReached` (hoe ver een run kwam), `checklistOpened` (een eigen taak van de checklist geopend), tracking-events van de welkomsttour |
-| `LinkController` | De deellink van een tour (`GET /tour/{id}`): stuurt alleen door naar de pagina van de tour |
+| `LinkController` | De deellink van een tour (`GET /tour/{id}`): stuurt alleen door naar de pagina van de tour; het adres komt uit `PageUrl::path()`, zodat het ook met pretty URLs klopt |
 | `MediaController` / `MediaUploadController` | Media in stappen tonen, en (admin) toevoegen |
 | `LicenseController` | Een optionele abonnementssleutel: validatie en gebruiksrapport. Niets in IntroVox wordt erdoor beperkt, en de beheerpagina roept deze routes niet aan |
-| `PersonalController` | Per-gebruiker-voorkeuren `wizard_disabled` en `tours_disabled`, en de tours voor apps die de gebruiker kan krijgen |
+| `PersonalController` | Per-gebruiker-voorkeuren `wizard_disabled` en `tours_disabled`, de tours voor apps die de gebruiker kan krijgen, en of tours voor iedereen aan staan (`toursEnabled`); `<introvox-tour-list>` in andere apps leest hetzelfde antwoord |
 
 Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (onbekende tour, tour uit, gebruiker niet in de groepen of zonder toegang tot de app) krijgt dezelfde 404, zodat niets verraadt welke tours er zijn. `tourEvent` heeft een limiet van 30 verzoeken per uur per gebruiker.
 
@@ -73,6 +73,10 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 ### Event-listeners
 
 - `LoadScripts` — laadt op elke pagina de kleine bootstrap `js/main.js` en levert de lazy initial state `introvox/runtime`: of tours aan staan, de eigen schakelaar van de gebruiker, de staat van de welkomsttour, de tours voor apps die voor deze gebruiker vanzelf zouden starten (alleen id, pagina en versie), en `link`: het tour-id van een deellink als de pagina met `?introvox-tour=<id>` werd opgevraagd. De bootstrap beslist daarmee of er een tour draait, en laadt pas dan de tour-code.
+
+### Voor andere apps
+
+- `TourListEmbed` — laat een andere app de tours tonen die een gebruiker kan starten, als `<introvox-tour-list>`: `load()` zet de bundle `introvox-embed` klaar, `isAvailable($userId)` zegt of IntroVox voor die gebruiker aan staat. Zie [De tourlijst insluiten](frontend-architecture.nl.md#de-tourlijst-insluiten).
 
 ## Opslag-conventies
 

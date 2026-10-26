@@ -35,7 +35,7 @@ After completing (or skipping) the tour, here are some tips to keep exploring.
 ## Quick Reference Card
 
 ### Starting the Tour
-- **Automatic** — wait a few seconds on first login
+- **Automatic** — starts by itself on first login, right after the page has loaded
 - **Manual** — **Personal Settings → IntroVox → Restart tour now**
 - **Tour for an app** — starts the first time you open that app; start it again under **Personal Settings → IntroVox → Tours**
 

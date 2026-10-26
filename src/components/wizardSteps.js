@@ -98,7 +98,9 @@ function firstUsable(selector, usable) {
 export function findTarget(selector) {
   // An element without a box (display: none, or a menu entry hidden on a
   // narrow screen) has nothing to point at: the step waits aside instead.
-  return firstUsable(selector, el => !isForeignLink(el) && el.getClientRects().length > 0)
+  // Nor has one in an inert part of the page, such as the navigation a phone
+  // keeps closed: it still has a box, but nobody can click it.
+  return firstUsable(selector, el => !isForeignLink(el) && !el.closest('[inert]') && el.getClientRects().length > 0)
 }
 
 function safeQuery(selector) {
@@ -153,7 +155,8 @@ function openMenuAndWait(triggerSel, itemSel, timeout = 1500) {
  * Resolve once an element matching the selector exists, or after the
  * timeout (the step then waits aside for it). Apps like Talk render their
  * interface after the page load, so right after navigating to one the
- * target is often not there yet.
+ * target is often not there yet: the first step on a page gets the full
+ * 5 s. Within a page the tour waits much shorter (WizardManager, elementWait).
  *
  * @param {string} selector CSS selector
  * @param {number} timeout Max wait in ms
@@ -211,7 +214,7 @@ export function showPointer(target, stepElement) {
 }
 
 // What counts as a field to fill in
-const FIELD = 'input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="hidden"]), textarea, [contenteditable=""], [contenteditable="true"]'
+export const FIELD = 'input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="hidden"]), textarea, [contenteditable=""], [contenteditable="true"]'
 
 /**
  * Keep a step's forward button off until the field it points at has text,
@@ -254,6 +257,17 @@ export function dialogOpen() {
 }
 
 /**
+ * @return {number|null} Where the leftmost open dialog starts, in px from
+ *   the left of the window; null with no dialog open
+ */
+function dialogLeft() {
+  const lefts = safeQueryAll(DIALOG)
+    .filter(dialog => dialog.getClientRects().length > 0)
+    .map(dialog => (dialog.querySelector('.modal-container') || dialog).getBoundingClientRect().left)
+  return lefts.length ? Math.min(...lefts) : null
+}
+
+/**
  * Keep a class on the body while a dialog is open, so a step waiting aside
  * moves out of the way of the dialog's buttons, which Nextcloud puts on the
  * right (css/wizard.css).
@@ -262,12 +276,23 @@ export function dialogOpen() {
  * @return {Function} Stops looking, and takes the class off
  */
 export function followDialogs(interval = 300) {
-  const update = () => document.body.classList.toggle('introvox-dialog-open', dialogOpen())
+  // On a smaller screen the space left of a dialog is narrower than a step:
+  // the step takes that space (at least 280 px), clear of the dialog
+  const update = () => {
+    const left = dialogLeft()
+    document.body.classList.toggle('introvox-dialog-open', left !== null)
+    if (left === null) {
+      document.body.style.removeProperty('--introvox-aside-width')
+    } else {
+      document.body.style.setProperty('--introvox-aside-width', `${Math.max(280, Math.floor(left) - 48)}px`)
+    }
+  }
   update()
   const timer = setInterval(update, interval)
   return () => {
     clearInterval(timer)
     document.body.classList.remove('introvox-dialog-open')
+    document.body.style.removeProperty('--introvox-aside-width')
   }
 }
 
@@ -282,7 +307,7 @@ export function followDialogs(interval = 300) {
  * @param {number} interval How often to look, in ms
  * @return {Function} Stops looking
  */
-export function whenTargetAppears(resolveTarget, found, interval = 300) {
+export function whenTargetAppears(resolveTarget, found, interval = 100) {
   const timer = setInterval(() => {
     if (resolveTarget()) {
       clearInterval(timer)

@@ -169,7 +169,7 @@ await check('tours: with "Start tours by themselves" off nothing starts; Start i
   await p.goto(BASE + '/index.php/apps/spreed/')
   const none = await noTourWithin(p, 10000)
   await p.goto(BASE + '/index.php/settings/user/introvox-help')
-  const row = p.locator('.introvox-personal__tour', { hasText: 'Talk' })
+  const row = p.locator('.introvox-tour-list__tour', { hasText: 'Talk' })
   await row.waitFor({ timeout: 20000 })
   await row.getByRole('button', { name: /^Start/ }).click()
   await p.waitForURL(/apps\/spreed/, { timeout: 30000 })

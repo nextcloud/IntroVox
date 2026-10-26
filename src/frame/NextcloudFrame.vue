@@ -50,7 +50,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { generateUrl } from '@nextcloud/router'
 import { translate as t } from '@nextcloud/l10n'
 import { showWarning } from '@nextcloud/dialogs'
-import { NcButton, NcNoteCard } from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 
 import Close from 'vue-material-design-icons/Close.vue'
 

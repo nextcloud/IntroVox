@@ -8,7 +8,7 @@ Common issues users experience with IntroVox and how to resolve them. For admin-
 
 **Try:**
 
-1. Wait 2–3 seconds — the tour starts automatically after a short delay
+1. Close Nextcloud's own welcome screen, or any other dialog that is open: the tour waits until it is closed, and starts right after
 2. Refresh the page (`Ctrl+R` / `Cmd+R`)
 3. Open another page, such as Files: the welcome tour starts on the first page you open after logging in, whichever app that is
 4. Check that **Start tours by themselves** is on in **Personal Settings → IntroVox**
@@ -39,6 +39,8 @@ The tour automatically shows only the steps relevant to your setup and role.
 **Problem:** A step stands in the bottom right corner (bottom left while a dialog is open) instead of pointing at something.
 
 The step is waiting for the part of the page it is about. Often that only appears once you have done something, such as creating a conversation or opening a file's details. The page stays usable: do what the step says, and the step moves to it as soon as it appears. **Next** goes on without it.
+
+On a phone, a step about the app's navigation waits while the navigation is closed. Open the navigation, and the step moves to it.
 
 ## No Next Button, or Next Stays Off
 
@@ -80,8 +82,9 @@ If the element is not on the page, **Next** works as usual, so you never get stu
 **Try:**
 
 1. Press **Escape** on your keyboard
-2. Refresh the page (`Ctrl+R` / `Cmd+R`)
-3. On the first step, click **Skip and don't show again**
+2. On the first step, click **Skip and don't show again**
+
+Reloading the page doesn't close the tour: it carries on at the same step.
 
 ## Tour Appears Every Time I Log In
 

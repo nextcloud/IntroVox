@@ -116,15 +116,13 @@ import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
 import { showSuccess } from '@nextcloud/dialogs'
-import {
-  NcButton,
-  NcDialog,
-  NcLoadingIcon,
-  NcNoteCard,
-  NcSelect,
-  NcTextArea,
-  NcTextField
-} from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcTextArea from '@nextcloud/vue/components/NcTextArea'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
 import Check from 'vue-material-design-icons/Check.vue'

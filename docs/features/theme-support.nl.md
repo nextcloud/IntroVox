@@ -31,7 +31,7 @@ Omdat deze variabelen scoped zijn aan het document en geüpdatet worden door het
 
 Als de "reduce motion"-toegankelijkheidsvoorkeur van het systeem van de gebruiker is ingeschakeld, staat de tour stil:
 
-- Stappen verschijnen zonder in te faden
+- Stappen verschijnen zonder in te faden (voor alle anderen faden ze in binnen 0,15 seconde)
 - Het pijltje en de rand rond het element van een stap staan stil
 - GIF's en video's spelen niet vanzelf; ze starten met hun afspeelknop
 - De tour springt naar een stap in plaats van soepel te scrollen, en de stappenlijst op de beheerpagina ook

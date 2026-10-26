@@ -8,7 +8,7 @@ Veelvoorkomende problemen die gebruikers met IntroVox ervaren en hoe je ze oplos
 
 **Probeer:**
 
-1. Wacht 2–3 seconden — de tour start automatisch na een korte vertraging
+1. Sluit het eigen welkomstscherm van Nextcloud, of een ander venster dat open is: de tour wacht tot het dicht is, en start meteen daarna
 2. Ververs de pagina (`Ctrl+R` / `Cmd+R`)
 3. Open een andere pagina, zoals Bestanden: de welkomsttour start op de eerste pagina die je na het inloggen opent, welke app dat ook is
 4. Controleer of **Start tours by themselves** aan staat in **Persoonlijke instellingen → IntroVox**
@@ -39,6 +39,8 @@ De tour toont automatisch alleen de stappen die relevant zijn voor jouw setup en
 **Probleem:** een stap staat rechtsonder (linksonder zolang er een venster open is) in plaats van ergens naar te wijzen.
 
 De stap wacht op het deel van de pagina waar hij over gaat. Vaak verschijnt dat pas als je iets gedaan hebt, zoals een gesprek aanmaken of de details van een bestand openen. De pagina blijft bruikbaar: doe wat de stap zegt, en de stap schuift erheen zodra het verschijnt. **Volgende** gaat ook zonder het element verder.
+
+Op een telefoon wacht een stap over de navigatie van de app zolang die navigatie dicht is. Open de navigatie, en de stap schuift erheen.
 
 ## Geen knop Volgende, of Volgende werkt niet
 
@@ -80,8 +82,9 @@ Staat het element niet op de pagina, dan werkt **Volgende** gewoon, zodat je noo
 **Probeer:**
 
 1. Druk op **Escape** op je toetsenbord
-2. Ververs de pagina (`Ctrl+R` / `Cmd+R`)
-3. Klik in de eerste stap op **Overslaan en niet meer tonen**
+2. Klik in de eerste stap op **Overslaan en niet meer tonen**
+
+De pagina verversen sluit de tour niet: hij gaat verder bij dezelfde stap.
 
 ## Tour verschijnt elke keer dat ik inlog
 

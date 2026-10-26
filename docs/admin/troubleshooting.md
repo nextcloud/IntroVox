@@ -14,6 +14,7 @@ Common issues and resolutions for IntroVox administrators. For user-facing issue
 | User finished or skipped the welcome tour, or closed it in this browser | Use **Show again to everyone** in the welcome tour's ⋯ menu under **Tours** to give it to everyone again |
 | User switched off **Start tours by themselves** | Only the user can switch it back on, in **Personal Settings → IntroVox**; **Show again to everyone** does not change it. They can still start tours by hand there |
 | JavaScript errors | Check the browser console (F12); verify IntroVox version is compatible with your Nextcloud version |
+| A dialog is open, such as Nextcloud's own first-run wizard | Expected: the tour waits until the first-run wizard is closed, and until no other dialog is open (at most 15 seconds), then starts |
 | App-menu readiness timeout | Pre-v1.4.2 versions could hang on some NC versions; upgrade to v1.4.2+ which adds fallback selectors and a 10s timeout |
 
 ## Tour for an App Not Starting
@@ -41,6 +42,7 @@ See [Tours](tours.md) for when a tour starts.
 | Step disabled in admin panel | Switch the step on with its switch in the step list |
 | Element isn't on the page | The step waits aside in the bottom right corner (bottom left while a dialog is open) with its text, and moves to the element once it appears; **Next** still goes on. Check the selector with **Test this step**, pick it again with **Pick element**, or use **Remove element** for a centered step |
 | Element only appears after the user does something | Expected: the step waits until it is there. Lead the way with one step per click, see [Steps that wait for the user](managing-steps.md#steps-that-wait-for-the-user) |
+| On a phone: the element is in the app's navigation, which is closed | Expected: the step waits aside until the user opens the navigation |
 | The step's **Page** is an app the user can't open | The step is left out for that user. Limit it with **Visible to groups** to people who have the app |
 | Selector broke after a Nextcloud upgrade | Inspect the new DOM and update the selector. Use multiple comma-separated fallbacks; the tour tries them in the order written |
 | Pre-v1.4.1 timing issue | Steps could be skipped if Vue hadn't rendered yet; now a step waits for its element instead |
@@ -129,6 +131,12 @@ See [Tours](tours.md) for when a tour starts.
 | The person is not in the tour's groups, or cannot open its app | Expected: the link only starts the tour for people who may get it |
 
 See [Share a tour with a link](tours.md#share-a-tour-with-a-link).
+
+## Share Link Opens Nothing (2.0.0, Pretty URLs)
+
+**Symptom:** On a Nextcloud with pretty URLs (no `index.php` in its addresses), a link from **Copy link** opens nothing: the browser goes to an address that starts with `//apps/`, which it reads as another website. The links in the **Getting started** checklist on the Dashboard got the same double slash.
+
+**Fix:** Update IntroVox to the release after 2.0.0; links copied before then work again without copying them anew.
 
 ## Image or Video Refused
 

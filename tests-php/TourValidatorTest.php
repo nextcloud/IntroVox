@@ -40,6 +40,12 @@ test('tour id: an ASCII slug from the name, unique, never welcome', function ():
     assertSame('tour', TourValidator::slug('👋', []));
     $long = TourValidator::slug(str_repeat('Calendar and contacts ', 5), []);
     assertTrue(preg_match(TourValidator::ID_PATTERN, $long) === 1, 'not a valid id: ' . $long);
+    // A long name: whole words, never a word cut in two (the share link)
+    assertSame('sharing-with-other-organizations', TourValidator::slug('Sharing with other organizations', []));
+    assertSame('sharing-with-other-2', TourValidator::slug('Sharing with other organizations', ['sharing-with-other-organizations']));
+    assertSame('calendar-and-contacts-calendar', $long);
+    assertSame(str_repeat('a', 32), TourValidator::slug(str_repeat('a', 40), []));
+    assertSame(str_repeat('a', 30) . '-2', TourValidator::slug(str_repeat('a', 40), [str_repeat('a', 32)]));
     assertTrue(!str_contains(TourValidator::slug('my_tour', []), '_'), 'underscore in an id');
 });
 

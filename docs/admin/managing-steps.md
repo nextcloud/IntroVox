@@ -84,7 +84,11 @@ The element a step points at gets an outline in the theme's colour and a blinkin
 
 Some elements only exist once the user has done something: the participants of a conversation they create, the sharing of a file whose details they open, a card in a board. A tour can't do that for them, but it can lead the way: one step per click, each with **Continue with: Click on the element**, and then the step about the element. Talk, for example: "Click New conversation" → "Give it a name" → "Click Create conversation" → "Add people here".
 
-A step whose element is not there yet waits for it: it stands aside in the bottom right corner with its text (bottom left while a dialog is open, such as one to pick a folder, clear of the dialog's buttons), leaves the page usable, and moves to the element as soon as it appears, however long the user takes. **Next** still goes on without it. Build such a tour with **Pick element** in **Browse** mode: do the clicks on the page, then hold Shift and click the element. The picker then says the step will wait for it.
+A step whose element is not there yet waits for it: it stands aside in the bottom right corner with its text (bottom left while a dialog is open, such as one to pick a folder, clear of the dialog's buttons), leaves the page usable, and moves to the element as soon as it appears, however long the user takes. **Next** still goes on without it. On a smaller screen, a step beside a dialog makes itself narrower so it does not cover the dialog. On a phone, an element in an app's navigation counts as not there while the navigation is closed: the step waits until the user opens it.
+
+How long a step looks for its element before it waits aside: the first step on a page up to 5 seconds, because apps such as Talk build their page after it has loaded; a step after a click 1 second, for the menu or dialog the click opens; a step after **Next** or **Back** 0.4 seconds.
+
+Build such a tour with **Pick element** in **Browse** mode: do the clicks on the page, then hold Shift and click the element. The picker then says the step will wait for it.
 
 ### CSS Selector Examples
 

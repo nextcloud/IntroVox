@@ -7,7 +7,7 @@ De tour-engine van IntroVox is gebouwd op [Shepherd.js](https://shepherdjs.dev/)
 1. **Bootstrap** — elke Nextcloud-pagina laadt `main.js`, een kleine bootstrap (ongeveer 20 KB). Die leest de initial state `introvox/runtime` die de listener `LoadScripts` aan de pagina meegeeft, plus de opslag van de browser, en beslist met `src/runtime/chooseTour.mjs` of er op deze pagina een tour start, en welke (zie [Welke tour start](#welke-tour-start)). Daar is geen request voor nodig. Op een pagina zonder tour laadt er verder niets
 2. **Tour-code** — pas als er een tour start, laadt de bootstrap het tour-chunk (`src/runtime/tour.js`: WizardManager, Shepherd.js, Vue en `css/wizard.css`)
 3. **Stappen** — WizardManager haalt de stappen op voor de taal en de groepen van de gebruiker: `GET /apps/introvox/api/steps` voor de welkomsttour, `GET /apps/introvox/api/steps?tour=<id>` voor een andere tour
-4. **Readiness-check** — wacht op de header en het app-menu van Nextcloud: de apps-"wafel" op Nextcloud 34+, de inline app-balk op oudere versies (10-seconden-timeout), en dan nog één seconde. Een tour voor een app wacht ook op de app zelf: het element van de eerste stap of de inhoud van de app, geen dialoog van de app open, en het tabblad in beeld (15-seconden-timeout)
+4. **Readiness-check** — wacht op de header en het app-menu van Nextcloud: de apps-"wafel" op Nextcloud 34+, de inline app-balk op oudere versies (10-seconden-timeout), en dan nog 0,3 seconde. Intussen laden de stappen. Gaat de eerste-start-wizard van Nextcloud open, dan wacht de tour tot die dicht is. Een tour voor een app wacht ook op de app zelf: het element van de eerste stap of de inhoud van de app, geen dialoog van de app open, en het tabblad in beeld (15-seconden-timeout). Daarna wacht elke tour tot er geen dialoog open is en het tabblad in beeld is (hoogstens 15 seconden)
 5. **Start** — maakt een Shepherd-`Tour` met de stappen en toont de eerste. Een tour voor een app meldt eerst aan de server dat hij start; de server antwoordt of dit de eerste start bij deze versie is, en alleen dan verschijnt hij (of als hij met de hand gestart is), zodat twee open tabbladen hem nooit allebei draaien
 6. **Gebruikers-navigatie** — de knoppen Volgende/Terug/Sluiten/Klaar, de pijltjestoetsen, of de eigen manier van de stap om verder te gaan (zie [Hoe een stap verdergaat](#hoe-een-stap-verdergaat)). In een run die vanzelf startte, wordt elke stap die verder is dan de run eerder kwam gemeld voor **Hoe ver mensen komen**
 7. **Voltooiing** — de welkomsttour zet localStorage en (bij Klaar/Overslaan) de markering dat hij klaar is (`wizard_disabled`); een andere tour meldt `complete` of `skip`. Een tour die naar andere apps ging, keert daarna terug naar de ingestelde startpagina (zie [Tours over meerdere apps](#tours-over-meerdere-apps))
@@ -28,7 +28,7 @@ De tour-engine van IntroVox is gebouwd op [Shepherd.js](https://shepherdjs.dev/)
 
 ### Stappen die op hun element wachten
 
-Staat het element van een gekoppelde stap niet op de pagina als de stap verschijnt, dan wacht de stap erop. Hij staat opzij in de hoek rechtsonder met zijn tekst, of linksonder zolang er een dialoog open is, uit de buurt van de knoppen van die dialoog. De donkere laag van de tour verdwijnt, zodat de pagina bruikbaar blijft. Zodra het element verschijnt, hoe lang de gebruiker er ook over doet, gaat de stap ernaartoe. **Volgende** gaat ook zonder het element verder.
+Staat het element van een gekoppelde stap niet op de pagina als de stap verschijnt, dan wacht de stap erop. Hij staat opzij in de hoek rechtsonder met zijn tekst, of linksonder zolang er een dialoog open is, uit de buurt van de knoppen van die dialoog en smal genoeg om naast de dialoog te blijven. De donkere laag van de tour verdwijnt, zodat de pagina bruikbaar blijft. Zodra het element verschijnt, hoe lang de gebruiker er ook over doet, gaat de stap ernaartoe. **Volgende** gaat ook zonder het element verder. Een stap pakt nooit de focus van een veld waarin de gebruiker typt.
 
 Zo kan een tour iemand door zijn eigen werk leiden: de stap over de deelnemers van een nieuw gesprek wacht tot de gebruiker het gesprek heeft gemaakt. Zie [Stappen die op de gebruiker wachten](../admin/managing-steps.nl.md#stappen-die-op-de-gebruiker-wachten).
 
@@ -59,7 +59,8 @@ Bij `input` kijkt een stap op een blok rond een veld naar het veld daarin. Zonde
 Een stap met een **pagina** (bijvoorbeeld `/apps/spreed/` voor Talk) hoort bij die app. Komt de tour er op een andere pagina aan, dan opent hij die app en gaat daar verder:
 
 - **Navigatie** — vóór de stap bewaart de tour zijn voortgang in `sessionStorage` (per browsertabblad, 10 minuten geldig) en laadt de app. De nieuwe pagina pakt de tour op bij die stap, in dezelfde richting (Volgende of Terug).
-- **Wachten op het doel** — apps als Talk renderen na het laden van de pagina, dus de stap wacht tot 5 seconden op zijn element voordat hij verschijnt. Is het element er dan nog niet, dan wacht de stap er opzij op (zie [Stappen die op hun element wachten](#stappen-die-op-hun-element-wachten)).
+- **Wachten op het doel** — apps als Talk renderen na het laden van de pagina, dus de eerste stap op een pagina wacht tot 5 seconden op zijn element voordat hij verschijnt. Binnen een pagina wacht een stap 1 seconde na een klik (op het menu of de dialoog die opengaat) en 0,4 seconde na **Volgende** of **Terug**. Is het element er dan nog niet, dan wacht de stap er opzij op (zie [Stappen die op hun element wachten](#stappen-die-op-hun-element-wachten)).
+- **Herladen** — herladen, of een formulier dat de pagina herlaadt, houdt de tour bij zijn stap op die pagina (10 minuten, zoals hierboven).
 - **Onbereikbare apps** — komt de gebruiker ergens anders uit (de app staat niet voor hem aan en Nextcloud stuurt door), dan wordt de stap overgeslagen, nooit opnieuw geprobeerd.
 - **Routes van Talk en Files** — een geopend Talk-gesprek (`/call/…`) telt als Talk, een bestandslink (`/f/…`) als Files.
 - **Stappen zonder pagina** verschijnen waar de tour op dat moment is. Geef een stap een pagina om de tour terug te brengen naar bijvoorbeeld het dashboard.
@@ -84,7 +85,7 @@ De bootstrap vraagt het aan `chooseTour()`; de eerste regel die geldt, beslist:
 
 1. In de element-kiezer van de beheerder, of in een same-origin-frame van iemand anders: geen tour
 2. Een deellink (**Link kopiëren**) start zijn tour op de pagina die hij opende
-3. Een tour die bezig is (een stap opende een andere pagina) gaat verder; een start met de hand vanuit de persoonlijke instellingen start die tour
+3. Een tour die bezig is (een stap opende een andere pagina, of de pagina waar hij was werd herladen) gaat verder; een start met de hand vanuit de persoonlijke instellingen start die tour
 4. Op de beheerpagina van IntroVox zelf: geen tour (daar loopt de beheerderstour)
 5. **Tours for everyone** uit (`wizard_enabled`), of **Start tours by themselves** uit voor deze gebruiker (`tours_disabled`): geen tour
 6. De welkomsttour gaat voor, op welke pagina de gebruiker ook opent: tenzij hij uit staat, of de gebruiker hem afmaakte of oversloeg (`wizard_disabled`), start hij als deze browser hem niet als voltooid heeft gemarkeerd, of gemarkeerd bij een andere `wizard_version` (die **Show again to everyone** ophoogt)

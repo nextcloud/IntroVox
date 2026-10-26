@@ -37,7 +37,7 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 | **Admin-instellingen** | `saveSettings` (`enabled` = **Tours for everyone**, `userMenu`, `checklist`; alleen wat meekomt verandert; de welkomsttour opnieuw tonen gaat via `POST /admin/tours/welcome/reshow`), `toggleTelemetry`, `sendTelemetryNow`, `markTelemetryAsked`, `markIntroDone` |
 | **Talen** | `getAvailableLanguagesWithMetadata` (alle talen van Nextcloud), `listOverrides` (per tour) |
 | **Media** | `POST /admin/media`, `POST /admin/media/from-files`, `GET /media/{file}` |
-| **Persoonlijk** | `GET`/`POST /personal/settings` (`wizardDisabled`, `toursDisabled`, lijst met tours) |
+| **Persoonlijk** | `GET`/`POST /personal/settings` (`wizardDisabled`, `toursDisabled`, lijst met tours); `GET` geeft ook `toursEnabled` (**Tours for everyone**). `<introvox-tour-list>` in andere apps leest hetzelfde antwoord |
 | **Licentie** | Een optionele abonnementssleutel valideren en het gebruik rapporteren; niets in IntroVox wordt erdoor beperkt, en de beheerpagina roept deze routes niet aan |
 
 ## Voor de complete referentie

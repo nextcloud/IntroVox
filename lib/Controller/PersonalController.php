@@ -35,7 +35,9 @@ class PersonalController extends Controller {
     /**
      * Get personal wizard settings: the welcome tour, the switch for tours
      * that start by themselves, and the app tours this user may get, to start
-     * by hand
+     * by hand. The personal page reads it, and so does <introvox-tour-list>
+     * in other apps (lib/Embed/TourListEmbed.php): toursEnabled and tours are
+     * what that element shows.
      */
     #[NoAdminRequired]
     public function getSettings(): JSONResponse {
@@ -75,6 +77,8 @@ class PersonalController extends Controller {
 
         return new JSONResponse([
             'success' => true,
+            // Tours for everyone, as the admin set it: without, nothing starts
+            'toursEnabled' => $this->tours->toursEnabled(),
             'wizardDisabledByUser' => $wizardDisabledByUser,
             'toursDisabled' => $this->tourState->toursDisabled($userId),
             'tours' => $tours,

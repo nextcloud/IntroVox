@@ -345,15 +345,13 @@ import { translate as t } from '@nextcloud/l10n'
 import { TEXT } from '../utils/l10n.mjs'
 import { showConfirmation, showError } from '@nextcloud/dialogs'
 import Sortable from 'sortablejs'
-import {
-  NcButton,
-  NcCheckboxRadioSwitch,
-  NcDialog,
-  NcEmptyContent,
-  NcLoadingIcon,
-  NcSelect,
-  NcSettingsSection
-} from '@nextcloud/vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcDialog from '@nextcloud/vue/components/NcDialog'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcSettingsSection from '@nextcloud/vue/components/NcSettingsSection'
 
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
 import ArrowLeft from 'vue-material-design-icons/ArrowLeft.vue'

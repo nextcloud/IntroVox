@@ -14,6 +14,7 @@ Veelvoorkomende problemen en oplossingen voor IntroVox-beheerders. Voor gebruike
 | Gebruiker heeft de welkomsttour afgemaakt of overgeslagen, of in deze browser gesloten | Gebruik **Show again to everyone** in het ⋯-menu van de welkomsttour onder **Tours** om hem iedereen opnieuw te geven |
 | Gebruiker heeft **Start tours by themselves** uitgezet | Alleen de gebruiker kan die weer aanzetten, in **Persoonlijke instellingen → IntroVox**; **Show again to everyone** verandert er niets aan. Zelf tours starten kan daar nog wel |
 | JavaScript-errors | Check de browser-console (F12); verifieer dat IntroVox-versie compatibel is met je Nextcloud-versie |
+| Er staat een venster open, zoals de eerste-start-wizard van Nextcloud zelf | Zo hoort het: de tour wacht tot de eerste-start-wizard dicht is, en tot er geen ander venster open is (hoogstens 15 seconden), en start dan |
 | App-menu-readiness-timeout | Versies vóór v1.4.2 konden vastlopen op sommige NC-versies; upgrade naar v1.4.2+ die fallback-selectors en een 10s-timeout toevoegt |
 
 ## Tour voor een app start niet
@@ -41,6 +42,7 @@ Zie [Tours](tours.nl.md) voor wanneer een tour start.
 | Stap uitgeschakeld in admin-paneel | Zet de stap aan met zijn schakelaar in de stappenlijst |
 | Element staat niet op de pagina | De stap wacht met zijn tekst rechtsonder opzij (linksonder zolang er een venster open is), en schuift naar het element zodra het verschijnt; **Volgende** gaat gewoon verder. Controleer de selector met **Test this step**, kies hem opnieuw met **Element kiezen**, of gebruik **Remove element** voor een gecentreerde stap |
 | Element verschijnt pas als de gebruiker iets doet | Zo hoort het: de stap wacht tot het er is. Wijs de weg met één stap per klik, zie [Stappen die op de gebruiker wachten](managing-steps.nl.md#stappen-die-op-de-gebruiker-wachten) |
+| Op een telefoon: het element staat in de navigatie van de app, en die is dicht | Zo hoort het: de stap wacht opzij tot de gebruiker de navigatie opent |
 | De **Pagina** van de stap is een app die de gebruiker niet kan openen | De stap valt weg voor die gebruiker. Beperk hem met **Zichtbaar voor groepen** tot wie de app heeft |
 | Selector kapot na Nextcloud-upgrade | Inspecteer de nieuwe DOM en update de selector. Gebruik meerdere komma-gescheiden fallbacks; de tour probeert ze in de volgorde waarin ze staan |
 | Pre-v1.4.1-timing-issue | Stappen konden worden overgeslagen als Vue nog niet had gerenderd; nu wacht een stap op zijn element |
@@ -129,6 +131,12 @@ Zie [Tours](tours.nl.md) voor wanneer een tour start.
 | De persoon zit niet in de groepen van de tour, of kan de app niet openen | Zo hoort het: de link start de tour alleen voor wie hem mag krijgen |
 
 Zie [Een tour delen met een link](tours.nl.md#een-tour-delen-met-een-link).
+
+## Deellink opent niets (2.0.0, pretty URLs)
+
+**Symptoom:** op een Nextcloud met pretty URLs (geen `index.php` in de adressen) opent een link van **Link kopiëren** niets: de browser gaat naar een adres dat met `//apps/` begint, en leest dat als een andere website. De links in de checklist **Aan de slag** op het Dashboard kregen dezelfde dubbele slash.
+
+**Oplossing:** werk IntroVox bij naar de release na 2.0.0; links die je eerder kopieerde, werken dan weer zonder ze opnieuw te kopiëren.
 
 ## Afbeelding of video geweigerd
 

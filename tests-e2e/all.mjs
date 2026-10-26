@@ -7,7 +7,7 @@ import { execFileSync, spawnSync } from 'node:child_process'
 import { clearRateLimits, DIR } from './lib.mjs'
 
 const BUILTIN_OFF = ['app-tours', 'editor', 'runtime', 'media', 'statistics-export', 'links-timing', 'builtin-tours', 'checklist', 'app-states', 'admin-intro']
-const BUILTIN_ON = ['share-links']
+const BUILTIN_ON = ['share-links', 'embed']
 const chosen = process.env.SUITES ? process.env.SUITES.split(/\s+/).filter(Boolean) : [...BUILTIN_OFF, ...BUILTIN_ON]
 
 const builtin = (ids) => execFileSync('node', ['builtin-switch.mjs', ...(ids === undefined ? [] : [ids])], { cwd: DIR, encoding: 'utf8' }).trim()
