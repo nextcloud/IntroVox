@@ -67,7 +67,7 @@ Een nieuwe tour staat eerst uit, zodat niemand hem ziet terwijl je er nog aan sc
 
 ### Andere talen
 
-**Taalspecifieke versie toevoegen** in de stappen-editor voegt stappen in een andere taal toe, net als bij de welkomsttour. Iemand krijgt de stappen in de eigen taal; zijn die er niet, dan die van de basistaal (`de` voor `de_DE`); zijn die er ook niet, dan die van de hoofdtaal. Tours die je zelf maakt hebben geen vertaalde standaardstappen: alleen de stappen die jij schrijft. De ingebouwde tours wel: zonder stappen van jou in de eigen taal of de basistaal krijgt iemand de ingebouwde stappen in de eigen taal, vóór jouw stappen in de hoofdtaal. Alleen voor een taal die Transifex nog niet vertaald heeft, gaan jouw stappen in de hoofdtaal voor.
+**Taalspecifieke versie toevoegen** in de stappen-editor voegt stappen in een andere taal toe, net als bij de welkomsttour. Iemand krijgt de stappen in de eigen taal; zijn die er niet, dan die van de basistaal (`de` voor `de_DE`); zijn die er ook niet, dan die van de hoofdtaal. Tours die je zelf maakt hebben geen vertaalde standaardstappen: alleen de stappen die jij schrijft. De ingebouwde tours wel: zonder stappen van jou in de eigen taal of de basistaal krijgt iemand de ingebouwde stappen in de eigen taal, vóór jouw stappen in de hoofdtaal. Alleen voor een taal die nog geen vertaling heeft, gaan jouw stappen in de hoofdtaal voor.
 
 ## Stappen schrijven of vertalen met AI
 

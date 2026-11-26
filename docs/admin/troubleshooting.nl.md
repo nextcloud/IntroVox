@@ -57,7 +57,7 @@ Zie [Tours](tours.nl.md) voor wanneer een tour start.
 | Browser-cache | Hard-refresh: `Cmd+Shift+R` / `Ctrl+Shift+R` |
 | Taal niet geselecteerd in Nextcloud | Verifieer in **Persoonlijke instellingen → Taal** van de gebruiker |
 | Vertaling-bestand ontbreekt | Verifieer dat `l10n/<lang>.json` bestaat in de IntroVox-app-directory |
-| App niet herbuild na `l10n`-wijziging | Bij ontwikkelen, draai `python3 scripts/po2l10n.py` daarna `npm run build` |
+| `l10n/` niet bij tijdens het ontwikkelen | `l10n/` wordt gemaakt uit de `.po`-bestanden, niet door `npm run build`: draai `npm run l10n:build`, of haal `main` op zodra de pull request van Weblate gemerged is. Een tekst die sindsdien is toegevoegd, verschijnt in het Engels tot hij in Weblate vertaald is |
 | Verborgen stappen gestapeld onder huidige stap (v1.4.0–v1.6.0) | Upgrade naar v1.6.1+, die `.nextcloud-wizard-step[hidden] { display: none }` toevoegt |
 
 ## Import-/export-issues

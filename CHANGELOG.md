@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-11-26
+
+**Coming from 1.x?** Read the [2.0.0 upgrade notes](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md#200---2026-10-21) first.
+
+### Added
+
+- **A first translation by AI for new strings.** At release time, strings that have no translation yet get one from AI (Claude), so you see your language right away; people review these translations in Weblate afterwards. A translation made by a person is never replaced. IntroVox is now completely translated in Danish, Dutch, French, German (informal and formal), Italian, Polish, Portuguese (Brazil), Russian and Spanish. A welcome tour you saved for a language yourself keeps your text; **Reset** brings the translated default steps back.
+
+### Changed
+
+- **IntroVox is translated in VoxCloud's Weblate.** It is no longer translated on Nextcloud's Transifex. Every existing translation came along, in all 107 languages, and every language with a translation ships; a string that is not translated yet shows in English, as before. Found a translation error or want to help? Open an issue. The README, CONTRIBUTING and the documentation describe the new route.
+- **The app description no longer mentions Transifex.** Its line about the default steps now says they are translated in VoxCloud's Weblate. This is the only existing string that changed in this release; its translation was made again in the languages that had one.
+- **Dependencies updated** after `npm audit`: follow-redirects 1.16.3 (high), fast-uri 3.1.9 and fast-xml-parser 5.12.1.
+
+### Removed
+
+- **The one-off migration script `scripts/migrate_step_keys.py`** (1.5 → 1.6). It wrote hand-made Dutch translations into `l10n/`, which only CI may build now. The docs no longer call the default steps "auto-translated": they are translated in Weblate, first by AI and then reviewed by people.
+
 ## [2.1.0] - 2026-10-26
 
 **Coming from 1.x?** Read the [2.0.0 upgrade notes](https://github.com/nextcloud/IntroVox/blob/main/CHANGELOG.md#200---2026-10-21) first.

@@ -52,11 +52,11 @@ OC.L10N.register(
     "Copy link" : "Ievietot saiti starpliktuvē",
     "Need help?" : "Vajadzīga palīdzība?",
     "Source code" : "Izejas kods",
+    "Start" : "Sākums",
     "Close" : "Aizvērt",
     "Done" : "Pabeigts",
     "Skip" : "Izlaist",
     "Settings saved" : "Iestatījumi saglabāti",
-    "Start" : "Sākums",
     "Select" : "Atzīmēt"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

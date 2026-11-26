@@ -75,7 +75,7 @@ For each language, have translations reviewed by a native speaker, also those fr
 
 ### Add Overrides Only Where Needed
 
-The welcome tour and the built-in tours come translated into every language Transifex covers. Each override is a step list you maintain yourself, and it no longer gets new translations of the default steps. Add one only where the defaults don't fit, such as text that names your own cloud, and **Reset** it once you no longer need it. See [Language Management](language-management.md).
+The welcome tour and the built-in tours come translated into every language IntroVox has translations for. Each override is a step list you maintain yourself, and it no longer gets new translations of the default steps. Add one only where the defaults don't fit, such as text that names your own cloud, and **Reset** it once you no longer need it. See [Language Management](language-management.md).
 
 ## Operational Maintenance
 

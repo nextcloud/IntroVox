@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 /**
- * Extract translatable strings into l10n/en.json — the canonical English source
- * that scripts/generate-pot.js turns into translationfiles/templates/introvox.pot.
+ * Extract translatable strings into l10n/en.json — the English source set the
+ * lint and the manifest guard work from. The POT itself comes from Nextcloud's
+ * own translationtool (npm run pot → scripts/l10n-sync.mjs pot), as Weblate gets it.
  *
- * Why this exists: en.json is the source-of-truth for frontend (Vue/JS) strings,
- * but the Nextcloud Transifex sync-bot deletes it from the repo after each sync
- * (it is a build artifact, gitignored). It therefore has to be regenerated from
- * the code before every POT round. This script does that deterministically by
- * scanning the source for translation calls, so en.json is never hand-edited or
- * restored from git.
+ * Why this exists: en.json is a build artifact (gitignored), so it has to be
+ * regenerated from the code before every check. This script does that
+ * deterministically by scanning the source for translation calls, so en.json is
+ * never hand-edited or restored from git.
  *
  * What it scans:
  *   - src/**\/*.{vue,js}   t('introvox', '…')   this.t('…')   $t('…')   this.$t('…')
@@ -21,11 +20,11 @@
  * NO 'introvox' first arg). IntroVox does not install such an alias today; the
  * patterns are kept so the extractor stays correct if one is ever added.
  *
- * Output structure (matches the NC bot's en.json exactly):
+ * Output structure (the en.json format translationtool's convert-po-files writes):
  *   { "translations": { "<msgid>": "<msgid>", "<singular>": ["<singular>", "<plural>"] } }
  *
  * Singular values map to themselves; plural entries map to a [singular, plural]
- * array — generate-pot.js already expects exactly this shape.
+ * array.
  *
  * This module also exports computeSourceStrings() so scripts/check-l10n-sync.js
  * can compute the exact same source-string set without a second copy of the
@@ -67,14 +66,14 @@ const T_PREFIX = `(?:this\\.|\\$\\w+->|->)?`;
 // bare `t('introvox'` match too, capturing the app id itself as the string —
 // and the extractor reads source as plain text, so it cannot tell code from a
 // comment. Five comment lines explaining the `t('introvox', …)` convention
-// therefore put a meaningless "introvox" entry on Transifex, shown to
+// therefore put a meaningless "introvox" entry in the POT, shown to
 // translators in every language.
 const APP_ID = 'introvox';
 
 // Nor is any OTHER app id a translatable string. The extractor reads source as
 // plain text and cannot tell code from a comment, so a prose mention of
 // `t('core', ...)` (wizardSteps.js explains how core renders aria-labels) would
-// otherwise land "core" on Transifex as a msgid. Any bare app-id-shaped match
+// otherwise land "core" in the POT as a msgid. Any bare app-id-shaped match
 // is dropped: real UI strings are never a single lowercase word.
 const APP_ID_LIKE = /^[a-z][a-z0-9_]*$/;
 function isAppId(s) {
@@ -106,9 +105,9 @@ function makeRegexes() {
 // the comment and the call breaks the association, so an unrelated comment
 // further up is never picked up.
 //
-// Consecutive `// TRANSLATORS:`/continuation lines are joined into one comment,
-// which generate-pot.js emits as `#.` lines in the POT. Transifex shows those
-// as the developer comment on the string.
+// Consecutive `// TRANSLATORS:`/continuation lines are joined into one comment.
+// translationtool emits the same hint as `#.` lines in the POT, and Weblate shows
+// those as the explanation on the string.
 // Two comment syntaxes, because a `.vue` file has two languages in it:
 //   <script>   // TRANSLATORS: …
 //   <template> <!-- TRANSLATORS: … -->
@@ -130,7 +129,7 @@ function findTranslatorComment(content, index) {
 	const sameLine = lines[lines.length - 1];
 	const inline = sameLine.match(TRANSLATORS_RE);
 	if (inline) return inline[1].trim();
-	// Or after the call on the same line, which the Nextcloud bot also reads
+	// Or after the call on the same line, which translationtool also reads
 	// (it takes a TRANSLATORS comment on the current line first). Needed
 	// where a comment above would change what a component sees: an
 	// NcAction* takes its text from the first node of its slot.
@@ -188,8 +187,8 @@ function walk(dir, exts, acc = []) {
  * @returns {{ singulars: string[], plurals: [string,string][], files: string[], comments: Map<string,string> }}
  *   singulars and plurals are sorted (localeCompare); a string used in n() is a
  *   plural pair and never also appears in singulars. `comments` maps a msgid to
- *   its `// TRANSLATORS:` comment (generate-pot.js emits these as POT `#.`
- *   lines, which Transifex shows as the string's developer comment).
+ *   its `// TRANSLATORS:` comment (translationtool emits these as POT `#.`
+ *   lines, which Weblate shows as the string's explanation).
  */
 function computeSourceStrings() {
 	const singulars = new Set();
@@ -252,7 +251,7 @@ function computeSourceStrings() {
 /**
  * The canonical, order-stable list of every source msgid (singulars + the
  * singular form of each plural), and its sha256. This is what the manifest and
- * the guard compare on — durable across POT deletes by the bot.
+ * the guard compare on — durable however the POT is regenerated.
  *
  * @param {{singulars:string[], plurals:[string,string][]}} src
  * @returns {{ msgids: string[], sha256: string, count: number }}
@@ -292,10 +291,10 @@ if (require.main === module) {
 	fs.writeFileSync(COUNT, JSON.stringify({ sourceStrings }, null, 4) + '\n');
 
 	// Committed source-string manifest — the durable record of exactly which
-	// msgids the Transifex bot has been given. scripts/check-l10n-sync.js fails
-	// the build if the code's set no longer matches this, i.e. strings were added
-	// without pushing them to Transifex (npm run l10n:push). The full sorted list
-	// is stored (not just the hash) so every git diff shows what entered/left.
+	// msgids the POT holds. scripts/check-l10n-sync.js fails the build if the
+	// code's set no longer matches this, i.e. strings were added without
+	// regenerating the POT (npm run pot). The full sorted list is stored (not
+	// just the hash) so every git diff shows what entered/left.
 	const manifest = sourceStringManifest(src);
 	fs.writeFileSync(MANIFEST, JSON.stringify({
 		count: manifest.count,

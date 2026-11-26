@@ -15,7 +15,7 @@ IntroVox shows people around Nextcloud with guided tours: the welcome tour after
 - **Tours for everyone** — turn all tours on or off for everyone
 - **Tours** — the welcome tour, the built-in tours for Files, Talk, Deck and Calendar, and tours of your own that start in an app, on another page, or anywhere ([Tours](tours.md))
 - **Who gets a tour and when** — groups, everyone or new accounts only, a number of days after the first login, and dates
-- **Per-language overrides** — optionally replace the auto-translated default copy with custom text for specific languages, or let AI translate it
+- **Per-language overrides** — optionally replace the translated default copy with custom text for specific languages, or let AI translate it
 - **Step management** — add, edit, delete, reorder, and enable/disable individual steps; images and videos; steps that go on with a click or a filled-in field
 - **Group-based visibility** — restrict specific steps to certain user groups (role-based onboarding)
 - **Sharing and showing again** — a link that starts a tour; giving a tour once more to everyone who saw it
@@ -85,7 +85,7 @@ editor hold. To open the step editor, click **Edit steps** on a tour;
 - **Enable/disable switch** — temporarily hide steps without deleting
 - **Translate with AI / Write steps with AI** — only with a provider for the Nextcloud Assistant ([Write or translate steps with AI](tours.md#write-or-translate-steps-with-ai))
 - **Export / Import** — the steps of one language as JSON ([Import/Export](import-export.md)); a whole tour goes with **Export tour** in the list
-- **Reset** — delete the current language's override row; the next request serves the auto-translated defaults straight from Transifex
+- **Reset** — delete the current language's override row; the next request serves the translated defaults again
 - **Tour settings** — the tour's name, main language, groups, who gets it and when
 
 Every change is saved as you make it.
@@ -103,7 +103,7 @@ While **Tours for everyone** is on:
 - Users can close a tour anytime with **✕** or Esc, or with **Skip and don't show again** on the welcome tour's first step
 - A tour for an app that you switched on starts the first time a user opens that app, once per user; a tour that starts anywhere, on whichever page they open next. It never starts on top of the welcome tour: a user who hasn't had the welcome tour gets that first, and the other tour on a later visit. Days and dates can hold it back further, see [When a tour starts](tours.md#when-a-tour-starts)
 
-IntroVox detects the user's Nextcloud language and serves the matching translated default copy, or — if you authored one — the admin override for that language. When neither a Transifex translation nor an admin override exists for the user's language, the tour falls back to English defaults.
+IntroVox detects the user's Nextcloud language and serves the matching translated default copy, or — if you authored one — the admin override for that language. When neither a translation nor an admin override exists for the user's language, the tour falls back to English defaults.
 
 Users who switch off **Start tours by themselves** in their personal settings get no tour automatically, neither the welcome tour nor tours for apps.
 

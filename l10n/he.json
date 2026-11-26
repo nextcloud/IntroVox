@@ -58,11 +58,11 @@
     "Need help?" : "עזרה נזקקת?",
     "Report an issue" : "דיווח על תקלה",
     "Source code" : "קוד מקור",
+    "Start" : "התחלה",
     "Close" : "סגירה",
     "Done" : "הסתיים",
     "Skip" : "דלג",
     "Settings saved" : "הגדרות נשמרו",
-    "Start" : "התחלה",
     "Select" : "בחר"
 },"pluralForm" :"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;"
 }

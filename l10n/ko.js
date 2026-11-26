@@ -70,11 +70,11 @@ OC.L10N.register(
     "Need help?" : "도움이 필요한가요?",
     "Report an issue" : "문제점 보고",
     "Source code" : "소스 코드",
+    "Start" : "시작",
     "Close" : "닫기",
     "Done" : "완료",
     "Skip" : "건너뛰기",
     "Settings saved" : "설정이 저장되었습니다",
-    "Start" : "시작",
     "Select" : "선택",
     "Restart" : "재시작",
     "Got it" : "알았음"

@@ -39,7 +39,7 @@ On an instance where nobody has been asked yet, the tour ends with the question 
 
 **Location:** A read-only hint line under the **Tours for everyone** switch
 
-**Function:** Tells you how many languages currently have an admin override. There is no per-language opt-in; every Nextcloud-supported language is automatically available to end users via the Transifex-translated defaults (`nextcloud/introvox` resource). Override management itself happens in a tour's step editor (**Tours** → **Edit steps**) — see [Language Management](language-management.md).
+**Function:** Tells you how many languages currently have an admin override. There is no per-language opt-in; every Nextcloud-supported language is automatically available to end users via the translated defaults (maintained in VoxCloud's Weblate). Override management itself happens in a tour's step editor (**Tours** → **Edit steps**) — see [Language Management](language-management.md).
 
 ## Checklist on the Dashboard
 
@@ -88,7 +88,7 @@ For any other tour it raises that tour's version, so it starts once more for eve
 
 **Location:** Top of a tour's step editor: open **Tours** and click **Edit steps** on the tour (the **Welcome tour** for the tour new users get). **All tours** goes back to the list.
 
-**Function:** Picks which language's override you're editing. The step list below the dropdown reloads with that language's override content (or the auto-translated defaults if no override exists yet).
+**Function:** Picks which language's override you're editing. The step list below the dropdown reloads with that language's override content (or the translated defaults if no override exists yet).
 
 **Behavior:**
 
@@ -119,7 +119,7 @@ The step management section, in the same step editor, is detailed in [Managing T
 | **Write steps with AI** | Write new steps from a description; only with a provider for the Nextcloud Assistant | [Tours → AI](tours.md#write-or-translate-steps-with-ai) |
 | **Export** | Download the steps of this language as JSON | [Import/Export](import-export.md#exporting-wizard-steps) |
 | **Import** | Upload steps from JSON | [Import/Export](import-export.md#importing-wizard-steps) |
-| **Reset** | Delete the current language's override row; next request serves auto-translated defaults | [Managing Steps → Reset](managing-steps.md#reset-to-default) |
+| **Reset** | Delete the current language's override row; next request serves translated defaults | [Managing Steps → Reset](managing-steps.md#reset-to-default) |
 | **Save changes** | Only shown after a failed save, to try again; changes are otherwise saved as you make them | [Managing Steps → Saving](managing-steps.md#saving) |
 | **Tour settings** | The tour's name, main language, groups, **Who gets it** and when it starts by itself | [Tours → Make a Tour](tours.md#make-a-tour-for-an-app) |
 

@@ -8,7 +8,7 @@ Deze gids helpt je snel op gang afhankelijk van je rol.
 
 IntroVox laat mensen Nextcloud zien met tours:
 
-- De **welkomsttour** start na de eerste login van een gebruiker, op de eerste pagina die hij opent. Zijn 8 standaardstappen (Welkom bij Nextcloud, Bestanden & apps, Zoeken, Je account & instellingen, Aan de slag, Belangrijke functies, Handige tips, Klaar!) worden via Transifex (resource `nextcloud/introvox`) vertaald in elke taal waarin de vertalers van Nextcloud werken. Drie ervan wijzen het apps-menu, het zoeken en het accountmenu aan; de andere staan in het midden
+- De **welkomsttour** start na de eerste login van een gebruiker, op de eerste pagina die hij opent. Zijn 8 standaardstappen (Welkom bij Nextcloud, Bestanden & apps, Zoeken, Je account & instellingen, Aan de slag, Belangrijke functies, Handige tips, Klaar!) worden vertaald in de Weblate van VoxCloud; elke taal met vertalingen komt mee met de app, en wat nog niet vertaald is, verschijnt in het Engels. Drie ervan wijzen het apps-menu, het zoeken en het accountmenu aan; de andere staan in het midden
 - **Tours voor apps en pagina's** starten als iemand voor het eerst een app opent, zoals Talk, of een andere pagina van Nextcloud; een tour die overal start, komt op de eerstvolgende pagina die iemand opent. Ingebouwde tours voor Files, Talk, Deck en Calendar staan klaar om aan te zetten ([Tours](admin/tours.nl.md))
 - Een stap kan verdergaan als de gebruiker op het element klikt of een veld invult, wachten tot wat de gebruiker opende er is, en een afbeelding, GIF of video tonen
 - Iedere gebruiker kan een tour overslaan of herstarten, elke tour zelf starten vanuit zijn persoonlijke instellingen (**Tours** in het gebruikersmenu leidt daarheen), of tours niet meer vanzelf laten starten
@@ -48,7 +48,7 @@ Voor je IntroVox op grotere schaal evalueert, lees:
 
 - [Architectuuroverzicht](architecture/overview.nl.md) — Vue 3-frontend, Shepherd.js-tour-engine, PHP-backend, appconfig-opslag
 - [API-referentie](architecture/api-reference.nl.md) — publieke en admin-endpoints
-- [Meertalige ondersteuning](features/multi-language.nl.md) — Transifex-integratie en auto-discovery van taalbestanden
+- [Meertalige ondersteuning](features/multi-language.nl.md) — Vertalingen en auto-discovery van taalbestanden
 
 ## Kernconcepten
 
@@ -59,9 +59,9 @@ Voor je IntroVox op grotere schaal evalueert, lees:
 | **Wizard-stap** | Eén tour-stap met een titel, HTML-inhoud, een optionele afbeelding of video, een optionele CSS-selector om een element te markeren, een positie (links/rechts/boven/onder), en hoe hij verdergaat: **Volgende knop**, **Klikken op het element** of **Het veld invullen**. |
 | **Centered step** | Een stap zonder CSS-selector — verschijnt als gecentreerde modal. Gebruikt voor welkomst- en eind-stappen. |
 | **Attached step** | Een stap met CSS-selector — verschijnt naast het gemarkeerde element, dat een omlijning en een knipperende pijl krijgt. Zolang het element er nog niet is, wacht de stap opzij in een hoek en gaat hij ernaartoe zodra het verschijnt. |
-| **Taal-override** | Eigen tekst per taal die de automatisch vertaalde standaardstappen vervangt. Gemaakt per basistaal (een override voor `pt` bedient ook `pt_BR`), opgeslagen in appconfig onder `wizard_steps_<lang>`, en alleen aangemaakt als een beheerder wijzigingen opslaat. |
+| **Taal-override** | Eigen tekst per taal die de vertaalde standaardstappen vervangt. Gemaakt per basistaal (een override voor `pt` bedient ook `pt_BR`), opgeslagen in appconfig onder `wizard_steps_<lang>`, en alleen aangemaakt als een beheerder wijzigingen opslaat. |
 | **Groepszichtbaarheid** | Stappen kunnen worden beperkt tot specifieke Nextcloud-groepen via het `visibleToGroups`-veld. Leeg = zichtbaar voor alle gebruikers. |
-| **Standaardstappen** | Ingebouwde stapdefinities die automatisch worden vertaald via Transifex; geladen als er geen aangepaste configuratie bestaat voor een taal. |
+| **Standaardstappen** | Ingebouwde stapdefinities, vertaald in de Weblate van VoxCloud; geladen als er geen aangepaste configuratie bestaat voor een taal. |
 | **Wizard-versie** | Een teller (`wizard_version`) die **Show again to everyone** bij de welkomsttour ophoogt — de frontend gebruikt hem om te beslissen of de welkomsttour opnieuw getoond wordt. |
 
 ## Architectuurhighlights
@@ -69,7 +69,7 @@ Voor je IntroVox op grotere schaal evalueert, lees:
 - **Native Nextcloud-integratie** — gebruikt NC's `IConfig` voor opslag, `IL10N` voor taal-detectie, `IGroupManager` voor groep-filtering en `IUserSession` voor per-gebruiker-status.
 - **Een klein script op elke pagina** — elke pagina laadt een bootstrap van ongeveer 20 KB. Die beslist aan de hand van de initial state van de pagina of er een tour start, zonder request, en laadt pas dan de tour-code ([Frontend-architectuur](architecture/frontend-architecture.nl.md#tour-runtime)).
 - **Server-side groep-filtering** — `visibleToGroups`-handhaving gebeurt in de PHP-backend ([ApiController](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php)), dus gebruikers kunnen verborgen stappen niet zien via browser-tools.
-- **Vertalingen via Transifex** — de Transifex-resource `nextcloud/introvox` levert elke standaardtekst van de tour. Nieuwe taalbestanden (`l10n/<lang>.json`) komen binnen via de sync-bot van Nextcloud en bereiken gebruikers met de volgende release van IntroVox; geen code-wijzigingen nodig, en beheerders hoeven ze niet aan te zetten. Een gebruiker krijgt zijn volledige taal (`pt_BR`), anders de basistaal, anders Engels.
+- **Vertalingen uit Weblate** — elke standaardtekst van de tour wordt vertaald in de Weblate van VoxCloud. Nieuwe vertalingen komen in `l10n/<lang>.json` via een pull request van Weblate en bereiken gebruikers met de volgende release van IntroVox; geen code-wijzigingen nodig, en beheerders hoeven ze niet aan te zetten. Een gebruiker krijgt zijn volledige taal (`pt_BR`), anders de basistaal, anders Engels.
 
 ## Volgende stappen
 
@@ -81,6 +81,6 @@ Voor je IntroVox op grotere schaal evalueert, lees:
 
 ## Zie ook
 
-- [Meertalige ondersteuning](features/multi-language.nl.md) — Nieuwe talen toevoegen via Transifex
+- [Meertalige ondersteuning](features/multi-language.nl.md) — Hoe nieuwe talen en vertalingen binnenkomen
 - [Groep-gebaseerde zichtbaarheid](admin/group-visibility.nl.md) — Rol-gebaseerde onboarding
 - [Installatie](deployment/installation.nl.md) — App Store en handmatige installatie

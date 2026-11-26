@@ -71,11 +71,11 @@ OC.L10N.register(
     "Need help?" : "ヘルプが必要ですか？",
     "Report an issue" : "問題を報告する",
     "Source code" : "ソースコード",
+    "Start" : "開始する",
     "Close" : "閉じる",
     "Done" : "完了",
     "Skip" : "スキップ",
     "Settings saved" : "設定が保存されました",
-    "Start" : "開始する",
     "Select" : "選択",
     "Restart" : "再開",
     "Captions" : "字幕"

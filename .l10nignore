@@ -11,3 +11,4 @@ releases/
 Sample_files/
 certificates/
 *.tar.gz
+scripts/

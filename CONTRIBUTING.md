@@ -107,6 +107,15 @@ The automated tests: `npm run test:js` and `php tests-php/run.php` run without a
 
 5. Wait for review and address any feedback
 
+## 🌍 Translations
+
+IntroVox is translated in VoxCloud's Weblate. At release time, strings that have no translation yet get a first translation by AI (Claude), which people review in Weblate afterwards; a translation made by a person is never replaced. Translations reach this repository as pull requests from Weblate and ship with the next release.
+
+- **Do not edit `l10n/*.js`, `l10n/*.json` or `translationfiles/<lang>/introvox.po`.** CI builds `l10n/` from the `.po` files, and a pull request that changes a `.po` outside Weblate fails.
+- **Adding or changing a string:** use `t('introvox', '…')` or `n('introvox', '…', '…', count)` in JS and Vue, `$l->t('…')` in PHP, with the text as a literal. A string of one or two words gets a `// TRANSLATORS:` hint on the line above. Then run `npm run pot` and commit `translationfiles/templates/introvox.pot` with `l10n/.source-strings.json` and `l10n/.source-count.json`.
+- **Changing an existing string** makes it a new string for every language, so its translations have to be redone. Such rewrites are collected and announced to translators, not made one by one.
+- **A wrong translation, or want to help translate?** Open an issue.
+
 ## 🐛 Reporting Bugs
 
 When reporting bugs, please include:

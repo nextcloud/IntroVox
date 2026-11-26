@@ -164,7 +164,7 @@ Client-side definitions of the welcome tour's built-in steps, wrapped in `t('int
 
 Tours for an app or page don't use it.
 
-Since v1.6.0, all 16 default step titles and texts use English source strings as Transifex msgids rather than opaque `step_welcome_title`-style keys.
+Since v1.6.0, all 16 default step titles and texts use English source strings as msgids rather than opaque `step_welcome_title`-style keys.
 
 ### Step media and text
 
@@ -217,10 +217,10 @@ Bundle outputs go to `js/`. The `src/` directory is **not** included in App Stor
 ## Translation Flow
 
 - Vue components and JS use `t('introvox', '<English source>')` from `@nextcloud/l10n`
-- `python3 scripts/po2l10n.py` converts `translationfiles/<lang>/introvox.po` (from `tx pull`) into `l10n/<lang>.js` and `l10n/<lang>.json`, as the Nextcloud Transifex bot does: Nextcloud loads the `.js` in the browser (`OC.L10N.register`) and the `.json` on the server
+- CI builds `l10n/<lang>.js` and `l10n/<lang>.json` from the Weblate translations in `translationfiles/<lang>/introvox.po`, with Nextcloud's translationtool (`scripts/l10n-sync.mjs build`): Nextcloud loads the `.js` in the browser (`OC.L10N.register`) and the `.json` on the server
 - `OCP\L10N\IFactory::getLanguages()` provides display names for the language picker (v1.6.0+)
 
-See [Transifex Integration](transifex-integration.md) for the full translation workflow.
+See [Translations](translations.md) for the full translation workflow.
 
 ## See Also
 

@@ -6,8 +6,8 @@
  *
  *   1. The admin UI was never extracted. src/admin/AdminApp.vue calls a local
  *      wrapper (`t('Global settings')`, no app id) exposed as `t: trans`. The
- *      Nextcloud sync-bot only matches the literal `t('introvox', '…')` form, so
- *      120 of 207 source strings never reached Transifex. The screenshot symptom
+ *      Nextcloud sync-bot only matched the literal `t('introvox', '…')` form, so
+ *      120 of 207 source strings never reached translators. The screenshot symptom
  *      was a fully French tour wrapped in an English settings page.
  *   2. Prose mentioning another app's `t('core', …)` became a msgid. The
  *      extractor reads source as plain text and cannot tell code from a comment.
@@ -69,7 +69,7 @@ describe('l10n extraction', () => {
 	test('scans .mjs modules in src/, not just .vue and .js', () => {
 		// src/runtime/chooseTour.mjs, src/utils/pages.mjs and the like are
 		// plain modules so tests-js can import them; a string added there must
-		// still reach Transifex.
+		// still reach Weblate.
 		const extractor = fs.readFileSync(path.join(ROOT, 'scripts/extract-en-json.js'), 'utf8');
 		assert.match(extractor, /walk\(path\.join\(ROOT, 'src'\), \[[^\]]*'\.mjs'/);
 	});

@@ -77,27 +77,29 @@ There's no built-in conditional logic, but:
 
 ### How do I add a new language?
 
-You don't have to do anything. Every language that has a translation on the [Nextcloud Transifex `nextcloud/introvox` resource](https://www.transifex.com/nextcloud/nextcloud/) becomes available automatically — the sync bot pulls the translations into `l10n/<lang>.json` via PRs, and end users in that language immediately see the auto-translated tour.
+You don't have to do anything. The translations are maintained in VoxCloud's Weblate, and every language that has translations there ships with the next IntroVox release — once you have updated the app, end users in that language see the translated tour. There is no minimum percentage: what is not translated yet shows in English. New strings first get a translation by AI, which people review in Weblate. If you saved the welcome tour for a language yourself, that language keeps your text; click **Reset** to get the translated defaults back.
 
-If you want **custom copy** for a specific language (different from the auto-translated default), open **Tours**, click **Edit steps** on the **Welcome tour**, click **Add language override**, pick the language, edit, save.
+To help translate IntroVox into a language, or to report a translation error, open an issue on [GitHub](https://github.com/nextcloud/IntroVox/issues).
 
-See [Multi-Language Support](../features/multi-language.md) for the full Transifex flow.
+If you want **custom copy** for a specific language (different from the translated default), open **Tours**, click **Edit steps** on the **Welcome tour**, click **Add language override**, pick the language, edit, save.
+
+See [Multi-Language Support](../features/multi-language.md) for the full translation flow.
 
 ### Can I have different steps for different languages?
 
-Yes — that's what overrides are for. Each override-language has its own independent `wizard_steps_<lang>` configuration that replaces the auto-translated defaults for that language. Languages without an override get the defaults.
+Yes — that's what overrides are for. Each override-language has its own independent `wizard_steps_<lang>` configuration that replaces the translated defaults for that language. Languages without an override get the defaults.
 
-### How do I discard an override and go back to the auto-translated defaults?
+### How do I discard an override and go back to the translated defaults?
 
-Select the language in the dropdown → click **Reset** → confirm. The override row is deleted; from then on Transifex updates flow through automatically for that language.
+Select the language in the dropdown → click **Reset** → confirm. The override row is deleted; from then on that language gets the translated defaults, with the new translations of each release.
 
-### What if a user's language has no Transifex translation yet?
+### What if a user's language has no translation yet?
 
 The wizard uses its base language (`pt` for `pt_BR`) if that has a translation, and otherwise falls back to the **English** defaults for that user. (NC's per-app language detection falls back to the system default; IntroVox forces an English fallback in `DefaultStepsService` so users never see a surprise third language.)
 
 ### Can I mix languages in step text?
 
-Not recommended. Each override-language should have its own coherent copy. Languages without an override use the auto-translated Transifex defaults.
+Not recommended. Each override-language should have its own coherent copy. Languages without an override use the translated defaults.
 
 ## Audience Control
 
@@ -109,7 +111,7 @@ Several options:
 2. **Group-based step visibility** (v1.2.0+) — restrict individual steps to groups ([Group Visibility](group-visibility.md))
 3. **Globally** — switch off **Tours for everyone** (this stops every tour, also tours for apps)
 
-(Per-language opt-out was removed in v1.7.0 — that pattern doesn't scale across 100+ Transifex languages.)
+(Per-language opt-out was removed in v1.7.0 — that pattern doesn't scale across 100+ languages.)
 
 To give a tour for an app to some groups only, set **Visible to** on that tour; see [Tours](tours.md).
 

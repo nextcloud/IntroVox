@@ -59,7 +59,7 @@ sudo -u www-data php occ app:enable introvox
 
 Na het inschakelen van de app hoeft er voor de welkomsttour niets aan:
 
-- **Tours for everyone** staat na de installatie aan, dus de welkomsttour start voor elke gebruiker bij de volgende paginalading, in de eigen taal (vertaald via Transifex; Engels voor een taal zonder vertaling)
+- **Tours for everyone** staat na de installatie aan, dus de welkomsttour start voor elke gebruiker bij de volgende paginalading, in de eigen taal (vertaald in de Weblate van VoxCloud; Engels voor een taal zonder vertaling)
 - **Tours** verschijnt in het gebruikersmenu van iedereen, net boven **Help**; verberg het onder **Settings** (**Show Tours in the user menu**)
 - Tours voor apps en pagina's, de ingebouwde tours voor Files, Talk, Deck en Calendar, en de checklist op het Dashboard staan uit tot je ze aanzet
 - De eerste keer dat je **Instellingen → Beheer → IntroVox** opent, laat een korte beheerderstour je de pagina zien. Hij sluit af met de vraag over telemetrie; een instantie stuurt geen telemetrie tot een beheerder die vraag gezien heeft

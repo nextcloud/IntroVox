@@ -29,7 +29,7 @@ const t = (app, key, vars = {}) => translate(app, key, vars, undefined, { saniti
  * @return {object} The running Shepherd tour
  */
 export function startAdminIntro({ showPane, onEnd }) {
-  // Translations are text from Transifex: cleaned like any step text
+  // Translations are text from Weblate: cleaned like any step text
   const html = (text) => sanitizeStepHtml(text)
 
   const tour = new Shepherd.Tour({

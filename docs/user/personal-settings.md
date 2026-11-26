@@ -96,7 +96,7 @@ You might see this message in personal settings instead of the restart button:
 
 Your Nextcloud administrator turned off tours for all users. No tour starts, neither the welcome tour nor a tour for an app, and you can't start one by hand. Contact your administrator if you'd like to see it.
 
-> Earlier IntroVox versions also showed a "not available in your language" message when an admin had restricted languages. Since v1.7.0 the tour is available in every Nextcloud-supported language automatically (via Transifex), so this message no longer exists.
+> Earlier IntroVox versions also showed a "not available in your language" message when an admin had restricted languages. Since v1.7.0 the tour is available in every Nextcloud-supported language automatically, so this message no longer exists.
 
 ## See Also
 

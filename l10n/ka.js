@@ -53,11 +53,11 @@ OC.L10N.register(
     "Copy link" : "Copy link",
     "Need help?" : "გჭირდებათ დახმარება?",
     "Source code" : "Source code",
+    "Start" : "Start",
     "Close" : "Close",
     "Done" : "მზადაა",
     "Skip" : "გამოტოვება",
     "Settings saved" : "Settings saved",
-    "Start" : "Start",
     "Select" : "მონიშვნა"
 },
 "nplurals=2; plural=(n!=1);");

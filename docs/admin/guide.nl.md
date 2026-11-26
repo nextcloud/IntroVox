@@ -15,7 +15,7 @@ IntroVox laat mensen Nextcloud zien met geleide tours: de welkomsttour na hun ee
 - **Tours for everyone** — zet alle tours aan of uit voor iedereen
 - **Tours** — de welkomsttour, de ingebouwde tours voor Bestanden, Talk, Deck en Agenda, en eigen tours die starten in een app, op een andere pagina, of overal ([Tours](tours.nl.md))
 - **Wie een tour krijgt en wanneer** — groepen, iedereen of alleen nieuwe accounts, een aantal dagen na de eerste login, en datums
-- **Taal-overrides** — vervang eventueel de automatisch vertaalde standaardtekst door eigen tekst voor bepaalde talen, of laat AI hem vertalen
+- **Taal-overrides** — vervang eventueel de vertaalde standaardtekst door eigen tekst voor bepaalde talen, of laat AI hem vertalen
 - **Stap-beheer** — stappen toevoegen, bewerken, verwijderen, herordenen en in-/uitschakelen; afbeeldingen en video's; stappen die verdergaan met een klik of een ingevuld veld
 - **Groep-gebaseerde zichtbaarheid** — beperk specifieke stappen tot bepaalde gebruikersgroepen (rol-gebaseerde onboarding)
 - **Delen en opnieuw tonen** — een link die een tour start; een tour nog een keer geven aan iedereen die hem gezien heeft
@@ -88,7 +88,7 @@ stappen-editor van een tour bevatten. De stappen-editor open je met
 - **In-/uitschakelen-schakelaar** — stappen tijdelijk verbergen zonder ze te verwijderen
 - **Translate with AI / Write steps with AI** — alleen met een provider voor de Nextcloud Assistant ([Stappen schrijven of vertalen met AI](tours.nl.md#stappen-schrijven-of-vertalen-met-ai))
 - **Exporteren / Import** — de stappen van één taal als JSON ([Import/Export](import-export.nl.md)); een hele tour gaat met **Tour exporteren** in de lijst
-- **Herstellen** — verwijdert de override van de huidige taal; daarna krijgen gebruikers weer de automatisch vertaalde standaardstappen van Transifex
+- **Herstellen** — verwijdert de override van de huidige taal; daarna krijgen gebruikers weer de vertaalde standaardstappen
 - **Tour settings** — de naam, hoofdtaal, groepen, wie hem krijgt en wanneer
 
 Elke wijziging wordt direct opgeslagen.
@@ -106,7 +106,7 @@ Zolang **Tours for everyone** aan staat:
 - Gebruikers kunnen een tour op elk moment sluiten met **✕** of Esc, of met **Overslaan en niet meer tonen** op de eerste stap van de welkomsttour
 - Een tour voor een app die je hebt aangezet, start de eerste keer dat een gebruiker die app opent, één keer per gebruiker; een tour die overal start, op de eerstvolgende pagina die hij opent. Hij start nooit bovenop de welkomsttour: wie de welkomsttour nog niet had, krijgt die eerst, en de andere tour bij een later bezoek. Dagen en datums kunnen hem nog langer tegenhouden, zie [Wanneer een tour start](tours.nl.md#wanneer-een-tour-start)
 
-IntroVox detecteert de Nextcloud-taal van de gebruiker en toont de vertaalde standaardtekst, of — als je die hebt geschreven — de override voor die taal. Is er voor die taal geen vertaling op Transifex en geen override, dan krijgt de gebruiker de Engelse standaardtekst.
+IntroVox detecteert de Nextcloud-taal van de gebruiker en toont de vertaalde standaardtekst, of — als je die hebt geschreven — de override voor die taal. Is er voor die taal geen vertaling en geen override, dan krijgt de gebruiker de Engelse standaardtekst.
 
 Gebruikers die **Start tours by themselves** in hun persoonlijke instellingen uitzetten, krijgen geen enkele tour automatisch, de welkomsttour niet en de tours voor apps ook niet.
 

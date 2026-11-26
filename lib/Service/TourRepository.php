@@ -22,7 +22,7 @@ use OCP\IUser;
  * the welcome tour is always in it, even when the key is missing — on a
  * fresh install, where no repair step runs, or on an instance updated from a
  * version without tours. Its steps stay where they always were
- * (wizard_steps_<lang>, with the Transifex defaults); the steps of the
+ * (wizard_steps_<lang>, with the translated defaults); the steps of the
  * other tours are lazy values, tour_steps_<id>_<lang>, read only when a tour
  * runs or is edited, never on the path every page takes.
  */

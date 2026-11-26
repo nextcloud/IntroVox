@@ -50,11 +50,11 @@ OC.L10N.register(
     "Copy link" : "Kopjoje lidhjen",
     "Need help?" : "Ju duhet ndihmë?",
     "Source code" : "Kodi burim",
+    "Start" : "Fillo",
     "Close" : "Mbylleni",
     "Done" : "U bë",
     "Skip" : "Kalo",
     "Settings saved" : "Opsjonet u Ruajtën.",
-    "Start" : "Fillo",
     "Select" : "Përzgjidh"
 },
 "nplurals=2; plural=(n != 1);");

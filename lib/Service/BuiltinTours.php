@@ -10,7 +10,7 @@ use OCP\L10N\IFactory;
  * The tours IntroVox ships for Files, Talk, Deck and Calendar. They appear in
  * the Tours list once their app is installed, switched off; an admin switches
  * them on and may change everything but where they start. Their steps are
- * translated on Transifex, like the welcome tour's; an admin's own steps for
+ * translated in Weblate, like the welcome tour's; an admin's own steps for
  * a language replace them, and Reset brings them back.
  *
  * Steps only point at parts of the apps that stay put between versions (the

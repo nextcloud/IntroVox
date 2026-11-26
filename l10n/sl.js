@@ -71,11 +71,11 @@ OC.L10N.register(
     "Need help?" : "Ali potrebujete pomoč?",
     "Report an issue" : "Pošlji poročilo o hrošču",
     "Source code" : "Izvorna koda",
+    "Start" : "Začetek",
     "Close" : "Zapri",
     "Done" : "Končano",
     "Skip" : "Preskoči",
     "Settings saved" : "Nastavitve so shranjene",
-    "Start" : "Začetek",
     "Select" : "Izbor",
     "Browse" : "Prebrskaj"
 },

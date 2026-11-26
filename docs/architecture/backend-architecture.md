@@ -75,7 +75,7 @@ lib/
 
 The largest controller (~28 KB) covering admin operations other than the tours themselves:
 
-- **Steps** — `getSteps`, `saveSteps`, `resetToDefault`. Each takes a `tour` parameter (default `welcome`): the welcome tour's steps live in `wizard_steps_<lang>` with the Transifex defaults behind them; any other tour's in `tour_steps_<id>_<lang>`, through `TourRepository`, with no defaults. An unknown tour gets a 404.
+- **Steps** — `getSteps`, `saveSteps`, `resetToDefault`. Each takes a `tour` parameter (default `welcome`): the welcome tour's steps live in `wizard_steps_<lang>` with the translated defaults behind them; any other tour's in `tour_steps_<id>_<lang>`, through `TourRepository`, with no defaults. An unknown tour gets a 404.
 - **Import/Export** — `exportSteps`, `importSteps` with JSON validation, also per `tour`
 - **Settings** — `getSettings`, `saveSettings`: `enabled` (**Tours for everyone**, `wizard_enabled`), `userMenu` (`user_menu`) and `checklist` (through `ChecklistService`); only what the request carries changes. Showing the welcome tour again is `POST /admin/tours/welcome/reshow` (`ToursController::reshow`)
 - **Languages** — `getAvailableLanguagesWithMetadata` (every language Nextcloud knows, from `IFactory::getLanguages()`), `listOverrides` (the languages of one tour)
@@ -102,7 +102,7 @@ The tours themselves, admin only: `index`, `create`, `update`, `destroy`, `resho
 
 Endpoints for every logged-in user, all annotated `#[NoAdminRequired]`. Like every IntroVox endpoint they require the CSRF token; `tests-js/controller-security.test.js` fails the build if one opts out.
 
-- **`getWizardSteps`** — language-aware, group-filtered step list. Without `tour`, or with `welcome`: the welcome tour; the admin's steps come through `TourRepository::steps()`, whose `is_array()` guard treats a corrupt config blob as no steps, so the translated defaults are served. With another id: `appTourSteps()`, the steps of that tour in the user's language, its base language or the tour's main language; a built-in tour falls back to its Transifex translation and then English.
+- **`getWizardSteps`** — language-aware, group-filtered step list. Without `tour`, or with `welcome`: the welcome tour; the admin's steps come through `TourRepository::steps()`, whose `is_array()` guard treats a corrupt config blob as no steps, so the translated defaults are served. With another id: `appTourSteps()`, the steps of that tour in the user's language, its base language or the tour's main language; a built-in tour falls back to its translated built-in steps and then English.
 - **`appTourSteps`** (private) — answers `404 { "success": false }` to everything refused: a malformed or unknown id, tours off, the tour off, a user outside its groups or without access to its app. One answer for all, so nothing shows which tours exist. It does not check whether the tour would start by itself, so a start by hand works.
 - **`tourEvent`** — `start`, `complete` or `skip` of a tour for an app, for this user, behind the same 404 check. `start` stores the tour's version in `tour_<id>_seen` and says whether this was the first start at that version. Rate limited to 30 per hour per user (`#[UserRateLimit(limit: 30, period: 3600)]`).
 - **`tourReached`** — the furthest step of a run that started by itself (`tour_<id>_reached`, through `TourStateService::markReached()`), for **How far people get**; the welcome tour too. Same 404 check; 300 per hour per user.
@@ -169,7 +169,7 @@ Plain PHP, tested directly (`tests-php/TourValidatorTest.php`). Checks the field
 
 ### `BuiltinTours`
 
-The tours IntroVox ships for Files, Talk, Deck and Calendar (`builtin-files`, `builtin-talk`, `builtin-deck`, `builtin-calendar`). `stepsIn($l)` defines their steps with `$l->t()`, so the strings reach Transifex like the welcome tour's; it takes any object with `t()`, which lets `tests-php/BuiltinToursTest.php` check every step against `StepValidator` without Nextcloud. `steps($id, $language)` translates them into a language, its base language, or English.
+The tours IntroVox ships for Files, Talk, Deck and Calendar (`builtin-files`, `builtin-talk`, `builtin-deck`, `builtin-calendar`). `stepsIn($l)` defines their steps with `$l->t()`, so the strings reach the POT, and translators, like the welcome tour's; it takes any object with `t()`, which lets `tests-php/BuiltinToursTest.php` check every step against `StepValidator` without Nextcloud. `steps($id, $language)` translates them into a language, its base language, or English.
 
 `TourRepository::all()` lists a built-in tour while its app is installed (`IAppManager::isInstalled()`): name, app and main language from `BuiltinTours`, the rest (`EDITABLE`: on/off, groups, audience, schedule; plus `enabledAt` and `version`) from the tour index, where only that state is stored. `update()` changes only those fields and `delete()` refuses. `stepsOrDefaults()` gives the steps users get: the admin's own for a language, else the translated defaults of the welcome tour or a built-in tour; the user API, the step editor, the statistics and the Tours list all go through it.
 
@@ -361,4 +361,4 @@ See [Architecture Overview → Security Model](overview.md#security-model).
 - [Architecture Overview](overview.md)
 - [API Reference](api-reference.md) — full endpoint list
 - [Frontend Architecture](frontend-architecture.md)
-- [Transifex Integration](transifex-integration.md)
+- [Translations](translations.md)

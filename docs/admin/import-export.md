@@ -139,7 +139,7 @@ If import fails you'll see a specific error:
 
 ### Translator Collaboration
 
-This pattern only applies when an admin wants a *custom override* for a specific language. The auto-translated default tour comes from Transifex — for that, the better path is to contribute on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) directly so all installs benefit.
+This pattern only applies when an admin wants a *custom override* for a specific language. The translated default tour is maintained in VoxCloud's Weblate — to improve that, the better path is to open an issue on [GitHub](https://github.com/nextcloud/IntroVox/issues), so all installs benefit.
 
 For per-install custom copy:
 

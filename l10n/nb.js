@@ -76,11 +76,11 @@ OC.L10N.register(
     "Need help?" : "Trenger du hjelp?",
     "Report an issue" : "Rapporter et problem",
     "Source code" : "Kildekode",
+    "Start" : "Start",
     "Close" : "Lukk",
     "Done" : "Ferdig",
     "Skip" : "Hopp over",
     "Settings saved" : "Innstillinger lagret",
-    "Start" : "Start",
     "Select" : "Velg",
     "Restart" : "Omstart"
 },

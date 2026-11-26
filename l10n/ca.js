@@ -72,11 +72,11 @@ OC.L10N.register(
     "Need help?" : "Necessiteu ajuda?",
     "Report an issue" : "Informa d'un problema",
     "Source code" : "Codi font",
+    "Start" : "Inici",
     "Close" : "Tanca",
     "Done" : "Fet",
     "Skip" : "Omet",
     "Settings saved" : "S'han desat els paràmetres",
-    "Start" : "Inici",
     "Select" : "Seleccioneu",
     "Browse" : "Navega"
 },

@@ -158,7 +158,7 @@ export default {
     // As text, in the user's locale: "50 %" in French, "50%" in English
     const percentFormat = new Intl.NumberFormat(getCanonicalLocale(), { style: 'percent' })
     const percentText = (part, whole) => percentFormat.format(percent(part, whole) / 100)
-    // Plurals in the script: the Transifex bot reads n() only there
+    // Plurals in the script: translationtool reads n() only there
     // TRANSLATORS: %n is a number of people, shown next to a bar in a chart
     const people = (count) => n('introvox', '%n person', '%n people', count)
     // TRANSLATORS: %n is a number of people
