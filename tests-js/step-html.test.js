@@ -2,7 +2,7 @@
  * The cleaning of step HTML (src/utils/stepHtml.js).
  *
  * Step texts reach every user through Shepherd's innerHTML, and they do not
- * only come from the admin: imported tour files and Transifex translations of
+ * only come from the admin: imported tour files and translations (Weblate) of
  * the default steps carry markup nobody reviews. Nextcloud's CSP stops
  * scripts, but not links, styles or fake login forms, so the allowlist in
  * stepHtml.js is the only thing between a translated string and a phishing

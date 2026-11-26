@@ -55,7 +55,7 @@ The tour might not show automatically if:
 - You switched off **Start tours by themselves** in your personal settings
 - You already completed the tour (it only shows again if you restart it)
 
-(IntroVox itself is available in every language Nextcloud supports. If a particular language has no translation on Transifex yet, the tour falls back to English so you still get readable text.)
+(IntroVox itself is available in every language Nextcloud supports. If a particular language has no translation yet, the tour falls back to English so you still get readable text.)
 
 You can always start it manually — see [Personal Settings](personal-settings.md).
 

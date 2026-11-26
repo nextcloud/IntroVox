@@ -164,7 +164,7 @@ Definities aan de client-kant van de ingebouwde stappen van de welkomsttour, gew
 
 Tours voor een app of pagina gebruiken het niet.
 
-Sinds v1.6.0 gebruiken alle 16 default-stap-titels en -teksten Engelse source-strings als Transifex-msgids in plaats van opaque `step_welcome_title`-achtige keys.
+Sinds v1.6.0 gebruiken alle 16 titels en teksten van de standaardstappen Engelse bronteksten als msgid, in plaats van nietszeggende sleutels als `step_welcome_title`.
 
 ### Media en tekst van een stap
 
@@ -217,10 +217,10 @@ Bundle-outputs gaan naar `js/`. De `src/`-directory is **niet** opgenomen in App
 ## Vertaal-flow
 
 - Vue-componenten en JS gebruiken `t('introvox', '<Engelse bron>')` uit `@nextcloud/l10n`
-- `python3 scripts/po2l10n.py` zet `translationfiles/<lang>/introvox.po` (uit `tx pull`) om naar `l10n/<lang>.js` en `l10n/<lang>.json`, zoals de Transifex-bot van Nextcloud dat doet: Nextcloud laadt de `.js` in de browser (`OC.L10N.register`) en de `.json` op de server
+- CI bouwt `l10n/<lang>.js` en `l10n/<lang>.json` uit de vertalingen van Weblate in `translationfiles/<lang>/introvox.po`, met de translationtool van Nextcloud (`scripts/l10n-sync.mjs build`): Nextcloud laadt de `.js` in de browser (`OC.L10N.register`) en de `.json` op de server
 - `OCP\L10N\IFactory::getLanguages()` levert display-namen voor de taal-picker (v1.6.0+)
 
-Zie [Transifex-integratie](transifex-integration.nl.md) voor de volledige vertaal-workflow.
+Zie [Vertalingen](translations.nl.md) voor de hele vertaalketen.
 
 ## Zie ook
 

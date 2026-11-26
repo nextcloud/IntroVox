@@ -23,10 +23,10 @@ OC.L10N.register(
     "Delete" : "Delete",
     "Preview" : "Previsualisar",
     "Copy link" : "Copiar ligamine",
+    "Start" : "Initio",
     "Close" : "Clauder",
     "Done" : "Preste",
     "Settings saved" : "Configurationes salveguardate",
-    "Start" : "Initio",
     "Select" : "Selectionar"
 },
 "nplurals=2; plural=(n != 1);");

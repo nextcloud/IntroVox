@@ -27,8 +27,8 @@ OC.L10N.register(
     "Reset" : "Herstel",
     "Delete" : "Delete",
     "Need help?" : "Hulp nodig?",
+    "Start" : "Begin",
     "Close" : "Close",
-    "Settings saved" : "Instellings gestoor",
-    "Start" : "Begin"
+    "Settings saved" : "Instellings gestoor"
 },
 "nplurals=2; plural=(n != 1);");

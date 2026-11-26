@@ -1,13 +1,12 @@
 /**
- * Simulate the Nextcloud Transifex extractor and fail if it would miss a string.
+ * Simulate Nextcloud's extractor (translationtool) and fail if it would miss a string.
  *
- * This is the test that would have caught the real bug. Our own extractor is
- * deliberately permissive — it recognises every call form so the POT is
- * complete — but the POT we commit is NOT what reaches Transifex. The sync bot
- * runs `translationtool.phar create-pot-files`, which OVERWRITES our template
- * with its own extraction, pushes that, and deletes the file. Whatever its
- * extractor cannot see does not exist for translators, no matter how correct
- * our own tooling is.
+ * This is the test that would have caught the real bug. Our own extractor
+ * (extract-en-json.js, behind the manifest guard) is deliberately permissive — it
+ * recognises every call form — but the POT Weblate gets comes from
+ * `translationtool.phar create-pot-files` (npm run pot → scripts/l10n-sync.mjs),
+ * as it did from Nextcloud's sync bot before. Whatever translationtool cannot
+ * see does not exist for translators, no matter how correct our own tooling is.
  *
  * Verified against nextcloud/docker-ci (translations/handleAppsTranslations.sh
  * and translationtool/src/translationtool.php, read 2026-09-23). Two passes:
@@ -19,7 +18,7 @@
  * Both need the app id as the FIRST argument, and xgettext only knows the
  * keyword `t` — a helper named anything else is invisible to it. IntroVox had
  * `const trans = (key) => translate('introvox', key)` in admin/AdminApp.vue,
- * which failed both rules at once: 120 of 207 strings never reached Transifex,
+ * which failed both rules at once: 120 of 207 strings never reached translators,
  * and the entire admin UI stayed English in every language for three months.
  *
  * The rules this pins, for any new translation call:
@@ -119,7 +118,7 @@ function botSees(file) {
 	return found;
 }
 
-describe('Transifex bot visibility', () => {
+describe('translationtool visibility', () => {
 	const files = walk(path.join(ROOT, 'src'));
 	const visible = new Set();
 	for (const f of files) for (const s of botSees(f)) visible.add(s);
@@ -138,13 +137,13 @@ describe('Transifex bot visibility', () => {
 
 	test('the simulation finds something', () => {
 		// Guard against a broken simulation passing everything vacuously.
-		assert.ok(visible.size > 100, `bot simulation only found ${visible.size} strings`);
+		assert.ok(visible.size > 100, `translationtool simulation only found ${visible.size} strings`);
 	});
 
-	test('every frontend string is visible to the bot extractor', () => {
+	test('every frontend string is visible to translationtool', () => {
 		const invisible = [...frontend].filter((s) => !visible.has(s)).sort();
 		assert.deepEqual(invisible, [], invisible.length
-			? `${invisible.length} string(s) the Transifex bot cannot see, so translators never get them:\n`
+			? `${invisible.length} string(s) translationtool cannot see, so translators never get them:\n`
 				+ invisible.slice(0, 20).map((s) => `      ${JSON.stringify(s.slice(0, 80))}`).join('\n')
 				+ '\n\n  Fix: name the helper t/n and pass the app id first —'
 				+ "\n  t('introvox', 'text'), not trans('text') or this.t('text')."
@@ -191,8 +190,8 @@ describe('Transifex bot visibility', () => {
 });
 
 /**
- * TRANSLATORS hints: a hint in the code is no proof that Transifex gets it.
- * The bot reads a <template> hint only from the line directly above the
+ * TRANSLATORS hints: a hint in the code is no proof that Weblate gets it.
+ * translationtool reads a <template> hint only from the line directly above the
  * t() call, or from that line itself; xgettext (scripts, PHP) attaches a
  * `//` hint to the first call on the next line. Our own POT pipeline
  * (extract-en-json.js) must agree, or the POT we review misleads.
@@ -215,7 +214,7 @@ describe('TRANSLATORS hints', () => {
 	test('no other comment says TRANSLATORS', () => {
 		// xgettext --add-comments=TRANSLATORS starts a hint at the word
 		// anywhere in a comment: "… keeps its TRANSLATORS hint" above a real
-		// hint reached Transifex as part of it.
+		// hint reached the POT as part of it.
 		const offenders = [];
 		for (const f of files) {
 			fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {

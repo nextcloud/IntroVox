@@ -1,0 +1,2498 @@
+# introvox fr. Imported from l10n/fr.json when the app moved to Weblate;
+# Weblate is the only writer of this file from then on.
+msgid ""
+msgstr ""
+"Project-Id-Version: introvox\n"
+"Report-Msgid-Bugs-To: translations\\@example.com\n"
+"POT-Creation-Date: 2026-11-26 08:17+0100\n"
+"PO-Revision-Date: 2026-11-26 08:34+0000\n"
+"Last-Translator: \"AI first translation (Claude)\" <bot-voxcloud-ai@bots.noreply.weblate.org>\n"
+"Language-Team: French <https://weblate.voxcloud.nl/projects/voxcloud/introvox/fr/>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.11.2\n"
+
+#. TRANSLATORS: Error message: no tour with that ID exists
+msgid "Unknown tour"
+msgstr "Visite inconnue"
+
+#. TRANSLATORS: Error message: only administrators may do this
+msgid "Administrator privileges required"
+msgstr "Privilèges d'administration requis"
+
+#. TRANSLATORS: Error message; %s is the language code that was refused, such as "en-US!"
+#, php-format
+msgid "Invalid language code: %s"
+msgstr "Code de langue non valide : %s"
+
+#. TRANSLATORS: %s is a technical description of the problem, in English, such as "Step 2: title must be text"
+#, php-format
+msgid "Invalid step data: %s"
+msgstr "Données d’étape non valides : %s"
+
+msgid "Import file is too large (at most 1 MB)"
+msgstr "Le fichier d’importation est trop volumineux (1 Mo maximum)"
+
+#. TRANSLATORS: %s is PHP's own description of the JSON error, in English, such as "Syntax error"
+#, php-format
+msgid "Invalid JSON format: %s"
+msgstr "Format JSON non valide : %s"
+
+msgid "Invalid import format: missing language or steps"
+msgstr "Format d’importation non valide : langue ou étapes manquantes"
+
+msgid "Failed to send telemetry report"
+msgstr "Échec de l'envoi du rapport de télémétrie"
+
+#. TRANSLATORS: %s is a technical description of the problem, in English, such as "audience must be everyone or new"
+#, php-format
+msgid "Invalid tour: %s"
+msgstr "Visite non valide : %s"
+
+#. TRANSLATORS: Title of the checklist widget on the Dashboard
+msgid "Getting started"
+msgstr "Premiers pas"
+
+msgid "All done. You can remove this list under Customize."
+msgstr "Tout est fait. Vous pouvez retirer cette liste via Personnaliser."
+
+#. TRANSLATORS: Status (adjective): a task is finished, such as an AI translation or a checklist task
+msgid "Completed"
+msgstr "Terminés"
+
+#. TRANSLATORS: Noun: tab on the administration page, the heading of the list of tours, and the entry in the user menu; keep it short
+#. TRANSLATORS src/admin/ToursList.vue:4
+#. TRANSLATORS src/personal/PersonalApp.vue:28
+msgid "Tours"
+msgstr "Visites"
+
+#. TRANSLATORS: Name of the Files app, as Nextcloud shows it in your language
+msgid "Files"
+msgstr "Documents"
+
+#. TRANSLATORS: Name of the Talk app, as Nextcloud shows it in your language
+msgid "Talk"
+msgstr "Talk"
+
+#. TRANSLATORS: Name of the Deck app, as Nextcloud shows it in your language
+msgid "Deck"
+msgstr "Deck"
+
+#. TRANSLATORS: Name of the Calendar app, as Nextcloud shows it in your language
+msgid "Calendar"
+msgstr "Agenda"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📁 Welcome to Files"
+msgstr "📁 Bienvenue dans Fichiers"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Files is where your work lives. Share a link instead of emailing attachments, so everyone works in the same copy.</p><p>In this tour you make a folder, see how to share it and learn how to undo mistakes.</p>"
+msgstr "<p>Fichiers est l’endroit où se trouve votre travail. Partagez un lien au lieu d’envoyer des pièces jointes par e-mail, pour que tout le monde travaille sur la même copie.</p><p>Dans cette visite, vous créez un dossier, voyez comment le partager et apprenez à annuler vos erreurs.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "➕ Make a place for your work"
+msgstr "➕ Créez un espace pour votre travail"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Let's start with a folder of your own: click <strong>New</strong>.</p><p>No New button? Open a folder you can add to, such as a project folder.</p>"
+msgstr "<p>Commençons par un dossier à vous : cliquez sur <strong>Nouveau</strong>.</p><p>Pas de bouton Nouveau ? Ouvrez un dossier dans lequel vous pouvez ajouter des éléments, par exemple un dossier de projet.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📤 Upload or create"
+msgstr "📤 Téléverser ou créer"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Here you upload files, or a whole folder at once, and create new documents to work on together.</p><p>For now, choose <strong>New folder</strong>.</p>"
+msgstr "<p>Ici, vous téléversez des fichiers, ou un dossier entier d’un coup, et créez de nouveaux documents pour travailler à plusieurs.</p><p>Pour l’instant, choisissez <strong>Nouveau dossier</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "✏️ Give it a name"
+msgstr "✏️ Donnez-lui un nom"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Name it after something you're working on now, so it's useful right away and others see what's inside.</p><p>Click <strong>Create</strong> first, then click <strong>Next</strong>.</p>"
+msgstr "<p>Donnez-lui le nom d’un sujet sur lequel vous travaillez en ce moment, pour qu’il soit utile tout de suite et que les autres voient ce qu’il contient.</p><p>Cliquez d’abord sur <strong>Créer</strong>, puis sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🤝 Share a folder"
+msgstr "🤝 Partagez un dossier"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Now click the share icon next to your new folder. Could not make one? Any folder you can share will do.</p><p>The icon opens a panel that shows who has access. Nothing gets shared yet.</p>"
+msgstr "<p>Cliquez maintenant sur l’icône de partage à côté de votre nouveau dossier. Vous n’avez pas pu en créer un ? N’importe quel dossier que vous pouvez partager fera l’affaire.</p><p>L’icône ouvre un panneau qui indique qui y a accès. Rien n’est encore partagé.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "👥 Colleagues and teams"
+msgstr "👥 Collègues et équipes"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Type a colleague's name, a group or a team. Choose <strong>View only</strong> or <strong>Allow upload and editing</strong>, then click <strong>Save share</strong>.</p><p>Anything you add to the folder later is shared too. You do not have to share anything now.</p>"
+msgstr "<p>Saisissez le nom d’un collègue, d’un groupe ou d’une équipe. Choisissez <strong>Lecture seule</strong> ou <strong>Autoriser le téléversement et la modification</strong>, puis cliquez sur <strong>Enregistrer le partage</strong>.</p><p>Tout ce que vous ajouterez plus tard au dossier sera aussi partagé. Vous n’êtes pas obligé de partager quoi que ce soit maintenant.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🔗 Send a link, not a file"
+msgstr "🔗 Envoyez un lien, pas un fichier"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Copy the <strong>Internal link</strong> into a chat or an email instead of attaching the file. Colleagues with access open this very folder, so nobody works on an old copy.</p><p>The link itself does not give anyone access.</p>"
+msgstr "<p>Copiez le <strong>Lien interne</strong> dans une discussion ou un e-mail au lieu de joindre le fichier. Les collègues qui y ont accès ouvrent ce même dossier : personne ne travaille sur une ancienne copie.</p><p>Le lien en lui-même ne donne accès à personne.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "🌐 People outside your organization"
+msgstr "🌐 Personnes extérieures à votre organisation"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Someone at another organization? Type their email address above, or their federated cloud ID if they use Nextcloud too.</p><p>Or create a public link: its <strong>⋯</strong> menu › <strong>Customize link</strong> adds a password and an expiration date. Your organization may limit public links.</p>"
+msgstr "<p>Quelqu’un d’une autre organisation ? Saisissez son adresse e-mail ci-dessus, ou son identifiant de Cloud fédéré s’il utilise aussi Nextcloud.</p><p>Vous pouvez aussi créer un lien public : son menu <strong>⋯</strong> › <strong>Personnaliser le lien</strong> permet d’ajouter un mot de passe et une date d’expiration. Votre organisation peut restreindre les liens publics.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "💬 Activity and comments"
+msgstr "💬 Activité et commentaires"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>The <strong>Activity</strong> tab shows what happened to this item, such as who created, renamed or shared it.</p><p>You can also leave a comment there for everyone with access.</p>"
+msgstr "<p>L’onglet <strong>Activité</strong> montre ce qui est arrivé à cet élément, par exemple qui l’a créé, renommé ou partagé.</p><p>Vous pouvez aussi y laisser un commentaire pour toutes les personnes qui y ont accès.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+msgid "📥 Shared with you"
+msgstr "📥 Partagés avec vous"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Everything shared with you or by you is under <strong>Shares</strong>. Folders shared with your group or project also show up in <strong>All files</strong>.</p><p>A share from another Nextcloud server may wait in <strong>Pending shares</strong>: open Shares with its arrow to accept it.</p>"
+msgstr "<p>Tout ce qui est partagé avec vous ou par vous se trouve sous <strong>Partages</strong>. Les dossiers partagés avec votre groupe ou votre projet apparaissent aussi dans <strong>Tous les fichiers</strong>.</p><p>Un partage provenant d’un autre serveur Nextcloud peut attendre dans <strong>Partages en attente</strong> : déployez Partages avec sa flèche pour l’accepter.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Files app; keep the emoji
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "🗑️ Nothing is lost right away"
+msgstr "🗑️ Rien n’est perdu immédiatement"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Files app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Changed a file by mistake? In its details, <strong>Versions</strong> brings back an earlier one. Deleted something? It stays in <strong>Deleted files</strong> for a while.</p><p>That's it. Now drag your files into your folder, and send links instead of attachments.</p>"
+msgstr "<p>Vous avez modifié un fichier par erreur ? Dans ses détails, <strong>Versions</strong> permet de restaurer une version antérieure. Vous avez supprimé quelque chose ? Il reste un certain temps dans <strong>Fichiers supprimés</strong>.</p><p>C’est tout. Faites maintenant glisser vos fichiers dans votre dossier, et envoyez des liens plutôt que des pièces jointes.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "💬 Welcome to Talk"
+msgstr "💬 Bienvenue dans Talk"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Chat, calls and video meetings with your colleagues, right next to your files.</p><p>In this tour you set up a conversation for your team, add colleagues and see how calls, meetings and notifications work.</p>"
+msgstr "<p>Discussions, appels et réunions vidéo avec vos collègues, juste à côté de vos fichiers.</p><p>Dans cette visite, vous créez une conversation pour votre équipe, ajoutez des collègues et découvrez comment fonctionnent les appels, les réunions et les notifications.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🚀 A conversation for your team"
+msgstr "🚀 Une conversation pour votre équipe"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>A group conversation keeps a team's messages, files and calls in one place, instead of long email threads.</p><p>Let's make one: click the highlighted button. If it is not there, click <strong>Home</strong> at the top left.</p>"
+msgstr "<p>Une conversation de groupe réunit au même endroit les messages, les fichiers et les appels d’une équipe, au lieu de longs fils d’e-mails.</p><p>Créons-en une : cliquez sur le bouton mis en évidence. S’il n’apparaît pas, cliquez sur <strong>Dossier personnel</strong> en haut à gauche.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✏️ Name it after real work"
+msgstr "✏️ Nommez-la d’après votre vrai travail"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Type the name of a team, project or research group you work with, then click <strong>Next</strong>. Leave the other options as they are.</p><p>Already have a team conversation? Close this with ✕, then click <strong>Next</strong>.</p>"
+msgstr "<p>Saisissez le nom d’une équipe, d’un projet ou d’un groupe de recherche avec lequel vous travaillez, puis cliquez sur <strong>Suivant</strong>. Laissez les autres options telles quelles.</p><p>Vous avez déjà une conversation d’équipe ? Fermez cette fenêtre avec ✕, puis cliquez sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✅ Create it"
+msgstr "✅ Créez-la"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click the highlighted button to create the conversation.</p>"
+msgstr "<p>Cliquez sur le bouton mis en évidence pour créer la conversation.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "👥 Add your colleagues"
+msgstr "👥 Ajoutez vos collègues"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>In <strong>Participants</strong> on the right (open the sidebar if needed), type a colleague's or group's name and pick them. They get a notification.</p><p>External partners? Invite them by email in a separate conversation, if your organization allows guests.</p>"
+msgstr "<p>Dans <strong>Participants</strong> à droite (ouvrez la barre latérale si nécessaire), saisissez le nom d’un collègue ou d’un groupe et sélectionnez-le. Il reçoit une notification.</p><p>Des partenaires externes ? Invitez-les par e-mail dans une conversation séparée, si votre organisation autorise les invités.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "✍️ Say what it is for"
+msgstr "✍️ Indiquez à quoi elle sert"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Write a first message, for example what this conversation is for, and send it.</p><p>The <strong>+</strong> button shares one of your files, so everyone works in the same copy.</p>"
+msgstr "<p>Rédigez un premier message, par exemple pour expliquer à quoi sert cette conversation, et envoyez-le.</p><p>Le bouton <strong>+</strong> permet de partager l’un de vos fichiers, pour que tout le monde travaille sur la même copie.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "📞 Call with one click"
+msgstr "📞 Appeler en un clic"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Need to talk? <strong>Start call</strong> notifies everyone in the conversation, and they join with one click. You can share your screen too.</p><p>No need to try it now: it would ring them all.</p>"
+msgstr "<p>Besoin de parler ? <strong>Lancer l'appel</strong> prévient tous les participants de la conversation, qui le rejoignent en un clic. Vous pouvez aussi partager votre écran.</p><p>Inutile d’essayer maintenant : cela ferait sonner tout le monde.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "📅 Plan a meeting"
+msgstr "📅 Planifiez une réunion"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Next to <strong>Start call</strong>, the calendar button lists upcoming meetings. <strong>Schedule a meeting</strong> puts one in your calendar and invites everyone here.</p><p>At meeting time, everyone opens this conversation and joins the call.</p>"
+msgstr "<p>À côté de <strong>Lancer l'appel</strong>, le bouton agenda liste les réunions à venir. <strong>Planifier une réunion</strong> en ajoute une à votre agenda et invite tous les participants de la conversation.</p><p>À l’heure de la réunion, chacun ouvre cette conversation et rejoint l’appel.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🔔 Choose what you hear"
+msgstr "🔔 Choisissez vos notifications"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Each conversation has its own setting: hover over it, click the three dots and open <strong>Notifications</strong>. Put your team's conversation on <strong>All messages</strong>.</p><p>Someone chose <strong>@-mentions only</strong>? Type <strong>@</strong> and their name to reach them.</p>"
+msgstr "<p>Chaque conversation a son propre réglage : survolez-la, cliquez sur les trois points et ouvrez <strong>Notifications</strong>. Réglez la conversation de votre équipe sur <strong>Tous les messages</strong>.</p><p>Quelqu’un a choisi <strong>Seulement les mentions @</strong> ? Saisissez <strong>@</strong> suivi de son nom pour l’atteindre.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🏠 Start your day at Home"
+msgstr "🏠 Commencez la journée par l’Accueil"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Home</strong> shows your upcoming meetings, unread mentions and message reminders.</p><p>Search your phone's app store for Nextcloud Talk, so calls and messages reach you when this tab is closed.</p>"
+msgstr "<p><strong>Dossier personnel</strong> affiche vos prochaines réunions, vos mentions non lues et vos rappels de messages.</p><p>Recherchez Nextcloud Talk dans la boutique d’applications de votre téléphone, pour recevoir appels et messages même lorsque cet onglet est fermé.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Talk app; keep the emoji
+msgid "🔍 A quick question?"
+msgstr "🔍 Une question rapide ?"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Talk app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Next time you have a quick question, type a colleague's name here to start a one-to-one chat. It also finds your conversations.</p><p>That's it. Send your next team update in your team conversation instead of an email.</p>"
+msgstr "<p>La prochaine fois que vous avez une question rapide, saisissez ici le nom d’un collègue pour démarrer une discussion en tête-à-tête. Ce champ permet aussi de retrouver vos conversations.</p><p>C’est tout. Envoyez votre prochaine information d’équipe dans la conversation de votre équipe plutôt que par e-mail.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🗂️ Welcome to Deck"
+msgstr "🗂️ Bienvenue dans Deck"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Deck keeps track of tasks, your own or your team's, so everyone sees who does what and what is due.</p><p>In this tour you add a task, give it a due date and see where it comes back.</p>"
+msgstr "<p>Deck permet de suivre les tâches, les vôtres ou celles de votre équipe, pour que chacun voie qui fait quoi et ce qui arrive à échéance.</p><p>Dans cette visite, vous ajoutez une tâche, lui donnez une date d’échéance et voyez où elle réapparaît.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📋 Open a board"
+msgstr "📋 Ouvrez un tableau"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your boards are listed here, together with boards colleagues share with you.</p><p>Click your <strong>Welcome</strong> board to practice: only you can see it. No Welcome board? Open a board of your own.</p>"
+msgstr "<p>Vos tableaux sont listés ici, avec les tableaux que vos collègues partagent avec vous.</p><p>Cliquez sur votre tableau <strong>Bienvenue dans Nextcloud Deck !</strong> pour vous entraîner : vous seul pouvez le voir. Vous n’avez pas ce tableau ? Ouvrez l’un de vos propres tableaux.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "➕ Add a card"
+msgstr "➕ Ajoutez une carte"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Each column is a list, such as To do or Done, and each card is a task. Click the highlighted button to add one.</p><p>No button? You can only view this board, or it has no lists yet. Click <strong>Back</strong> and open another.</p>"
+msgstr "<p>Chaque colonne est une liste, par exemple À faire ou Terminé, et chaque carte est une tâche. Cliquez sur le bouton mis en évidence pour en ajouter une.</p><p>Pas de bouton ? Vous pouvez seulement consulter ce tableau, ou il n’a pas encore de listes. Cliquez sur <strong>Retour</strong> et ouvrez-en un autre.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "✏️ What needs doing?"
+msgstr "✏️ Que faut-il faire ?"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click in the field, type a real task, such as <em>Set up a board for my project</em>, and press <strong>Enter</strong>. Your card appears in the list and the field empties.</p><p>Only Enter saves it, so press Enter first, then click <strong>Next</strong>.</p>"
+msgstr "<p>Cliquez dans le champ, saisissez une vraie tâche, par exemple <em>Créer un tableau pour mon projet</em>, et appuyez sur <strong>Entrée</strong>. Votre carte apparaît dans la liste et le champ se vide.</p><p>Seule la touche Entrée l’enregistre : appuyez donc d’abord sur Entrée, puis cliquez sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "👆 Open your card"
+msgstr "👆 Ouvrez votre carte"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your new card is at the bottom of the list. Click it to open it.</p><p>Later on, drag cards to the next list as the work moves on, and up or down to change their order.</p>"
+msgstr "<p>Votre nouvelle carte se trouve en bas de la liste. Cliquez dessus pour l’ouvrir.</p><p>Par la suite, faites glisser les cartes vers la liste suivante à mesure que le travail avance, et vers le haut ou le bas pour modifier leur ordre.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📅 Give it a due date"
+msgstr "📅 Donnez-lui une date d’échéance"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click the <strong>+</strong> here and pick a date. Cards with a due date come back in <strong>Upcoming cards</strong> and, if you use Calendar, in your calendar.</p><p>On a shared board, you can assign the card to someone in the field above; they get a notification.</p>"
+msgstr "<p>Cliquez ici sur le <strong>+</strong> et choisissez une date. Les cartes avec une date d’échéance réapparaissent dans <strong>Prochaines cartes</strong> et, si vous utilisez Agenda, dans votre agenda.</p><p>Sur un tableau partagé, vous pouvez attribuer la carte à quelqu’un dans le champ ci-dessus ; cette personne reçoit une notification.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "💬 Notes, comments and files"
+msgstr "💬 Notes, commentaires et fichiers"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Keep everything about a task on its card: notes and checklists in the description, discussion in the comments, files as attachments for everyone on the board. Type @ in a comment to mention someone.</p><p>Now close the card with ✕, then click <strong>Next</strong>.</p>"
+msgstr "<p>Gardez tout ce qui concerne une tâche sur sa carte : notes et listes de contrôle dans la description, échanges dans les commentaires, fichiers en pièces jointes pour tous les membres du tableau. Saisissez @ dans un commentaire pour mentionner quelqu’un.</p><p>Fermez maintenant la carte avec ✕, puis cliquez sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🤝 Work together"
+msgstr "🤝 Travaillez ensemble"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>This button opens the board's details: share the board with colleagues, groups or teams, and see who changed what.</p><p>People you add can only view at first. Turn on <strong>Can edit</strong> for those who work on the cards.</p>"
+msgstr "<p>Ce bouton ouvre les détails du tableau : partagez le tableau avec des collègues, des groupes ou des équipes, et voyez qui a modifié quoi.</p><p>Les personnes que vous ajoutez peuvent d’abord seulement consulter. Activez <strong>Peut modifier</strong> pour celles qui travaillent sur les cartes.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "📆 Upcoming cards"
+msgstr "📆 Prochaines cartes"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Now see your task come back: click <strong>Upcoming cards</strong>. It gathers the open cards from all your boards in one view.</p>"
+msgstr "<p>Voyez maintenant votre tâche réapparaître : cliquez sur <strong>Prochaines cartes</strong>. Cette vue rassemble les cartes ouvertes de tous vos tableaux.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "⏰ What's due when"
+msgstr "⏰ Les échéances à venir"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Your open cards from every board, assigned to you or to no one, sorted by due date. Find your new card under the day you picked, or under <strong>No due</strong>.</p><p>Finished? Click <strong>Mark as done</strong> on its card, and it leaves this list.</p>"
+msgstr "<p>Vos cartes ouvertes de tous les tableaux, qui vous sont attribuées ou ne sont attribuées à personne, triées par date d’échéance. Retrouvez votre nouvelle carte sous le jour choisi, ou sous <strong>Sans échéance</strong>.</p><p>Terminé ? Cliquez sur <strong>Marquer comme fait</strong> sur sa carte, et elle disparaît de cette liste.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Deck app; keep the emoji
+msgid "🚀 Make it yours"
+msgstr "🚀 À vous de jouer"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Deck app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>That's it. Ready for real work? Add a board for each project or team, give it your own lists and share it with the people involved.</p><p>The cards on the Welcome board have more tips.</p>"
+msgstr "<p>C’est tout. Prêt pour le vrai travail ? Ajoutez un tableau pour chaque projet ou équipe, créez-y vos propres listes et partagez-le avec les personnes concernées.</p><p>Les cartes du tableau « Bienvenue dans Nextcloud Deck ! » contiennent d’autres conseils.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📅 Welcome to Calendar"
+msgstr "📅 Bienvenue dans Agenda"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Plan meetings and time for your own work, and see when colleagues are free.</p><p>In this tour you plan an event, then see how to invite colleagues, share calendars and have them on your phone too.</p>"
+msgstr "<p>Planifiez des réunions et du temps pour votre propre travail, et voyez quand vos collègues sont disponibles.</p><p>Dans cette visite, vous planifiez un événement, puis découvrez comment inviter des collègues, partager des agendas et les retrouver aussi sur votre téléphone.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "➕ Plan your first event"
+msgstr "➕ Planifiez votre premier événement"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Let's plan something: click the highlighted button to start a new event.</p><p>Later you can also click a day in the calendar, or drag across a few hours in the week view.</p>"
+msgstr "<p>Planifions quelque chose : cliquez sur le bouton mis en évidence pour créer un nouvel événement.</p><p>Plus tard, vous pourrez aussi cliquer sur un jour dans l’agenda, ou faire glisser sur quelques heures dans la vue semaine.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "👥 Meeting with others?"
+msgstr "👥 Une réunion avec d’autres personnes ?"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Add colleagues, or anyone by email, under <strong>Attendees</strong>. Once they are added, <strong>Find a time</strong> in <strong>More details</strong> shows when they are free. Reminders are there too.</p><p>To invite people, your account needs an email address. First, the basics.</p>"
+msgstr "<p>Ajoutez des collègues, ou n’importe qui par e-mail, sous <strong>Participants</strong>. Une fois qu’ils sont ajoutés, <strong>Trouver un horaire</strong> dans <strong>Plus de détails</strong> indique quand ils sont disponibles. Les rappels s’y trouvent aussi.</p><p>Pour inviter des personnes, votre compte doit avoir une adresse e-mail. Commençons par l’essentiel.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "✏️ What and when"
+msgstr "✏️ Quoi et quand"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Plan something real: type what it is, such as <em>Project meeting</em> or <em>Writing time</em>.</p><p>Then set the day and time just below it, and click <strong>Next</strong>.</p>"
+msgstr "<p>Planifiez quelque chose de réel : saisissez de quoi il s’agit, par exemple <em>Réunion de projet</em> ou <em>Temps de rédaction</em>.</p><p>Définissez ensuite le jour et l’heure juste en dessous, puis cliquez sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "💾 Save it"
+msgstr "💾 Enregistrez-le"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click <strong>Save</strong>, and your event is in your calendar. Later, click it to see or edit it, or drag it to another day or time.</p><p>Rather not keep it? Close it with ✕, then click <strong>Next</strong>.</p>"
+msgstr "<p>Cliquez sur <strong>Enregistrer</strong>, et votre événement figure dans votre agenda. Plus tard, cliquez dessus pour le consulter ou le modifier, ou faites-le glisser vers un autre jour ou une autre heure.</p><p>Vous ne souhaitez pas le conserver ? Fermez-le avec ✕, puis cliquez sur <strong>Suivant</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "🧭 Day, week or month"
+msgstr "🧭 Jour, semaine ou mois"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Planned it for another week or month? The arrows above take you there; click the date between them to jump to any day. <strong>Today</strong> brings you back.</p><p>This menu switches between day, week, month, year and a list.</p>"
+msgstr "<p>Vous l’avez prévu pour une autre semaine ou un autre mois ? Les flèches ci-dessus vous y mènent ; cliquez sur la date entre elles pour aller à n’importe quel jour. <strong>Auj.</strong> vous ramène à la date du jour.</p><p>Ce menu permet de basculer entre jour, semaine, mois, année et liste.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "☑️ Your calendars"
+msgstr "☑️ Vos agendas"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Click a calendar to show or hide its events. You may also see birthdays, Deck cards with a due date and calendars shared with you.</p><p>To share one, hover over it and choose <strong>Edit and share calendar</strong>.</p>"
+msgstr "<p>Cliquez sur un agenda pour afficher ou masquer ses événements. Vous verrez peut-être aussi les anniversaires, les cartes Deck avec une date d’échéance et les agendas partagés avec vous.</p><p>Pour en partager un, survolez-le et choisissez <strong>Modifier et partager l'agenda</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📆 Calendars for projects and teams"
+msgstr "📆 Des agendas pour les projets et les équipes"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Make a separate calendar for a project or team, and share it with them.</p><p>If your organization allows it, you can also subscribe to a read-only calendar by link, such as a course timetable, or add public holidays.</p>"
+msgstr "<p>Créez un agenda distinct pour un projet ou une équipe, et partagez-le avec ses membres.</p><p>Si votre organisation l’autorise, vous pouvez aussi vous abonner par lien à un agenda en lecture seule, comme un emploi du temps de cours, ou ajouter les jours fériés.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "📱 On your phone too"
+msgstr "📱 Aussi sur votre téléphone"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Calendar settings</strong> has the CalDAV address for your phone or Thunderbird, and a separate one for iPhone and Mac. On Android, use the DAVx⁵ app.</p><p>Sign in there with an app password, made in your personal settings under <strong>Security</strong>.</p>"
+msgstr "<p>Dans <strong>Paramètres de Agenda</strong>, vous trouverez l’adresse CalDAV pour votre téléphone ou Thunderbird, ainsi qu’une adresse distincte pour iPhone et Mac. Sur Android, utilisez l’application DAVx⁵.</p><p>Connectez-vous avec un mot de passe d’application, à créer dans vos paramètres personnels, rubrique <strong>Sécurité</strong>.</p>"
+
+#. TRANSLATORS: Title of a step in the built-in tour of the Calendar app; keep the emoji
+msgid "🕓 Let others book time with you"
+msgstr "🕓 Laissez les autres réserver un créneau avec vous"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>For office hours, supervision or study participants: an appointment schedule gives people a link to book a free slot with you, no account needed.</p><p>See a warning here? Your account needs an email address; ask your IT team if you cannot add one.</p>"
+msgstr "<p>Pour des permanences, un suivi ou des participants à une étude : une page de prise de rendez-vous donne aux gens un lien pour réserver un créneau libre avec vous, sans avoir besoin de compte.</p><p>Vous voyez un avertissement ici ? Votre compte doit avoir une adresse e-mail ; adressez-vous à votre équipe informatique si vous ne pouvez pas en ajouter une.</p>"
+
+#. TRANSLATORS: Text of a step in the built-in tour of the Calendar app. Words in bold are labels in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p>Deleted an event by mistake? It stays in the <strong>Trash bin</strong> for a while, so you can restore it.</p><p>That's it. Now plan your next real meeting here, and invite the people involved.</p>"
+msgstr "<p>Vous avez supprimé un événement par erreur ? Il reste un certain temps dans la <strong>Corbeille</strong>, vous pouvez donc le restaurer.</p><p>C’est tout. Planifiez maintenant ici votre prochaine vraie réunion, et invitez les personnes concernées.</p>"
+
+#. TRANSLATORS: Checklist task on the Dashboard; the Dashboard cuts off text longer than one line
+msgid "Take the welcome tour"
+msgstr "Suivre la visite de bienvenue"
+
+#. TRANSLATORS Menu entry and checklist task: upload a file from your computer (src/admin/ToursList.vue:22)
+msgid "Upload a file"
+msgstr "Téléverser un fichier"
+
+#. TRANSLATORS: Checklist task on the Dashboard; the Dashboard cuts off text longer than one line
+msgid "Add a profile picture"
+msgstr "Ajouter une image de profil"
+
+#. TRANSLATORS: Checklist task on the Dashboard: install the Nextcloud desktop or mobile app; keep it short
+msgid "Install the app"
+msgstr "Installer l’application"
+
+msgid "Send a message in Talk"
+msgstr "Envoyer un message dans Talk"
+
+#. TRANSLATORS: Checklist task on the Dashboard; the Dashboard cuts off text longer than one line
+msgid "Secure your account"
+msgstr "Sécuriser votre compte"
+
+msgid "A short tour of Nextcloud"
+msgstr "Une courte visite de Nextcloud"
+
+msgid "Drag a file into Files, or use New"
+msgstr "Faites glisser un fichier dans Fichiers, ou utilisez Nouveau"
+
+#. TRANSLATORS: Short explanation under the task "Add a profile picture"; keep it short
+msgid "So others recognize you"
+msgstr "Pour que les autres vous reconnaissent"
+
+msgid "On your computer or phone"
+msgstr "Sur votre ordinateur ou votre téléphone"
+
+msgid "Chat and call with your team"
+msgstr "Discuter et appeler avec votre équipe"
+
+#. TRANSLATORS: Short explanation under the task "Secure your account"; keep it short
+msgid "With two-factor authentication"
+msgstr "Avec l’authentification à deux facteurs"
+
+msgid "While the welcome tour is on"
+msgstr "Tant que la visite de bienvenue est activée"
+
+msgid "For people who can use Talk"
+msgstr "Pour les personnes qui peuvent utiliser Talk"
+
+msgid "When an app for two-factor authentication is installed"
+msgstr "Lorsqu’une application d’authentification à deux facteurs est installée"
+
+#. TRANSLATORS: Title of the first step of the welcome tour; keep the emoji
+msgid "👋 Welcome to Nextcloud"
+msgstr "👋 Bienvenue dans Nextcloud"
+
+msgid "<p>Nice to have you here! This short tour will help you get started quickly.</p><p>You can close this wizard at any time and open it again later.</p>"
+msgstr "<p>Nous sommes ravis de vous accueillir ! Cette courte visite vous aidera à prendre rapidement en main Nextcloud.</p><p>Vous pouvez fermer cet assistant à tout moment et le rouvrir plus tard.</p>"
+
+#. TRANSLATORS: Title of a step of the welcome tour; keep the emoji
+msgid "📁 Files & apps"
+msgstr "📁 Fichiers et applications"
+
+msgid "<p>Files is where you view and manage everything you store.</p><p>You will find it in the apps menu (top left) — together with Calendar, Mail, Contacts and more. Click the menu any time to switch apps.</p>"
+msgstr "<p>L'application Fichiers vous permet de consulter et gérer tout ce que vous stockez.</p><p>Elle se trouve dans le menu des applications, en haut à gauche, avec Agenda, Mail, Contacts et les autres applications. Vous pouvez utiliser ce menu à tout moment pour changer d'application.</p>"
+
+#. TRANSLATORS: Noun: title of a step of the welcome tour about the search; keep the emoji
+msgid "🔍 Search"
+msgstr "🔍 Recherche"
+
+msgid "<p>With the search bar you can quickly find files, contacts and more.</p><p>Just type what you're looking for and press Enter.</p>"
+msgstr "<p>La barre de recherche vous permet de retrouver rapidement des fichiers, des contacts et bien plus encore.</p><p>Saisissez simplement ce que vous recherchez, puis appuyez sur Entrée.</p>"
+
+msgid "⚙️ Your account & settings"
+msgstr "⚙️ Votre compte et vos paramètres"
+
+msgid "<p>Your profile, personal settings and the log out button live under your avatar (top right).</p><p>Click it whenever you want to adjust your account.</p>"
+msgstr "<p>Votre profil, vos paramètres personnels et le bouton de déconnexion sont accessibles depuis votre avatar, en haut à droite.</p><p>Cliquez dessus chaque fois que vous souhaitez modifier les paramètres de votre compte.</p>"
+
+#. TRANSLATORS: Title of a step of the welcome tour; keep the emoji
+msgid "🎯 Getting started"
+msgstr "🎯 Premiers pas"
+
+#. TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Nextcloud is your personal cloud storage!</strong></p><p>Here you can:</p><ul><li>📁 Upload, share and collaborate on files</li><li>📅 Manage your calendar</li><li>✉️ Send and receive email</li><li>👥 Keep track of contacts</li></ul>"
+msgstr "<p><strong>Nextcloud est votre espace de stockage cloud personnel !</strong></p><p>Vous pouvez notamment :</p><ul><li>📁 Téléverser, partager et modifier des fichiers à plusieurs</li><li>📅 Gérer votre agenda</li><li>✉️ Envoyer et recevoir des e-mails</li><li>👥 Gérer vos contacts</li></ul>"
+
+#. TRANSLATORS: Title of a step of the welcome tour; keep the emoji
+msgid "✨ Important features"
+msgstr "✨ Fonctionnalités essentielles"
+
+#. TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Finding your way around:</strong></p><ul><li>Use the <strong>apps menu</strong> (top left) to switch between apps</li><li>Open your <strong>avatar</strong> (top right) for your account and settings</li><li>Use the <strong>search bar</strong> to quickly find files and more</li></ul>"
+msgstr "<p><strong>Pour vous repérer :</strong></p><ul><li>Utilisez le <strong>menu des applications</strong>, en haut à gauche, pour passer d’une application à une autre</li><li>Ouvrez le menu de votre <strong>avatar</strong>, en haut à droite, pour accéder à votre compte et à vos paramètres</li><li>Utilisez la <strong>barre de recherche</strong> pour retrouver rapidement des fichiers et d’autres contenus</li></ul>"
+
+#. TRANSLATORS: Title of a step of the welcome tour; keep the emoji
+msgid "💡 Useful tips"
+msgstr "💡 Conseils utiles"
+
+#. TRANSLATORS: Text of a step in the welcome tour. Words in bold are names in Nextcloud: use the words Nextcloud shows in your language
+msgid "<p><strong>Did you know:</strong></p><ul><li>You can upload files by dragging them to your browser</li><li>You can directly share files with a link</li><li>You can also use Nextcloud as an app on your phone</li><li>All your data is stored privately and securely</li></ul>"
+msgstr "<p><strong>Le saviez-vous ?</strong></p><ul><li>Vous pouvez téléverser des fichiers en les faisant glisser dans votre navigateur</li><li>Vous pouvez partager directement des fichiers à l’aide d’un lien</li><li>Vous pouvez également utiliser l’application Nextcloud sur votre téléphone</li><li>Toutes vos données sont stockées de manière privée et sécurisée</li></ul>"
+
+#. TRANSLATORS: Title of the last step of the welcome tour; keep the emoji
+msgid "🎉 Done!"
+msgstr "🎉 C’est terminé !"
+
+msgid "<p>You're all set to get started!</p><p>If you want to see this tour again, you can find it in your personal settings.</p><p>Have fun with Nextcloud!</p>"
+msgstr "<p>Vous êtes maintenant prêt à utiliser Nextcloud !</p><p>Pour revoir cette visite, vous pourrez la retrouver dans vos paramètres personnels.</p><p>Profitez bien de Nextcloud !</p>"
+
+#. TRANSLATORS src/personal/PersonalApp.vue:3
+msgid "IntroVox"
+msgstr "IntroVox"
+
+msgid "Guided tours for Nextcloud and its apps"
+msgstr "Visites guidées de Nextcloud et de ses applications"
+
+msgid ""
+"IntroVox shows people around Nextcloud. New users get a welcome tour after their first login, and a short tour the first time they open an app such as Files, Talk, Deck or Calendar.\n"
+"\n"
+"**For users:**\n"
+"* A welcome tour after the first login, in their own language\n"
+"* Short tours the first time they open an app or a page, or a tip on any page after a few days\n"
+"* Steps that go on when they click the element or fill in a field; a step whose element is not there yet waits aside until it appears\n"
+"* Images, GIFs and videos in steps, with descriptions and captions\n"
+"* Every tour can be started again from the personal settings, also through Tours in the user menu, and tours that start by themselves can be switched off\n"
+"* An optional \"Getting started\" checklist on the Dashboard that ticks itself off\n"
+"\n"
+"**For administrators:**\n"
+"* Built-in tours for Files, Talk, Deck and Calendar, and tours of your own for an app, a page, or anywhere\n"
+"* Default steps translated in VoxCloud's Weblate (every translated language is available automatically), with your own steps per language where you want them\n"
+"* Groups per step and per tour\n"
+"* Who gets a tour and when: everyone or new accounts only, a number of days after the first login, between two dates\n"
+"* Share links that start a tour, for a welcome mail or a message to a team\n"
+"* Statistics per tour: how many people started, completed and skipped it, and how far people get\n"
+"* Export and import of a whole tour, with its steps in every language and its images and videos\n"
+"* Translate a tour or write its steps with AI, through the Nextcloud Assistant; you check every step before it is saved\n"
+"* Optional anonymous telemetry reporting\n"
+"* Automatically adapts to your Nextcloud theme (light, dark, high contrast)\n"
+"\n"
+"Built with Vue 3 and Shepherd.js."
+msgstr ""
+"IntroVox fait découvrir Nextcloud aux personnes qui l’utilisent. Les nouveaux utilisateurs reçoivent une visite de bienvenue après leur première connexion, et une courte visite la première fois qu’ils ouvrent une application comme Fichiers, Talk, Deck ou Agenda.\n"
+"\n"
+"**Pour les utilisateurs :**\n"
+"* Une visite de bienvenue après la première connexion, dans leur propre langue\n"
+"* De courtes visites la première fois qu’ils ouvrent une application ou une page, ou une astuce sur n’importe quelle page après quelques jours\n"
+"* Des étapes qui se poursuivent lorsqu’ils cliquent sur l’élément ou remplissent un champ ; une étape dont l’élément n’est pas encore présent attend en retrait jusqu’à ce qu’il apparaisse\n"
+"* Des images, des GIF et des vidéos dans les étapes, avec descriptions et sous-titres\n"
+"* Chaque visite peut être relancée depuis les paramètres personnels, également via Visites dans le menu utilisateur, et les visites qui démarrent automatiquement peuvent être désactivées\n"
+"* Une liste de tâches « Premiers pas » facultative sur le tableau de bord, qui se coche automatiquement\n"
+"\n"
+"**Pour les administrateurs :**\n"
+"* Des visites intégrées pour Fichiers, Talk, Deck et Agenda, et vos propres visites pour une application, une page ou n’importe où\n"
+"* Des étapes par défaut traduites dans le Weblate de VoxCloud (chaque langue traduite est disponible automatiquement), avec vos propres étapes par langue là où vous le souhaitez\n"
+"* Des groupes par étape et par visite\n"
+"* Qui reçoit une visite et quand : tout le monde ou uniquement les nouveaux comptes, un certain nombre de jours après la première connexion, entre deux dates\n"
+"* Des liens à partager qui lancent une visite, pour un e-mail de bienvenue ou un message à une équipe\n"
+"* Des statistiques par visite : combien de personnes l’ont commencée, terminée ou ignorée, et jusqu’où elles vont\n"
+"* Exportation et importation d’une visite complète, avec ses étapes dans toutes les langues ainsi que ses images et vidéos\n"
+"* Traduction d’une visite ou rédaction de ses étapes avec l’IA, via l’Assistant Nextcloud ; vous vérifiez chaque étape avant son enregistrement\n"
+"* Envoi facultatif de données de télémétrie anonymes\n"
+"* S’adapte automatiquement au thème de votre Nextcloud (clair, sombre, contraste élevé)\n"
+"\n"
+"Développé avec Vue 3 et Shepherd.js."
+
+#. TRANSLATORS: Noun: tab on the administration page with the global settings; keep it short
+msgid "Settings"
+msgstr "Paramètres"
+
+#. TRANSLATORS: Noun: tab and section heading on the administration page; keep it short
+#. TRANSLATORS src/admin/StatisticsPane.vue:3
+msgid "Statistics"
+msgstr "Statistiques"
+
+#. TRANSLATORS: Noun: tab on the administration page with help and contact information; keep it short
+msgid "Support"
+msgstr "Support"
+
+#. TRANSLATORS: The language name, shown in a language list when the list of languages could not be loaded
+msgid "English"
+msgstr "Anglais"
+
+msgid "Could not load available languages, using English only"
+msgstr "Impossible de charger les langues disponibles, seul l'anglais sera utilisé"
+
+msgid "The tour could not be loaded."
+msgstr "La visite n'a pas pu être chargée."
+
+#. TRANSLATORS Invisible group label (for screen readers) of the row of tabs on the administration page: Settings, Tours, Statistics, Support (src/admin/AdminApp.vue:10)
+msgid "Settings section"
+msgstr "Section des paramètres"
+
+#. TRANSLATORS: Placeholder of the list of languages to translate into
+msgid "Choose languages"
+msgstr "Choisir des langues"
+
+#. TRANSLATORS: Dialog title and button: let the Nextcloud Assistant (AI) translate the steps of a tour
+#. TRANSLATORS src/admin/TourEditor.vue:113
+msgid "Translate with AI"
+msgstr "Traduire avec l’IA"
+
+#. TRANSLATORS: Dialog title and button: let the Nextcloud Assistant (AI) write steps from a description
+#. TRANSLATORS src/admin/TourEditor.vue:119
+msgid "Write steps with AI"
+msgstr "Rédiger des étapes avec l’IA"
+
+#. TRANSLATORS: Button (verb): starts the AI translation
+msgid "Translate"
+msgstr "Traduire"
+
+#. TRANSLATORS: Button: lets the AI write the steps
+msgid "Write steps"
+msgstr "Rédiger les étapes"
+
+#. TRANSLATORS: Button: saves the AI translations after you checked them
+msgid "Save translations"
+msgstr "Enregistrer les traductions"
+
+#. TRANSLATORS: Button: adds the steps the AI wrote, after you checked them
+msgid "Add steps"
+msgstr "Ajouter les étapes"
+
+#. TRANSLATORS: Status of one language while the AI is translating it
+msgid "Translating …"
+msgstr "Traduction …"
+
+#. TRANSLATORS: Status while the AI is writing the steps
+msgid "Writing …"
+msgstr "Rédaction …"
+
+#. TRANSLATORS: Status (adjective) of one language whose AI translation failed
+msgid "Failed"
+msgstr "Échec"
+
+#. TRANSLATORS: Status of a language whose AI translation has not started yet
+msgid "Waiting"
+msgstr "En attente"
+
+#. TRANSLATORS: "Language" is the label of the list of languages in the step editor
+msgid "Translations saved. Choose a language under Language to see them."
+msgstr "Traductions enregistrées. Choisissez une langue dans la liste Langue pour les afficher."
+
+#. TRANSLATORS: Message after the steps written by the AI were added to the tour
+msgid "Steps added"
+msgstr "Étapes ajoutées"
+
+#. TRANSLATORS {language} is a language name, such as "German". "the Assistant" is the Nextcloud Assistant app (AI) (src/admin/AssistantDialog.vue:10)
+msgid "The steps in {language} are translated by the Assistant. Only the words change: elements, pages and images stay as they are. You check the translation before it is saved."
+msgstr "Les étapes en {language} sont traduites par l’Assistant. Seuls les mots changent : les éléments, les pages et les images restent tels quels. Vous vérifiez la traduction avant qu’elle soit enregistrée."
+
+#. TRANSLATORS Label of a list where you choose the languages to translate into, as in "translate into" (src/admin/AssistantDialog.vue:13)
+msgid "Into"
+msgstr "Vers"
+
+#. TRANSLATORS {language} is a language name, such as "German". "The Assistant" is the Nextcloud Assistant app (AI) (src/admin/AssistantDialog.vue:30)
+msgid "Describe what the tour should explain. The Assistant writes the steps in {language}; you check them before they are added."
+msgstr "Décrivez ce que la visite doit expliquer. L’Assistant rédige les étapes en {language} ; vous les vérifiez avant qu’elles soient ajoutées."
+
+#. TRANSLATORS src/admin/AssistantDialog.vue:34
+msgid "What should the tour explain?"
+msgstr "Que doit expliquer la visite ?"
+
+#. TRANSLATORS src/admin/AssistantDialog.vue:35
+msgid "For example: how to make a board, add cards to it and share it with your team"
+msgstr "Par exemple : comment créer un tableau, y ajouter des cartes et le partager avec votre équipe"
+
+#. TRANSLATORS src/admin/AssistantDialog.vue:40
+msgid "The new steps show in the middle of the screen. Pick an element for each of them in the editor afterwards."
+msgstr "Les nouvelles étapes s’affichent au milieu de l’écran. Choisissez ensuite un élément pour chacune d’elles dans l’éditeur."
+
+#. TRANSLATORS Status: tooltip of a check mark next to a language whose translation was saved (src/admin/AssistantDialog.vue:60)
+msgid "Saved"
+msgstr "Enregistré"
+
+#. TRANSLATORS Label of a text field; {number} is the position of the step in the tour: 1, 2, 3 (src/admin/AssistantDialog.vue:68)
+msgid "Title of step {number}"
+msgstr "Titre de l’étape {number}"
+
+#. TRANSLATORS Label of a text editor; {number} is the position of the step in the tour: 1, 2, 3 (src/admin/AssistantDialog.vue:72)
+msgid "Text of step {number}"
+msgstr "Texte de l’étape {number}"
+
+#. TRANSLATORS Button: opens the editor for the text of a step (src/admin/AssistantDialog.vue:81)
+msgid "Edit text"
+msgstr "Modifier le texte"
+
+#. TRANSLATORS Button: closes a dialog without saving (src/admin/AssistantDialog.vue:93)
+#. TRANSLATORS src/admin/ChecklistTaskDialog.vue:23
+#. TRANSLATORS src/admin/StepTextEditor.vue:75
+#. TRANSLATORS src/admin/TourEditor.vue:84
+#. TRANSLATORS src/picker/ElementPicker.vue:6
+msgid "Cancel"
+msgstr "Annuler"
+
+#. TRANSLATORS: Error message; {example} is a path, such as "/apps/spreed/"
+msgid "Use a page of this Nextcloud, such as {example}."
+msgstr "Utilisez une page de cette instance Nextcloud, par exemple {example}."
+
+msgid "A task needs a title of at most 60 characters."
+msgstr "Une tâche doit avoir un titre de 60 caractères maximum."
+
+msgid "The short text can be at most 120 characters."
+msgstr "Le texte court ne peut pas dépasser 120 caractères."
+
+#. TRANSLATORS: Error message; %n is the maximum number of tasks of your own in the checklist, currently 10
+msgid "There can be at most %n own task."
+msgid_plural "There can be at most %n own tasks."
+msgstr[0] "Vous pouvez ajouter au maximum %n tâche."
+msgstr[1] "Vous pouvez ajouter au maximum %n tâches."
+msgstr[2] "Vous pouvez ajouter au maximum %n tâches."
+
+#. TRANSLATORS: Error message after saving a setting failed
+msgid "Error saving settings"
+msgstr "Erreur lors de l’enregistrement des paramètres"
+
+#. TRANSLATORS: Message after a setting was saved
+msgid "Global settings saved"
+msgstr "Paramètres généraux enregistrés"
+
+#. TRANSLATORS: Title of the dialog that asks whether to delete a checklist task
+msgid "Delete task"
+msgstr "Supprimer la tâche"
+
+#. TRANSLATORS: Confirmation text; {task} is the title of a checklist task, such as "Open Talk"
+msgid "\"{task}\" goes from everyone's list."
+msgstr "« {task} » sera retirée de la liste de tout le monde."
+
+#. TRANSLATORS: Section heading. "Dashboard" is the Nextcloud Dashboard app
+msgid "Checklist on the Dashboard"
+msgstr "Liste de tâches sur le tableau de bord"
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:4
+msgid "A list of first things to do in Nextcloud, ticked off by itself as people do them."
+msgstr "Une liste des premières choses à faire dans Nextcloud, cochées automatiquement à mesure que les utilisateurs les font."
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:9
+msgid "Everyone can add it under Customize on their Dashboard, and remove it there again."
+msgstr "Chacun peut l’ajouter via Personnaliser sur son tableau de bord, et l’en retirer au même endroit."
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:11
+msgid "Show \"Getting started\" on the Dashboard"
+msgstr "Afficher « Premiers pas » sur le tableau de bord"
+
+#. TRANSLATORS Noun: heading of the list of tasks in the checklist (src/admin/ChecklistSettings.vue:18)
+msgid "Tasks"
+msgstr "Tâches"
+
+#. TRANSLATORS Heading of the list of checklist tasks an administrator added (src/admin/ChecklistSettings.vue:32)
+msgid "Your own tasks"
+msgstr "Vos propres tâches"
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:34
+msgid "A page of this Nextcloud to open, such as Talk or the folder with the handbook. It is ticked off once someone opens it from the list, and comes after the tasks above."
+msgstr "Une page de cette instance Nextcloud à ouvrir, comme Talk ou le dossier contenant le guide. Elle est cochée dès qu’une personne l’ouvre depuis la liste, et apparaît après les tâches ci-dessus."
+
+#. TRANSLATORS Invisible label (for screen readers) of a pencil button; {task} is the title of a checklist task, such as "Open Talk" (src/admin/ChecklistSettings.vue:44)
+msgid "Edit {task}"
+msgstr "Modifier {task}"
+
+#. TRANSLATORS Invisible label (for screen readers) of a trash button; {task} is the title of a checklist task, such as "Open Talk" (src/admin/ChecklistSettings.vue:51)
+msgid "Delete {task}"
+msgstr "Supprimer {task}"
+
+#. TRANSLATORS Button: adds a task of your own to the checklist (src/admin/ChecklistSettings.vue:65)
+msgid "Add task"
+msgstr "Ajouter une tâche"
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:72
+msgid "For new accounts and everyone who never arranged their Dashboard. People who did can add it under Customize."
+msgstr "Pour les nouveaux comptes et toutes les personnes qui n’ont jamais organisé leur tableau de bord. Celles qui l’ont fait peuvent l’ajouter via Personnaliser."
+
+#. TRANSLATORS src/admin/ChecklistSettings.vue:74
+msgid "Put it on every Dashboard"
+msgstr "L’ajouter à chaque tableau de bord"
+
+#. TRANSLATORS: Dialog title: change a checklist task
+msgid "Edit task"
+msgstr "Modifier la tâche"
+
+#. TRANSLATORS: Dialog title: add a checklist task of your own
+msgid "New task"
+msgstr "Nouvelle tâche"
+
+#. TRANSLATORS: Help text under a field; {example} is a path, such as "/apps/spreed/"
+#. TRANSLATORS src/admin/NewTourDialog.vue:40
+msgid "A page of this Nextcloud, such as {example}"
+msgstr "Une page de cette instance Nextcloud, par exemple {example}"
+
+#. TRANSLATORS Noun: label of the text field for the title of a checklist task or a step (src/admin/ChecklistTaskDialog.vue:8)
+#. TRANSLATORS src/admin/StepWizard.vue:35
+msgid "Title"
+msgstr "Titre"
+
+#. TRANSLATORS Label of a text field for a short explanation under a checklist task (src/admin/ChecklistTaskDialog.vue:11)
+msgid "Short text"
+msgstr "Court texte"
+
+#. TRANSLATORS Noun: label of a field for a page (an address) of this Nextcloud (src/admin/ChecklistTaskDialog.vue:14)
+#. TRANSLATORS src/admin/NewTourDialog.vue:38
+#. TRANSLATORS src/admin/StepWizard.vue:105
+msgid "Page"
+msgstr "Page"
+
+#. TRANSLATORS src/admin/ChecklistTaskDialog.vue:18
+msgid "The task is ticked off once someone opens this page from the list."
+msgstr "La tâche est cochée dès qu’une personne ouvre cette page depuis la liste."
+
+#. TRANSLATORS Button (verb): saves the changes (src/admin/ChecklistTaskDialog.vue:27)
+#. TRANSLATORS: Button (verb): saves the changes
+#. TRANSLATORS src/admin/StepWizard.vue:227
+msgid "Save"
+msgstr "Enregistrer"
+
+#. TRANSLATORS: Placeholder of the list of apps
+msgid "Choose an app"
+msgstr "Choisir une application"
+
+#. TRANSLATORS: Placeholder of the list of groups: when no group is chosen, everyone gets it
+#. TRANSLATORS src/admin/StepWizard.vue:184
+msgid "All users (no restriction)"
+msgstr "Tous les utilisateurs (sans restriction)"
+
+#. TRANSLATORS: Dialog title and button: the settings of one tour
+#. TRANSLATORS src/admin/TourEditor.vue:19
+msgid "Tour settings"
+msgstr "Paramètres de la visite"
+
+#. TRANSLATORS: Dialog title and button: make a new tour
+#. TRANSLATORS src/admin/ToursList.vue:11
+msgid "New tour"
+msgstr "Nouvelle visite"
+
+#. TRANSLATORS: Button (verb): creates the new tour
+msgid "Create"
+msgstr "Créer"
+
+msgid "The tour could not be saved."
+msgstr "La visite n'a pas pu être enregistrée."
+
+#. TRANSLATORS Label of three choices: where a new tour starts (src/admin/NewTourDialog.vue:9)
+msgid "Where does it start?"
+msgstr "Où la visite commence-t-elle ?"
+
+#. TRANSLATORS Choice: the tour starts in an app, such as Talk; keep it short (src/admin/NewTourDialog.vue:11)
+msgid "In an app"
+msgstr "Dans une application"
+
+#. TRANSLATORS Choice: the tour starts on a page of Nextcloud that is not an app; keep it short (src/admin/NewTourDialog.vue:17)
+msgid "On another page"
+msgstr "Sur une autre page"
+
+#. TRANSLATORS Choice: the tour starts on any page someone opens next; keep it short (src/admin/NewTourDialog.vue:23)
+msgid "Anywhere"
+msgstr "N’importe où"
+
+#. TRANSLATORS Noun: label of a list of apps (src/admin/NewTourDialog.vue:30)
+msgid "App"
+msgstr "Application"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:43
+msgid "Not tied to an app: the tour starts on whatever page someone opens next. After Next, set a number of days to make it a tip that comes later, for example after a week."
+msgstr "Sans lien avec une application : la visite commence sur la page que la personne ouvre ensuite. Après Suivant, indiquez un nombre de jours pour en faire une astuce qui apparaît plus tard, par exemple au bout d’une semaine."
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:44
+msgid "The tour starts by itself the first time someone opens it, once you switch the tour on."
+msgstr "La visite démarre automatiquement la première fois que quelqu’un l’ouvre, dès que vous avez activé la visite."
+
+#. TRANSLATORS Noun: label of the text field for the name of a tour (src/admin/NewTourDialog.vue:50)
+msgid "Name"
+msgstr "Nom"
+
+#. TRANSLATORS Label of a list: the language the steps of a tour are written in (src/admin/NewTourDialog.vue:52)
+msgid "Main language"
+msgstr "Langue principale"
+
+#. TRANSLATORS Label of a list of groups that may get a tour or a step (src/admin/NewTourDialog.vue:59)
+msgid "Visible to"
+msgstr "Visible par"
+
+#. TRANSLATORS Label of two choices: who gets the tour (src/admin/NewTourDialog.vue:69)
+msgid "Who gets it"
+msgstr "Qui la reçoit"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:72
+msgid "Everyone who opens it and has not seen the tour, also people who have used it for a long time."
+msgstr "Toute personne qui l’ouvre et n’a pas vu la visite, y compris celles qui l’utilisent depuis longtemps."
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:73
+msgid "Only people whose first login comes after the tour is switched on."
+msgstr "Uniquement les personnes dont la première connexion a lieu après l’activation de la visite."
+
+#. TRANSLATORS Choice: everyone gets the tour; keep it short (src/admin/NewTourDialog.vue:75)
+msgid "Everyone"
+msgstr "Tout le monde"
+
+#. TRANSLATORS Choice: only accounts whose first login comes after the tour is switched on get it; keep it short (src/admin/NewTourDialog.vue:77)
+msgid "New accounts only"
+msgstr "Nouveaux comptes uniquement"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:81
+msgid "When it starts by itself"
+msgstr "Quand elle démarre automatiquement"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:86
+msgid "Days after someone's first login"
+msgstr "Jours après la première connexion"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:88
+msgid "0 starts it straight away."
+msgstr "Avec 0, elle démarre immédiatement."
+
+#. TRANSLATORS Label of a date field: the first day a tour may start by itself (src/admin/NewTourDialog.vue:91)
+msgid "From"
+msgstr "Du"
+
+#. TRANSLATORS Label of a date field: the last day a tour may start by itself (src/admin/NewTourDialog.vue:94)
+msgid "Until"
+msgstr "Jusqu’au"
+
+#. TRANSLATORS src/admin/NewTourDialog.vue:99
+msgid "Leave the dates empty for no limit. Starting the tour by hand or with a link always works."
+msgstr "Laissez les dates vides pour ne fixer aucune limite. Il est toujours possible de lancer la visite manuellement ou avec un lien."
+
+#. TRANSLATORS Button: goes to the previous page or step; keep it short (src/admin/NewTourDialog.vue:110)
+#. TRANSLATORS src/admin/StepWizard.vue:206
+msgid "Back"
+msgstr "Retour"
+
+#. TRANSLATORS Button: goes to the next page or step; keep it short (src/admin/NewTourDialog.vue:114)
+#. TRANSLATORS src/admin/StepWizard.vue:217
+msgid "Next"
+msgstr "Suivant"
+
+msgid "The settings could not be loaded. Reload the page to try again."
+msgstr "Les paramètres n’ont pas pu être chargés. Rechargez la page pour réessayer."
+
+#. TRANSLATORS Section heading on the administration page (src/admin/SettingsPane.vue:4)
+msgid "Global settings"
+msgstr "Paramètres généraux"
+
+#. TRANSLATORS src/admin/SettingsPane.vue:5
+msgid "Whether tours start, and where people find them again"
+msgstr "Si les visites démarrent, et où les personnes peuvent les retrouver"
+
+#. TRANSLATORS Label of the main switch: when it is off, no tour starts for anyone (src/admin/SettingsPane.vue:15)
+msgid "Tours for everyone"
+msgstr "Visites pour tout le monde"
+
+#. TRANSLATORS src/admin/SettingsPane.vue:18
+msgid "When this is off, no tour starts, and nobody can start one themselves."
+msgstr "Lorsque cette option est désactivée, aucune visite ne démarre et personne ne peut en lancer une soi-même."
+
+#. TRANSLATORS src/admin/SettingsPane.vue:28
+msgid "Show Tours in the user menu"
+msgstr "Afficher Visites dans le menu utilisateur"
+
+#. TRANSLATORS src/admin/SettingsPane.vue:31
+msgid "An entry above Help leads everyone to their tours, to start one again."
+msgstr "Une entrée au-dessus d’Aide permet à chacun de retrouver ses visites pour en relancer une."
+
+#. TRANSLATORS %n is the number of languages for which an administrator wrote steps of their own of the welcome tour (src/admin/SettingsPane.vue:36)
+msgid "The tour is auto-translated into every Nextcloud-supported language. %n language currently has an override."
+msgid_plural "The tour is auto-translated into every Nextcloud-supported language. %n languages currently have an override."
+msgstr[0] "La visite guidée est traduite automatiquement dans toutes les langues prises en charge par Nextcloud. %n langue dispose actuellement d’une version personnalisée."
+msgstr[1] "La visite guidée est traduite automatiquement dans toutes les langues prises en charge par Nextcloud. %n langues disposent actuellement d’une version personnalisée."
+msgstr[2] "La visite guidée est traduite automatiquement dans toutes les langues prises en charge par Nextcloud. %n langues disposent actuellement d’une version personnalisée."
+
+#. TRANSLATORS: Error message
+msgid "Error loading statistics"
+msgstr "Erreur lors du chargement des statistiques"
+
+#. TRANSLATORS: Message after the usage report was sent
+msgid "Statistics sent"
+msgstr "Statistiques envoyées"
+
+#. TRANSLATORS: Error message; {error} is the reason, from the server, in English or in the user's language
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#. TRANSLATORS: Error message; {error} is the reason, from the server, in English or in the user's language
+msgid "Error sending statistics: {error}"
+msgstr "Erreur lors de l'envoi des statistiques : {error}"
+
+#. TRANSLATORS: Shown instead of a date when no report was sent yet
+msgid "Never"
+msgstr "Jamais"
+
+#. TRANSLATORS src/admin/StatisticsPane.vue:4
+msgid "How the tours are used, and telemetry settings"
+msgstr "Utilisation des visites et paramètres de télémétrie"
+
+#. TRANSLATORS Shown while data is loading (src/admin/StatisticsPane.vue:8)
+#. TRANSLATORS src/admin/TourEditor.vue:166
+#. TRANSLATORS src/admin/TourStatistics.vue:24
+msgid "Loading …"
+msgstr "Chargement…"
+
+#. TRANSLATORS Heading of figures about this Nextcloud server (src/admin/StatisticsPane.vue:17)
+msgid "Instance information"
+msgstr "Informations sur l’instance"
+
+#. TRANSLATORS Label under a number: how many accounts this Nextcloud has (src/admin/StatisticsPane.vue:23)
+msgid "Total users"
+msgstr "Nombre total d'utilisateurs"
+
+#. TRANSLATORS Label under a number: accounts that logged in during the last 30 days. "30d" means 30 days (src/admin/StatisticsPane.vue:28)
+msgid "Active users (30d)"
+msgstr "Utilisateurs actifs (30 j)"
+
+#. TRANSLATORS Label under a number: how many steps all tours have together (src/admin/StatisticsPane.vue:33)
+msgid "Total steps"
+msgstr "Total des étapes"
+
+#. TRANSLATORS Label under a number: languages for which an administrator wrote steps of their own (src/admin/StatisticsPane.vue:38)
+msgid "Languages with overrides"
+msgstr "Langues avec une version personnalisée"
+
+#. TRANSLATORS Section heading (src/admin/StatisticsPane.vue:44)
+msgid "Anonymous usage statistics"
+msgstr "Statistiques d'utilisation anonymes"
+
+#. TRANSLATORS src/admin/StatisticsPane.vue:47
+msgid "Help improve IntroVox by sharing anonymous usage statistics."
+msgstr "Aidez-nous à améliorer IntroVox en partageant des statistiques d’utilisation anonymes."
+
+#. TRANSLATORS Label of a switch that turns the anonymous usage statistics on or off (src/admin/StatisticsPane.vue:59)
+msgid "Share anonymous usage statistics"
+msgstr "Partager des statistiques d'utilisation anonymes"
+
+#. TRANSLATORS src/admin/StatisticsPane.vue:60
+msgid "We collect: step counts per language, user counts, version info (IntroVox, Nextcloud, PHP), and basic server configuration. No personal data or step content is shared."
+msgstr "Nous collectons : le nombre d’étapes par langue, le nombre d’utilisateurs, les informations de version (IntroVox, Nextcloud, PHP) et la configuration de base du serveur. Aucune donnée personnelle ni aucun contenu d’étape n’est partagé."
+
+#. TRANSLATORS src/admin/StatisticsPane.vue:67
+msgid "Thank you for helping improve IntroVox!"
+msgstr "Merci de nous aider à améliorer IntroVox !"
+
+#. TRANSLATORS {date} is a date and time, such as "10/9/2026, 11:30:00 AM", or the word "Never" (src/admin/StatisticsPane.vue:70)
+msgid "Last report sent: {date}"
+msgstr "Dernier rapport envoyé : {date}"
+
+#. TRANSLATORS Button label while the report is being sent (src/admin/StatisticsPane.vue:81)
+msgid "Sending …"
+msgstr "Envoi …"
+
+#. TRANSLATORS Button: sends the anonymous usage report now (src/admin/StatisticsPane.vue:85)
+msgid "Send report now"
+msgstr "Envoyer le rapport maintenant"
+
+#. TRANSLATORS src/admin/StatisticsPane.vue:98
+msgid "Exactly what is and is not sent"
+msgstr "Ce qui est envoyé et ce qui ne l’est pas, précisément"
+
+msgid "Use a WebVTT (.vtt) captions file."
+msgstr "Utilisez un fichier de sous-titres WebVTT (.vtt)."
+
+msgid "This file type is not supported. Use a PNG, JPEG or GIF image, or an MP4 or WebM video."
+msgstr "Ce type de fichier n’est pas pris en charge. Utilisez une image PNG, JPEG ou GIF, ou une vidéo MP4 ou WebM."
+
+#. TRANSLATORS: {size} is a file size with its unit, such as "10 MB"
+msgid "The file is too large. The limit is {size}."
+msgstr "Le fichier est trop volumineux. La limite est de {size}."
+
+msgid "The file is larger than this server accepts for uploads. Put it in your Files and choose it from there."
+msgstr "Le fichier dépasse la taille que ce serveur accepte pour les téléversements. Placez-le dans Fichiers et choisissez-le à partir de là."
+
+#. TRANSLATORS: {megapixels} is a number, such as 40
+msgid "The image is too large: at most {megapixels} megapixels."
+msgstr "L’image est trop grande : {megapixels} mégapixels maximum."
+
+msgid "IntroVox has no room for more media. Remove images and videos from steps that no longer need them."
+msgstr "IntroVox n’a plus de place pour d’autres médias. Retirez les images et les vidéos des étapes qui n’en ont plus besoin."
+
+msgid "This video has a track with extra data, such as a location. Export the video without metadata and try again."
+msgstr "Cette vidéo contient une piste de données supplémentaires, comme une position géographique. Exportez la vidéo sans métadonnées et réessayez."
+
+msgid "This file is shared with you for viewing only, so it cannot be used in a step."
+msgstr "Ce fichier est partagé avec vous en lecture seule, il ne peut donc pas être utilisé dans une étape."
+
+msgid "The file could not be read. It may be damaged."
+msgstr "Le fichier n’a pas pu être lu. Il est peut-être endommagé."
+
+msgid "The file could not be found."
+msgstr "Le fichier est introuvable."
+
+msgid "The file could not be added."
+msgstr "Le fichier n’a pas pu être ajouté."
+
+msgid "Choose an image or video"
+msgstr "Choisir une image ou une vidéo"
+
+#. TRANSLATORS: Button (verb) in a file picker: picks the selected file
+msgid "Choose"
+msgstr "Choisir"
+
+#. TRANSLATORS Label of the part of a step where you add one image or video (src/admin/StepMediaBlock.vue:7)
+msgid "Image or video"
+msgstr "Image ou vidéo"
+
+#. TRANSLATORS Button (verb): upload a file from your computer (src/admin/StepMediaBlock.vue:15)
+msgid "Upload"
+msgstr "Téléverser"
+
+#. TRANSLATORS Button: pick a file from the Nextcloud Files app. "Files" is the app name (src/admin/StepMediaBlock.vue:22)
+#. TRANSLATORS src/admin/ToursList.vue:28
+msgid "Choose from Files"
+msgstr "Choisir depuis Fichiers"
+
+#. TRANSLATORS src/admin/StepMediaBlock.vue:24
+msgid "Or paste a screenshot here"
+msgstr "Ou collez une capture d’écran ici"
+
+#. TRANSLATORS Label of a text field: a description of the image for people who cannot see it ("alt text" is the HTML term) (src/admin/StepMediaBlock.vue:44)
+msgid "Description (alt text)"
+msgstr "Description (texte alternatif)"
+
+#. TRANSLATORS src/admin/StepMediaBlock.vue:48
+msgid "Describe what it shows, for people who cannot see it."
+msgstr "Décrivez ce qui est représenté, pour les personnes qui ne peuvent pas le voir."
+
+#. TRANSLATORS Checkbox: the image is only decoration, so it needs no description (src/admin/StepMediaBlock.vue:54)
+msgid "Decorative, no description needed"
+msgstr "Décorative, aucune description nécessaire"
+
+#. TRANSLATORS Noun: label of three choices for the size of an image (src/admin/StepMediaBlock.vue:57)
+msgid "Size"
+msgstr "Taille"
+
+#. TRANSLATORS Choice for the size of an image; keep it short (src/admin/StepMediaBlock.vue:61)
+msgid "Small"
+msgstr "Petit"
+
+#. TRANSLATORS Choice for the size of an image: as wide as the step; keep it short (src/admin/StepMediaBlock.vue:63)
+msgid "Full width"
+msgstr "Pleine largeur"
+
+#. TRANSLATORS Choice for the size of an image: the whole step becomes wider; keep it short (src/admin/StepMediaBlock.vue:65)
+msgid "Wide step"
+msgstr "Étape large"
+
+#. TRANSLATORS Noun: label of two choices for how a video plays (src/admin/StepMediaBlock.vue:69)
+msgid "Playback"
+msgstr "Lecture"
+
+#. TRANSLATORS Choice: the video plays when the user presses play; keep it short (src/admin/StepMediaBlock.vue:73)
+msgid "With a play button"
+msgstr "Avec un bouton de lecture"
+
+#. TRANSLATORS Choice: the video plays silently and repeats, like an animated GIF image; keep it short (src/admin/StepMediaBlock.vue:75)
+msgid "Plays like a GIF"
+msgstr "Se lit comme un GIF"
+
+#. TRANSLATORS Status: the video has a captions file (src/admin/StepMediaBlock.vue:79)
+msgid "Captions added"
+msgstr "Sous-titres ajoutés"
+
+#. TRANSLATORS Status: the video has no captions file (src/admin/StepMediaBlock.vue:81)
+msgid "No captions"
+msgstr "Pas de sous-titres"
+
+#. TRANSLATORS Button: add a captions file for the video. ".vtt" is the file extension, keep it (src/admin/StepMediaBlock.vue:87)
+msgid "Add captions (.vtt)"
+msgstr "Ajouter des sous-titres (.vtt)"
+
+#. TRANSLATORS Button: removes the captions file from the video (src/admin/StepMediaBlock.vue:91)
+msgid "Remove captions"
+msgstr "Retirer les sous-titres"
+
+#. TRANSLATORS Button (verb): replace the image or video by another file (src/admin/StepMediaBlock.vue:101)
+msgid "Replace"
+msgstr "Remplacer"
+
+#. TRANSLATORS Button (verb): removes the image or video from the step (src/admin/StepMediaBlock.vue:108)
+msgid "Remove"
+msgstr "Supprimer"
+
+#. TRANSLATORS {size} is a file size with its unit, such as "10 MB" (src/admin/StepMediaBlock.vue:116)
+msgid "This server accepts uploads up to {size}. Put larger files in your Files and choose them from there."
+msgstr "Ce serveur accepte les téléversements jusqu’à {size}. Placez les fichiers plus volumineux dans Fichiers et choisissez-les à partir de là."
+
+#. TRANSLATORS src/admin/StepMediaBlock.vue:122
+msgid "This video has sound but no captions. People who cannot hear it will miss what is said."
+msgstr "Cette vidéo a du son mais pas de sous-titres. Les personnes qui ne peuvent pas l’entendre manqueront ce qui est dit."
+
+#. TRANSLATORS src/admin/StepMediaBlock.vue:124
+msgid "Everyone who gets this step can see it. IntroVox keeps its own copy: changing or deleting the original in Files does not change the step."
+msgstr "Toute personne qui reçoit cette étape peut voir ce média. IntroVox conserve sa propre copie : modifier ou supprimer l’original dans Fichiers ne change pas l’étape."
+
+#. TRANSLATORS: {parts} is a comma-separated list of HTML code, such as "<script>, onclick"
+msgid "The tour removes this HTML, so nobody sees it: {parts}."
+msgstr "La visite supprime ce code HTML, personne ne le voit donc : {parts}."
+
+#. TRANSLATORS: {parts} is a comma-separated list of HTML code, such as "<script>, onclick"
+msgid "This text has HTML that the tour never shows: {parts}. The editor leaves it out, and it goes once you change the text."
+msgstr "Ce texte contient du code HTML que la visite n’affiche jamais : {parts}. L’éditeur l’omet, et il disparaît dès que vous modifiez le texte."
+
+#. TRANSLATORS: Error message; {address} is "nextcloud.com" and {path} is "/apps/files/"
+msgid "Use a web address such as {address}, or a path on this Nextcloud such as {path}."
+msgstr "Utilisez une adresse web comme {address}, ou un chemin de cette instance Nextcloud comme {path}."
+
+msgid "What should people know at this step?"
+msgstr "Que faut-il savoir à cette étape ?"
+
+#. TRANSLATORS: Invisible label and tooltip of the bold button in the text editor
+msgid "Bold"
+msgstr "Gras"
+
+#. TRANSLATORS: Invisible label and tooltip of the italic button in the text editor
+msgid "Italic"
+msgstr "Italique"
+
+#. TRANSLATORS: Invisible label and tooltip of the heading button in the text editor
+msgid "Heading"
+msgstr "Titre"
+
+#. TRANSLATORS: Invisible label and tooltip of the bulleted list button in the text editor
+msgid "Bulleted list"
+msgstr "Liste à puces"
+
+#. TRANSLATORS: Invisible label and tooltip of the numbered list button in the text editor
+msgid "Numbered list"
+msgstr "Liste numérotée"
+
+#. TRANSLATORS: Noun: invisible label and tooltip of the link button in the text editor
+msgid "Link"
+msgstr "Lien"
+
+#. TRANSLATORS: Noun: invisible label and tooltip of the button that formats text as program code
+msgid "Code"
+msgstr "Code"
+
+#. TRANSLATORS Invisible label (for screen readers) of the toolbar with the formatting buttons of the text editor (src/admin/StepTextEditor.vue:8)
+msgid "Formatting"
+msgstr "Mise en forme"
+
+#. TRANSLATORS Invisible label and tooltip of the emoji button (src/admin/StepTextEditor.vue:29)
+#. TRANSLATORS src/admin/StepWizard.vue:42
+msgid "Insert emoji"
+msgstr "Insérer un emoji"
+
+#. TRANSLATORS Invisible label and tooltip of a button that shows the text as HTML code (src/admin/StepTextEditor.vue:40)
+msgid "Edit as HTML"
+msgstr "Modifier en HTML"
+
+#. TRANSLATORS Label of the text field for the address (URL) of a link (src/admin/StepTextEditor.vue:54)
+msgid "Link address"
+msgstr "Adresse du lien"
+
+#. TRANSLATORS Button (verb): applies the link address (src/admin/StepTextEditor.vue:65)
+msgid "Apply"
+msgstr "Appliquer"
+
+#. TRANSLATORS Button: removes the link from the text (src/admin/StepTextEditor.vue:72)
+msgid "Remove link"
+msgstr "Retirer le lien"
+
+#. TRANSLATORS: Noun: name of the first page of the step dialog (title, image and text); keep it short
+msgid "Content"
+msgstr "Contenu"
+
+#. TRANSLATORS: Noun: name of the page of the step dialog where you choose the element on the screen the step points at; keep it short
+msgid "Element"
+msgstr "Element"
+
+#. TRANSLATORS: Noun: name of the page of the step dialog with where the step shows and how users continue; keep it short
+msgid "Behavior"
+msgstr "Comportement"
+
+#. TRANSLATORS: Dialog title, and the title a new step gets until you change it
+msgid "New step"
+msgstr "Nouvelle étape"
+
+#. TRANSLATORS: Dialog title: change a step
+msgid "Edit step"
+msgstr "Modifier l’étape"
+
+#. TRANSLATORS: Invisible label (for screen readers) of the list of pages in the step dialog
+msgid "Step settings"
+msgstr "Paramètres de l’étape"
+
+#. TRANSLATORS: An example title of a step, shown in a placeholder: "For example: 👋 Welcome to Nextcloud"
+msgid "Welcome to Nextcloud"
+msgstr "Bienvenue dans Nextcloud"
+
+#. TRANSLATORS: Placeholder of a text field; {example} is an example value, such as "/apps/spreed/" or a step title
+#. TRANSLATORS src/admin/StepWizard.vue:100
+msgid "For example: {example}"
+msgstr "Par exemple : {example}"
+
+#. TRANSLATORS Noun: label of the editor for the text of a step (src/admin/StepWizard.vue:52)
+msgid "Text"
+msgstr "Texte"
+
+#. TRANSLATORS Status: the step shows in the middle of the screen, not next to an element (src/admin/StepWizard.vue:63)
+#. TRANSLATORS src/admin/TourEditor.vue:280
+msgid "Centered step"
+msgstr "Étape centrée"
+
+#. TRANSLATORS {page} is a path of this Nextcloud, such as "/apps/spreed/" (src/admin/StepWizard.vue:67)
+msgid "On page {page}"
+msgstr "Sur la page {page}"
+
+#. TRANSLATORS {element} is a CSS selector of the menu button the tour clicks first, such as ".app-menu__waffle" (src/admin/StepWizard.vue:71)
+msgid "Opens {element} first"
+msgstr "Ouvre d’abord {element}"
+
+#. TRANSLATORS Button: the step no longer points at an element (src/admin/StepWizard.vue:80)
+msgid "Remove element"
+msgstr "Retirer l’élément"
+
+#. TRANSLATORS Button: opens Nextcloud so you can click the element the step points at (src/admin/StepWizard.vue:87)
+msgid "Pick element"
+msgstr "Choisir un élément"
+
+#. TRANSLATORS Heading of a section that can be expanded, with the technical fields of a step (src/admin/StepWizard.vue:95)
+msgid "Edit by hand"
+msgstr "Modifier manuellement"
+
+#. TRANSLATORS src/admin/StepWizard.vue:99
+msgid "Attach to element (CSS selector)"
+msgstr "Rattacher à un élément (sélecteur CSS)"
+
+#. TRANSLATORS src/admin/StepWizard.vue:101
+msgid "Leave empty for a centered step."
+msgstr "Laissez vide pour une étape centrée."
+
+#. TRANSLATORS src/admin/StepWizard.vue:107
+msgid "Leave empty to show this step on any page. With a page, the tour opens it first. Pick element fills this in."
+msgstr "Laissez vide pour afficher cette étape sur n’importe quelle page. Avec une page, la visite l’ouvre d’abord. Choisir un élément remplit ce champ."
+
+#. TRANSLATORS Label of a technical text field. "CSS selector" is a web development term (src/admin/StepWizard.vue:110)
+msgid "Open first (CSS selector)"
+msgstr "Ouvrir d’abord (sélecteur CSS)"
+
+#. TRANSLATORS src/admin/StepWizard.vue:114
+msgid "For an element inside a menu: the button the tour clicks to open that menu before showing this step. Pick element fills this in when you pick inside a menu."
+msgstr "Pour un élément situé dans un menu : le bouton sur lequel la visite clique pour ouvrir ce menu avant d’afficher cette étape. Choisir un élément remplit ce champ quand vous choisissez dans un menu."
+
+#. TRANSLATORS Noun: label of four choices for where the step shows next to its element (src/admin/StepWizard.vue:122)
+msgid "Position"
+msgstr "Position"
+
+#. TRANSLATORS Choice: the step shows to the right of its element; keep it short (src/admin/StepWizard.vue:124)
+msgid "Right"
+msgstr "Droite"
+
+#. TRANSLATORS Choice: the step shows to the left of its element; keep it short (src/admin/StepWizard.vue:130)
+msgid "Left"
+msgstr "Gauche"
+
+#. TRANSLATORS Choice: the step shows above its element; keep it short (src/admin/StepWizard.vue:136)
+msgid "Top"
+msgstr "Haut"
+
+#. TRANSLATORS Choice: the step shows below its element; keep it short (src/admin/StepWizard.vue:142)
+msgid "Bottom"
+msgstr "Bas"
+
+#. TRANSLATORS Label of three choices for how the user goes to the next step, as in "continue with the Next button" (src/admin/StepWizard.vue:149)
+msgid "Continue with"
+msgstr "Continuer avec"
+
+#. TRANSLATORS src/admin/StepWizard.vue:152
+msgid "Next only works once the field the step points at has text, such as the name of a new conversation. If the field is missing, Next works as usual."
+msgstr "Suivant ne fonctionne qu’une fois que le champ désigné par l’étape contient du texte, par exemple le nom d’une nouvelle conversation. Si le champ est absent, Suivant fonctionne normalement."
+
+#. TRANSLATORS src/admin/StepWizard.vue:153
+msgid "With a click on the element, people do what the step asks instead of pressing Next, and the step tells them so. If the element is missing, a Next button appears instead."
+msgstr "Avec un clic sur l’élément, les personnes font ce que l’étape demande au lieu d’appuyer sur Suivant, et l’étape le leur indique. Si l’élément est absent, un bouton Suivant apparaît à la place."
+
+#. TRANSLATORS Choice: the user presses the Next button; keep it short (src/admin/StepWizard.vue:155)
+msgid "Next button"
+msgstr "Bouton suivant"
+
+#. TRANSLATORS Choice: the user clicks the highlighted element; keep it short (src/admin/StepWizard.vue:161)
+msgid "Click on the element"
+msgstr "Clic sur l’élément"
+
+#. TRANSLATORS Choice: the user types something into the highlighted field; keep it short (src/admin/StepWizard.vue:167)
+msgid "Filling in the field"
+msgstr "Remplissage du champ"
+
+#. TRANSLATORS Label of a list of groups that get this step (src/admin/StepWizard.vue:177)
+msgid "Visible to groups"
+msgstr "Visible par les groupes"
+
+#. TRANSLATORS src/admin/StepWizard.vue:188
+msgid "Leave empty to show to all users, or select groups to restrict visibility"
+msgstr "Laissez vide pour afficher à tous les utilisateurs, ou sélectionnez des groupes pour restreindre la visibilité"
+
+#. TRANSLATORS Button: shows this one step as users will see it (src/admin/StepWizard.vue:199)
+msgid "Test this step"
+msgstr "Tester cette étape"
+
+#. TRANSLATORS Heading of a list of the data the anonymous usage statistics contain (src/admin/TelemetryLists.vue:4)
+msgid "What we collect:"
+msgstr "Ce que nous collectons :"
+
+#. TRANSLATORS Heading of a list of data the anonymous usage statistics never contain (src/admin/TelemetryLists.vue:11)
+msgid "What we never collect:"
+msgstr "Ce que nous ne collectons jamais :"
+
+#. TRANSLATORS: Dialog title: a question about sharing anonymous usage statistics. "IntroVox" is the app name
+msgid "Help improve IntroVox"
+msgstr "Aidez-nous à améliorer IntroVox"
+
+#. TRANSLATORS src/admin/TelemetryQuestion.vue:9
+msgid "IntroVox can send anonymous usage statistics once a day, so its makers see which versions and features are in use. It is on unless you choose not to share, and you can change it at any time under Statistics."
+msgstr "IntroVox peut envoyer des statistiques d’utilisation anonymes une fois par jour, pour que ses créateurs voient quelles versions et fonctionnalités sont utilisées. Cet envoi est activé, sauf si vous choisissez de ne pas partager, et vous pouvez le modifier à tout moment sous Statistiques."
+
+#. TRANSLATORS Button: do not send anonymous usage statistics (src/admin/TelemetryQuestion.vue:15)
+msgid "Do not share"
+msgstr "Ne pas partager"
+
+#. TRANSLATORS Button (verb): send anonymous usage statistics (src/admin/TelemetryQuestion.vue:19)
+msgid "Share"
+msgstr "Partager"
+
+#. TRANSLATORS: Name of the tour new users get after their first login
+#. TRANSLATORS Link that starts the welcome tour again, beside the links of the other tours (src/embed/TourLinks.vue:7)
+msgid "Welcome tour"
+msgstr "Visite de bienvenue"
+
+#. TRANSLATORS: Error message; {error} is the technical reason, in English
+msgid "Error loading steps: {error}"
+msgstr "Erreur lors du chargement des étapes : {error}"
+
+#. TRANSLATORS: Title of a dialog that asks whether to discard changes
+msgid "Unsaved changes"
+msgstr "Modifications non enregistrées"
+
+msgid "You have unsaved changes. Do you want to discard them?"
+msgstr "Vous avez des modifications non enregistrées. Voulez-vous les abandonner ?"
+
+#. TRANSLATORS: Title of the dialog that asks whether to delete a step
+msgid "Delete step"
+msgstr "Supprimer l’étape"
+
+msgid "Are you sure you want to delete this step?"
+msgstr "Voulez-vous vraiment supprimer cette étape ?"
+
+#. TRANSLATORS: Status: invisible label (for screen readers) of the switch of a step that is on
+msgid "Enabled"
+msgstr "Activé"
+
+#. TRANSLATORS: Status: invisible label (for screen readers) of the switch of a step that is off
+msgid "Disabled"
+msgstr "Désactivé"
+
+#. TRANSLATORS: Shown instead of a list of groups when a step is for everyone
+msgid "All users"
+msgstr "Tous les utilisateurs"
+
+#. TRANSLATORS src/admin/TourEditor.vue:5
+msgid "Manage the steps of this tour for each language"
+msgstr "Gérer les étapes de cette visite pour chaque langue"
+
+#. TRANSLATORS Button: back to the list of all tours (src/admin/TourEditor.vue:13)
+msgid "All tours"
+msgstr "Toutes les visites"
+
+#. TRANSLATORS Noun: label of the list of languages (src/admin/TourEditor.vue:29)
+msgid "Language"
+msgstr "Langue"
+
+#. TRANSLATORS Button and dialog title: write your own steps for one language instead of the translated ones (src/admin/TourEditor.vue:53)
+#. TRANSLATORS src/admin/TourEditor.vue:59
+msgid "Add language override"
+msgstr "Ajouter une version propre à une langue"
+
+#. TRANSLATORS src/admin/TourEditor.vue:62
+msgid "Pick a language to customize. Until you save, no data is written."
+msgstr "Choisissez une langue à personnaliser. Rien n’est enregistré tant que vous n’avez pas sauvegardé."
+
+#. TRANSLATORS Placeholder of a search field in a list of languages (src/admin/TourEditor.vue:68)
+msgid "Search language …"
+msgstr "Rechercher une langue …"
+
+#. TRANSLATORS Button: confirms adding a language override (src/admin/TourEditor.vue:88)
+msgid "Add override"
+msgstr "Ajouter une version personnalisée"
+
+#. TRANSLATORS Button: adds a step to the tour (src/admin/TourEditor.vue:99)
+msgid "Add step"
+msgstr "Ajouter une étape"
+
+#. TRANSLATORS Button: shows the whole tour as users get it (src/admin/TourEditor.vue:106)
+msgid "Preview tour"
+msgstr "Prévisualiser la visite"
+
+#. TRANSLATORS Button (verb): downloads the steps of this language as a file (src/admin/TourEditor.vue:127)
+msgid "Export"
+msgstr "Exporter"
+
+#. TRANSLATORS Button (verb): loads steps from a file (src/admin/TourEditor.vue:134)
+msgid "Import"
+msgstr "Importer"
+
+#. TRANSLATORS Button (verb): deletes the steps written for this language, so the translated default steps come back (src/admin/TourEditor.vue:148)
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#. TRANSLATORS Button: saves the changes that could not be saved before (src/admin/TourEditor.vue:160)
+msgid "Save changes"
+msgstr "Enregistrer les modifications"
+
+#. TRANSLATORS src/admin/TourEditor.vue:174
+msgid "The steps could not be loaded."
+msgstr "Les étapes n’ont pas pu être chargées."
+
+#. TRANSLATORS src/admin/TourEditor.vue:175
+msgid "Nothing was changed. Check the connection and try again."
+msgstr "Rien n’a été modifié. Vérifiez la connexion et réessayez."
+
+#. TRANSLATORS Button: loads the steps again (src/admin/TourEditor.vue:185)
+msgid "Try again"
+msgstr "Réessayer"
+
+#. TRANSLATORS Invisible label (for screen readers) of the drag handle of a step (src/admin/TourEditor.vue:199)
+msgid "Drag to reorder"
+msgstr "Glisser pour réorganiser"
+
+#. TRANSLATORS Invisible label (for screen readers) of an arrow button that moves the step one place up (src/admin/TourEditor.vue:206)
+msgid "Move step up"
+msgstr "Déplacer l’étape vers le haut"
+
+#. TRANSLATORS Invisible label (for screen readers) of an arrow button that moves the step one place down (src/admin/TourEditor.vue:214)
+msgid "Move step down"
+msgstr "Déplacer l’étape vers le bas"
+
+#. TRANSLATORS {number} is the position of the step in the tour: 1, 2, 3 (src/admin/TourEditor.vue:224)
+msgid "Step {number}"
+msgstr "Étape {number}"
+
+#. TRANSLATORS {id} is the technical identifier of a step, such as "files" or "new_1728470000000" (src/admin/TourEditor.vue:227)
+msgid "ID: {id}"
+msgstr "ID : {id}"
+
+#. TRANSLATORS Button (verb): opens the step for editing (src/admin/TourEditor.vue:241)
+msgid "Edit"
+msgstr "Modifier"
+
+#. TRANSLATORS Button (verb): deletes a step or a tour (src/admin/TourEditor.vue:248)
+#. TRANSLATORS src/admin/ToursList.vue:101
+msgid "Delete"
+msgstr "Supprimer"
+
+#. TRANSLATORS Label, followed by the address of the page the step is on, such as "/apps/spreed/" (src/admin/TourEditor.vue:267)
+msgid "Page:"
+msgstr "Page :"
+
+#. TRANSLATORS Label, followed by the CSS selector of the element the step points at, such as "#user-menu" (src/admin/TourEditor.vue:271)
+msgid "Element:"
+msgstr "Élément :"
+
+#. TRANSLATORS Label, followed by where the step shows next to its element: Right, Left, Top or Bottom (src/admin/TourEditor.vue:273)
+msgid "Position:"
+msgstr "Position :"
+
+#. TRANSLATORS Label, followed by the CSS selector of the menu button the tour clicks before the step (src/admin/TourEditor.vue:275)
+msgid "Opens first:"
+msgstr "Ouvre d’abord :"
+
+#. TRANSLATORS Status: users go on by clicking the element instead of pressing Next (src/admin/TourEditor.vue:277)
+msgid "Continues on click"
+msgstr "Se poursuit au clic"
+
+#. TRANSLATORS Label, followed by a comma-separated list of groups, or "All users" (src/admin/TourEditor.vue:284)
+msgid "Visible to:"
+msgstr "Visible par :"
+
+#. TRANSLATORS Shown when a tour has no steps in this language (src/admin/TourEditor.vue:290)
+msgid "No steps defined yet."
+msgstr "Aucune étape définie pour le moment."
+
+#. TRANSLATORS Button: adds the first step to an empty tour (src/admin/TourEditor.vue:300)
+msgid "Add first step"
+msgstr "Ajouter une première étape"
+
+#. TRANSLATORS: %n is a number of people, shown next to a bar in a chart
+msgid "%n person"
+msgid_plural "%n people"
+msgstr[0] "%n personne"
+msgstr[1] "%n personnes"
+msgstr[2] "%n personnes"
+
+#. TRANSLATORS: %n is a number of people
+msgid "%n person got to a step that is not in this list: deleted since, or a step of another language."
+msgid_plural "%n people got to a step that is not in this list: deleted since, or a step of another language."
+msgstr[0] "%n personne a atteint une étape qui ne figure pas dans cette liste : supprimée depuis, ou étape d’une autre langue."
+msgstr[1] "%n personnes ont atteint une étape qui ne figure pas dans cette liste : supprimée depuis, ou étape d’une autre langue."
+msgstr[2] "%n personnes ont atteint une étape qui ne figure pas dans cette liste : supprimée depuis, ou étape d’une autre langue."
+
+#. TRANSLATORS Section heading of the statistics per tour (src/admin/TourStatistics.vue:5)
+msgid "Tour usage"
+msgstr "Utilisation des visites"
+
+#. TRANSLATORS Noun: label of the list of tours (src/admin/TourStatistics.vue:10)
+msgid "Tour"
+msgstr "Visite"
+
+#. TRANSLATORS Label of a list of languages, as in "steps in German" (src/admin/TourStatistics.vue:16)
+msgid "Steps in"
+msgstr "Étapes en"
+
+#. TRANSLATORS src/admin/TourStatistics.vue:29
+msgid "The statistics could not be loaded."
+msgstr "Les statistiques n’ont pas pu être chargées."
+
+#. TRANSLATORS Label under a number: how many people started the tour (src/admin/TourStatistics.vue:36)
+msgid "Users started"
+msgstr "Utilisateurs ayant commencé la visite"
+
+#. TRANSLATORS Label under a number: how many people finished the tour (src/admin/TourStatistics.vue:41)
+msgid "Users completed"
+msgstr "Utilisateurs ayant terminé la visite"
+
+#. TRANSLATORS Label under a number: how many people skipped the tour (src/admin/TourStatistics.vue:46)
+msgid "Users skipped"
+msgstr "Utilisateurs ayant ignoré la visite"
+
+#. TRANSLATORS Label under a percentage: how many of the people who started the tour finished it (src/admin/TourStatistics.vue:51)
+msgid "Completion rate"
+msgstr "Taux d’achèvement"
+
+#. TRANSLATORS Heading of a chart with how many people reached each step (src/admin/TourStatistics.vue:57)
+msgid "How far people get"
+msgstr "Jusqu’où vont les personnes"
+
+#. TRANSLATORS src/admin/TourStatistics.vue:60
+msgid "For each step, how many people got at least that far the last time the tour started by itself for them. Starts by hand and previews are not counted, and neither are runs from before this version of IntroVox."
+msgstr "Pour chaque étape, combien de personnes sont allées au moins jusque-là la dernière fois que la visite a démarré automatiquement pour elles. Les lancements manuels et les aperçus ne sont pas comptés, pas plus que les parcours antérieurs à cette version d’IntroVox."
+
+#. TRANSLATORS src/admin/TourStatistics.vue:64
+msgid "Nobody has been counted yet"
+msgstr "Personne n’a encore été compté"
+
+#. TRANSLATORS src/admin/TourStatistics.vue:65
+msgid "This fills in as people get the tour."
+msgstr "Ceci se remplit à mesure que les personnes reçoivent la visite."
+
+#. TRANSLATORS Status: this step is switched off (src/admin/TourStatistics.vue:81)
+msgid "Switched off"
+msgstr "Désactivée"
+
+msgid "Starts after the first login"
+msgstr "Commence après la première connexion"
+
+#. TRANSLATORS: {app} is the name of an app, such as "Talk"
+msgid "Starts the first time someone opens {app}"
+msgstr "Commence la première fois que quelqu'un ouvre {app}"
+
+msgid "Starts on whichever page someone opens next"
+msgstr "Commence sur la page que quelqu’un ouvre ensuite"
+
+#. TRANSLATORS: {page} is an address of this Nextcloud, such as "/settings/user"
+msgid "Starts the first time someone opens {page}"
+msgstr "Commence la première fois que quelqu'un ouvre {page}"
+
+#. TRANSLATORS: %n is the number of languages for which an administrator wrote steps of their own
+msgid "Translated, with its own steps in %n language"
+msgid_plural "Translated, with its own steps in %n languages"
+msgstr[0] "Traduite, avec des étapes personnalisées dans %n langue"
+msgstr[1] "Traduite, avec des étapes personnalisées dans %n langues"
+msgstr[2] "Traduite, avec des étapes personnalisées dans %n langues"
+
+#. TRANSLATORS: Description of the welcome tour: it has no steps written for a language of its own
+msgid "Translated into every language"
+msgstr "Traduite dans toutes les langues"
+
+#. TRANSLATORS: %n is the number of steps in a tour
+msgid "%n step"
+msgid_plural "%n steps"
+msgstr[0] "%n étape"
+msgstr[1] "%n étapes"
+msgstr[2] "%n étapes"
+
+#. TRANSLATORS: {groups} is a comma-separated list of group names, such as "Sales, Support"
+msgid "For {groups}"
+msgstr "Pour {groups}"
+
+#. TRANSLATORS: The tour is for everyone, not limited to groups
+msgid "For everyone"
+msgstr "Pour tout le monde"
+
+#. TRANSLATORS: In a tour's summary. %n is a number of days after someone's first login; the tour does not start by itself before then
+msgid "After %n day"
+msgid_plural "After %n days"
+msgstr[0] "Après %n jour"
+msgstr[1] "Après %n jours"
+msgstr[2] "Après %n jours"
+
+#. TRANSLATORS: {from} and {until} are dates, such as "Oct 9, 2026"; the period in which a tour starts by itself
+msgid "{from} to {until}"
+msgstr "Du {from} au {until}"
+
+#. TRANSLATORS: {date} is a date, such as "Oct 9, 2026": the first day a tour starts by itself
+msgid "From {date}"
+msgstr "À partir du {date}"
+
+#. TRANSLATORS: {date} is a date, such as "Oct 9, 2026": the last day a tour starts by itself
+msgid "Until {date}"
+msgstr "Jusqu’au {date}"
+
+#. TRANSLATORS: Title of a file picker for a tour file (.zip)
+msgid "Choose a tour"
+msgstr "Choisir une visite"
+
+#. TRANSLATORS src/admin/ToursList.vue:5
+msgid "The welcome tour shows Nextcloud to newcomers. A tour for an app starts the first time someone opens that app."
+msgstr "La visite de bienvenue présente Nextcloud aux nouveaux venus. Une visite pour une application démarre la première fois que quelqu’un ouvre cette application."
+
+#. TRANSLATORS Invisible label of a menu button with two ways to import a tour (src/admin/ToursList.vue:14)
+msgid "Import tour"
+msgstr "Importer une visite"
+
+#. TRANSLATORS src/admin/ToursList.vue:40
+msgid "Tours are switched off for everyone. Switch them on under Settings."
+msgstr "Les visites sont désactivées pour tout le monde. Activez-les sous Paramètres."
+
+#. TRANSLATORS Badge next to a tour that comes with IntroVox; keep it short (src/admin/ToursList.vue:54)
+msgid "Built-in"
+msgstr "Intégrée"
+
+#. TRANSLATORS Invisible label (for screen readers) of a switch; {tour} is the name of a tour, such as "Welcome tour" or "Talk" (src/admin/ToursList.vue:60)
+msgid "Switch {tour} on or off"
+msgstr "Activer ou désactiver {tour}"
+
+#. TRANSLATORS Button: opens the steps of a tour (src/admin/ToursList.vue:69)
+msgid "Edit steps"
+msgstr "Modifier les étapes"
+
+#. TRANSLATORS Invisible label of a menu button with more actions; {tour} is the name of a tour, such as "Talk" (src/admin/ToursList.vue:72)
+msgid "More for {tour}"
+msgstr "Plus d’actions pour {tour}"
+
+#. TRANSLATORS Menu entry (verb): shows the tour as users get it (src/admin/ToursList.vue:77)
+msgid "Preview"
+msgstr "Prévisualiser"
+
+#. TRANSLATORS Menu entry: copies a link that starts the tour (src/admin/ToursList.vue:83)
+msgid "Copy link"
+msgstr "Copier le lien"
+
+#. TRANSLATORS Menu entry: downloads the tour as a file (src/admin/ToursList.vue:89)
+msgid "Export tour"
+msgstr "Exporter la visite"
+
+#. TRANSLATORS Menu entry and dialog title: everyone who saw the tour gets it once more (src/admin/ToursList.vue:95)
+msgid "Show again to everyone"
+msgstr "Afficher de nouveau pour tous"
+
+#. TRANSLATORS Section heading. "IntroVox" is the app name (src/components/SupportSettings.vue:6)
+msgid "About IntroVox"
+msgstr "À propos d'IntroVox"
+
+#. TRANSLATORS src/components/SupportSettings.vue:8
+msgid "IntroVox is free and open source (AGPL-3.0), with no user limit and no paid features. Everything the app does is available to everyone."
+msgstr "IntroVox est libre et à code source ouvert (AGPL-3.0), sans limite d'utilisateurs et sans fonctionnalités payantes. Tout ce que fait l'application est disponible pour tout le monde."
+
+#. TRANSLATORS src/components/SupportSettings.vue:14
+msgid "Do you value this app?"
+msgstr "Appréciez-vous cette application ?"
+
+#. TRANSLATORS src/components/SupportSettings.vue:16
+msgid "IntroVox is part of a range of apps that extend Nextcloud — from intranet and metadata to room booking and forms. One coherent experience, all open source."
+msgstr "IntroVox fait partie de tout un éventail d'applications qui étendent les fonctionnalités de Nextcloud — depuis la gestion de métadonnées et d'intranets jusqu'à la réservation de salles et la création de formulaires. Une expérience cohérente, tout en Open source."
+
+#. TRANSLATORS Button: opens the website with the other apps of the same makers (src/components/SupportSettings.vue:24)
+msgid "See the other apps"
+msgstr "Voir les autres applications"
+
+#. TRANSLATORS Section heading (src/components/SupportSettings.vue:32)
+msgid "Need help?"
+msgstr "Besoin d’aide ?"
+
+#. TRANSLATORS src/components/SupportSettings.vue:34
+msgid "Run into a problem or missing something? Report it on GitHub and we will take a look."
+msgstr "Vous rencontrez un problème ou constatez un manque ? Signalez-le sur GitHub et nous l’examinerons."
+
+#. TRANSLATORS Button: opens the issue tracker of the app on GitHub (src/components/SupportSettings.vue:42)
+msgid "Report an issue"
+msgstr "Signaler un problème"
+
+#. TRANSLATORS Button: opens the source code of the app on GitHub (src/components/SupportSettings.vue:49)
+msgid "Source code"
+msgstr "Code source"
+
+#. TRANSLATORS src/components/SupportSettings.vue:52
+msgid "Show the admin tour again"
+msgstr "Afficher de nouveau la visite d’administration"
+
+#. TRANSLATORS Followed by an email address to write to (src/components/SupportSettings.vue:56)
+msgid "Questions?"
+msgstr "Des questions ?"
+
+#. TRANSLATORS Button label while the tour is being restarted (src/components/TourList.vue:11)
+msgid "Restarting tour …"
+msgstr "Redémarrage de la visite…"
+
+#. TRANSLATORS Button: starts the welcome tour again (src/components/TourList.vue:15)
+msgid "Restart tour now"
+msgstr "Redémarrer la visite maintenant"
+
+#. TRANSLATORS Status: the user has seen this tour (src/components/TourList.vue:32)
+msgid "Seen"
+msgstr "Vu"
+
+#. TRANSLATORS Status: the user has not seen this tour yet (src/components/TourList.vue:36)
+msgid "Not seen yet"
+msgstr "Pas encore vu"
+
+#. TRANSLATORS Button: starts a tour the user has seen before (src/components/TourList.vue:42)
+msgid "Start again"
+msgstr "Relancer"
+
+#. TRANSLATORS Button (verb): starts a tour the user has not seen yet (src/components/TourList.vue:46)
+msgid "Start"
+msgstr "Début"
+
+#. TRANSLATORS src/preview/TourPreview.vue:6
+#. TRANSLATORS: Invisible label of the X button that closes a tour step or a preview
+msgid "Close"
+msgstr "Fermer"
+
+#. TRANSLATORS: Button: ends the tour
+msgid "Done"
+msgstr "Terminé"
+
+#. TRANSLATORS: Button (verb): ends the tour now
+msgid "Skip"
+msgstr "Passer"
+
+msgid "Skip and don't show again"
+msgstr "Ignorer et ne plus afficher"
+
+#. TRANSLATORS: Button on the first step: starts the tour
+msgid "Start tour"
+msgstr "Commencer la visite"
+
+msgid "Click the highlighted element to continue."
+msgstr "Cliquez sur l’élément mis en évidence pour continuer."
+
+msgid "Fill in the highlighted field to continue."
+msgstr "Remplissez le champ mis en évidence pour continuer."
+
+#. TRANSLATORS: Shown when an admin opens IntroVox's settings inside a tour preview or the element picker and starts another one there
+msgid "A tour preview or the element picker is already open around this page. Close it first."
+msgstr "Un aperçu de visite ou le sélecteur d’éléments est déjà ouvert autour de cette page. Fermez-le d’abord."
+
+#. TRANSLATORS Invisible title (for screen readers) of the frame that shows a page of Nextcloud in a preview (src/frame/NextcloudFrame.vue:29)
+msgid "Nextcloud page"
+msgstr "Page de Nextcloud"
+
+#. TRANSLATORS src/frame/NextcloudFrame.vue:40
+msgid "Nextcloud could not be shown here. Check your connection and try again. If this keeps happening, your server probably does not allow Nextcloud to be embedded in a frame."
+msgstr "Nextcloud n’a pas pu être affiché ici. Vérifiez votre connexion et réessayez. Si le problème persiste, votre serveur n’autorise probablement pas l’intégration de Nextcloud dans un cadre."
+
+#. TRANSLATORS: Message after a setting was saved
+msgid "Settings saved"
+msgstr "Paramètres enregistrés"
+
+#. TRANSLATORS src/personal/PersonalApp.vue:4
+msgid "Start a tour again, or stop tours from starting by themselves."
+msgstr "Relancez une visite, ou empêchez les visites de démarrer automatiquement."
+
+#. TRANSLATORS src/personal/PersonalApp.vue:7
+msgid "The introduction tour is currently disabled by your administrator."
+msgstr "La visite guidée est actuellement désactivée par votre administrateur."
+
+#. TRANSLATORS src/personal/PersonalApp.vue:8
+msgid "Contact your administrator if you would like to see the guided tour."
+msgstr "Contactez votre administrateur si vous souhaitez accéder à la visite guidée."
+
+#. TRANSLATORS Label of a switch in the personal settings: tours may start without the user asking (src/personal/PersonalApp.vue:19)
+msgid "Start tours by themselves"
+msgstr "Démarrer les visites automatiquement"
+
+#. TRANSLATORS src/personal/PersonalApp.vue:22
+msgid "When this is off, no tour starts by itself. You can still start each tour here."
+msgstr "Lorsque cette option est désactivée, aucune visite ne démarre automatiquement. Vous pouvez toujours lancer chaque visite ici."
+
+#. TRANSLATORS: Title of the screen where you click the element a step points at
+msgid "Pick an element"
+msgstr "Choisir un élément"
+
+#. TRANSLATORS: {page} is an address of this Nextcloud, such as "/apps/spreed/"
+msgid "This element is on {page}. The tour opens that page first."
+msgstr "Cet élément se trouve sur {page}. La visite ouvre d’abord cette page."
+
+msgid "This element is in the header, so the step works on every page."
+msgstr "Cet élément se trouve dans l’en-tête, l’étape fonctionne donc sur toutes les pages."
+
+#. TRANSLATORS Invisible group label of two choices: Select or Browse (src/picker/ElementPicker.vue:18)
+msgid "Picker mode"
+msgstr "Mode de sélection"
+
+#. TRANSLATORS Choice (verb): clicking picks the element; keep it short (src/picker/ElementPicker.vue:23)
+msgid "Select"
+msgstr "Sélectionner"
+
+#. TRANSLATORS Choice (verb): use the page normally, clicking does not pick; keep it short (src/picker/ElementPicker.vue:29)
+msgid "Browse"
+msgstr "Parcourir"
+
+#. TRANSLATORS src/picker/ElementPicker.vue:37
+msgid "Click the element this step should point at."
+msgstr "Cliquez sur l’élément que cette étape doit désigner."
+
+#. TRANSLATORS src/picker/ElementPicker.vue:38
+msgid "Use the page as usual, for example to open a menu. To pick something inside it, hold Shift and click."
+msgstr "Utilisez la page normalement, par exemple pour ouvrir un menu. Pour choisir un élément à l’intérieur, maintenez la touche Maj enfoncée et cliquez."
+
+#. TRANSLATORS Heading of a panel about the element you picked (src/picker/ElementPicker.vue:61)
+msgid "Selected element"
+msgstr "Élément sélectionné"
+
+#. TRANSLATORS Noun: invisible label of a list of CSS selectors (a web development term) (src/picker/ElementPicker.vue:63)
+msgid "Selector"
+msgstr "Sélecteur"
+
+#. TRANSLATORS src/picker/ElementPicker.vue:78
+msgid "This element is inside a menu. During the tour, the menu is opened first with:"
+msgstr "Cet élément se trouve dans un menu. Pendant la visite, le menu est d’abord ouvert avec :"
+
+#. TRANSLATORS src/picker/ElementPicker.vue:84
+msgid "This element is inside a menu or pop-up that only exists while it is open. Open it in Browse mode, then hold Shift and click the element, so the tour knows which button opens it."
+msgstr "Cet élément se trouve dans un menu ou une fenêtre contextuelle qui n’existe que lorsqu’il est ouvert. Ouvrez-le en mode Parcourir, puis maintenez la touche Maj enfoncée et cliquez sur l’élément, pour que la visite sache quel bouton l’ouvre."
+
+#. TRANSLATORS src/picker/ElementPicker.vue:89
+msgid "You got here by using the page. The tour cannot do that for someone, but the step waits until this element is there. So let the steps before it lead the way: one step for each click, with Continue with: Click on the element."
+msgstr "Vous avez atteint cet endroit en utilisant la page. La visite ne peut pas le faire à la place de quelqu’un, mais l’étape attend que cet élément soit présent. Laissez donc les étapes précédentes montrer le chemin : une étape pour chaque clic, avec « Continuer avec : Clic sur l’élément »."
+
+#. TRANSLATORS src/picker/ElementPicker.vue:94
+msgid "This selector depends on where the element sits in the page and may stop working after a Nextcloud update."
+msgstr "Ce sélecteur dépend de la position de l’élément dans la page et peut cesser de fonctionner après une mise à jour de Nextcloud."
+
+#. TRANSLATORS Button: selects the element that contains the selected one (src/picker/ElementPicker.vue:102)
+msgid "Parent element"
+msgstr "Élément parent"
+
+#. TRANSLATORS Button: the step points at the selected element (src/picker/ElementPicker.vue:109)
+msgid "Use this element"
+msgstr "Utiliser cet élément"
+
+#. TRANSLATORS: Title of the screen that shows a tour as users get it
+msgid "Tour preview"
+msgstr "Aperçu de la visite"
+
+#. TRANSLATORS: The first choice in the "Preview as" list: show every step, whatever the group
+msgid "All steps"
+msgstr "Toutes les étapes"
+
+msgid "The tour could not be started on this page."
+msgstr "La visite n’a pas pu être lancée sur cette page."
+
+msgid "No steps to show for this selection."
+msgstr "Aucune étape à afficher pour cette sélection."
+
+#. TRANSLATORS Label of a list of groups: show the tour as a member of that group gets it (src/preview/TourPreview.vue:18)
+msgid "Preview as"
+msgstr "Prévisualiser en tant que"
+
+#. TRANSLATORS Button (verb): starts the preview again (src/preview/TourPreview.vue:32)
+msgid "Restart"
+msgstr "Recommencer"
+
+#. TRANSLATORS {languages} is a comma-separated list of language names, such as "German, French" (src/admin/AssistantDialog.vue:23)
+msgid "Saving replaces the steps there are now in {languages}."
+msgstr "L’enregistrement remplace les étapes actuelles en {languages}."
+
+#. TRANSLATORS: Title of the first step of the tour of the administration page. "IntroVox" is the app name
+msgid "Welcome to IntroVox"
+msgstr "Bienvenue dans IntroVox"
+
+msgid "<p>IntroVox gives newcomers a short tour of Nextcloud, like this one. In a minute you know how to make your own.</p>"
+msgstr "<p>IntroVox propose aux nouveaux venus une courte visite de Nextcloud, comme celle-ci. En une minute, vous saurez créer la vôtre.</p>"
+
+#. TRANSLATORS: Button: starts the tour of the administration page
+msgid "Show me"
+msgstr "Montrez-moi"
+
+#. TRANSLATORS: Title of a tour step about the four tabs of the administration page
+msgid "Four parts"
+msgstr "Quatre parties"
+
+#. TRANSLATORS: Text of a step in the tour of the IntroVox administration page. Words in bold are names of tabs and buttons on that page: use the same translation
+msgid "<p><strong>Settings</strong> switches tours on for everyone, <strong>Tours</strong> is where you write them, <strong>Statistics</strong> shows how many people start and finish the welcome tour, and <strong>Support</strong> is where to find help.</p>"
+msgstr "<p><strong>Paramètres</strong> active les visites pour tout le monde, <strong>Visites</strong> vous permet de les rédiger, <strong>Statistiques</strong> indique combien de personnes commencent et terminent la visite de bienvenue, et <strong>Support</strong> vous indique où trouver de l’aide.</p>"
+
+#. TRANSLATORS: Text of a step in the tour of the IntroVox administration page. Words in bold are names of tabs and buttons on that page: use the same translation
+msgid "<p>The <strong>welcome tour</strong> shows Nextcloud to newcomers. Add a <strong>New tour</strong> for an app, such as Talk: it starts the first time someone opens that app.</p>"
+msgstr "<p>La <strong>visite de bienvenue</strong> présente Nextcloud aux nouveaux venus. Ajoutez une <strong>Nouvelle visite</strong> pour une application, comme Talk : elle démarre la première fois que quelqu’un ouvre cette application.</p>"
+
+#. TRANSLATORS: Title of a tour step about languages
+msgid "One tour, every language"
+msgstr "Une visite, toutes les langues"
+
+msgid "<p>Everyone gets the tour in their own language: the built-in steps are translated. To write your own text for a language, add a language override and edit its steps.</p>"
+msgstr "<p>Chacun reçoit la visite dans sa propre langue : les étapes intégrées sont traduites. Pour rédiger votre propre texte dans une langue, ajoutez une version propre à cette langue et modifiez ses étapes.</p>"
+
+msgid "A step in four moves"
+msgstr "Une étape en quatre temps"
+
+#. TRANSLATORS: Text of a step in the tour of the IntroVox administration page. Words in bold are names of tabs and buttons on that page: use the same translation
+msgid "<ol><li><strong>Add step</strong>, and give it a title and a text.</li><li><strong>Pick element</strong>: click what the step should point at, anywhere in Nextcloud.</li><li><strong>Test this step</strong> to see it as others will.</li><li><strong>Save</strong>. It is live straight away.</li></ol>"
+msgstr "<ol><li><strong>Ajouter une étape</strong>, puis donnez-lui un titre et un texte.</li><li><strong>Choisir un élément</strong> : cliquez sur ce que l’étape doit désigner, n’importe où dans Nextcloud.</li><li><strong>Tester cette étape</strong> pour la voir comme les autres la verront.</li><li><strong>Enregistrer</strong>. L’étape est en ligne immédiatement.</li></ol>"
+
+msgid "See it as others do"
+msgstr "Voyez-la comme les autres la voient"
+
+#. TRANSLATORS: Text of a step in the tour of the IntroVox administration page. Words in bold are names of tabs and buttons on that page: use the same translation
+msgid "<p><strong>Preview tour</strong> runs the whole tour as people get it, as a member of a group if you like. A preview is not counted in the statistics.</p>"
+msgstr "<p><strong>Prévisualiser la visite</strong> lance toute la visite telle que les utilisateurs la reçoivent, si vous le souhaitez en tant que membre d’un groupe. Un aperçu n’est pas comptabilisé dans les statistiques.</p>"
+
+#. TRANSLATORS: Title of a tour step about the main switch that turns tours on for everyone
+msgid "On for everyone"
+msgstr "Activée pour tout le monde"
+
+#. TRANSLATORS: Text of a step in the tour of the IntroVox administration page. Words in bold are names of tabs and buttons on that page: use the same translation
+msgid "<p>While this is on, tours start by themselves: the welcome tour for everyone who is new, and a tour for an app when someone first opens it. <strong>Show again to everyone</strong>, in the menu of a tour under <strong>Tours</strong>, shows it once more, for instance after a big change.</p>"
+msgstr "<p>Lorsque cette option est activée, les visites démarrent automatiquement : la visite de bienvenue pour chaque nouvel utilisateur, et la visite d’une application lorsque quelqu’un l’ouvre pour la première fois. <strong>Afficher de nouveau pour tous</strong>, dans le menu d’une visite sous <strong>Visites</strong>, la présente une fois de plus, par exemple après un changement important.</p>"
+
+#. TRANSLATORS: Link text inside a sentence: "… is in the IntroVox manual."
+msgid "the IntroVox manual"
+msgstr "le manuel d’IntroVox"
+
+#. TRANSLATORS: Title of the last step of the tour of the administration page
+msgid "That is all"
+msgstr "C’est tout"
+
+#. TRANSLATORS: {manual} is a link with the text "the IntroVox manual". "Support" is the name of a tab on this page: use the same translation
+msgid "<p>More, such as tours across apps and steps that continue on a click, is in {manual}. This tour is under <strong>Support</strong> if you want to see it again.</p>"
+msgstr "<p>Pour en savoir plus, par exemple sur les visites couvrant plusieurs applications et les étapes qui se poursuivent d’un clic, consultez {manual}. Cette visite se trouve sous <strong>Support</strong> si vous souhaitez la revoir.</p>"
+
+msgid "Step counts per language (e.g., EN: 8, NL: 5)"
+msgstr "Nombre d’étapes par langue (par exemple EN : 8, NL : 5)"
+
+msgid "Total user count and active users"
+msgstr "Nombre total d'utilisateurs et utilisateurs actifs"
+
+msgid "How often the tour was started, finished and skipped"
+msgstr "Combien de fois la visite a été commencée, terminée et ignorée"
+
+msgid "IntroVox, Nextcloud, and PHP version numbers"
+msgstr "Numéros de version d’IntroVox, de Nextcloud et de PHP"
+
+msgid "A unique hash of your instance URL (privacy-friendly identifier)"
+msgstr "Un hachage unique de l'URL de votre instance (identifiant respectueux de la vie privée)"
+
+msgid "Basic server configuration (database, OS, web server, Docker, country, language, timezone)"
+msgstr "Configuration de base du serveur (base de données, système d’exploitation, serveur web, Docker, pays, langue, fuseau horaire)"
+
+msgid "Whether this Nextcloud has an Enterprise subscription, and your IntroVox license key if you entered one"
+msgstr "Si cette instance Nextcloud dispose d’un abonnement Enterprise, et votre clé de licence IntroVox si vous en avez saisi une"
+
+#. TRANSLATORS: Item in a list of data the usage statistics never contain
+msgid "Step content or titles"
+msgstr "Le contenu ou les titres des étapes"
+
+msgid "User names or email addresses"
+msgstr "Noms d'utilisateur ou adresses e-mail"
+
+#. TRANSLATORS: Item in a list of data the usage statistics never contain
+msgid "Your actual server URL"
+msgstr "L'URL réelle de votre serveur"
+
+msgid "Personal data of the people who use your Nextcloud"
+msgstr "Les données personnelles des personnes qui utilisent votre Nextcloud"
+
+#. TRANSLATORS: Message after the anonymous usage statistics were switched on
+msgid "Telemetry enabled"
+msgstr "Télémétrie activée"
+
+#. TRANSLATORS: Message after the anonymous usage statistics were switched off
+msgid "Telemetry disabled"
+msgstr "Télémétrie désactivée"
+
+#. TRANSLATORS: Error message
+msgid "Error saving telemetry setting"
+msgstr "Erreur lors de l’enregistrement du paramètre de télémétrie"
+
+msgid "The Assistant is not set up on this Nextcloud."
+msgstr "L’Assistant n’est pas configuré sur cette instance Nextcloud."
+
+msgid "There are no steps to translate in this language."
+msgstr "Il n’y a aucune étape à traduire dans cette langue."
+
+msgid "The answer was cut off: the AI provider allows shorter answers than a tour needs. Raise that limit in its settings, for the OpenAI integration \"Max output tokens per request\", and try again."
+msgstr "La réponse a été tronquée : le fournisseur d’IA autorise des réponses plus courtes que ce dont une visite a besoin. Augmentez cette limite dans ses paramètres, pour l’intégration OpenAI « Maximum de jetons de sortie par requête », et réessayez."
+
+msgid "The answer could not be used. Try again."
+msgstr "La réponse n’a pas pu être utilisée. Réessayez."
+
+msgid "The steps were changed meanwhile. Try again."
+msgstr "Les étapes ont été modifiées entre-temps. Réessayez."
+
+msgid "The Assistant was asked too often. Try again in an hour."
+msgstr "L’Assistant a été sollicité trop souvent. Réessayez dans une heure."
+
+msgid "The Assistant did not answer in time. Try again later."
+msgstr "L’Assistant n’a pas répondu à temps. Réessayez plus tard."
+
+msgid "The Assistant could not do this. Try again later."
+msgstr "L’Assistant n’a pas pu effectuer cette opération. Réessayez plus tard."
+
+#. TRANSLATORS: Title of the dialog that asks whether to delete the steps written for this language
+msgid "Discard override"
+msgstr "Supprimer la version personnalisée"
+
+msgid "Discard the custom steps for this language and fall back to the auto-translated defaults?"
+msgstr "Supprimer les étapes personnalisées de cette langue et revenir aux étapes par défaut traduites automatiquement ?"
+
+msgid "Override discarded — language now uses auto-translated defaults"
+msgstr "Version personnalisée supprimée — cette langue utilise désormais les étapes par défaut traduites automatiquement"
+
+#. TRANSLATORS: Error message; {error} is the reason, from the server, in English or in the user's language
+msgid "Error resetting: {error}"
+msgstr "Erreur lors de la réinitialisation : {error}"
+
+#. TRANSLATORS: Message after the steps were downloaded as a file
+msgid "Steps exported"
+msgstr "Étapes exportées"
+
+#. TRANSLATORS: Error message; {error} is the reason, from the server, in English or in the user's language
+msgid "Error exporting steps: {error}"
+msgstr "Erreur lors de l'exportation des étapes : {error}"
+
+#. TRANSLATORS: %n is the number of imported steps; {language} is a language code, such as "de" or "pt_BR"
+msgid "Imported %n step ({language})"
+msgid_plural "Imported %n steps ({language})"
+msgstr[0] "%n étape importée ({language})"
+msgstr[1] "%n étapes importées ({language})"
+msgstr[2] "%n étapes importées ({language})"
+
+#. TRANSLATORS: %n is the number of images and videos that were left out of the import
+msgid "An image or video in the file is not on this server and was left out."
+msgid_plural "%n images or videos in the file are not on this server and were left out."
+msgstr[0] "Une image ou une vidéo du fichier ne se trouve pas sur ce serveur et a été omise."
+msgstr[1] "%n images ou vidéos du fichier ne se trouvent pas sur ce serveur et ont été omises."
+msgstr[2] "%n images ou vidéos du fichier ne se trouvent pas sur ce serveur et ont été omises."
+
+#. TRANSLATORS: Error message; {error} is the reason, from the server, in English or in the user's language
+msgid "Error importing steps: {error}"
+msgstr "Erreur lors de l'importation des étapes : {error}"
+
+#. TRANSLATORS: Message after the steps were saved
+msgid "Steps saved"
+msgstr "Étapes enregistrées"
+
+#. TRANSLATORS: Error message; {error} is the technical reason, in English
+msgid "Error saving: {error}"
+msgstr "Erreur lors de l'enregistrement : {error}"
+
+msgid "The welcome tour has no steps of your own to export: it uses the translated default steps every Nextcloud has."
+msgstr "La visite de bienvenue n’a pas d’étapes personnalisées à exporter : elle utilise les étapes par défaut traduites présentes dans chaque Nextcloud."
+
+msgid "The file is too large to import."
+msgstr "Le fichier est trop volumineux pour être importé."
+
+msgid "This tour comes from a newer IntroVox. Update IntroVox here first."
+msgstr "Cette visite provient d’une version plus récente d’IntroVox. Mettez d’abord à jour IntroVox ici."
+
+#. TRANSLATORS: {detail} is a technical description of the problem, in English
+msgid "The tour in the file is not valid: {detail}"
+msgstr "La visite contenue dans le fichier n’est pas valide : {detail}"
+
+#. TRANSLATORS: %n is the maximum number of tours, currently 50
+msgid "There is already %n tour, the most there can be."
+msgid_plural "There are already %n tours, the most there can be."
+msgstr[0] "Il y a déjà %n visite, le maximum possible."
+msgstr[1] "Il y a déjà %n visites, le maximum possible."
+msgstr[2] "Il y a déjà %n visites, le maximum possible."
+
+msgid "This file is shared with you for viewing only, so it cannot be imported."
+msgstr "Ce fichier est partagé avec vous en lecture seule, il ne peut donc pas être importé."
+
+msgid "This is not a tour exported from IntroVox."
+msgstr "Il ne s’agit pas d’une visite exportée depuis IntroVox."
+
+msgid "The tours could not be loaded."
+msgstr "Les visites n’ont pas pu être chargées."
+
+msgid "Add a step in the main language before you switch this tour on."
+msgstr "Ajoutez une étape dans la langue principale avant d’activer cette visite."
+
+msgid "The tour could not be switched on or off."
+msgstr "La visite n’a pas pu être activée ou désactivée."
+
+#. TRANSLATORS: {tour} is the name of a tour, such as "Talk"
+msgid "Everyone who saw {tour} gets it again the next time, except people who switched tours off."
+msgstr "Toutes les personnes qui ont vu « {tour} » la recevront de nouveau la prochaine fois, sauf celles qui ont désactivé les visites."
+
+#. TRANSLATORS: {tour} is the name of a tour, such as "Talk"
+msgid "{tour} will be shown again"
+msgstr "« {tour} » sera de nouveau affichée"
+
+msgid "The tour could not be shown again."
+msgstr "La visite n’a pas pu être affichée de nouveau."
+
+#. TRANSLATORS: Dialog title; {tour} is the name of a tour, such as "Talk"
+msgid "Delete {tour}"
+msgstr "Supprimer {tour}"
+
+msgid "The tour and its steps in every language are deleted. Export it first if you may want it back."
+msgstr "La visite et ses étapes dans toutes les langues seront supprimées. Exportez-la d’abord si vous voudrez peut-être la récupérer."
+
+msgid "The tour could not be deleted."
+msgstr "La visite n’a pas pu être supprimée."
+
+#. TRANSLATORS: {tour} is the name of a tour, such as "Talk"
+msgid "Link to {tour} copied"
+msgstr "Lien vers « {tour} » copié"
+
+#. TRANSLATORS: {tour} is the name of a tour, such as "Talk". "Switched off" is the tour's switch in the list of tours
+msgid "Link to {tour} copied. The tour is switched off: the link starts it once you switch it on."
+msgstr "Lien vers « {tour} » copié. La visite est désactivée : le lien la lancera une fois que vous l’aurez activée."
+
+msgid "The tour could not be exported."
+msgstr "La visite n’a pas pu être exportée."
+
+#. TRANSLATORS: {languages} is a comma-separated list of language codes, such as "de, fr"
+msgid "The welcome tour's steps were imported for {languages}"
+msgstr "Les étapes de la visite de bienvenue ont été importées pour {languages}"
+
+#. TRANSLATORS: {tour} is the name of a tour, such as "Talk"
+msgid "Imported {tour}. It stays switched off until you switch it on."
+msgstr "Visite « {tour} » importée. Elle reste désactivée jusqu’à ce que vous l’activiez."
+
+#. TRANSLATORS: {groups} is a comma-separated list of group names
+msgid "These groups do not exist here and were left out: {groups}"
+msgstr "Ces groupes n’existent pas ici et ont été omis : {groups}"
+
+#. TRANSLATORS: %n is the number of images and videos that were left out of the import
+msgid "%n image or video was left out: missing from the file, or over this server's limits."
+msgid_plural "%n images or videos were left out: missing from the file, or over this server's limits."
+msgstr[0] "%n image ou vidéo a été omise : absente du fichier ou dépassant les limites de ce serveur."
+msgstr[1] "%n images ou vidéos ont été omises : absentes du fichier ou dépassant les limites de ce serveur."
+msgstr[2] "%n images ou vidéos ont été omises : absentes du fichier ou dépassant les limites de ce serveur."
+
+#. TRANSLATORS: {app} is the technical ID of an app, such as "spreed"
+msgid "The app {app} is not installed here. The tour can only start once it is."
+msgstr "L’application {app} n’est pas installée ici. La visite ne pourra démarrer qu’une fois qu’elle le sera."
+
+#. TRANSLATORS: Dialog title
+msgid "Replace the welcome tour?"
+msgstr "Remplacer la visite de bienvenue ?"
+
+#. TRANSLATORS: {languages} is a comma-separated list of language codes, such as "de, fr"
+msgid "The welcome tour's own steps in {languages} are replaced by the ones in the file."
+msgstr "Les étapes personnalisées de la visite de bienvenue pour {languages} seront remplacées par celles du fichier."
+
+msgid "The tour could not be started."
+msgstr "La visite n’a pas pu être lancée."
+
+#. TRANSLATORS: Error message
+msgid "Error restarting tour"
+msgstr "Erreur lors du redémarrage de la visite"
+
+msgid "Use Nextcloud as a real app!"
+msgstr "Utilisez Nextcloud comme une véritable application !"
+
+msgid "You can install Nextcloud as an app on your device. It then works just like any other app:"
+msgstr "Vous pouvez installer Nextcloud comme une application sur votre appareil. Elle fonctionnera alors comme n’importe quelle autre application :"
+
+msgid "✨ Own app icon on your home screen/dock"
+msgstr "✨ Une véritable icône sur votre écran d’accueil ou dans votre Dock"
+
+msgid "⚡ Faster to open (no browser needed)"
+msgstr "⚡ Ouverture plus rapide (sans navigateur)"
+
+msgid "🎯 Full focus without browser tabs"
+msgstr "🎯 Une concentration optimale, sans onglets de navigateur"
+
+msgid "📱 Also works offline for some features"
+msgstr "📱 Certaines fonctionnalités restent disponibles hors ligne"
+
+msgid "How to install the app:"
+msgstr "Comment installer l'application :"
+
+msgid "💡 You can also skip this step and install later whenever you want."
+msgstr "💡 Vous pouvez également ignorer cette étape et installer l’application plus tard, quand vous le souhaitez."
+
+#. TRANSLATORS: Button: closes the step about installing Nextcloud as an app and goes on
+msgid "Got it"
+msgstr "Compris"
+
+msgid "Install Nextcloud on your iPhone/iPad"
+msgstr "Installer Nextcloud sur votre iPhone/iPad"
+
+msgid "Tap the <strong>Share</strong> icon (square with up arrow) at the bottom"
+msgstr "Appuyez sur l’icône <strong>Partager</strong> (le carré avec une flèche vers le haut) en bas de l’écran"
+
+msgid "Scroll down and tap <strong>\"Add to Home Screen\"</strong>"
+msgstr "Faites défiler la page puis appuyez sur <strong>« Ajouter à l’écran d’accueil »</strong>"
+
+msgid "Tap <strong>Add</strong> in the top right"
+msgstr "Appuyez sur <strong>Ajouter</strong> en haut à droite"
+
+msgid "Nextcloud now appears as an app on your home screen!"
+msgstr "Nextcloud apparaît désormais comme une application sur votre écran d’accueil !"
+
+msgid "Install Nextcloud on your Mac"
+msgstr "Installer Nextcloud sur votre Mac"
+
+msgid "Click <strong>File</strong> in the menu bar"
+msgstr "Cliquez sur <strong>Fichier</strong> dans la barre de menus"
+
+#. TRANSLATORS: "Add to Dock" is a menu entry in Safari on a Mac: use the name Safari shows in your language
+msgid "Select <strong>\"Add to Dock\"</strong>"
+msgstr "Sélectionnez <strong>« Ajouter au Dock »</strong>"
+
+msgid "Nextcloud now appears in your Dock as an app!"
+msgstr "Nextcloud apparaît désormais dans votre Dock comme une application !"
+
+msgid "Install Nextcloud on your Android"
+msgstr "Installez Nextcloud sur votre appareil Android"
+
+msgid "Tap the menu icon (three dots) in the top right"
+msgstr "Appuyez sur l’icône du menu (les trois points) en haut à droite"
+
+msgid "Tap <strong>\"Install app\"</strong> or <strong>\"Add to home screen\"</strong>"
+msgstr "Appuyez sur <strong>\"Installer l’application\"</strong> ou <strong>\"Ajouter à l’écran d’accueil\"</strong>"
+
+#. TRANSLATORS: "Install" is a button in Chrome on Android: use the name Chrome shows in your language
+msgid "Tap <strong>Install</strong>"
+msgstr "Appuyez sur <strong>Installer</strong>"
+
+msgid "Install Nextcloud on your computer"
+msgstr "Installez Nextcloud sur votre ordinateur"
+
+msgid "Click the <strong>install icon</strong> in the address bar (right)"
+msgstr "Cliquez sur <strong>l’icône d’installation</strong> dans la barre d’adresse (à droite)"
+
+msgid "Or: click the menu (three dots) → <strong>\"More tools\"</strong> → <strong>\"Apps\"</strong> → <strong>\"Install this site as an app\"</strong>"
+msgstr "Ou : cliquez sur le menu (trois points) → <strong>\"Plus d’outils\"</strong> → <strong>\"Applications\"</strong> → <strong>\"Installer ce site comme une application\"</strong>"
+
+#. TRANSLATORS: "Install" is a button in the browser: use the name the browser shows in your language
+msgid "Click <strong>Install</strong>"
+msgstr "Cliquez sur <strong>Installer</strong>"
+
+msgid "Nextcloud now opens as an app in its own window!"
+msgstr "Nextcloud s’ouvre désormais comme une application dans sa propre fenêtre !"
+
+msgid "Or: click the menu (three dots) → <strong>\"Install Nextcloud\"</strong>"
+msgstr "Ou : cliquez sur le menu (trois points) → <strong>\"Installer Nextcloud\"</strong>"
+
+#. TRANSLATORS: "Install" is a menu entry in Samsung Internet: use the name it shows in your language
+msgid "Tap <strong>\"Install\"</strong>"
+msgstr "Appuyez sur <strong>\"Installer\"</strong>"
+
+msgid "Tap <strong>Add to Home Screen</strong>"
+msgstr "Appuyez sur <strong>Ajouter à l’écran d’accueil</strong>"
+
+msgid "Create a shortcut in Firefox"
+msgstr "Créer un raccourci dans Firefox"
+
+msgid "Firefox currently does not support PWA installation"
+msgstr "Firefox ne prend actuellement pas en charge l’installation des PWA"
+
+msgid "You can however create a bookmark for quick access"
+msgstr "Vous pouvez toutefois créer un marque-page pour y accéder rapidement"
+
+msgid "Or use Chrome/Edge for the full app experience"
+msgstr "Vous pouvez également utiliser Chrome ou Edge pour profiter de l’expérience complète"
+
+#. TRANSLATORS: Title of a tour step. "Opera" is a web browser
+msgid "Install Nextcloud in Opera"
+msgstr "Installer Nextcloud dans Opera"
+
+#. TRANSLATORS: Instruction in Opera, a web browser
+msgid "Click/tap the menu icon"
+msgstr "Cliquez ou appuyez sur l’icône du menu"
+
+#. TRANSLATORS: "Install Nextcloud" is a menu entry in the browser: use the words it shows in your language
+msgid "Select <strong>\"Install Nextcloud\"</strong>"
+msgstr "Sélectionnez <strong>\"Installer Nextcloud\"</strong>"
+
+#. TRANSLATORS: "Install" is a button in the browser: use the name it shows in your language
+msgid "Click/tap <strong>Install</strong>"
+msgstr "Cliquez ou appuyez sur <strong>Installer</strong>"
+
+msgid "Nextcloud is now available as an app!"
+msgstr "Nextcloud est maintenant disponible en tant qu’application !"
+
+msgid "Use Nextcloud as an app"
+msgstr "Utiliser Nextcloud comme une application"
+
+msgid "Your browser may support app installation"
+msgstr "Votre navigateur prend peut-être en charge l’installation d’applications"
+
+msgid "Look in the menu for options like \"Install\" or \"Add to home screen\""
+msgstr "Recherchez dans le menu des options telles que « Installer » ou « Ajouter à l’écran d’accueil »"
+
+msgid "For the best experience: use Chrome, Edge or Safari"
+msgstr "Pour une expérience optimale, utilisez Chrome, Edge ou Safari"
+
+#. TRANSLATORS: Invisible label of a button that pauses a GIF or video in a tour step
+msgid "Pause animation"
+msgstr "Mettre l’animation en pause"
+
+#. TRANSLATORS: Invisible label of a button that plays a GIF or video in a tour step
+msgid "Play animation"
+msgstr "Lire l’animation"
+
+#. TRANSLATORS: Noun: name of the subtitles track of a video
+msgid "Captions"
+msgstr "Sous-titres"
+
+#. TRANSLATORS: Description under the heading IntroVox on the administration page
+msgid "Tours that show people around Nextcloud and its apps: when they start, for whom, and their steps."
+msgstr "Des visites qui font découvrir Nextcloud et ses applications : quand elles démarrent, pour qui, et leurs étapes."
+
+#~ msgid ""
+#~ "IntroVox shows people around Nextcloud. New users get a welcome tour after their first login, and a short tour the first time they open an app such as Files, Talk, Deck or Calendar.\n"
+#~ "\n"
+#~ "**For users:**\n"
+#~ "* A welcome tour after the first login, in their own language\n"
+#~ "* Short tours the first time they open an app or a page, or a tip on any page after a few days\n"
+#~ "* Steps that go on when they click the element or fill in a field; a step whose element is not there yet waits aside until it appears\n"
+#~ "* Images, GIFs and videos in steps, with descriptions and captions\n"
+#~ "* Every tour can be started again from the personal settings, also through Tours in the user menu, and tours that start by themselves can be switched off\n"
+#~ "* An optional \"Getting started\" checklist on the Dashboard that ticks itself off\n"
+#~ "\n"
+#~ "**For administrators:**\n"
+#~ "* Built-in tours for Files, Talk, Deck and Calendar, and tours of your own for an app, a page, or anywhere\n"
+#~ "* Translated default steps via Transifex (every translated language is available automatically), with your own steps per language where you want them\n"
+#~ "* Groups per step and per tour\n"
+#~ "* Who gets a tour and when: everyone or new accounts only, a number of days after the first login, between two dates\n"
+#~ "* Share links that start a tour, for a welcome mail or a message to a team\n"
+#~ "* Statistics per tour: how many people started, completed and skipped it, and how far people get\n"
+#~ "* Export and import of a whole tour, with its steps in every language and its images and videos\n"
+#~ "* Translate a tour or write its steps with AI, through the Nextcloud Assistant; you check every step before it is saved\n"
+#~ "* Optional anonymous telemetry reporting\n"
+#~ "* Automatically adapts to your Nextcloud theme (light, dark, high contrast)\n"
+#~ "\n"
+#~ "Built with Vue 3 and Shepherd.js."
+#~ msgstr ""
+#~ "IntroVox fait découvrir Nextcloud aux personnes qui l’utilisent. Les nouveaux utilisateurs reçoivent une visite de bienvenue après leur première connexion, et une courte visite la première fois qu’ils ouvrent une application comme Fichiers, Talk, Deck ou Agenda.\n"
+#~ "\n"
+#~ "**Pour les utilisateurs :**\n"
+#~ "* Une visite de bienvenue après la première connexion, dans leur propre langue\n"
+#~ "* De courtes visites la première fois qu’ils ouvrent une application ou une page, ou une astuce sur n’importe quelle page après quelques jours\n"
+#~ "* Des étapes qui se poursuivent lorsqu’ils cliquent sur l’élément ou remplissent un champ ; une étape dont l’élément n’est pas encore présent attend en retrait jusqu’à ce qu’il apparaisse\n"
+#~ "* Des images, des GIF et des vidéos dans les étapes, avec descriptions et sous-titres\n"
+#~ "* Chaque visite peut être relancée depuis les paramètres personnels, également via Visites dans le menu utilisateur, et les visites qui démarrent automatiquement peuvent être désactivées\n"
+#~ "* Une liste de tâches « Premiers pas » facultative sur le tableau de bord, qui se coche automatiquement\n"
+#~ "\n"
+#~ "**Pour les administrateurs :**\n"
+#~ "* Des visites intégrées pour Fichiers, Talk, Deck et Agenda, et vos propres visites pour une application, une page ou n’importe où\n"
+#~ "* Des étapes par défaut traduites via Transifex (chaque langue traduite est disponible automatiquement), avec vos propres étapes par langue là où vous le souhaitez\n"
+#~ "* Des groupes par étape et par visite\n"
+#~ "* Qui reçoit une visite et quand : tout le monde ou uniquement les nouveaux comptes, un certain nombre de jours après la première connexion, entre deux dates\n"
+#~ "* Des liens à partager qui lancent une visite, pour un e-mail de bienvenue ou un message à une équipe\n"
+#~ "* Des statistiques par visite : combien de personnes l’ont commencée, terminée ou ignorée, et jusqu’où elles vont\n"
+#~ "* Exportation et importation d’une visite complète, avec ses étapes dans toutes les langues ainsi que ses images et vidéos\n"
+#~ "* Traduction d’une visite ou rédaction de ses étapes avec l’IA, via l’Assistant Nextcloud ; vous vérifiez chaque étape avant son enregistrement\n"
+#~ "* Envoi facultatif de données de télémétrie anonymes\n"
+#~ "* S’adapte automatiquement au thème de votre Nextcloud (clair, sombre, contraste élevé)\n"
+#~ "\n"
+#~ "Développé avec Vue 3 et Shepherd.js."

@@ -54,11 +54,11 @@ OC.L10N.register(
     "Copy link" : "Copiar enlace",
     "Need help?" : "¿Necesitas ayuda?",
     "Source code" : "Código fuente",
+    "Start" : "Inicio",
     "Close" : "Cerrar",
     "Done" : "Terminado",
     "Skip" : "Saltar",
     "Settings saved" : "Se han guardado las configuraciones ",
-    "Start" : "Inicio",
     "Select" : "Seleccionar"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -106,7 +106,7 @@ IntroVox depends on these Nextcloud APIs:
 
 - **`OCP\IConfig`** — global and per-user configuration
 - **`OCP\IL10N`** — translation context (admin/personal UI strings)
-- **`OCP\L10N\IFactory`** — `findLanguage(null)` for raw user-locale detection (v1.7.0+, deliberately bypasses per-app validation that silently rerouted on missing translations), `getLanguages()` for the override-picker display names, and `get('introvox', $lang)` to build the auto-translated default tour for any language
+- **`OCP\L10N\IFactory`** — `findLanguage(null)` for raw user-locale detection (v1.7.0+, deliberately bypasses per-app validation that silently rerouted on missing translations), `getLanguages()` for the override-picker display names, and `get('introvox', $lang)` to build the translated default tour for any language
 - **`OCP\IGroupManager`** — group membership checks for step filtering
 - **`OCP\IUserSession`** — current-user lookup
 - **`OCP\Support\Subscription\IRegistry`** — `delegateHasValidSubscription()` and `delegateHasExtendedSupport()`, reported in telemetry
@@ -159,7 +159,7 @@ See [Frontend Architecture](frontend-architecture.md) for the order of the rules
 
 - **CSRF protection** on every route, `GET` included, since 2.0.0, except `GET /media/{file}` (an `<img>` or `<video>` cannot send a token) and `GET /tour/{id}` (a share link from a mail; it only redirects). v1.5.0 restored it on the state-changing admin endpoints
 - **Defensive admin checks** via `IGroupManager::isAdmin()` on every admin endpoint, in addition to the framework's annotation-based check
-- **Step HTML** is checked on save and import (`StepValidator`: known fields, types, lengths) and cleaned when shown: `sanitizeStepHtml()` (DOMPurify) keeps only basic formatting and links, so imported files and Transifex translations cannot add markup. Up to 1.6.x `OCP\Util::sanitizeHTML` escaped it on save; `UnescapeLegacyWizardStepHtml` repairs steps stored that way
+- **Step HTML** is checked on save and import (`StepValidator`: known fields, types, lengths) and cleaned when shown: `sanitizeStepHtml()` (DOMPurify) keeps only basic formatting and links, so imported files and translations cannot add markup. Up to 1.6.x `OCP\Util::sanitizeHTML` escaped it on save; `UnescapeLegacyWizardStepHtml` repairs steps stored that way
 - **Server-side group filtering** — `visibleToGroups` is enforced in the API layer; hidden steps are never sent to the client
 - **HTTP response validation** on license-server calls — `LicenseService` checks status codes and JSON shape before trusting responses (v1.5.0+)
 
@@ -174,4 +174,4 @@ See [Frontend Architecture](frontend-architecture.md) for the order of the rules
 - [API Reference](api-reference.md) — REST endpoints
 - [Frontend Architecture](frontend-architecture.md) — Vue 3 + Shepherd.js details
 - [Backend Architecture](backend-architecture.md) — PHP controllers and services
-- [Transifex Integration](transifex-integration.md) — l10n workflow
+- [Translations](translations.md) — l10n workflow

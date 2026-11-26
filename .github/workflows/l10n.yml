@@ -1,22 +1,23 @@
-# Backstop for the l10n pipeline.
+# Backstop for the l10n pipeline, on GitHub. Forgejo runs the same checks as
+# `l10n sync` and `l10n gate` (.forgejo/workflows/), which are required on main.
+#
+# Since 2026-11-24 IntroVox is translated in VoxCloud's own Weblate:
+# translationfiles/<lang>/introvox.po is the source, Weblate its only writer, and
+# the POT and l10n/*.js|json are built from it with Nextcloud's own
+# translationtool (scripts/l10n-sync.mjs, copied from design).
 #
 # The primary defence is the prebuild guard (scripts/check-l10n-sync.js), which
 # runs on every `npm run build`. This workflow is the safety net for a commit
-# that reaches main without a local build — the exact path by which the admin UI
-# stayed untranslatable from 2026-06 onwards: the sync-bot deleted the POT, the
-# .gitignore rule kept it from coming back, and no build ever complained.
+# that reaches main without a local build — the path by which the admin UI
+# stayed untranslatable from 2026-06 to 2026-10: the POT went missing and no build
+# ever complained.
 #
-# The most important check here is the bot-visibility simulation in
-# tests-js/l10n-bot-visibility.test.js. Our committed POT is NOT what Transifex
-# ingests: the bot regenerates it with its own extractor, which only sees
-# t('introvox', '…'). A string can be in our POT, valid and committed, and still
-# never reach a translator.
+# tests-js/l10n-bot-visibility.test.js simulates Nextcloud's extractor, which only
+# sees t('introvox', '…') with literals: a string can be in the code, valid, and
+# still never reach a translator.
 #
 # It is CHECK-ONLY on purpose — it never writes, commits or pushes. On a red run,
-# run `npm run l10n:push` locally, commit the POT + manifest, and push to GitHub
-# (the Nextcloud bot reads the POT from there, not from Forgejo). An auto-commit
-# action is deliberately avoided: the bot deletes the POT after each sync, so
-# auto-committing it would create a churn loop and collide with the bot's pushes.
+# run `npm run pot` locally and commit the POT + manifest.
 
 name: l10n
 
@@ -24,6 +25,8 @@ on:
   push:
     branches: [main]
     paths:
+      - 'appinfo/info.xml'
+      - 'translationfiles/**'
       - 'src/**'
       - 'lib/**'
       - 'templates/**'
@@ -32,10 +35,11 @@ on:
       - 'scripts/**'
       - 'deploy.sh'
       - '.gitignore'
-      - '.tx/config'
       - '.github/workflows/l10n.yml'
   pull_request:
     paths:
+      - 'appinfo/info.xml'
+      - 'translationfiles/**'
       - 'src/**'
       - 'lib/**'
       - 'templates/**'
@@ -44,7 +48,6 @@ on:
       - 'scripts/**'
       - 'deploy.sh'
       - '.gitignore'
-      - '.tx/config'
       - '.github/workflows/l10n.yml'
 
 jobs:
@@ -74,28 +77,15 @@ jobs:
       - name: Nextcloud translation-guideline lint
         run: node scripts/lint-l10n-strings.js
 
-      # Proves the POT can still be regenerated and is valid gettext — catches a
-      # broken extractor or a malformed msgid before Transifex silently rejects
-      # the ingest and freezes the resource at its previous state.
-      - name: POT regenerates and validates
-        run: |
-          sudo apt-get update && sudo apt-get install -y gettext
-          npm run pot
-          msgfmt --check-format -o /dev/null translationfiles/templates/introvox.pot
+      # Proves the POT can still be regenerated and is valid gettext, before Weblate
+      # gets a broken one. The POT and l10n/ come from Nextcloud's own translationtool
+      # (scripts/l10n-sync.mjs, copied from design). `check` fails when either is out
+      # of date. It ignores POT-Creation-Date and the #: references, so a line shift
+      # elsewhere in the code is not a change and this step does not turn red for nothing.
+      - name: php and gettext
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends php-cli php-xml gettext >/dev/null
 
-      # The POT is committed; regenerating it must not change which strings it
-      # contains. A diff here means someone edited a string without running
-      # `npm run l10n:push`.
-      #
-      # POT-Creation-Date is stamped with the current time on every run, so it
-      # always differs and is excluded — comparing it would make this step
-      # permanently red and train everyone to ignore it.
-      - name: POT is up to date with the source
+      - name: POT and l10n/ are up to date
         run: |
-          git show HEAD:translationfiles/templates/introvox.pot \
-            | grep -v '^"POT-Creation-Date:' > /tmp/pot-committed.pot
-          grep -v '^"POT-Creation-Date:' translationfiles/templates/introvox.pot > /tmp/pot-regenerated.pot
-          if ! diff -u /tmp/pot-committed.pot /tmp/pot-regenerated.pot; then
-            echo "::error::The POT is out of date. Run 'npm run l10n:push' and commit the result."
-            exit 1
-          fi
+          node scripts/l10n-sync.mjs check
+          msgfmt --check-format -o /dev/null translationfiles/templates/introvox.pot

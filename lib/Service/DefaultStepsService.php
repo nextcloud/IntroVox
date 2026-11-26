@@ -7,7 +7,7 @@ use OCP\L10N\IFactory;
 /**
  * Single source of truth for the built-in tour steps.
  * Both AdminController (editor view) and ApiController (end-user fetch) use this
- * so the Transifex-translated defaults are identical across both code paths.
+ * so the Weblate-translated defaults are identical across both code paths.
  */
 class DefaultStepsService {
     private const APP_NAME = 'introvox';
@@ -26,7 +26,7 @@ class DefaultStepsService {
      * requested `$lang` has no l10n file, which is surprising when an admin in
      * a Dutch session opens "Add language override → Italian" and sees Dutch
      * default copy. Forcing the fallback to English makes the seed predictable
-     * and matches the Transifex msgid language.
+     * and matches the msgid language.
      */
     public function getForLanguage(string $lang): array {
         if (!$this->l10nFactory->languageExists(self::APP_NAME, $lang)) {

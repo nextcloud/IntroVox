@@ -98,7 +98,7 @@ Je kunt in plaats van de herstart-knop dit bericht zien in persoonlijke instelli
 
 Je Nextcloud-beheerder heeft de tours voor alle gebruikers uitgezet. Er start geen tour, de welkomsttour niet en een tour voor een app ook niet, en je kunt er zelf ook geen starten. Neem contact op met je beheerder als je hem alsnog wilt zien.
 
-> Eerdere IntroVox-versies toonden ook een melding "niet beschikbaar in je taal" als een beheerder talen had beperkt. Sinds v1.7.0 is de tour automatisch beschikbaar in elke taal die Nextcloud ondersteunt (via Transifex), dus die melding bestaat niet meer.
+> Eerdere IntroVox-versies toonden ook een melding "niet beschikbaar in je taal" als een beheerder talen had beperkt. Sinds v1.7.0 is de tour automatisch beschikbaar in elke taal die Nextcloud ondersteunt, dus die melding bestaat niet meer.
 
 ## Zie ook
 

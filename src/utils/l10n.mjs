@@ -7,7 +7,7 @@
  *   t(appId, text, { tour: name }, undefined, TEXT)
  *   n(appId, singular, plural, count, { tour: name }, TEXT)
  *
- * (In code the app id and the text stay literals, so the Transifex bot sees
+ * (In code the app id and the text stay literals, so translationtool sees
  * the string: tests-js/l10n-bot-visibility.test.js.)
  *
  * By default translate() HTML-escapes placeholder values and runs the result

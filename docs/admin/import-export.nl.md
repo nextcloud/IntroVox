@@ -139,7 +139,7 @@ Als import faalt zie je een specifieke fout:
 
 ### Samenwerking met vertalers
 
-Dit patroon is alleen nodig als een beheerder een *eigen override* wil voor een bepaalde taal. De automatisch vertaalde standaardtour komt van Transifex — daarvoor is bijdragen op [Transifex](https://www.transifex.com/nextcloud/nextcloud/) zelf de betere weg, dan hebben alle installaties er iets aan.
+Dit patroon is alleen nodig als een beheerder een *eigen override* wil voor een bepaalde taal. De vertaalde standaardtour wordt bijgehouden in de Weblate van VoxCloud — om die te verbeteren is een issue op [GitHub](https://github.com/nextcloud/IntroVox/issues) de betere weg, dan hebben alle installaties er iets aan.
 
 Voor eigen tekst op één installatie:
 

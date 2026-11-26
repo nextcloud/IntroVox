@@ -73,25 +73,25 @@ case "$MODE" in
     # --- translations: how much of this release ships in English? -----------
     # Not a gate. New strings shipping untranslated is normal and expected;
     # the checklist explains when it is worth waiting instead.
-    python3 - "$V" <<'PY'
-import json, glob, os, sys
-src = json.load(open('l10n/en.json'))['translations']
-total = len(src)
-rows = []
-for f in sorted(glob.glob('l10n/*.json')):
-    lang = os.path.basename(f)[:-5]
-    if lang.startswith('.') or lang == 'en':
-        continue
-    tr = json.load(open(f))['translations']
-    n = sum(1 for k in src if str(tr.get(k, '')).strip())
-    rows.append((100 * n / total, lang, n))
-rows.sort(reverse=True)
-full = [l for p, l, _ in rows if p >= 99.5]
-print(f"  · {len(full)}/{len(rows)} languages complete: {' '.join(full) or '(none)'}")
-for p, l, n in rows:
-    if p < 99.5:
-        print(f"    {l:<7} {p:5.1f}%  ({total - n} untranslated)")
-PY
+    # Counted against the POT, with the keys l10n/<lang>.json uses (a plural is
+    # _singular_::_plural_). Not l10n/en.json: that one is generated, gitignored,
+    # and writes plurals under other keys, so no language ever counted as complete.
+    node --input-type=module <<'JS'
+import fs from 'node:fs'
+import { parsePot } from './scripts/l10n-audit.mjs'
+const pot = parsePot(fs.readFileSync('translationfiles/templates/introvox.pot', 'utf8'), '.')
+const keys = pot.map((e) => (e.plural ? `_${e.msgid}_::_${e.plural}_` : e.msgid))
+const rows = []
+for (const f of fs.readdirSync('l10n').filter((f) => f.endsWith('.json') && !f.startsWith('.') && f !== 'en.json').sort()) {
+  const tr = JSON.parse(fs.readFileSync(`l10n/${f}`, 'utf8')).translations
+  const n = keys.filter((k) => [].concat(tr[k] ?? '').some((s) => String(s).trim())).length
+  rows.push({ lang: f.slice(0, -5), n, p: (100 * n) / keys.length })
+}
+rows.sort((a, b) => b.p - a.p || a.lang.localeCompare(b.lang))
+const full = rows.filter((r) => r.n === keys.length).map((r) => r.lang)
+console.log(`  · ${full.length}/${rows.length} languages complete (${keys.length} strings): ${full.join(' ') || '(none)'}`)
+for (const r of rows.filter((r) => r.n < keys.length)) console.log(`    ${r.lang.padEnd(7)} ${r.p.toFixed(1).padStart(5)}%  (${keys.length - r.n} untranslated)`)
+JS
 
     echo
     [ "$FAILED" -eq 0 ] && printf "${GREEN}Ready to tag v%s${NC}\n" "$V" \
@@ -106,7 +106,7 @@ PY
     git ls-remote --tags origin "v$V" 2>/dev/null | grep -q . \
       && ok "tag on Forgejo" || bad "tag not pushed to Forgejo"
     git ls-remote --tags github "v$V" 2>/dev/null | grep -q . \
-      && ok "tag on GitHub"  || bad "tag not pushed to GitHub"
+      && ok "tag on GitHub"  || bad "no tag on GitHub: gh release create makes it (never push the Forgejo tag)"
 
     # A draft release makes the App Store download GitHub's 404 page — nine
     # bytes — and report "not a valid tar.gz archive".

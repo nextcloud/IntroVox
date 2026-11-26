@@ -1,6 +1,6 @@
 # IntroVox documentatie
 
-Welkom bij de IntroVox-documentatie. IntroVox is een Nextcloud-app met geleide tours: een welkomsttour voor nieuwe gebruikers, en korte tours die starten als iemand voor het eerst een app of pagina opent, zoals de ingebouwde tours voor Files, Talk, Deck en Calendar. Hij is gebouwd met Vue 3 en Shepherd.js, laat zijn standaardstappen vertalen via Transifex, en heeft een beheerpagina om tours te schrijven, te kiezen wie ze krijgt en wanneer, en te zien hoe ver mensen komen.
+Welkom bij de IntroVox-documentatie. IntroVox is een Nextcloud-app met geleide tours: een welkomsttour voor nieuwe gebruikers, en korte tours die starten als iemand voor het eerst een app of pagina opent, zoals de ingebouwde tours voor Files, Talk, Deck en Calendar. Hij is gebouwd met Vue 3 en Shepherd.js, laat zijn standaardstappen vertalen in de Weblate van VoxCloud, en heeft een beheerpagina om tours te schrijven, te kiezen wie ze krijgt en wanneer, en te zien hoe ver mensen komen.
 
 ![De ingebouwde tour voor Bestanden: een map maken, delen met een link, en zien dat er niets verloren gaat](screenshots/tours-files.gif)
 
@@ -27,7 +27,7 @@ Installatie, configuratie, stappenbeheer en operations.
 
 - [Beheergids](admin/guide.nl.md) — Dagelijks beheer
 - [Instellingen](admin/settings.nl.md) — Elke optie op de beheerpagina, de checklist op het Dashboard, en waar instellingen worden opgeslagen
-- [Talenbeheer](admin/language-management.nl.md) — Eigen tekst per taal via overrides (Transifex levert de standaardstappen automatisch)
+- [Talenbeheer](admin/language-management.nl.md) — Eigen tekst per taal via overrides (de vertaalde standaardstappen komen mee met de app)
 - [Tours](admin/tours.nl.md) — De welkomsttour, ingebouwde tours, tours voor een app, een pagina of overal; timing, links, statistieken, AI, exporteren en importeren
 - [Tourstappen beheren](admin/managing-steps.nl.md) — Stappen schrijven: tekst, afbeeldingen en video's, elementen, stappen die op de gebruiker wachten, volgorde, reset
 - [Groep-gebaseerde zichtbaarheid](admin/group-visibility.nl.md) — Rol-gebaseerde onboarding met groepsfilters
@@ -42,7 +42,7 @@ Installatie, configuratie, stappenbeheer en operations.
 Per-feature documentatie voor mogelijkheden.
 
 - [Geleide tours](features/guided-tours.nl.md) — Hoe een tour loopt: welke tour start, staptypen, stappen die wachten, tours over meerdere apps
-- [Meertalige ondersteuning](features/multi-language.nl.md) — Transifex-integratie, auto-detectie, per-taal stappen
+- [Meertalige ondersteuning](features/multi-language.nl.md) — Vertalingen, auto-detectie, per-taal stappen
 - [Zichtbaarheid van stappen](features/step-visibility.nl.md) — Groepsfilters en gebruikersvoorkeuren
 - [Customization](features/customization.nl.md) — HTML in stapinhoud, CSS-selectors, positionering
 - [Thema-ondersteuning](features/theme-support.nl.md) — Light, dark, high contrast, custom Nextcloud-thema's
@@ -55,7 +55,7 @@ Technische documentatie voor integratie, evaluatie en bijdragen.
 - [API-referentie](architecture/api-reference.nl.md) — REST API-endpoints
 - [Frontend-architectuur](architecture/frontend-architecture.nl.md) — Vue 3 + Shepherd.js-structuur
 - [Backend-architectuur](architecture/backend-architecture.nl.md) — Controllers, services, configuratie-opslag
-- [Transifex-integratie](architecture/transifex-integration.nl.md) — Vertaling-workflow
+- [Vertalingen](architecture/translations.nl.md) — Hoe vertalen werkt
 
 ### Beveiliging
 

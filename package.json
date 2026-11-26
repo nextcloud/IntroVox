@@ -1,6 +1,6 @@
 {
   "name": "nextcloud-introvox",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Interactive onboarding tour for new Nextcloud users",
   "repository": {
     "type": "git",
@@ -16,8 +16,9 @@
     "test:php": "php tests-php/run.php",
     "l10n:extract": "node scripts/extract-en-json.js",
     "l10n:lint": "node scripts/lint-l10n-strings.js",
-    "pot": "npm run l10n:extract && node scripts/generate-pot.js",
-    "l10n:push": "npm run l10n:extract && node scripts/lint-l10n-strings.js && node scripts/generate-pot.js",
+    "pot": "npm run l10n:extract && node scripts/l10n-sync.mjs pot",
+    "l10n:build": "node scripts/l10n-sync.mjs build",
+    "l10n:check": "node scripts/l10n-sync.mjs check",
     "lint:l10n": "node scripts/check-l10n-sync.js",
     "prebuild": "node scripts/check-l10n-sync.js"
   },

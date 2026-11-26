@@ -42,11 +42,11 @@ OC.L10N.register(
     "Preview" : "Antaŭvidi",
     "Copy link" : "Kopii ligilon",
     "Need help?" : "Ĉu necesas helpo?",
+    "Start" : "Komenco",
     "Close" : "Malfermi",
     "Done" : "Farita",
     "Skip" : "Preterpasi",
     "Settings saved" : "Agordoj konservitaj",
-    "Start" : "Komenco",
     "Select" : "Elekti"
 },
 "nplurals=2; plural=(n != 1);");

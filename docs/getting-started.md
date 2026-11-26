@@ -8,7 +8,7 @@ This guide helps you get started quickly based on your role.
 
 IntroVox shows people around Nextcloud with tours:
 
-- The **welcome tour** starts after a user's first login, on the first page they open. Its 8 default steps (Welcome to Nextcloud, Files & apps, Search, Your account & settings, Getting started, Important features, Useful tips, Done!) are translated through Transifex (`nextcloud/introvox` resource) into every language Nextcloud's translators cover. Three of them point at the apps menu, the search and the account menu; the others are centered
+- The **welcome tour** starts after a user's first login, on the first page they open. Its 8 default steps (Welcome to Nextcloud, Files & apps, Search, Your account & settings, Getting started, Important features, Useful tips, Done!) are translated in VoxCloud's Weblate; every language with translations ships with the app, and what is not translated yet shows in English. Three of them point at the apps menu, the search and the account menu; the others are centered
 - **Tours for apps and pages** start the first time someone opens an app, such as Talk, or another page of Nextcloud; a tour that starts anywhere comes on whichever page someone opens next. Built-in tours for Files, Talk, Deck and Calendar come ready to switch on ([Tours](admin/tours.md))
 - A step can go on when the user clicks its element or fills in a field, wait until what the user opened is there, and show an image, GIF or video
 - Each user can skip or restart a tour, start any tour from their personal settings (**Tours** in the user menu leads there), or stop tours from starting by themselves
@@ -48,7 +48,7 @@ Before evaluating IntroVox at scale, read:
 
 - [Architecture Overview](architecture/overview.md) — Vue 3 frontend, Shepherd.js tour engine, PHP backend, appconfig storage
 - [API Reference](architecture/api-reference.md) — public + admin endpoints
-- [Multi-Language Support](features/multi-language.md) — Transifex integration and auto-discovery of language files
+- [Multi-Language Support](features/multi-language.md) — Translations and auto-discovery of language files
 
 ## Key Concepts
 
@@ -59,9 +59,9 @@ Before evaluating IntroVox at scale, read:
 | **Wizard step** | A single tour step with a title, HTML content, an optional image or video, an optional CSS selector to highlight an element, a position (left/right/top/bottom), and how it continues: **Next button**, **Click on the element** or **Filling in the field**. |
 | **Centered step** | A step with no CSS selector — appears as a centered modal. Used for welcome and conclusion screens. |
 | **Attached step** | A step with a CSS selector — appears next to the highlighted element, which gets an outline and a blinking arrow. While the element is not there yet, the step waits aside in a corner and moves to it once it appears. |
-| **Language override** | Custom per-language copy that replaces the auto-translated defaults. Made per base language (one for `pt` also serves `pt_BR`), stored in appconfig under `wizard_steps_<lang>`, only created when an admin saves edits. |
+| **Language override** | Custom per-language copy that replaces the translated defaults. Made per base language (one for `pt` also serves `pt_BR`), stored in appconfig under `wizard_steps_<lang>`, only created when an admin saves edits. |
 | **Group visibility** | Steps can be restricted to specific Nextcloud groups via the `visibleToGroups` field. Empty = visible to all users. |
-| **Default steps** | Built-in step definitions auto-translated via Transifex; loaded when no custom configuration exists for a language. |
+| **Default steps** | Built-in step definitions, translated in VoxCloud's Weblate; loaded when no custom configuration exists for a language. |
 | **Wizard version** | A counter (`wizard_version`) raised by **Show again to everyone** on the welcome tour — the frontend uses it to decide whether to show the welcome tour again. |
 
 ## Architectural Highlights
@@ -69,7 +69,7 @@ Before evaluating IntroVox at scale, read:
 - **Native Nextcloud integration** — uses NC's `IConfig` for storage, `IL10N` for language detection, `IGroupManager` for group filtering, and `IUserSession` for per-user state.
 - **A small script on every page** — every page loads a bootstrap of about 20 KB. It decides from the page's initial state whether a tour starts, without a request, and loads the tour code only then ([Frontend Architecture](architecture/frontend-architecture.md#tour-runtime)).
 - **Server-side group filtering** — `visibleToGroups` enforcement happens in the PHP backend ([ApiController](https://github.com/nextcloud/IntroVox/blob/main/lib/Controller/ApiController.php)), so users cannot see hidden steps via browser tools.
-- **Transifex-driven translations** — the `nextcloud/introvox` Transifex resource feeds every default tour string. New language files (`l10n/<lang>.json`) land via the Nextcloud sync bot and reach users with the next IntroVox release; no code changes required and admins don't need to opt them in. A user gets their full language (`pt_BR`), else its base language, else English.
+- **Translations from Weblate** — every default tour string is translated in VoxCloud's Weblate. New translations land in `l10n/<lang>.json` through a pull request from Weblate and reach users with the next IntroVox release; no code changes required and admins don't need to opt them in. A user gets their full language (`pt_BR`), else its base language, else English.
 
 ## Next Steps
 
@@ -81,6 +81,6 @@ Before evaluating IntroVox at scale, read:
 
 ## See Also
 
-- [Multi-Language Support](features/multi-language.md) — Adding new languages via Transifex
+- [Multi-Language Support](features/multi-language.md) — How new languages and translations arrive
 - [Group-Based Visibility](admin/group-visibility.md) — Role-based onboarding
 - [Installation](deployment/installation.md) — App Store and manual install

@@ -369,7 +369,7 @@ class AdminController extends Controller {
                 ], 400);
             }
 
-            // Delete the override row; next GET serves Transifex-translated
+            // Delete the override row; next GET serves Weblate-translated
             // defaults. An app tour has no defaults: its language is emptied.
             if ($appTour !== null) {
                 $this->tours->deleteSteps($tour, $lang);

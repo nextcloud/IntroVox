@@ -67,7 +67,7 @@ A new tour starts switched off, so nobody sees it while you are still writing it
 
 ### Other languages
 
-**Add language override** in the step editor adds steps in another language, as for the welcome tour. A user gets the steps in their own language; if there are none, those of the base language (`de` for `de_DE`); if there are none either, those of the main language. Tours you make have no translated default steps: they only have the steps you write. The built-in tours do: without steps of yours in their own or base language, users get the built-in steps translated into their language, before your steps in the main language. Only for a language Transifex has not translated yet do your main-language steps come first.
+**Add language override** in the step editor adds steps in another language, as for the welcome tour. A user gets the steps in their own language; if there are none, those of the base language (`de` for `de_DE`); if there are none either, those of the main language. Tours you make have no translated default steps: they only have the steps you write. The built-in tours do: without steps of yours in their own or base language, users get the built-in steps translated into their language, before your steps in the main language. Only for a language without a translation yet do your main-language steps come first.
 
 ## Write or Translate Steps with AI
 

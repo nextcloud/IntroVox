@@ -16,7 +16,7 @@
 
 **For administrators:**
 * Built-in tours for Files, Talk, Deck and Calendar, and tours of your own for an app, a page, or anywhere
-* Translated default steps via Transifex (every translated language is available automatically), with your own steps per language where you want them
+* Default steps translated in VoxCloud's Weblate (every translated language is available automatically), with your own steps per language where you want them
 * Groups per step and per tour
 * Who gets a tour and when: everyone or new accounts only, a number of days after the first login, between two dates
 * Share links that start a tour, for a welcome mail or a message to a team
@@ -28,7 +28,7 @@
 
 Built with Vue 3 and Shepherd.js.
     ]]></description>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <licence>agpl</licence>
     <author mail="info@voxcloud.nl">Rik Dekker</author>
     <namespace>IntroVox</namespace>

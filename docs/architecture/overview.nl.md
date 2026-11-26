@@ -160,7 +160,7 @@ Zie [Frontend-architectuur](frontend-architecture.nl.md) voor de volgorde van de
 
 - **CSRF-bescherming** op elke route, ook `GET`, sinds 2.0.0, behalve `GET /media/{file}` (een `<img>` of `<video>` kan geen token meesturen) en `GET /tour/{id}` (een deellink uit een mail; stuurt alleen door). v1.5.0 herstelde haar op de state-changing admin-endpoints
 - **Defensieve admin-checks** via `IGroupManager::isAdmin()` op elk admin-endpoint, naast de framework-annotation-based check
-- **Stap-HTML** wordt bij opslaan en importeren gecontroleerd (`StepValidator`: bekende velden, types, lengtes) en bij tonen opgeschoond: `sanitizeStepHtml()` (DOMPurify) laat alleen eenvoudige opmaak en links over, zodat geïmporteerde bestanden en Transifex-vertalingen geen markup kunnen toevoegen. Tot en met 1.6.x escapete `OCP\Util::sanitizeHTML` het bij opslaan; `UnescapeLegacyWizardStepHtml` herstelt stappen die zo zijn opgeslagen
+- **Stap-HTML** wordt bij opslaan en importeren gecontroleerd (`StepValidator`: bekende velden, types, lengtes) en bij tonen opgeschoond: `sanitizeStepHtml()` (DOMPurify) laat alleen eenvoudige opmaak en links over, zodat geïmporteerde bestanden en vertalingen geen markup kunnen toevoegen. Tot en met 1.6.x escapete `OCP\Util::sanitizeHTML` het bij opslaan; `UnescapeLegacyWizardStepHtml` herstelt stappen die zo zijn opgeslagen
 - **Server-side groep-filtering** — `visibleToGroups` wordt afgedwongen op de API-laag; verborgen stappen worden nooit naar de client gestuurd
 - **HTTP-response-validatie** op licentie-server-calls — `LicenseService` checkt statuscodes en JSON-shape voor responses te vertrouwen (v1.5.0+)
 
@@ -175,4 +175,4 @@ Zie [Frontend-architectuur](frontend-architecture.nl.md) voor de volgorde van de
 - [API-referentie](api-reference.nl.md) — REST-endpoints
 - [Frontend-architectuur](frontend-architecture.nl.md) — Vue 3 + Shepherd.js-details
 - [Backend-architectuur](backend-architecture.nl.md) — PHP-controllers en -services
-- [Transifex-integratie](transifex-integration.nl.md) — l10n-workflow
+- [Vertalingen](translations.nl.md) — l10n-workflow

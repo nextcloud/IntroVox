@@ -59,11 +59,11 @@ OC.L10N.register(
     "Copy link" : "Копирај линк",
     "Need help?" : "Ви треба помош?",
     "Source code" : "Изворен код",
+    "Start" : "Старт",
     "Close" : "Затвори",
     "Done" : "Готово",
     "Skip" : "Прескокни",
     "Settings saved" : "Параматрите се зачувани",
-    "Start" : "Старт",
     "Select" : "Избери",
     "Browse" : "Прелистај",
     "Restart" : "Рестартирај"

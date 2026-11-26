@@ -2,7 +2,7 @@
 
 REST endpoints exposed by IntroVox. All routes are defined in [appinfo/routes.php](https://github.com/nextcloud/IntroVox/blob/main/appinfo/routes.php).
 
-There are two kinds of tour. The **welcome tour** (id `welcome`) is the tour new users get after their first login; its steps live in `wizard_steps_<lang>` with the Transifex-translated defaults behind them. **Tours for an app or page** (any other id) start the first time someone opens that app or page; they only have the steps an admin wrote. See [Tours](../admin/tours.md).
+There are two kinds of tour. The **welcome tour** (id `welcome`) is the tour new users get after their first login; its steps live in `wizard_steps_<lang>` with the translated defaults behind them. **Tours for an app or page** (any other id) start the first time someone opens that app or page; they only have the steps an admin wrote. See [Tours](../admin/tours.md).
 
 ## Public API
 
@@ -42,7 +42,7 @@ Returns the steps of one tour for the current user, filtered by language, group 
 
 **Special response fields:**
 
-- `useDefault: true` — no admin override exists for this language; the `steps` array is the auto-translated Transifex default set (the client should use it as-is and **not** rebuild defaults locally)
+- `useDefault: true` — no admin override exists for this language; the `steps` array is the translated default set (the client should use it as-is and **not** rebuild defaults locally)
 - `enabled: false` — **Tours for everyone** (`wizard_enabled`) is off, or the welcome tour is switched off in the Tours list; `steps` is then empty, `language` is `en` and there is no `version`
 - `version` — `wizard_version`, as a string; raised by the welcome tour's **Show again to everyone**
 
@@ -71,7 +71,7 @@ Returns the steps of one tour for the current user, filtered by language, group 
 }
 ```
 
-- `steps` — in the user's language (e.g. `pt_BR`), else its base language (`pt`), else the tour's main language; disabled and group-restricted steps removed, `visibleToGroups` stripped. A tour of your own has no translated defaults: a language without saved steps falls through to the next. A built-in tour (`builtin-files`, `builtin-talk`, `builtin-deck`, `builtin-calendar`) does: without the admin's steps in the user's language or its base language, it uses its Transifex translation for the user's language (or its base language) where there is one, then the admin's steps in the main language, then the English defaults.
+- `steps` — in the user's language (e.g. `pt_BR`), else its base language (`pt`), else the tour's main language; disabled and group-restricted steps removed, `visibleToGroups` stripped. A tour of your own has no translated defaults: a language without saved steps falls through to the next. A built-in tour (`builtin-files`, `builtin-talk`, `builtin-deck`, `builtin-calendar`) does: without the admin's steps in the user's language or its base language, it uses its translation for the user's language (or its base language) where there is one, then the admin's steps in the main language, then the English defaults.
 - `version` — the tour's version (integer); raised by **Show again to everyone**
 
 This route does not check whether the tour would start *by itself* (seen before, **Start tours by themselves** off, audience). That is the runtime's decision, so that a tour started by hand from the personal settings still loads.
@@ -390,7 +390,7 @@ Every step endpoint takes a `tour` parameter (default `welcome`). For the welcom
 |---|---|---|
 | `GET` | `/apps/introvox/admin/steps` | Get the steps of a tour in a language (query: `?lang=<code>&tour=<id>`). For the welcome tour and a built-in tour without the admin's own steps: the translated defaults. For another tour: its saved steps or `[]`, and the response also carries `"tour"` |
 | `POST` | `/apps/introvox/admin/steps` | Save the full step list (body: `{ "steps": [...], "lang": "<code>", "tour": "<id>" }`) |
-| `POST` | `/apps/introvox/admin/reset` | Delete a language's steps (body: `{ "lang", "tour" }`). For the welcome tour the next GET serves the auto-translated defaults; another tour has no defaults, so that language is simply empty |
+| `POST` | `/apps/introvox/admin/reset` | Delete a language's steps (body: `{ "lang", "tour" }`). For the welcome tour the next GET serves the translated defaults; another tour has no defaults, so that language is simply empty |
 
 ### Import/Export
 

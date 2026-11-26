@@ -2,16 +2,15 @@
  * Regression tests for the l10n plumbing around the code — the parts that broke
  * silently and stayed broken for months because nothing ever checked them.
  *
- * The POT is the source Transifex reads. The Nextcloud sync-bot DELETES it from
- * the repo after every ingest (normal, see IntraVox's zigzag of "POT-template
- * terug" commits). That only works if the POT can be committed back. In IntroVox
- * it could not: .gitignore had a `translationfiles/` + `*` + `/` rule, which
- * matches the templates/ directory and therefore everything inside it. So when the bot removed the POT on 2026-06-09, every
- * `git add` of it silently no-opped and the template stayed gone — taking the
- * whole admin UI's translatability with it.
+ * The POT is the source Weblate reads, and translationfiles/<lang>/introvox.po the
+ * translations it writes; both must be committable. Under Transifex they were not:
+ * .gitignore had a `translationfiles/` + `*` + `/` rule, which matches the
+ * templates/ directory and therefore everything inside it. So when Nextcloud's
+ * sync-bot removed the POT on 2026-06-09, every `git add` of it silently no-opped
+ * and the template stayed gone — taking the whole admin UI's translatability with it.
  *
- * These tests do not need the bot, a network, or a Transifex account: they
- * assert the local invariants that must hold for the round-trip to work at all.
+ * These tests do not need Weblate, a network or an account: they assert the local
+ * invariants that must hold for the round-trip to work at all.
  *
  * Run with: npm run test:js
  */
@@ -37,6 +36,17 @@ const git = (...args) => {
 	}
 };
 
+// The POT comes from Nextcloud's translationtool (xgettext), which wraps a long string over
+// several lines: `msgid ""` followed by `"…"` continuation lines. Read whole fields, not lines.
+const unescapePo = (s) => s.replace(/\\(["\\nt])/g, (_, c) => ({ n: '\n', t: '\t' })[c] ?? c);
+const potEntries = (pot) => pot.split(/\n\n+/).map((block) => {
+	const field = (name) => {
+		const m = block.match(new RegExp(`^${name} ((?:"(?:[^"\\\\]|\\\\.)*"\\n?)+)`, 'm'));
+		return m ? [...m[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => unescapePo(x[1])).join('') : null;
+	};
+	return { id: field('msgid'), plural: field('msgid_plural') };
+}).filter((e) => e.id);
+
 describe('POT round-trip plumbing', () => {
 	test('the POT path is not gitignored', { skip: !inGitRepo && 'not a git checkout' }, () => {
 		// Ask git directly whether the file is addable. `check-ignore -v` is the
@@ -47,27 +57,26 @@ describe('POT round-trip plumbing', () => {
 		const res = git('check-ignore', '-q', '--no-index', POT_REL);
 		assert.equal(res.ok, false,
 			`${POT_REL} is gitignored.\n`
-			+ '  The sync-bot deletes the POT after each ingest; if the path is ignored,\n'
-			+ '  putting it back silently does nothing and translations stop updating.\n'
-			+ '  Keep the !translationfiles/templates/*.pot negations in .gitignore.');
+			+ '  If the path is ignored, `npm run pot` writes a POT that git never sees,\n'
+			+ '  and Weblate stops getting new strings.\n'
+			+ '  Keep translationfiles/ fully tracked in .gitignore.');
 	});
 
-	test('.tx/config points at a POT that actually exists', () => {
-		// With a source_file present, the bot skips its own extraction entirely
-		// (that is what makes the trans() wrapper translatable at all). A
-		// dangling path silently reverts us to bot-side extraction.
-		const cfg = fs.readFileSync(path.join(ROOT, '.tx/config'), 'utf8');
-		const match = cfg.match(/^\s*source_file\s*=\s*(.+?)\s*$/m);
-		assert.ok(match, '.tx/config has no source_file — the bot would run its own extraction');
-		const declared = match[1];
-		assert.equal(declared, POT_REL, '.tx/config source_file does not match the generated POT path');
-		assert.ok(fs.existsSync(path.join(ROOT, declared)),
-			`.tx/config points at ${declared}, which does not exist. Run: npm run pot`);
+	test('the Weblate setup is in place, and Transifex is gone', () => {
+		// Since 2026-11-24 the app is translated in VoxCloud's Weblate (design
+		// l10n/RULES.md L01): l10n-sync builds the POT and l10n/ from the .po files.
+		// A .tx/config left behind would invite a second writer.
+		assert.ok(!fs.existsSync(path.join(ROOT, '.tx/config')), '.tx/config is back: the app no longer syncs with Transifex');
+		assert.ok(fs.existsSync(path.join(ROOT, 'scripts/l10n-sync.mjs')), 'scripts/l10n-sync.mjs is missing (copied from design)');
+		assert.ok(fs.existsSync(path.join(ROOT, POT_REL)), `${POT_REL} is missing. Run: npm run pot`);
+		const langs = fs.readdirSync(path.join(ROOT, 'translationfiles'))
+			.filter((d) => d !== 'templates' && fs.existsSync(path.join(ROOT, 'translationfiles', d, 'introvox.po')));
+		assert.ok(langs.length > 100, `only ${langs.length} languages in translationfiles/: the .po files are the source of the translations`);
 	});
 
 	test('the POT contains the admin UI strings', () => {
 		// End-to-end: whatever the extractor found must survive into the file
-		// Transifex actually reads.
+		// Weblate actually reads.
 		const pot = fs.readFileSync(path.join(ROOT, POT_REL), 'utf8');
 		for (const s of ['Global settings', 'Show Tours in the user menu', 'Tours for everyone']) {
 			assert.ok(pot.includes(`msgid "${s}"`), `POT is missing msgid ${JSON.stringify(s)}`);
@@ -75,11 +84,11 @@ describe('POT round-trip plumbing', () => {
 	});
 
 	test('the POT has no duplicate msgids', () => {
-		// msgfmt rejects duplicates, and so does Transifex — a POT that fails to
-		// ingest leaves the resource frozen at its previous state with no error
+		// msgfmt rejects duplicates, and so does Weblate — a POT that fails to
+		// parse leaves the component at its previous state with no error
 		// anywhere in our own tooling.
 		const pot = fs.readFileSync(path.join(ROOT, POT_REL), 'utf8');
-		const ids = [...pot.matchAll(/^msgid "(.*)"$/gm)].map((m) => m[1]).filter(Boolean);
+		const ids = potEntries(pot).map((e) => e.id);
 		const seen = new Set();
 		const dupes = ids.filter((id) => (seen.has(id) ? true : (seen.add(id), false)));
 		assert.deepEqual([...new Set(dupes)], [], 'duplicate msgids in the POT');
@@ -135,13 +144,11 @@ describe('release packaging', () => {
 describe('plural translations', () => {
 	// Nextcloud looks a plural up under `_<singular>_::_<plural>_`, in IL10N::n()
 	// as in translatePlural() of @nextcloud/l10n. IntroVox 2.0.0 shipped every
-	// plural under its bare singular (scripts/po2l10n.py wrote them so): 46
+	// plural under its bare singular (an old conversion script wrote them so): 46
 	// translations in 15 languages that n() never found, so the admin UI showed
 	// "%n people" in English everywhere. Nothing failed, nothing logged.
 	const pot = fs.readFileSync(path.join(ROOT, POT_REL), 'utf8');
-	const unescape = (s) => s.replace(/\\(["\\nt])/g, (_, c) => ({ n: '\n', t: '\t' })[c] ?? c);
-	const plurals = new Set([...pot.matchAll(/^msgid "((?:[^"\\]|\\.)*)"\nmsgid_plural "((?:[^"\\]|\\.)*)"$/gm)]
-		.map(([, s, p]) => `_${unescape(s)}_::_${unescape(p)}_`));
+	const plurals = new Set(potEntries(pot).filter((e) => e.plural !== null).map((e) => `_${e.id}_::_${e.plural}_`));
 	const catalogues = fs.readdirSync(path.join(ROOT, 'l10n')).filter((f) => /^[^.].*\.json$/.test(f));
 
 	test('the POT has plurals to check', () => {

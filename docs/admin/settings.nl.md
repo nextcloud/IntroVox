@@ -39,7 +39,7 @@ Op een installatie waar nog niemand het gevraagd is, eindigt de tour met de vraa
 
 **Locatie:** een regel met uitleg onder de schakelaar **Tours for everyone**
 
-**Functie:** vertelt hoeveel talen op dit moment een override van een beheerder hebben. Talen hoef je niet aan te zetten; elke taal die Nextcloud ondersteunt is voor gebruikers automatisch beschikbaar via de standaardstappen die op Transifex vertaald worden (resource `nextcloud/introvox`). Overrides beheer je in de stappen-editor van een tour (**Tours** → **Stappen bewerken**) — zie [Talenbeheer](language-management.nl.md).
+**Functie:** vertelt hoeveel talen op dit moment een override van een beheerder hebben. Talen hoef je niet aan te zetten; elke taal die Nextcloud ondersteunt is voor gebruikers automatisch beschikbaar via de vertaalde standaardstappen (bijgehouden in de Weblate van VoxCloud). Overrides beheer je in de stappen-editor van een tour (**Tours** → **Stappen bewerken**) — zie [Talenbeheer](language-management.nl.md).
 
 ## Checklist op het Dashboard
 
@@ -88,7 +88,7 @@ Bij elke andere tour verhoogt het de versie van die tour, zodat hij nog een keer
 
 **Locatie:** bovenaan de stappen-editor van een tour: open **Tours** en klik bij de tour op **Stappen bewerken** (de **Welcome tour** voor de tour die nieuwe gebruikers krijgen). **Alle tours** brengt je terug naar de lijst.
 
-**Functie:** kiest welke taal-override je bewerkt. De stap-lijst onder de dropdown herlaadt met de override van die taal (of de automatisch vertaalde standaardstappen als er nog geen override is).
+**Functie:** kiest welke taal-override je bewerkt. De stap-lijst onder de dropdown herlaadt met de override van die taal (of de vertaalde standaardstappen als er nog geen override is).
 
 **Gedrag:**
 
@@ -119,7 +119,7 @@ De stap-beheer-sectie, in dezelfde stappen-editor, is uitgewerkt in [Tourstappen
 | **Write steps with AI** | Schrijf nieuwe stappen op basis van een beschrijving; alleen met een provider voor de Nextcloud Assistant | [Tours → AI](tours.nl.md#stappen-schrijven-of-vertalen-met-ai) |
 | **Exporteren** | Download de stappen van deze taal als JSON | [Import/Export](import-export.nl.md#wizard-stappen-exporteren) |
 | **Import** | Upload stappen vanuit JSON | [Import/Export](import-export.nl.md#wizard-stappen-importeren) |
-| **Herstellen** | Verwijder de override van de huidige taal; daarna komen de automatisch vertaalde standaardstappen terug | [Stappen beheren → Reset](managing-steps.nl.md#reset-naar-default) |
+| **Herstellen** | Verwijder de override van de huidige taal; daarna komen de vertaalde standaardstappen terug | [Stappen beheren → Reset](managing-steps.nl.md#reset-naar-default) |
 | **Wijzigingen opslaan** | Verschijnt alleen na een mislukte poging, om opnieuw op te slaan; verder wordt alles direct opgeslagen | [Stappen beheren → Opslaan](managing-steps.nl.md#opslaan) |
 | **Tour settings** | De naam, hoofdtaal en groepen van de tour, **Who gets it** en wanneer hij vanzelf start | [Tours → Een tour maken](tours.nl.md#een-tour-voor-een-app-maken) |
 

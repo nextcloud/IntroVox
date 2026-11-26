@@ -57,7 +57,7 @@ Staat het element niet op de pagina, dan werkt **Volgende** gewoon, zodat je noo
 
 **Probleem:** de tour toont Engelse tekst maar je hebt een andere Nextcloud-taal geselecteerd.
 
-**Meest waarschijnlijke oorzaak:** de tekst van de tour is voor jouw taal nog niet vertaald op [Transifex](https://www.transifex.com/nextcloud/nextcloud/). IntroVox valt dan terug op Engels, zodat je altijd leesbare tekst krijgt. Iedereen kan op Transifex meevertalen. Nieuwe vertalingen bereiken je met de volgende release van IntroVox, zodra je beheerder de app heeft bijgewerkt.
+**Meest waarschijnlijke oorzaak:** de tekst van de tour is voor jouw taal nog niet vertaald. IntroVox valt dan terug op Engels, zodat je altijd leesbare tekst krijgt. De vertalingen worden bijgehouden in de Weblate van VoxCloud; wil je helpen met jouw taal, of heb je een fout in een vertaling gezien, open dan een issue op [GitHub](https://github.com/nextcloud/IntroVox/issues). Nieuwe vertalingen bereiken je met de volgende release van IntroVox, zodra je beheerder de app heeft bijgewerkt.
 
 **Andere dingen om te proberen:**
 

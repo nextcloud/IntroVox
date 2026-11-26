@@ -117,7 +117,7 @@ class ApiController extends Controller {
             }
         }
 
-        // Else the translated defaults, in the first of those Transifex has
+        // Else the translated defaults, in the first of those Weblate has
         // (pt_BR, else pt), else in English
         $language = 'en';
         foreach ($languages as $candidate) {
@@ -153,7 +153,7 @@ class ApiController extends Controller {
         // The admin's steps in the user's language, then in its base language
         $steps = $own($userLang) ?? $own(substr($userLang, 0, 2));
         // A built-in tour's translation goes before the admin's steps in
-        // another language, where Transifex has one: what differs from the
+        // another language, where Weblate has one: what differs from the
         // English defaults
         if ($steps === null && BuiltinTours::isBuiltin($id)) {
             $translated = $this->tours->defaultSteps($id, $userLang);

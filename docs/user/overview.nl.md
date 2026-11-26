@@ -55,7 +55,7 @@ De tour wordt mogelijk niet automatisch getoond als:
 - Je **Start tours by themselves** hebt uitgezet in je persoonlijke instellingen
 - Je de tour al hebt voltooid (verschijnt alleen opnieuw als je hem herstart)
 
-(IntroVox is beschikbaar in elke taal die Nextcloud ondersteunt. Is er voor een taal nog geen vertaling op Transifex, dan krijg je de tour in het Engels, zodat je de tekst toch kunt lezen.)
+(IntroVox is beschikbaar in elke taal die Nextcloud ondersteunt. Is er voor een taal nog geen vertaling, dan krijg je de tour in het Engels, zodat je de tekst toch kunt lezen.)
 
 Je kunt hem altijd handmatig starten — zie [Persoonlijke instellingen](personal-settings.nl.md).
 

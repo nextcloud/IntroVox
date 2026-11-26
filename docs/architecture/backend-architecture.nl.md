@@ -33,12 +33,12 @@ Alles wat geweigerd wordt bij de stappen of events van een tour voor een app (on
 
 | Service | Doel |
 |---|---|
-| `DefaultStepsService` | De acht ingebouwde stappen van de welkomsttour, vertaald via Transifex |
+| `DefaultStepsService` | De acht ingebouwde stappen van de welkomsttour, vertaald via `$l->t()` |
 | `TourRepository` | De tour-index (appconfig `tours`, hoogstens 50), de stappen van tours voor apps (`tour_steps_<id>_<lang>`, lazy), wie een tour mag krijgen, opnieuw tonen, verwijderen met back-up |
 | `TourStateService` | Per-gebruiker-staat: `tour_<id>_seen`, `_completed`, `_skipped`, `_reached` (hoe ver de laatste automatische run kwam), `tours_disabled`; en of een tour vanzelf start (`due()`) |
 | `TourValidator` | Controleert een tour en zijn trigger (app of pagina) voor hij wordt opgeslagen; maakt het id |
 | `TourOptOut` | Wie bij de update naar tours per app telt als iemand die de tour bewust had uitgezet |
-| `BuiltinTours` | De ingebouwde tours voor Files, Talk, Deck en Calendar: hun stappen via `$l->t()` (Transifex), getest zonder Nextcloud; `TourRepository` toont ze zolang de app er is, bewaart alleen hun staat, en `stepsOrDefaults()` geeft de eigen stappen of de vertaalde standaard |
+| `BuiltinTours` | De ingebouwde tours voor Files, Talk, Deck en Calendar: hun stappen via `$l->t()`, vertaald zoals de welkomsttour, getest zonder Nextcloud; `TourRepository` toont ze zolang de app er is, bewaart alleen hun staat, en `stepsOrDefaults()` geeft de eigen stappen of de vertaalde standaard |
 | `TourSchedule` | Wanneer een tour vanzelf mag starten: pas N dagen na de eerste login, en alleen tussen twee datums (in de tijdzone van de gebruiker) |
 | `UserMenuEntry` (listener) | **Tours** in het gebruikersmenu, boven **Help**, naar de persoonlijke instellingen; alleen als tours aan staan en `user_menu` niet `'false'` is |
 | `TourStats`, `TourStatistics` | Hoe ver mensen komen: de waarde per gebruiker, de totalen per stap, en de cijfers van één tour voor het paneel Statistics (alleen totalen, niets naar telemetrie) |
@@ -109,4 +109,4 @@ Zie [backend-architecture.md](backend-architecture.md) voor:
 - [Architectuur-overzicht](overview.nl.md) — systeem-design
 - [Frontend-architectuur](frontend-architecture.nl.md) — Vue-client
 - [API-referentie](api-reference.nl.md) — REST-endpoints
-- [Transifex-integratie](transifex-integration.nl.md) — l10n-workflow
+- [Vertalingen](translations.nl.md) — l10n-workflow

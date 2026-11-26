@@ -57,7 +57,7 @@ See [Tours](tours.md) for when a tour starts.
 | Browser cache | Hard-refresh: `Cmd+Shift+R` / `Ctrl+Shift+R` |
 | Language not selected in Nextcloud | Verify in user's **Personal Settings → Language** |
 | Translation file missing | Verify `l10n/<lang>.json` exists in the IntroVox app directory |
-| App not rebuilt after `l10n` change | If developing, run `python3 scripts/po2l10n.py` then `npm run build` |
+| `l10n/` out of date while developing | `l10n/` is generated from the `.po` files, not by `npm run build`: run `npm run l10n:build`, or pull `main` once Weblate's pull request is merged. A string added since then shows in English until it is translated in Weblate |
 | Hidden steps stacked under current step (v1.4.0–v1.6.0) | Upgrade to v1.6.1+, which adds `.nextcloud-wizard-step[hidden] { display: none }` |
 
 ## Import/Export Issues

@@ -77,27 +77,29 @@ Er is geen ingebouwde conditionele logica, maar:
 
 ### Hoe voeg ik een nieuwe taal toe?
 
-Daar hoef je niets voor te doen. Elke taal met een vertaling op de [Transifex-resource `nextcloud/introvox` van Nextcloud](https://www.transifex.com/nextcloud/nextcloud/) werkt vanzelf: de sync-bot zet de vertalingen via PR's in `l10n/<lang>.json`, en gebruikers in die taal zien meteen de automatisch vertaalde tour.
+Daar hoef je niets voor te doen. De vertalingen worden bijgehouden in de Weblate van VoxCloud, en elke taal die daar vertalingen heeft, komt mee met de volgende release van IntroVox: zodra je de app hebt bijgewerkt, zien gebruikers in die taal de vertaalde tour. Er is geen minimumpercentage: wat nog niet vertaald is, verschijnt in het Engels. Nieuwe teksten krijgen eerst een vertaling door AI, die mensen daarna in Weblate controleren. Heb je de welkomsttour voor een taal zelf opgeslagen, dan houdt die taal jouw tekst; klik op **Herstellen** om de vertaalde standaardstappen terug te krijgen.
 
-Wil je **eigen tekst** voor een bepaalde taal (anders dan de automatisch vertaalde standaardtekst), open dan **Tours**, klik bij de **Welcome tour** op **Stappen bewerken**, klik op **Taalspecifieke versie toevoegen**, kies de taal, pas aan en sla op.
+Wil je helpen IntroVox in een taal te vertalen, of heb je een fout in een vertaling gezien, open dan een issue op [GitHub](https://github.com/nextcloud/IntroVox/issues).
 
-Zie [Meertaligheid](../features/multi-language.nl.md) voor de hele werkwijze met Transifex.
+Wil je **eigen tekst** voor een bepaalde taal (anders dan de vertaalde standaardtekst), open dan **Tours**, klik bij de **Welcome tour** op **Stappen bewerken**, klik op **Taalspecifieke versie toevoegen**, kies de taal, pas aan en sla op.
+
+Zie [Meertaligheid](../features/multi-language.nl.md) voor hoe vertalen helemaal werkt.
 
 ### Kan ik verschillende stappen hebben voor verschillende talen?
 
-Ja, daar zijn overrides voor. Elke taal met een override heeft zijn eigen `wizard_steps_<lang>`, los van de andere, die de automatisch vertaalde standaardstappen voor die taal vervangt. Talen zonder override krijgen de standaardstappen.
+Ja, daar zijn overrides voor. Elke taal met een override heeft zijn eigen `wizard_steps_<lang>`, los van de andere, die de vertaalde standaardstappen voor die taal vervangt. Talen zonder override krijgen de standaardstappen.
 
-### Hoe gooi ik een override weg en ga ik terug naar de automatisch vertaalde standaardstappen?
+### Hoe gooi ik een override weg en ga ik terug naar de vertaalde standaardstappen?
 
-Kies de taal in de keuzelijst → klik op **Herstellen** → bevestig. De override-rij wordt verwijderd; vanaf dan komen updates van Transifex voor die taal vanzelf door.
+Kies de taal in de keuzelijst → klik op **Herstellen** → bevestig. De override-rij wordt verwijderd; vanaf dan krijgt die taal de vertaalde standaardstappen, met de nieuwe vertalingen van elke release.
 
-### Wat als de taal van een gebruiker nog geen vertaling op Transifex heeft?
+### Wat als de taal van een gebruiker nog geen vertaling heeft?
 
 Dan krijgt die gebruiker de basistaal (`pt` voor `pt_BR`) als die een vertaling heeft, en anders de **Engelse** standaardstappen. (De taaldetectie per app van Nextcloud valt terug op de standaardtaal van het systeem; IntroVox kiest in `DefaultStepsService` bewust voor Engels, zodat gebruikers nooit onverwacht een derde taal zien.)
 
 ### Kan ik talen mixen in stap-tekst?
 
-Niet aanbevolen. Elke taal met een override hoort zijn eigen samenhangende tekst te hebben. Talen zonder override gebruiken de automatisch vertaalde standaardstappen van Transifex.
+Niet aanbevolen. Elke taal met een override hoort zijn eigen samenhangende tekst te hebben. Talen zonder override gebruiken de vertaalde standaardstappen.
 
 ## Doelgroep-controle
 
@@ -109,7 +111,7 @@ Meerdere opties:
 2. **Groep-gebaseerde stap-zichtbaarheid** (v1.2.0+) — beperk individuele stappen tot groepen ([Groep-zichtbaarheid](group-visibility.nl.md))
 3. **Globaal** — zet **Tours for everyone** uit (dat stopt elke tour, ook de tours voor apps)
 
-(Uitzetten per taal bestaat sinds v1.7.0 niet meer — dat werkt niet met 100+ talen op Transifex.)
+(Uitzetten per taal bestaat sinds v1.7.0 niet meer — dat werkt niet met 100+ talen.)
 
 Wil je een tour voor een app alleen aan bepaalde groepen geven, stel dan **Zichtbaar voor** in bij die tour; zie [Tours](tours.nl.md).
 

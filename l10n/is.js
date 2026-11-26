@@ -63,11 +63,11 @@ OC.L10N.register(
     "Need help?" : "Þarftu hjálp?",
     "Report an issue" : "Tilkynntu um vandamál",
     "Source code" : "Upprunakóði",
+    "Start" : "Byrjun",
     "Close" : "Loka",
     "Done" : "Lokið",
     "Skip" : "Sleppa",
     "Settings saved" : "Stillingar vistaðar",
-    "Start" : "Byrjun",
     "Select" : "Velja",
     "Restart" : "Byrja aftur",
     "Captions" : "Skjátextar"

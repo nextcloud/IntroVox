@@ -75,7 +75,7 @@ Laat de vertaling van elke taal nakijken door een native speaker, ook die van **
 
 ### Voeg alleen overrides toe waar het nodig is
 
-De welkomsttour en de ingebouwde tours zijn vertaald in elke taal die Transifex heeft. Elke override is een lijst met stappen die je zelf bijhoudt, en hij krijgt geen nieuwe vertalingen van de standaardstappen meer. Voeg er alleen een toe waar de standaardstappen niet passen, zoals tekst die je eigen cloud noemt, en gebruik **Herstellen** zodra je hem niet meer nodig hebt. Zie [Talenbeheer](language-management.nl.md).
+De welkomsttour en de ingebouwde tours zijn vertaald in elke taal waarvoor IntroVox vertalingen heeft. Elke override is een lijst met stappen die je zelf bijhoudt, en hij krijgt geen nieuwe vertalingen van de standaardstappen meer. Voeg er alleen een toe waar de standaardstappen niet passen, zoals tekst die je eigen cloud noemt, en gebruik **Herstellen** zodra je hem niet meer nodig hebt. Zie [Talenbeheer](language-management.nl.md).
 
 ## Operationeel onderhoud
 

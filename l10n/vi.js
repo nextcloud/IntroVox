@@ -57,11 +57,11 @@ OC.L10N.register(
     "Need help?" : "Cần hỗ trợ ?",
     "Report an issue" : "Báo cáo vấn đề",
     "Source code" : "Mã nguồn",
+    "Start" : "Bắt đầu",
     "Close" : "Đóng",
     "Done" : "Hoàn tất",
     "Skip" : "Bỏ qua",
     "Settings saved" : "Cấu hình đã được lưu",
-    "Start" : "Bắt đầu",
     "Select" : "Chọn"
 },
 "nplurals=1; plural=0;");

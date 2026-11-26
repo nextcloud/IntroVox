@@ -2,7 +2,7 @@ import DOMPurify from 'dompurify'
 
 // Tour step texts are HTML, and Shepherd puts them into the page with
 // innerHTML for every user. They come from admins, but also from imported
-// tour files and from Transifex translations of the default steps, which
+// tour files and from Weblate translations of the default steps, which
 // nobody reviews for markup. Nextcloud's CSP stops scripts, not links, styles
 // or fake forms, so only this formatting survives: what the docs promise and
 // the default steps use.

@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /**
  * Lightweight lint of the source strings against the mechanical parts of the
- * Nextcloud translation guidelines. The NC Transifex coordinator locked the
- * IntraVox resource over exactly these categories (nextcloud/intravox#63), so
- * catching them before pushing keeps this resource from meeting the same fate.
+ * Nextcloud translation guidelines (design l10n/RULES.md). Nextcloud's Transifex
+ * coordinator locked the IntraVox resource over exactly these categories in 2026
+ * (nextcloud/intravox#63); catching them early spares translators in Weblate the
+ * same trouble.
  *
  * Scope is deliberately small — only the mechanically-checkable rules. Full
  * sentence-case cannot be enforced without false positives on proper nouns
  * (IntroVox, MetaVox, API, URL, ZIP, OAuth2, …), so that stays a human review
  * item; obvious Title Case is merely flagged, never failed.
  *
- * By default this prints warnings and exits 0 (so `npm run l10n:push` is never
+ * By default this prints warnings and exits 0 (so `npm run pot` is never
  * blocked). Pass --strict to exit 1 on any finding (for a full audit).
  *
  * Usage: node scripts/lint-l10n-strings.js [--strict]

@@ -54,7 +54,7 @@ sudo -u www-data php occ app:enable introvox
 
 After enabling the app, the welcome tour needs nothing switched on:
 
-- **Tours for everyone** is on after installation, so the welcome tour starts for each user on their next page load, in their own language (translated through Transifex; English for a language without a translation)
+- **Tours for everyone** is on after installation, so the welcome tour starts for each user on their next page load, in their own language (translated in VoxCloud's Weblate; English for a language without a translation)
 - **Tours** appears in everyone's user menu, just above **Help**; hide it under **Settings** (**Show Tours in the user menu**)
 - Tours for apps and pages, the built-in tours for Files, Talk, Deck and Calendar, and the checklist on the Dashboard are off until you switch them on
 - The first time you open **Settings → Administration → IntroVox**, a short admin tour shows you the page. It ends with the telemetry question; an instance sends no telemetry until an admin has been asked

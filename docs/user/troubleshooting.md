@@ -57,7 +57,7 @@ If the element is not on the page, **Next** works as usual, so you never get stu
 
 **Problem:** The tour shows English text but you selected a different Nextcloud language.
 
-**Most likely cause:** the tour copy hasn't been translated for your language on [Transifex](https://www.transifex.com/nextcloud/nextcloud/) yet. IntroVox falls back to English in that case so you always get readable text. Anyone can contribute translations on Transifex. New translations reach you with the next IntroVox release, once your administrator has updated the app.
+**Most likely cause:** the tour copy hasn't been translated for your language yet. IntroVox falls back to English in that case so you always get readable text. The translations are maintained in VoxCloud's Weblate; to help with your language, or to report a translation error, open an issue on [GitHub](https://github.com/nextcloud/IntroVox/issues). New translations reach you with the next IntroVox release, once your administrator has updated the app.
 
 **Other things to try:**
 

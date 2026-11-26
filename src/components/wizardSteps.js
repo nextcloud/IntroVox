@@ -736,7 +736,7 @@ export async function loadCustomSteps() {
 
     if (data.success) {
       // Trust whatever the server sends. Since 1.7.0 the API returns the full
-      // Transifex-translated default set inline when no admin override exists,
+      // Weblate-translated default set inline when no admin override exists,
       // so falling back to the client-side bundled defaults (which would re-
       // translate via the Vue translation bundle and pick e.g. NL for an IT
       // user without an IT bundle) is wrong. No steps (every step switched off,

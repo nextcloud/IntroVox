@@ -31,7 +31,7 @@ IntroVox shows people around Nextcloud. New users get a welcome tour after their
 - **Admin tour** - A short tour of the admin page, the first time an admin opens it
 
 ### 🌍 Languages
-- **Translated on Transifex** - Nextcloud's translators translate IntroVox and its default steps. A new language file is picked up without a code change; there is nothing to switch on. A string that is not translated yet shows in English
+- **Translated in Weblate** - IntroVox and its default steps are translated in VoxCloud's Weblate (see [Translations](#-translations)). Every language ships, and a new language is picked up without a code change; there is nothing to switch on. A string that is not translated yet shows in English
 - **Your own steps per language** - A user gets the steps in their language, else in its base language (`de` for `de_DE`), else in the tour's main language
 
 ### 🎨 Design & Accessibility
@@ -150,6 +150,10 @@ npm install         # Install dependencies
 npm run build       # Production build
 npm run watch       # Development mode
 ```
+
+## 🌍 Translations
+
+IntroVox is translated in VoxCloud's Weblate. New strings are first translated by AI (Claude) and then reviewed by people in Weblate. Translations reach this repository as pull requests and ship with the next release. Found a translation error or want to help? [Open an issue](https://github.com/nextcloud/IntroVox/issues). Translation maintainer: Rik Dekker.
 
 ## 📄 License
 

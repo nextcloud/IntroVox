@@ -1,6 +1,6 @@
 # IntroVox Documentation
 
-Welcome to the IntroVox documentation. IntroVox is a Nextcloud app with guided tours: a welcome tour for new users, and short tours that start the first time someone opens an app or a page, such as the built-in tours for Files, Talk, Deck and Calendar. It is built with Vue 3 and Shepherd.js, translates its default steps through Transifex, and has an admin page to write tours, choose who gets them and when, and see how far people get.
+Welcome to the IntroVox documentation. IntroVox is a Nextcloud app with guided tours: a welcome tour for new users, and short tours that start the first time someone opens an app or a page, such as the built-in tours for Files, Talk, Deck and Calendar. It is built with Vue 3 and Shepherd.js, has its default steps translated in VoxCloud's Weblate, and has an admin page to write tours, choose who gets them and when, and see how far people get.
 
 ![The built-in Files tour: make a folder, share it with a link, and see where nothing gets lost](screenshots/tours-files.gif)
 
@@ -27,7 +27,7 @@ Installation, configuration, step management, and operations.
 
 - [Admin Guide](admin/guide.md) — Day-to-day administration
 - [Settings](admin/settings.md) — Every option on the admin page, the checklist on the Dashboard, and where settings are stored
-- [Language Management](admin/language-management.md) — Override-based per-language customisation (Transifex provides defaults automatically)
+- [Language Management](admin/language-management.md) — Override-based per-language customisation (translated defaults ship with the app)
 - [Tours](admin/tours.md) — The welcome tour, built-in tours, tours for an app, a page or anywhere; timing, share links, statistics, AI, export and import
 - [Managing Tour Steps](admin/managing-steps.md) — Writing steps: text, images and videos, elements, steps that wait for the user, reordering, reset
 - [Group-Based Visibility](admin/group-visibility.md) — Role-based onboarding with group filters
@@ -42,7 +42,7 @@ Installation, configuration, step management, and operations.
 Per-feature documentation for capabilities.
 
 - [Guided Tours](features/guided-tours.md) — How a tour runs: which tour starts, step types, steps that wait, tours across apps
-- [Multi-Language Support](features/multi-language.md) — Transifex integration, auto-detection, per-language steps
+- [Multi-Language Support](features/multi-language.md) — Translations, auto-detection, per-language steps
 - [Step Visibility](features/step-visibility.md) — Group filters + user preferences
 - [Customization](features/customization.md) — HTML in step content, CSS selectors, positioning
 - [Theme Support](features/theme-support.md) — Light, dark, high contrast, custom Nextcloud themes
@@ -55,7 +55,7 @@ Technical documentation for integration, evaluation, and contribution.
 - [API Reference](architecture/api-reference.md) — REST API endpoints
 - [Frontend Architecture](architecture/frontend-architecture.md) — Vue 3 + Shepherd.js structure
 - [Backend Architecture](architecture/backend-architecture.md) — Controllers, services, config storage
-- [Transifex Integration](architecture/transifex-integration.md) — Translation workflow
+- [Translations](architecture/translations.md) — Translation workflow
 
 ### Security
 
